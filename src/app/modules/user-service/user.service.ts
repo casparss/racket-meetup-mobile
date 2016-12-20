@@ -25,7 +25,7 @@ export class UserSvc extends BaseService{
 			search: HttpUtils.urlParams(user)
 		});
 		request.subscribe(this.userSuccess);
-		return request;			
+		return request;
 
 	}
 
@@ -52,7 +52,7 @@ export class UserSvc extends BaseService{
 			.subscribe(() => this._user.details = details);
 	}
 
-	get current(){		
+	get current(){
 		return this._user;
 	}
 
