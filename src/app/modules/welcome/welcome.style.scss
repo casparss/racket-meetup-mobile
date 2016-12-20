@@ -1,0 +1,57 @@
+welcome,
+.welcome-com{
+
+	color:#fff;
+
+	h1{
+		color:#fff;
+		font-weight:100;
+		font-size:2.5em;
+	}
+	
+	ion-grid{
+		height:100%;
+		align-items: center;
+  		justify-content: center;
+
+	}
+	
+	.logo{
+		font-size:14em;
+		color:#fff;
+	}
+
+	ion-content{
+		background:$primary-gradient;
+	}
+
+	ion-list{
+	    margin: auto;
+	}
+
+	.item-input ion-label{
+		color:#fff;
+	}
+
+	ion-item.item{
+		background-color:transparent;
+
+		&:first-child{
+			border:0;
+		}
+
+		.item-inner, &:last-child{
+			border-bottom:1px solid #fff;
+		}
+		
+	}
+
+	input{
+		color:#fff;
+	}
+
+	h6, a{
+		color:#fff
+	}
+	
+}

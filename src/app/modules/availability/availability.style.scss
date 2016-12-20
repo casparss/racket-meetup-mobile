@@ -1,0 +1,40 @@
+.availability {
+
+	table{
+		width:100%;
+	}
+
+	thead td, label{
+		text-align:center;
+	}
+
+	td {		
+		vertical-align:middle;
+	}
+
+	label{
+		display:block;
+	}
+
+	.invisible{
+		visibility: hidden;
+	}
+
+	ion-checkbox{
+		position:relative;
+		margin:5px;
+	}
+
+	.checkbox-icon{
+		margin:auto;
+	}
+
+	.item-inner{
+		border:none;
+	}
+
+	ion-item{
+		border-bottom: 1px solid #dedede;	
+	}
+	
+}

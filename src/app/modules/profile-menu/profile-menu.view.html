@@ -1,0 +1,38 @@
+<ion-list>
+
+	<ion-item-divider light></ion-item-divider>
+
+	<button ion-item (click)="openPage('profileMain')">
+		<ion-thumbnail item-left>
+			<img src="build/modules/games/img/profile.jpg">
+		</ion-thumbnail>
+		<h2>{{user?.details.firstName + " " + user?.details.lastName}}</h2>
+		<p>Profile</p>
+		<button clear item-right>View</button>
+	</button>
+
+	<ion-item-divider light></ion-item-divider>
+
+	<button (click)="openPage('friends')" ion-item>
+		<ion-icon name="people" item-left></ion-icon>
+		Friends
+	</button>
+
+	<!-- <button (click)="openPage('courts')" ion-item>
+		<ion-icon name="text" item-left></ion-icon>
+		My courts
+	</button> -->
+
+	<button (click)="openPage('myDetails')" ion-item>
+		<ion-icon name="trophy" item-left></ion-icon>
+		My details
+	</button>
+
+	<ion-item-divider light></ion-item-divider>
+
+	<!-- <button (click)="openPage('settings')" ion-item>
+		<ion-icon name="settings" item-left></ion-icon>
+		Settings
+	</button> -->
+
+</ion-list>

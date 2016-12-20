@@ -1,0 +1,40 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Chat with dick face</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<div class="container">
+
+		<section class="messages">
+
+			<section>
+				<div *ngFor="let message of chatMessages$ | async">
+					<h3 class="msg--date">{{message.createdAt | date:"dd/MM/yy"}}</h3>
+
+					<div class="msg msg--{{message.isMe() ? 'them' : 'me'}}">
+						<blockquote>{{message.message}}</blockquote>
+					</div>
+				</div>
+			</section>
+
+		</section>
+
+		<footer>
+
+			<form
+				[formGroup]="sendMessageForm"
+				(ngSubmit)="sendMessage(sendMessageForm)"
+				novalidate
+			>
+				<textarea formControlName="messageInput" type="text" placeholder="Your message"></textarea>
+				<div class="msg-send"><button primary>Send</button></div>
+			</form>
+
+		</footer>
+
+	</div>
+
+</ion-content>

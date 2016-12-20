@@ -1,0 +1,80 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>My details</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	
+	<form
+		[formGroup]='mydetailsForm'
+		(ngSubmit)='syncDetails(mydetailsForm.value, mydetailsForm.valid)'
+		novalidate ion-list padding
+	>
+		<ion-list>
+
+			<ion-item>
+				<ion-thumbnail item-left>
+					<img src="{{details.image}}">
+				</ion-thumbnail>
+				<h2>Profile image</h2>
+				<button right>Change</button>
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating>Email:</ion-label>
+				<ion-input
+					formControlName="email"
+				 	type="email"
+				 ></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating>Username</ion-label>
+				<ion-input
+					formControlName="username"
+					type="text"
+				></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating>First name</ion-label>
+				<ion-input
+					formControlName="firstName"
+					type="text"
+				></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating>Last name</ion-label>
+				<ion-input
+					formControlName="lastName"
+					type="text"
+				></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating>Password</ion-label>
+				<ion-input
+					formControlName="password"
+					type="password"
+				></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating>Date of birth</ion-label>
+				<ion-datetime
+					displayFormat="DD / M / YYYY"
+					formControlName="dob"
+				></ion-datetime>
+			</ion-item>
+
+			<ion-item>
+				<button block large>Update details</button>
+			</ion-item>
+
+		</ion-list>
+
+	</form>
+
+</ion-content>

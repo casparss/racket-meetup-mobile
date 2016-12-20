@@ -1,0 +1,43 @@
+profile-main,
+.profile-main-com{
+
+	$text-colour: #fff;
+	$background-colour:#16a086;
+
+	header{
+		padding: 45px 25px;
+		color:$text-colour;
+		background: linear-gradient(to bottom, #1dd4b1 0%,#16a086 77%);
+
+		img{
+			width:14rem;
+			height:14rem;
+			border-radius:7rem;
+			display:block;
+			margin:auto;	
+		}
+
+		.playerName{
+			text-align:center;
+			font-weight: 100;
+		}
+
+		.playerInfo{
+
+			dt, dd{
+				text-align:center;
+				margin:0;
+				font-weight: 100;
+			}
+
+			dd{			
+				font-size: 2.5rem;
+	    		font-weight: bold;
+			}
+
+		}
+
+
+	}	
+	
+}

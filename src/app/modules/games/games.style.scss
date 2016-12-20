@@ -1,0 +1,63 @@
+games{
+
+	//@TODO:60 make sure using variables for colours
+
+	img{
+		width:6rem;
+		height:6rem;
+		display:block;
+		margin:auto;
+
+		border-radius: 3rem;
+	}
+
+	.playerName{
+		text-align:center;
+		margin-top:10px;
+	}
+
+	.vs{
+		text-align:center;
+	}
+
+	.item-header{
+		background:#fcfcfc;
+		ion-label{
+			font-size:1rem;
+			margin:0;
+		}
+	}
+
+	ion-row{
+		align-items: center;
+  		justify-content: center;
+	}
+
+	ion-item.item{
+		border-bottom: 1px solid #c8c7cc;		
+	}	
+
+	ion-list .item .item-inner{
+		border:none;
+	}
+
+	.upcoming{
+		border-left: 3px solid green;
+	}
+
+	.previous{
+		border-left: 3px solid red;
+
+		table{
+			width:100%;
+		}
+
+		td{
+			text-align:center;
+			border:1px solid #c8c7cc;
+			padding:8px 0;
+		}
+
+	}
+
+}

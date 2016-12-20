@@ -1,0 +1,56 @@
+<div class="availability">
+	<ion-list-header>
+	Weekly availability
+	</ion-list-header>
+	<ion-item>
+
+		<table>
+			<thead>
+				<tr>
+					<td [class.invisible]="!isInFlight">
+						<ion-spinner icon="spiral" class="spinner-stable"></ion-spinner>
+					</td>
+					<td>M</td>
+					<td>T</td>
+					<td>W</td>
+					<td>T</td>
+					<td>F</td>
+					<td>S</td>
+					<td>S</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+					   Morning
+					</td>
+
+					<td *ngFor="let day of morning$ | async">
+						<input type="checkbox" [(ngModel)]="day.v" />
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+					   Afternoon
+					</td>
+
+					<td *ngFor="let day of afternoon$ | async">
+						<input type="checkbox" [(ngModel)]="day.v" />
+					</td>  
+				</tr>
+
+				<tr>
+					<td>
+					   Evening
+					</td>
+
+					<td *ngFor="let day of evening$ | async">
+						<input type="checkbox" [(ngModel)]="day.v" />
+					</td> 
+				</tr>
+			</tbody>            
+		</table>
+		
+	</ion-item>
+</div>
