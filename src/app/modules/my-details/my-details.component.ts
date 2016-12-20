@@ -1,13 +1,10 @@
 import {Component} from '@angular/core';
 import {UserSvc} from '../user-service/user.service';
 import {UserDetailsInt} from './my-details.interface';
-
-import {Validators} from '@angular/common';
-import {REACTIVE_FORM_DIRECTIVES, FormGroup, FormBuilder} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
-	templateUrl:'build/modules/my-details/my-details.view.html',
-	providers: [REACTIVE_FORM_DIRECTIVES]
+	templateUrl:'build/modules/my-details/my-details.view.html'
 })
 export class MydetailsCom{
 
