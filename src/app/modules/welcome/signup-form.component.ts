@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {TabsPageCom} from '../tabs';
-import {UserSvc} from '../user-service/user.service.ts';
+import {UserSvc} from '../user-service/user.service';
 
 import {Validators} from '@angular/common';
 import {REACTIVE_FORM_DIRECTIVES, FormGroup, FormBuilder} from '@angular/forms';

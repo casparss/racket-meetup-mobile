@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {DecHttp} from '../../utils/http/';
 import {NavController} from 'ionic-angular';
-import {BaseService} from "../../utils/base/base.service.ts";
-import {Utils} from '../../utils/util-helpers.ts';
+import {BaseService} from "../../utils/base/base.service";
+import {Utils} from '../../utils/util-helpers';
 import {Observable} from 'rxjs/Observable';
-import {GameInt} from './games.interfaces.ts';
+import {GameInt} from './games.interfaces';
 
 @Injectable()
 export class GamesService extends BaseService{

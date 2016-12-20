@@ -1,11 +1,11 @@
-import {DecHttp, HttpUtils} from '../http/';
+import {DecHttp, HttpUtils} from '../http';
 import {EventEmitter} from '@angular/core';
 import {Subject} from 'rxjs';
 
 export class BaseService {
 
 	private _url: string;
-	protected baseUrl: string = (window['cordova'] ? "http://178.62.92.11:3000/" : "") + "api/";	
+	protected baseUrl: string = (window['cordova'] ? "http://178.62.92.11:3000/" : "") + "api/";
 	public inFlightEvt = new EventEmitter();
 	public model:any;
 	public subjects: Object = {};
@@ -13,10 +13,10 @@ export class BaseService {
 	constructor(protected http: DecHttp){}
 
 	_get(observableKey?:string, opts = {}, url?:string){
-		
+
 		this.inFlightEvt.emit(true);
 		let request = this.http.get(url || this.url, opts);
-		if(observableKey){			
+		if(observableKey){
 			request.subscribe(data => {
 				if(this.subjects[observableKey]){
 					this.subjects[observableKey].next(data)
@@ -30,7 +30,7 @@ export class BaseService {
 
 	}
 
-	_getById(modelName:string, id:string, url?:string){		
+	_getById(modelName:string, id:string, url?:string){
 		return this._get(modelName, {
 			search: HttpUtils.urlParams({id: id})
 		}, url);
@@ -54,14 +54,14 @@ export class BaseService {
 		this._url = url;
 	}
 
-	get url(){		
+	get url(){
 		return this.baseUrl + this._url;
 	}
 
 	createObservable(modelName:string){
 		let newSubject = new Subject();
 		this.subjects[modelName] = newSubject;
-		let observable$ = newSubject.asObservable();		
+		let observable$ = newSubject.asObservable();
 		return observable$.do(model => this[modelName] = model);
 	}
 

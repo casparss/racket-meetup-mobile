@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BaseService} from '../../utils/base/base.service.ts';
+import {BaseService} from '../../utils/base/base.service';
 import {NavController} from 'ionic-angular';
 import {DecHttp} from '../../utils/http/';
 

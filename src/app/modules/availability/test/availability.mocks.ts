@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs';
 
-import {model} from './availability.fixture.ts';
-import {BaseService} from "../../../utils/base/base.service.ts";
+import {model} from './availability.fixture';
+import {BaseService} from "../../../utils/base/base.service";
 import {Utils} from '../../../utils/util-helpers';
 
 let subjectMock = new BehaviorSubject(model);

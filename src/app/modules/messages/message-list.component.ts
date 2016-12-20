@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {messagesModel} from './messages.fixture.ts';
+import {messagesModel} from './messages.fixture';
 import {NavController} from 'ionic-angular';
-import {MessageItemInt} from './messages.interface.ts';
+import {MessageItemInt} from './messages.interface';
 import {MessagesSvc} from './messages.service';
-import {ChatCom} from './chat.component.ts';
+import {ChatCom} from './chat.component';
 
 @Component({
 	templateUrl: 'build/modules/messages/message-list.view.html',

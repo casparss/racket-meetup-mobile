@@ -5,10 +5,10 @@ import {debounce} from 'lodash';
 import 'rxjs/add/operator/toPromise';
 import {Observable} from 'rxjs/Observable';
 import {map} from 'lodash';
-import {BaseService} from "../../utils/base/base.service.ts";
-import {ColObjDifferFactory, CollectionObjectDiffer} from '../../utils/differs/collection-object-diff.ts';
-import {Service} from './availability.interface.ts';
-import {Utils} from '../../utils/util-helpers.ts';
+import {BaseService} from "../../utils/base/base.service";
+import {ColObjDifferFactory, CollectionObjectDiffer} from '../../utils/differs/collection-object-diff';
+import {Service} from './availability.interface';
+import {Utils} from '../../utils/util-helpers';
 
 @Injectable()
 export class AvailabilitySvc extends BaseService implements Service {

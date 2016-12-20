@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {GamesService} from './games.service.ts';
-import {GameInt} from './games.interfaces.ts';
+import {GamesService} from './games.service';
+import {GameInt} from './games.interfaces';
 
 @Component({
 	templateUrl:'build/modules/games/games.view.html',

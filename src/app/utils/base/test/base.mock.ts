@@ -1,7 +1,7 @@
-import {BaseService} from '../base.service.ts';
+import {BaseService} from '../base.service';
 import {DecHttp} from '../../http';
 import {Injectable} from '@angular/core';
-import {ColObjDifferFactory} from '../../../utils/differs/collection-object-diff.ts';
+import {ColObjDifferFactory} from '../../../utils/differs/collection-object-diff';
 
 @Injectable()
 export class ChildServiceMock extends BaseService{

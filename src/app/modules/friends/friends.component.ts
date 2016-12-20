@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {ProfileMainCom} from '../profile-main/profile-main.component.ts';
-import {UserInt} from '../user-service/user.interface.ts';
+import {ProfileMainCom} from '../profile-main/profile-main.component';
+import {UserInt} from '../user-service/user.interface';
 import {debounce} from 'lodash';
 import {FriendsSvc} from './friends.service';
 

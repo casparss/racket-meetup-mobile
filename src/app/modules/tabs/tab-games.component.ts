@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {AvailabilityCom} from '../../modules/availability/availability.component.ts'
-import {GamesCom} from '../../modules/games/games.component.ts';
+import {AvailabilityCom} from '../../modules/availability/availability.component'
+import {GamesCom} from '../../modules/games/games.component';
 
 @Component({
 	template:

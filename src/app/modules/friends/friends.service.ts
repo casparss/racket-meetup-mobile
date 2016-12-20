@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BaseService} from '../../utils/base/base.service';
 import {DecHttp, HttpUtils} from '../../utils/http';
 import {debounce} from 'lodash';
-import {UserInt} from '../user-service/user.interface.ts';
+import {UserInt} from '../user-service/user.interface';
 
 @Injectable()
 export class FriendsSvc extends BaseService{

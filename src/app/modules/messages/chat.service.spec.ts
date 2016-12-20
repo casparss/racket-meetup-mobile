@@ -3,10 +3,10 @@ import {MockBackend} from '@angular/http/testing';
 import {BaseRequestOptions, Http} from '@angular/http';
 import {provide} from '@angular/core';
 import {TestUtils} from '../../../test/diExports';
-import {ColObjDifferFactory} from '../../utils/differs/collection-object-diff.ts';
-import {ColObjDifferFactoryMock, CollectionObjectDifferMock} from './availability.mocks.ts';
-import {AvailabilityService} from './availability.service.ts';
-import {model} from './availability.fixture.ts';
+import {ColObjDifferFactory} from '../../utils/differs/collection-object-diff';
+import {ColObjDifferFactoryMock, CollectionObjectDifferMock} from './availability.mocks';
+import {AvailabilityService} from './availability.service';
+import {model} from './availability.fixture';
 
 this.fixture = null;
 this.instance = null;

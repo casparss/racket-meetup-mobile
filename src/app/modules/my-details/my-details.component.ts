@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {UserSvc} from '../user-service/user.service.ts';
+import {UserSvc} from '../user-service/user.service';
 import {UserDetailsInt} from './my-details.interface';
 
 import {Validators} from '@angular/common';

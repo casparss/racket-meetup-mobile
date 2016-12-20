@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {RankingListCom} from '../../modules/rankings-list/rankings-list.component.ts';
+import {RankingListCom} from '../../modules/rankings-list/rankings-list.component';
 
 @Component({
 	template:

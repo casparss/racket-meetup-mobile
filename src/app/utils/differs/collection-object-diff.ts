@@ -1,7 +1,7 @@
 import {Injectable, KeyValueDiffers} from '@angular/core';
 import Promise from "ts-promise";
 import {map, filter} from 'lodash';
-import {CollectionDiff} from './collection-diff.ts';
+import {CollectionDiff} from './collection-diff';
 
 @Injectable()
 export class ColObjDifferFactory{

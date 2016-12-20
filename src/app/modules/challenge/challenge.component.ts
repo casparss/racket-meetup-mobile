@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ViewController} from 'ionic-angular';
-import {UserInt} from '../user-service/user.interface.ts';
+import {UserInt} from '../user-service/user.interface';
 
 @Component({
 	templateUrl: 'build/modules/challenge/challenge.view.html'

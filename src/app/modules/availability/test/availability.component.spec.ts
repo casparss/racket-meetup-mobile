@@ -1,11 +1,11 @@
 import {fakeAsync, beforeEach, beforeEachProviders, describe, expect, it} from '@angular/core/testing';
 import {provide} from '@angular/core';
 import {customAsyncInject, TestUtils} from '../../../../test/di-exports';
-import {AvailabilitySvc} from '../availability.service.ts';
+import {AvailabilitySvc} from '../availability.service';
 import {Promise} from 'ts-promise';
-import {AvailabilityCom} from '../availability.component.ts';
-import {model} from './availability.fixture.ts';
-import {ServiceMock} from './availability.mocks.ts';
+import {AvailabilityCom} from '../availability.component';
+import {model} from './availability.fixture';
+import {ServiceMock} from './availability.mocks';
 import {DecHttp} from '../../../utils/http';
 
 this.fixture = null;

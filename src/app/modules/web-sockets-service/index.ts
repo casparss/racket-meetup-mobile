@@ -1,1 +1,1 @@
-export * from './web-sockets.service.ts';
+export * from './web-sockets.service';
