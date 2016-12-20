@@ -19,9 +19,7 @@ export class ChallengeCom{
 	}
 
 	dateSelected(timestamp){
-
 		console.log(timestamp);
-
 	}
 
 	challenge(){
@@ -31,7 +29,6 @@ export class ChallengeCom{
 	close(){
 		this.viewCtrl.dismiss();
 	}
-
 
 	private setCurrentDate(dateToday :string) :void{
 		let utc = new Date().toJSON().slice(0,10);

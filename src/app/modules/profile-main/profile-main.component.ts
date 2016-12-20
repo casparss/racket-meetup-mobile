@@ -1,11 +1,7 @@
 import {Component, EventEmitter} from '@angular/core';
 import {NavParams} from 'ionic-angular';
-import {GamesCom} from '../games/games.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
-import {ProfileActionsCom} from './profile-actions.component'
-import {AvailabilityCom} from '../availability/availability.component';
-import {ProfileHeaderCom} from './profile-header.component';
 
 @Component({
 	template:
@@ -38,14 +34,7 @@ import {ProfileHeaderCom} from './profile-header.component';
 		</ion-content>
 
 	`,
-	selector:'profile-main',
-	directives: [
-		ProfileHeaderCom,
-		ProfileActionsCom,
-		GamesCom,
-		AvailabilityCom
-	],
-	providers: [ProfileMainSvc]
+	selector:'profile-main'
 })
 export class ProfileMainCom{
 
