@@ -8,7 +8,7 @@ import {SignupFormCom, LoginFormCom} from './';
 	template: `
 	<toast></toast>
 	<ion-content>
-		<ion-grid>			
+		<ion-grid>
 			<ion-icon class="logo" name="tennisball"></ion-icon>
 			<h1>Racket Meetup</h1>
 			<ion-row>
@@ -27,8 +27,7 @@ import {SignupFormCom, LoginFormCom} from './';
 	</ion-content>
 
 	`,
-	selector:"welcome",
-	directives:[SignupFormCom, LoginFormCom, ToastCom]
+	selector:"welcome"
 })
 export class WelcomeCom{
 	private isToggled: boolean = true;

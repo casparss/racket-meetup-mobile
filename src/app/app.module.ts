@@ -6,21 +6,22 @@ import { RacketMeetupApp } from './app.component';
 
 //Tabs imports
 import {TabsPageCom} from './tabs';
-import {CourtsTab} from './tabs-games.component';
-import {GamesTab} from './tabs-games.component';
-import {MessagesTab} from './tabs-messages.component';
-import {ProfileTab} from './tabs-profile.component';
-import {RankingsTab} from './tabs-rankings.component';
+import {CourtsTab} from './tabs/tab-courts.component';
+import {GamesTab} from './tabs/tab-games.component';
+import {MessagesTab} from './tabs/tab-messages.component';
+import {ProfileTab} from './tabs/tab-profile.component';
+import {RankingsTab} from './tabs/tab-rankings.component';
 
 //Module imports
-import {ProfileModule} from '../../modules/profile-main/profile.module';
-import {AvailabilityModule} from '../../modules/availability/availability.module';
+import {ProfileModule} from './modules/profile-main/profile.module';
+import {AvailabilityModule} from './modules/availability/availability.module';
+import {WelcomeModule} from './modules/welcome/welcome.module';
 
 //Sub component imports
-import {GamesCom} from '../../modules/games/games.component.ts';
-import {ToastCom} from '../toast/toast.component';
-import {RankingListCom} from '../../modules/rankings-list/rankings-list.component.ts';
-import {MessageListCom} from '../../modules/messages/message-list.component.ts';
+import {GamesCom} from './modules/games/games.component.ts';
+import {ToastCom} from './modules/toast/toast.component';
+import {RankingListCom} from './modules/rankings-list/rankings-list.component.ts';
+import {MessageListCom} from './modules/messages/message-list.component.ts';
 
 //Angular2 services
 import {FormsModule} from '@angular/forms';
@@ -56,7 +57,8 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets-service';
   imports: [
     IonicModule.forRoot(RacketMeetupApp),
     ProfileModule,
-    AvailabilityModule
+    AvailabilityModule,
+    WelcomeModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
