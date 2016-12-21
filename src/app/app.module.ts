@@ -32,7 +32,7 @@ import {ColObjDifferFactory} from './utils/differs/collection-object-diff.ts';
 import {UserSvc} from './modules/user-service/user.service';
 import {DecHttp} from './utils/http/';
 import {ToastSvc} from './modules/toast/toast.service';
-import {WsSvc} from './modules/web-sockets-service/web-sockets-service';
+import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +49,6 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets-service';
     RankingsTab,
 
     //Sub component imports
-    GamesCom,
     ToastCom,
     MessageListCom
 

@@ -7,4 +7,4 @@ import {WelcomeCom} from './welcome.component';
   declarations: [LoginFormCom, SignupFormCom, WelcomeCom],
   exports:[WelcomeCom]
 })
-export class WeclomeModule {}
+export class WelcomeModule {}

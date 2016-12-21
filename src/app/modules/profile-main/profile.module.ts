@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {ProfileActionsCom} from './profile-actions.component'
-import {AvailabilityCom} from '../availability/availability.component';
+import {AvailabilityModule} from '../availability/availability.module';
 import {GamesCom} from '../games/games.component';
 import {ProfileHeaderCom} from './profile-header.component';
 import {ProfileMainSvc} from './profile-main.service';
@@ -12,9 +12,9 @@ import {UserSvc} from '../user-service/user.service';
     ProfileHeaderCom,
     ProfileActionsCom,
     GamesCom,
-    AvailabilityCom,
     ProfileMainCom
   ],
+  imports: [AvailabilityModule],
   exports: [ProfileMainCom],
   providers: [ProfileMainSvc, UserSvc]
 })

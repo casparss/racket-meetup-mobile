@@ -1,0 +1,42 @@
+//Common SCSS to all platforms
+
+ion-content{
+	background:$quiet-grey;
+}
+
+ion-list-header{
+	background: $white;
+}
+
+//mixins
+
+@mixin flexVerticalCenter{
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin detailsBuckets{
+
+	ion-row{
+		@include flexVerticalCenter;
+	}
+
+	ion-col{
+		text-align:center;
+
+		dt, dd{
+			text-align:center;
+			margin:0;
+			font-weight: 100;
+		}
+
+		dd{
+			font-size: 2.5rem;
+			font-weight: bold;
+		}
+
+	}
+
+	@content;
+
+}
