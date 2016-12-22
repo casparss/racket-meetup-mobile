@@ -38,6 +38,7 @@ export class AvailabilityCom {
 	}
 
 	ngDoCheck(){
+    console.log("ngDoCheck");
 		this.svc.diff();
 	}
 

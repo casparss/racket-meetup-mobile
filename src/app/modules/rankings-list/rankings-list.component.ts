@@ -4,8 +4,7 @@ import {RankingsSvc} from './rankings.service';
 
 @Component({
 	templateUrl: './rankings-list.view.html',
-	selector:'rankings-list',
-	providers: [RankingsSvc]
+	selector:'rankings-list'
 })
 export class RankingsListCom{
 

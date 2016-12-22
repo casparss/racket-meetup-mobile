@@ -15,7 +15,6 @@ const pages: any = {
 
 @Component({
 	selector:'profile-actions',
-	providers: [ProfileMainSvc],
 	template:`
 		<ion-list [ngSwitch]="user.id === userSvc.current.id">
 

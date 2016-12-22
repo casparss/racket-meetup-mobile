@@ -10,23 +10,19 @@ import {UserSvc} from '../user-service/user.service';
 
 @NgModule({
   declarations: [
-    ProfileHeaderCom,
+    ProfileMainCom,
     ProfileActionsCom,
+    ProfileHeaderCom,
     GamesCom,
-    ProfileMainCom
   ],
   imports: [
-    AvailabilityModule,
-    IonicModule.forRoot(ProfileHeaderCom),
+    IonicModule.forRoot(ProfileMainCom),
     IonicModule.forRoot(ProfileActionsCom),
+    IonicModule.forRoot(ProfileHeaderCom),
     IonicModule.forRoot(GamesCom),
-    IonicModule.forRoot(ProfileMainCom)
+    AvailabilityModule
   ],
   exports: [
-    AvailabilityModule,
-    ProfileHeaderCom,
-    ProfileActionsCom,
-    GamesCom,
     ProfileMainCom
   ],
   providers: [ProfileMainSvc]
