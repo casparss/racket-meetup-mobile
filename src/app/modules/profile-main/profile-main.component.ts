@@ -20,19 +20,18 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 				[user]="user"
 			></profile-actions>
 
-			<main [ngSwitch]="user.id === userSvc.current.id">
+			<main [ngSwitch]="user?.id === userSvc?.current.id">
 
 				<availability
 					*ngSwitchCase="true"
-					[userId]="user.id"
+					[userId]="user?.id"
 				></availability>
 
-				<games [userId]="user.id"></games>
+				<games [userId]="user?.id"></games>
 
 			</main>
 
 		</ion-content>
-
 	`,
 	selector:'profile-main'
 })

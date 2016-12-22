@@ -17,7 +17,7 @@ const pages: any = {
 };
 
 @Component({
-	templateUrl: 'build/modules/profile-menu/profile-menu.view.html',
+	templateUrl: './profile-menu.view.html',
 	selector: 'profile-menu'
 })
 export class ProfileMenuCom{

@@ -3,7 +3,7 @@ import {ViewController} from 'ionic-angular';
 import {UserInt} from '../user-service/user.interface';
 
 @Component({
-	templateUrl: 'build/modules/challenge/challenge.view.html'
+	templateUrl: './challenge.view.html'
 })
 export class ChallengeCom{
 

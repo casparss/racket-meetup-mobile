@@ -4,7 +4,7 @@ import {AvailabilitySvc} from './availability.service';
 
 
 @Component({
-	templateUrl: 'build/modules/availability/availability.view.html',
+	templateUrl: './availability.view.html',
 	selector: 'availability'
 })
 export class AvailabilityCom {

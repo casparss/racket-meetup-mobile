@@ -3,7 +3,7 @@ import {GamesService} from './games.service';
 import {GameInt} from './games.interfaces';
 
 @Component({
-	templateUrl:'build/modules/games/games.view.html',
+	templateUrl:'./games.view.html',
 	selector: 'games',
 	providers: [GamesService]
 })

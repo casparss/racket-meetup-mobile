@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
-
-import { TabsPageCom } from './tabs';
+import { TabsController } from './tabs/tabs-controller.component';
+import { WelcomeCom } from './modules/welcome/welcome.component'
 
 
 @Component({
   template: `<ion-nav [root]="rootPage"></ion-nav>`
 })
 export class RacketMeetupApp {
-  rootPage = TabsPageCom;
+  rootPage = WelcomeCom;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {

@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 export class BaseService {
 
 	private _url: string;
-	protected baseUrl: string = (window['cordova'] ? "http://178.62.92.11:3000/" : "") + "api/";
+	protected baseUrl: string = "/api/";
 	public inFlightEvt = new EventEmitter();
 	public model:any;
 	public subjects: Object = {};

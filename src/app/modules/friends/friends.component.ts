@@ -6,7 +6,7 @@ import {debounce} from 'lodash';
 import {FriendsSvc} from './friends.service';
 
 @Component({
-	templateUrl:"build/modules/friends/friends.view.html",
+	templateUrl:"./friends.view.html",
 	providers: [FriendsSvc]
 })
 export class FriendsCom{
@@ -20,13 +20,13 @@ export class FriendsCom{
 	){}
 
 	ngOnInit(){
-		this.svc.getFriends();		
+		this.svc.getFriends();
 		this.segmentChanged();
 	}
 
 	searchUsers(ev){
 		switch(this.selectedSegment){
-			case "friends": 
+			case "friends":
 				this.svc.searchFriends(ev.target.value);
 			break;
 			case "search":

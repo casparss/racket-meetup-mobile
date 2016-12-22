@@ -3,11 +3,11 @@ import {PlayerRanking} from './rankings.interface';
 import {RankingsSvc} from './rankings.service';
 
 @Component({
-	templateUrl: 'build/modules/rankings-list/rankings-list.view.html',
+	templateUrl: './rankings-list.view.html',
 	selector:'rankings-list',
 	providers: [RankingsSvc]
 })
-export class RankingListCom{
+export class RankingsListCom{
 
 	private selectedSegment: string = 'top';
 	private rankingsList$: any;

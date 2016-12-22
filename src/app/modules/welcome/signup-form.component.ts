@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {TabsPageCom} from '../../tabs';
+import {TabsController} from '../../tabs/tabs-controller.component';
 import {UserSvc} from '../user-service/user.service';
 
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
@@ -74,7 +74,7 @@ export class SignupFormCom{
 	signup(user, isValid:boolean){
 		if(isValid){
 			this.svc.signup(user)
-				.subscribe(() => this.nav.push(TabsPageCom));
+				.subscribe(() => this.nav.push(TabsController));
 		}
 	}
 

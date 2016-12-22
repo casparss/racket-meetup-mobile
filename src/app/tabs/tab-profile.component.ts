@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
 
 @Component({
 	template:
@@ -16,5 +15,5 @@ import {NavController} from 'ionic-angular';
 	`
 })
 export class ProfileTab {
-	constructor(private navController: NavController) {}
+	constructor() {}
 };

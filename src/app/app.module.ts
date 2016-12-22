@@ -1,11 +1,11 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-angular';
 
 //App import
 import { RacketMeetupApp } from './app.component';
 
 //Tabs imports
-import {TabsPageCom} from './tabs';
+import {TabsController} from './tabs/tabs-controller.component';
 import {CourtsTab} from './tabs/tab-courts.component';
 import {GamesTab} from './tabs/tab-games.component';
 import {MessagesTab} from './tabs/tab-messages.component';
@@ -13,15 +13,21 @@ import {ProfileTab} from './tabs/tab-profile.component';
 import {RankingsTab} from './tabs/tab-rankings.component';
 
 //Module imports
+import {TabsModule} from './tabs/tabs.module';
+import {RankingsModule} from './modules/rankings-list/rankings.module';
 import {ProfileModule} from './modules/profile-main/profile.module';
 import {AvailabilityModule} from './modules/availability/availability.module';
 import {WelcomeModule} from './modules/welcome/welcome.module';
 
+//Welcome
+import {WelcomeCom} from './modules/welcome/welcome.component'
+
 //Sub component imports
-import {GamesCom} from './modules/games/games.component.ts';
 import {ToastCom} from './modules/toast/toast.component';
+import {GamesCom} from './modules/games/games.component.ts';
 import {RankingListCom} from './modules/rankings-list/rankings-list.component.ts';
 import {MessageListCom} from './modules/messages/message-list.component.ts';
+import {ProfileMainCom} from './modules/profile-main/profile-main.component';
 
 //Angular2 services
 import {FormsModule} from '@angular/forms';
@@ -41,7 +47,7 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
     RacketMeetupApp,
 
     //Tabs imports
-    TabsPageCom,
+    TabsController,
     CourtsTab,
     GamesTab,
     MessagesTab,
@@ -49,21 +55,31 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
     RankingsTab,
 
     //Sub component imports
-    ToastCom,
-    MessageListCom
+    MessageListCom,
+    ToastCom
 
   ],
   imports: [
-    IonicModule.forRoot(RacketMeetupApp),
     ProfileModule,
-    AvailabilityModule,
-    WelcomeModule
+    RankingsModule,
+    WelcomeModule,
+    IonicModule.forRoot(RacketMeetupApp)
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    RacketMeetupApp
+    RacketMeetupApp,
+    TabsController,
+    CourtsTab,
+    GamesTab,
+    MessagesTab,
+    ProfileTab,
+    RankingsTab,
+    WelcomeCom,
+    ToastCom
   ],
   providers: [
+    NavController,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FormsModule,
   	HttpModule,

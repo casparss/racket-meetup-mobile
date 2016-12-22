@@ -7,7 +7,6 @@ import {LoginFormCom} from './login-form.component';
 
 @Component({
 	template: `
-	<toast></toast>
 	<ion-content>
 		<ion-grid>
 			<ion-icon class="logo" name="tennisball"></ion-icon>

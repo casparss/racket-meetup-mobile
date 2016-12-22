@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {TabsPageCom} from '../../tabs';
+import {TabsController} from '../../tabs/tabs-controller.component';
 import {UserSvc} from '../user-service/user.service';
 
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
@@ -57,7 +57,7 @@ export class LoginFormCom{
 	login(user, isValid:boolean){
 		if(isValid){
 			this.svc.login(user)
-				.subscribe(() => this.nav.push(TabsPageCom));
+				.subscribe(() => this.nav.push(TabsController));
 		}
 	}
 

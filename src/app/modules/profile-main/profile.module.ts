@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import {IonicModule} from 'ionic-angular';
 import {ProfileActionsCom} from './profile-actions.component'
 import {AvailabilityModule} from '../availability/availability.module';
 import {GamesCom} from '../games/games.component';
@@ -14,8 +15,20 @@ import {UserSvc} from '../user-service/user.service';
     GamesCom,
     ProfileMainCom
   ],
-  imports: [AvailabilityModule],
-  exports: [ProfileMainCom],
-  providers: [ProfileMainSvc, UserSvc]
+  imports: [
+    AvailabilityModule,
+    IonicModule.forRoot(ProfileHeaderCom),
+    IonicModule.forRoot(ProfileActionsCom),
+    IonicModule.forRoot(GamesCom),
+    IonicModule.forRoot(ProfileMainCom)
+  ],
+  exports: [
+    AvailabilityModule,
+    ProfileHeaderCom,
+    ProfileActionsCom,
+    GamesCom,
+    ProfileMainCom
+  ],
+  providers: [ProfileMainSvc]
 })
 export class ProfileModule {}
