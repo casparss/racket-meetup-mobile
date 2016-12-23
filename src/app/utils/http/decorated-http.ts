@@ -9,7 +9,7 @@ import 'rxjs/add/operator/cache';
 import {Observable} from 'rxjs';
 
 @Injectable()
-export class DecHttp extends AuthHttp{	
+export class DecHttp extends AuthHttp{
 
 	onMessage = new EventEmitter();
 
@@ -34,7 +34,7 @@ export class DecHttp extends AuthHttp{
 		return this._put(url, data, optionsArg)
 			.do(this.checkMessage)
 			.map(this.extractData)
-			.cache();	
+			.cache();
 	}
 
 	delete(url:string, optionsArg:Object = {}) {
@@ -45,12 +45,12 @@ export class DecHttp extends AuthHttp{
 	}
 
 	private extractData(res) {
-		let body = res.json().data;
+		let body = res._body.length > 0 ? res.json().data : null;
     	return body || { };
 	}
 
 	private checkMessage = (res) => {
-		let message = res.json().message;
+		let message = res._body.length > 0 ? res.json().message : null;
 		if(message && message.length > 0){
 			this.onMessage.emit(message);
 		}
@@ -58,7 +58,7 @@ export class DecHttp extends AuthHttp{
 
  	private handleError = (error) => {
  		this.checkMessage(error);
-		return Observable.throw('An error occurred');		
+		return Observable.throw('An error occurred');
 	}
 
 }

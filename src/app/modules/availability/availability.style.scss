@@ -8,7 +8,7 @@
 		text-align:center;
 	}
 
-	td {		
+	td {
 		vertical-align:middle;
 	}
 
@@ -20,8 +20,8 @@
 		visibility: hidden;
 	}
 
-	ion-checkbox{
-		position:relative;
+	ion-checkbox button.item-cover{
+		position:relative!important;
 		margin:5px;
 	}
 
@@ -34,7 +34,7 @@
 	}
 
 	ion-item{
-		border-bottom: 1px solid #dedede;	
+		border-bottom: 1px solid #dedede;
 	}
-	
+
 }

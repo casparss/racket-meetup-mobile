@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {debounce} from 'lodash';
 import {AvailabilitySvc} from './availability.service';
 
@@ -11,39 +11,23 @@ export class AvailabilityCom {
 
 	@Input() userId: string;
 	private isInFlight: boolean = false;
-	public morning$: any;
-	public afternoon$: any;
-	public evening$: any;
+  private model: Object;
 
 	constructor(private svc: AvailabilitySvc) {
-
-		this.morning$ = svc.morning$;
-		this.afternoon$ = svc.afternoon$;
-		this.evening$ = svc.evening$;
-		this.setEvents();
-
-	}
+    this.model = this.svc.model;
+  }
 
 	ngOnInit(){
 		this.getAvailability();
 	}
 
 	getAvailability(){
-		return this.svc.get(this.userId);
+		this.svc.get(this.userId).subscribe(model => this.model = model);
 	}
 
-	setEvents(){
-		this.svc.inFlightEvt
-			.subscribe(isInFlight => this.debouncedSpinner(isInFlight));
-	}
 
-	ngDoCheck(){
-    console.log("ngDoCheck");
-		this.svc.diff();
-	}
-
-	debouncedSpinner = debounce(
-		isInFlight => this.isInFlight = isInFlight, 1500, { leading: true }
-	);
+  ngDoCheck(){
+    console.log(this.isInFlight);
+  }
 
 };

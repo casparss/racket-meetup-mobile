@@ -1,31 +1,32 @@
 import {DecHttp, HttpUtils} from '../http';
 import {EventEmitter} from '@angular/core';
 import {Subject} from 'rxjs';
+import {Observable} from 'rxjs';
+import '../custom-rx-operators/debounce-leading';
 
 export class BaseService {
 
 	private _url: string;
 	protected baseUrl: string = "/api/";
-	public inFlightEvt = new EventEmitter();
+  public inFlight$: Observable<boolean>;
 	public model:any;
 	public subjects: Object = {};
 
-	constructor(protected http: DecHttp){}
+	constructor(protected http: DecHttp){
+    this.inFlight$ = <Observable<boolean>>this.createObservable('inFlight')
+      .debounceLeading(1000);
+  }
 
 	_get(observableKey?:string, opts = {}, url?:string){
-
-		this.inFlightEvt.emit(true);
+    this.subjects['inFlight'].next(true);
 		let request = this.http.get(url || this.url, opts);
-		if(observableKey){
-			request.subscribe(data => {
-				if(this.subjects[observableKey]){
-					this.subjects[observableKey].next(data)
-				} else {
-					throw new Error("Subject key not found for observable.");
-				}
-				this.inFlightEvt.emit(false);
-			});
-		}
+		request.subscribe(data => {
+			if(observableKey && this.subjects[observableKey]){
+				this.subjects[observableKey].next(data);
+			}
+			this.subjects['inFlight'].next(false);
+		});
+
 		return request;
 
 	}
@@ -37,16 +38,16 @@ export class BaseService {
 	}
 
 	_sync(model: any, opts: Object = {}, url?:string){
-		this.inFlightEvt.emit(true);
+		this.subjects['inFlight'].next(true);
 		let request = this.http.post(url || this.url, model, opts);
-		request.subscribe(() => this.inFlightEvt.emit(false));
+		request.subscribe(() => this.subjects['inFlight'].next(false));
 		return request;
 	}
 
 	_update(model: any, opts: Object = {}, url?:string){
-		this.inFlightEvt.emit(true);
+		this.subjects['inFlight'].next(true);
 		let request = this.http.put(url || this.url, model, opts);
-		request.subscribe(() => this.inFlightEvt.emit(false));
+		request.subscribe(() => this.subjects['inFlight'].next(false));
 		return request;
 	}
 

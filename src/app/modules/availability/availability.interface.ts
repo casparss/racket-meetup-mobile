@@ -10,5 +10,5 @@ export interface AvailabilityModel {
 
 export interface Service{
 	model: AvailabilityModel,
-	inFlightEvt: any
+	inFlight$: any
 }

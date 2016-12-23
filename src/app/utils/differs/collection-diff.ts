@@ -44,11 +44,7 @@ export class CollectionDiff {
 
 	  		}));
 
-	  		if(isEmpty(changedMap)){
-	  			reject(new Error("No changes!"));
-	  		} else {
-	  			resolve(changedMap);
-	  		}
+        resolve(changedMap);
 
 		});
 
