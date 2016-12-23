@@ -20,6 +20,9 @@ import {RankingsModule} from './modules/rankings-list/rankings.module';
 import {ProfileModule} from './modules/profile-main/profile.module';
 import {AvailabilityModule} from './modules/availability/availability.module';
 import {WelcomeModule} from './modules/welcome/welcome.module';
+import {ChallengeModule} from './modules/challenge/challenge.module';
+
+
 
 //Welcome
 import {WelcomeCom} from './modules/welcome/welcome.component'
@@ -32,6 +35,7 @@ import {MessageListCom} from './modules/messages/message-list.component';
 import {ProfileMainCom} from './modules/profile-main/profile-main.component';
 import {MydetailsCom} from './modules/my-details/my-details.component';
 import {FriendsCom} from './modules/friends/friends.component';
+import {ChallengeCom} from './modules/challenge/challenge.component';
 
 
 //Angular2 services
@@ -70,6 +74,7 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
     WelcomeModule,
     MydetailsModule,
     FriendsModule,
+    ChallengeModule,
     IonicModule.forRoot(RacketMeetupApp)
   ],
   bootstrap: [IonicApp],
@@ -84,7 +89,8 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
     WelcomeCom,
     ToastCom,
     MydetailsCom,
-    FriendsCom
+    FriendsCom,
+    ChallengeCom
   ],
   providers: [
     NavController,

@@ -8,7 +8,7 @@ export class ProfileMainSvc extends BaseService{
 
 	public user: any;
 	url = "user";
-	addplayerUrl = "api/user/add";
+	addplayerUrl = "followers";
 
 	constructor(
 		protected nav: NavController,
@@ -21,7 +21,7 @@ export class ProfileMainSvc extends BaseService{
 		return this._getById('model', userId);
 	}
 
-	addPlayer(userId:string){		
+	addPlayer(userId:string){
 		return this._sync({
 			userId: userId
 		}, {}, this.addplayerUrl);
