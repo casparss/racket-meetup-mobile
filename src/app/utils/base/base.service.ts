@@ -19,7 +19,7 @@ export class BaseService {
 	_get(observableKey?:string, opts = {}, url?:string){
     this.subjects['inFlight'].next(true);
 		let request = this.http.get(this.setUrl(url), opts)
-      .do(() => this.subjects['inFlight'].next(false));
+      .do(data => this.subjects['inFlight'].next(false));
 
 		request.subscribe(data => {
 			if(observableKey && this.subjects[observableKey]){
@@ -37,17 +37,26 @@ export class BaseService {
 
 	_sync(model: any, opts: Object = {}, url?:string){
 		this.subjects['inFlight'].next(true);
-		return this.http.post(this.setUrl(url), model, opts)
-		  .do(() => this.subjects['inFlight'].next(false));
+		let req = this.http.post(this.setUrl(url), model, opts);
+    req.subscribe(data => this.subjects['inFlight'].next(false));
+    return req;
 	}
 
 	_update(model: any, opts: Object = {}, url?:string){
 		this.subjects['inFlight'].next(true);
-		return this.http.put(this.setUrl(url), model, opts)
-		  .do(() => this.subjects['inFlight'].next(false));
+		let req = this.http.put(this.setUrl(url), model, opts);
+    req.subscribe(data => this.subjects['inFlight'].next(false));
+    return req;
 	}
 
-	set url(url:string){
+	create$(modelName:string){
+		let newSubject = new Subject();
+		this.subjects[modelName] = newSubject;
+		let observable$ = newSubject.asObservable();
+		return observable$.do(model => this[modelName] = model);
+	}
+
+  set url(url:string){
 		this._url = url;
 	}
 
@@ -58,12 +67,5 @@ export class BaseService {
   setUrl(url: string){
     return url ? this.baseUrl + url : this.url;
   }
-
-	create$(modelName:string){
-		let newSubject = new Subject();
-		this.subjects[modelName] = newSubject;
-		let observable$ = newSubject.asObservable();
-		return observable$.do(model => this[modelName] = model);
-	}
 
 }
