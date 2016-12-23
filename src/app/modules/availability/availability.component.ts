@@ -25,9 +25,4 @@ export class AvailabilityCom {
 		this.svc.get(this.userId).subscribe(model => this.model = model);
 	}
 
-
-  ngDoCheck(){
-    console.log(this.isInFlight);
-  }
-
 };

@@ -13,7 +13,7 @@ export class MessagesSvc extends BaseService{
 
 	constructor(http:DecHttp, private userSvc: UserSvc){
 		super(http);
-		this._chats$ = this.createObservable('chats');
+		this._chats$ = this.create$('chats');
 	}
 
 	get chats$(){

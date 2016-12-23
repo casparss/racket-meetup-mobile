@@ -16,7 +16,7 @@ export class UserSvc extends BaseService{
 
 	constructor(http: DecHttp){
 		super(http);
-		this._user$ = this.createObservable("user");
+		this._user$ = this.create$("user");
 	}
 
 	login(user:UserLoginInt){

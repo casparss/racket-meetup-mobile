@@ -18,7 +18,7 @@ export class GamesService extends BaseService{
 		http: DecHttp
 	){
 		super(http);
-		this.games$ = this.createObservable('games');
+		this.games$ = this.create$('games');
 	}
 
 	get(id:string = ""){

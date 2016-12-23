@@ -13,7 +13,7 @@ export class BaseService {
 	public subjects: Object = {};
 
 	constructor(protected http: DecHttp){
-    this.inFlight$ = <Observable<boolean>>this.createObservable('inFlight')
+    this.inFlight$ = <Observable<boolean>>this.create$('inFlight')
       .debounceLeading(1000);
   }
 
@@ -59,7 +59,7 @@ export class BaseService {
 		return this.baseUrl + this._url;
 	}
 
-	createObservable(modelName:string){
+	create$(modelName:string){
 		let newSubject = new Subject();
 		this.subjects[modelName] = newSubject;
 		let observable$ = newSubject.asObservable();

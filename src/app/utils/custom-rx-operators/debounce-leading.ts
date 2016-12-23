@@ -21,15 +21,17 @@ Observable.prototype.debounceLeading = function(time: number){
       }, time, { leading: true }
     );
 
-    return this.subscribe(value => {
-       try {
-         debouce(value);
-       } catch(err) {
-         subscriber.error(err);
-       }
-     },
-     err => subscriber.error(err),
-     () => subscriber.complete());
+    return this.subscribe(
+      value => {
+        try {
+          debouce(value);
+        } catch(err) {
+          subscriber.error(err);
+        }
+      },
+      err => subscriber.error(err),
+      () => subscriber.complete()
+    );
 
   });
 

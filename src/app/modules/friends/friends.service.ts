@@ -14,8 +14,8 @@ export class FriendsSvc extends BaseService{
 
 	constructor(http:DecHttp){
 		super(http);
-		this.friends$ = this.createObservable('friends');
-		this.people$ = this.createObservable('people');
+		this.friends$ = this.create$('friends');
+		this.people$ = this.create$('people');
 	}
 
 	getFriends(){

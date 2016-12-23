@@ -14,7 +14,7 @@ export class ChatSvc extends BaseService{
 
 	constructor(http:DecHttp, private userSvc: UserSvc, private ws: WsSvc){
 		super(http);
-		this._chatMessages$ = this.createObservable('chatMessages');
+		this._chatMessages$ = this.create$('chatMessages');
 	}
 
 	getMessageHistory(){
