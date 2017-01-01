@@ -5,12 +5,12 @@ import {UserSvc} from '../user-service/user.service';
 //Components
 import {ProfileMainCom} from '../profile-main/profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
-import {FriendsCom} from '../friends/friends.component';
+import {FollowersCom} from '../followers/followers.component';
 
 const pages: any = {
 	profileMain: ProfileMainCom,
 	myDetails: MydetailsCom,
-	friends: FriendsCom,
+	followers: FollowersCom,
 
 	courts: ProfileMainCom,
 	settings: ProfileMainCom

@@ -15,14 +15,12 @@ import {RankingsTab} from './tabs/tab-rankings.component';
 //Module imports
 import {TabsModule} from './tabs/tabs.module';
 import {MydetailsModule} from './modules/my-details/my-details.module';
-import {FriendsModule} from './modules/friends/friends.module';
+import {FollowersModule} from './modules/followers/followers.module';
 import {RankingsModule} from './modules/rankings-list/rankings.module';
 import {ProfileModule} from './modules/profile-main/profile.module';
 import {AvailabilityModule} from './modules/availability/availability.module';
 import {WelcomeModule} from './modules/welcome/welcome.module';
 import {ChallengeModule} from './modules/challenge/challenge.module';
-
-
 
 //Welcome
 import {WelcomeCom} from './modules/welcome/welcome.component'
@@ -34,9 +32,8 @@ import {RankingsListCom} from './modules/rankings-list/rankings-list.component';
 import {MessageListCom} from './modules/messages/message-list.component';
 import {ProfileMainCom} from './modules/profile-main/profile-main.component';
 import {MydetailsCom} from './modules/my-details/my-details.component';
-import {FriendsCom} from './modules/friends/friends.component';
+import {FollowersCom} from './modules/followers/followers.component';
 import {ChallengeCom} from './modules/challenge/challenge.component';
-
 
 //Angular2 services
 import {FormsModule} from '@angular/forms';
@@ -73,7 +70,7 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
     RankingsModule,
     WelcomeModule,
     MydetailsModule,
-    FriendsModule,
+    FollowersModule,
     ChallengeModule,
     IonicModule.forRoot(RacketMeetupApp)
   ],
@@ -89,7 +86,7 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
     WelcomeCom,
     ToastCom,
     MydetailsCom,
-    FriendsCom,
+    FollowersCom,
     ChallengeCom
   ],
   providers: [

@@ -24,6 +24,9 @@ export interface UserInt{
 	stats: {
 		ranking: number,
 		matchesPlayed: number
-	}
+	},
+  followers: {
+    followingThem: Array<string>,
+    followingMe: Array<string>
+  }
 }
-

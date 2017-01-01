@@ -18,7 +18,7 @@ export class BaseService {
 
 	_get(observableKey?:string, opts = {}, url?:string){
     this.subjects['inFlight'].next(true);
-		let request = this.http.get(this.setUrl(url), opts)
+		let request = this.http.get(this.generateUrl(url), opts)
       .do(data => this.subjects['inFlight'].next(false));
 
 		request.subscribe(data => {
@@ -35,16 +35,25 @@ export class BaseService {
 		}, url);
 	}
 
+  //TODO: Repetion below, refactors
+
 	_sync(model: any, opts: Object = {}, url?:string){
 		this.subjects['inFlight'].next(true);
-		let req = this.http.post(this.setUrl(url), model, opts);
+		let req = this.http.post(this.generateUrl(url), model, opts);
     req.subscribe(data => this.subjects['inFlight'].next(false));
     return req;
 	}
 
 	_update(model: any, opts: Object = {}, url?:string){
 		this.subjects['inFlight'].next(true);
-		let req = this.http.put(this.setUrl(url), model, opts);
+		let req = this.http.put(this.generateUrl(url), model, opts);
+    req.subscribe(data => this.subjects['inFlight'].next(false));
+    return req;
+	}
+
+  _delete(model: any, opts: Object = {}, url?:string){
+		this.subjects['inFlight'].next(true);
+		let req = this.http.delete(this.generateUrl(url), opts);
     req.subscribe(data => this.subjects['inFlight'].next(false));
     return req;
 	}
@@ -61,10 +70,10 @@ export class BaseService {
 	}
 
 	get url(){
-		return this.baseUrl + this._url;
+		return this.generateUrl(this._url);
 	}
 
-  setUrl(url: string){
+  generateUrl(url: string){
     return url ? this.baseUrl + url : this.url;
   }
 

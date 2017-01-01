@@ -6,11 +6,11 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 
 import {ProfileMainCom} from '../profile-main/profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
-import {FriendsCom} from '../friends/friends.component';
+import {FollowersCom} from '../followers/followers.component';
 
 const pages: any = {
 	myDetails: MydetailsCom,
-	friends: FriendsCom
+	followers: FollowersCom
 };
 
 @Component({
@@ -32,15 +32,15 @@ const pages: any = {
 				Message player
 			</button>
 
-			<button *ngSwitchCase="false" ion-item (click)="addPlayer()" [ngSwitch]="isFriend">
+			<button *ngSwitchCase="false" ion-item (click)="toggleFollow()" [ngSwitch]="isFriend">
 				<ion-icon *ngSwitchCase="false" name="add" item-left></ion-icon>
 				<ion-icon *ngSwitchCase="true" name="remove" item-left></ion-icon>
 				{{isFriend ? "Remove" : "Add"}} player as friend
 			</button>
 
-			<button *ngSwitchCase="true" (click)="openPage('friends')" ion-item>
+			<button *ngSwitchCase="true" (click)="openPage('followers')" ion-item>
 				<ion-icon name="people" item-left></ion-icon>
-				Friends
+				Followers
 			</button>
 
 			<button *ngSwitchCase="true" (click)="openPage('myDetails')" ion-item>
@@ -61,31 +61,38 @@ export class ProfileActionsCom{
 		private profileSvc: ProfileMainSvc,
 		private modalController : ModalController,
 		private userSvc: UserSvc
-	){}
+	){
+     this.setIsFriend();
+  }
+
+  setIsFriend(){
+    if(this.user) this.isFriend = this.userSvc.doesFollow(this.user);
+  }
 
 	challengePlayer(){
-
 		let challengeModal = this.modalController.create(ChallengeCom, {
 			user: this.user
 		});
 
 		challengeModal.present(challengeModal);
-
 	}
 
 	messagePlayer(){
 		//Open message player modal
 	}
 
-	addPlayer(){
-
-		this.profileSvc.addPlayer(this.user.id)
-			.subscribe(data => this.isFriend = data.isFriend);
-
+	toggleFollow(){
+    //@TODO need to update followers collection on success
+    this.userSvc.toggleFollow(this.user.id)
+      .subscribe(data => this.isFriend = data.isFriend);
 	}
 
 	openPage(pageName: string): void{
 		this.nav.push(pages[pageName]);
 	}
+
+  ngOnChanges(){
+    this.setIsFriend();
+  }
 
 }
