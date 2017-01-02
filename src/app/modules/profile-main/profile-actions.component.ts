@@ -94,8 +94,7 @@ export class ProfileActionsCom{
 	}
 
 	toggleFollow(){
-    //@TODO need to update followers collection on success
-    this.userSvc.toggleFollow(this.user.id)
+    this.userSvc.toggleFollow(this.user._id)
       .subscribe(data => this.isFriend = data.isFriend);
 	}
 

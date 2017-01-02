@@ -13,24 +13,13 @@ export class FollowersCom{
 
 	private selectedSegment = "followers";
 	private followers: any;
-  private test: any;
 
 	constructor(private nav: NavController, private userSvc: UserSvc){
     this.followers = this.userSvc.followersFactory(null).get();
-    this.test = [{
-      details:{
-        firstName: "Cas",
-        lastName: "S-S"
-      }
-    }]
   }
 
 	openProfile(user){
 		this.nav.push(ProfileMainCom, {user: user});
 	}
-
-  ngOnChanges(){
-    console.log(arguments);
-  }
 
 }

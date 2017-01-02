@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {remove} from 'lodash';
 import {Subject, Observable} from 'rxjs';
 import {BaseService} from '../../utils/base/base.service';
 import {DecHttp, HttpUtils} from '../../utils/http';
@@ -60,9 +61,18 @@ export class UserSvc extends BaseService{
   }
 
   toggleFollow(userId:string){
-		return this._update({
+		let request = this._update({
 			userId: userId
 		}, {}, this.followersUrl);
+
+    request.subscribe(data => {
+      let followingThem = this._user.followers.followingThem;
+      data.isFriend ?
+        followingThem.push(userId):
+        remove(followingThem, userId);
+    });
+
+    return request;
 	}
 
   getFollowers(userId?: string){

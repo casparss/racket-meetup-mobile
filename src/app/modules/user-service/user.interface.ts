@@ -11,6 +11,7 @@ export interface UserSignupInt {
 }
 
 export interface UserInt{
+  _id:string,
 	id:string,
 	details:{
 		email: string,
