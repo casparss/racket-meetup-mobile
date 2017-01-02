@@ -70,16 +70,16 @@ export class UserSvc extends BaseService{
   }
 
   followersFactory(userId: string){
+    let followingSubject = new Subject();
     let followersSubject = new Subject();
-    let followedSubject = new Subject();
     let exports = {
+      following$: followingSubject.asObservable(),
       followers$: followersSubject.asObservable(),
-      followed$: followedSubject.asObservable(),
       get: () => {
         this.getFollowers(userId).subscribe(data =>{
           console.log(data);
+          followingSubject.next(data.followingThem);
           followersSubject.next(data.followingMe);
-          followedSubject.next(data.followingThem);
         });
         return exports;
       }
