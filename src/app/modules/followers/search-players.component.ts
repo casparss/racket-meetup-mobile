@@ -25,7 +25,7 @@ import {UserSvc} from '../user-service/user.service';
 
   	<ion-list>
   		<ion-item
-  			*ngFor="let user of userList$ | async"
+  			*ngFor="let user of userSvc.searchedPlayers$ | async"
   			(click)="openProfile(user)"
   		>
   			{{ user?.details.firstName + " " + user?.details.lastName }}
@@ -36,7 +36,7 @@ import {UserSvc} from '../user-service/user.service';
 
   `
 })
-export class FollowersCom{
+export class SearchPlayersCom{
 
 	private userList$: any;
 

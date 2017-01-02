@@ -4,13 +4,16 @@ import {ChallengeCom} from '../challenge/challenge.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
 
+import {SearchPlayersCom} from '../followers/search-players.component'
+
 import {ProfileMainCom} from '../profile-main/profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
 import {FollowersCom} from '../followers/followers.component';
 
 const pages: any = {
 	myDetails: MydetailsCom,
-	followers: FollowersCom
+	followers: FollowersCom,
+  searchPlayers: SearchPlayersCom
 };
 
 @Component({
@@ -41,6 +44,11 @@ const pages: any = {
 			<button *ngSwitchCase="true" (click)="openPage('followers')" ion-item>
 				<ion-icon name="people" item-left></ion-icon>
 				Followers
+			</button>
+
+      <button *ngSwitchCase="true" (click)="openPage('searchPlayers')" ion-item>
+				<ion-icon name="search" item-left></ion-icon>
+				Search
 			</button>
 
 			<button *ngSwitchCase="true" (click)="openPage('myDetails')" ion-item>
@@ -76,6 +84,10 @@ export class ProfileActionsCom{
 
 		challengeModal.present(challengeModal);
 	}
+
+  searchPlayers(){
+
+  }
 
 	messagePlayer(){
 		//Open message player modal

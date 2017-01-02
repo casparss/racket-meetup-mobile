@@ -12,6 +12,7 @@ export class UserSvc extends BaseService{
 
 	url = "user";
   followersUrl = "followers";
+  searchUrl = "user/search";
 	//@#Refactor:0 convert into behaviour subject observable!
 	private _user: any;
 	private _user$;
@@ -76,8 +77,7 @@ export class UserSvc extends BaseService{
       following$: followingSubject.asObservable(),
       followers$: followersSubject.asObservable(),
       get: () => {
-        this.getFollowers(userId).subscribe(data =>{
-          console.log(data);
+        this.getFollowers(userId).subscribe(data => {
           followingSubject.next(data.followingThem);
           followersSubject.next(data.followingMe);
         });
@@ -93,11 +93,11 @@ export class UserSvc extends BaseService{
 	}
 
   search(searchTerm:string){
-		return this._get('people', {
+		return this._get('searchedPlayers', {
 			search: HttpUtils.urlParams({
 				searchTerm: searchTerm
 			})
-		});
+		}, this.searchUrl);
 	}
 
 	get current(){
