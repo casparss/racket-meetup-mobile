@@ -19,16 +19,18 @@ export class ToastCom{
 		);
 		toastSvc.onMessage((messageObj:{message: string, duration?:number}) =>
 			this.showMessage(messageObj.message, messageObj.duration)
-		);	
+		);
 	}
 
 	showMessage(message:string, duration:number = 3000){
 
+    console.log(arguments);
+
 		let notification = this.toastController.create({
 			message: message,
-			duration: duration	
-		});	
-		
+			duration: duration
+		});
+
 		notification.present(notification);
 
 	}

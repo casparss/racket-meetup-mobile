@@ -4,9 +4,8 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 import { TabsController } from './tabs/tabs-controller.component';
 import { WelcomeCom } from './modules/welcome/welcome.component'
 
-
 @Component({
-  template: `<ion-nav [root]="rootPage"></ion-nav>`
+  template: `<ion-nav [root]="rootPage"></ion-nav><toast></toast>`
 })
 export class RacketMeetupApp {
   rootPage = WelcomeCom;

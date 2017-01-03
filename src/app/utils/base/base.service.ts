@@ -6,7 +6,7 @@ import '../custom-rx-operators/debounce-leading';
 export class BaseService {
 
 	private _url: string;
-	protected baseUrl: string = "/api/";
+	protected baseUrl: string = window['cordova'] ? "http://188.166.159.118:3000/api/" : "/api/";
   public inFlight$: Observable<boolean>;
 	public model:any;
 	public subjects: Object = {};
