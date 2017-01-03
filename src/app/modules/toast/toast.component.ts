@@ -24,8 +24,6 @@ export class ToastCom{
 
 	showMessage(message:string, duration:number = 3000){
 
-    console.log(arguments);
-
 		let notification = this.toastController.create({
 			message: message,
 			duration: duration
