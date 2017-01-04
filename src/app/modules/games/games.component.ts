@@ -1,18 +1,17 @@
 import {Component, Input} from '@angular/core';
-import {GamesService} from './games.service';
+import {GamesSvc} from './games.service';
 import {GameInt} from './games.interfaces';
 
 @Component({
 	templateUrl:'./games.view.html',
-	selector: 'games',
-	providers: [GamesService]
+	selector: 'games'
 })
 export class GamesCom {
 
 	@Input() userId: string;
 	private games$: any;
 
-	constructor(private svc: GamesService){
+	constructor(private svc: GamesSvc){
 		this.games$ = this.svc.games$;
 	}
 

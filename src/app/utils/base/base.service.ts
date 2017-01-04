@@ -16,9 +16,9 @@ export class BaseService {
       .debounceLeading(1000);
   }
 
-	_get(observableKey?:string, opts = {}, url?:string){
+	_get(observableKey?:string, opts = {}, url?:string, params?:string){
     this.subjects['inFlight'].next(true);
-		let request = this.http.get(this.generateUrl(url), opts)
+		let request = this.http.get(this.generateUrl(url, params), opts)
       .do(data => this.subjects['inFlight'].next(false));
 
 		request.subscribe(data => {
@@ -35,25 +35,25 @@ export class BaseService {
 		}, url);
 	}
 
-  //TODO: Repetion below, refactors
+  //TODO: Repetion below, refactor
 
-	_sync(model: any, opts: Object = {}, url?:string){
+	_sync(model: any, opts: Object = {}, url?:string, params?:string){
 		this.subjects['inFlight'].next(true);
-		let req = this.http.post(this.generateUrl(url), model, opts);
+		let req = this.http.post(this.generateUrl(url, params), model, opts);
     req.subscribe(data => this.subjects['inFlight'].next(false));
     return req;
 	}
 
-	_update(model: any, opts: Object = {}, url?:string){
+	_update(model: any, opts: Object = {}, url?:string, params?:string){
 		this.subjects['inFlight'].next(true);
-		let req = this.http.put(this.generateUrl(url), model, opts);
+		let req = this.http.put(this.generateUrl(url, params), model, opts);
     req.subscribe(data => this.subjects['inFlight'].next(false));
     return req;
 	}
 
-  _delete(model: any, opts: Object = {}, url?:string){
+  _delete(model: any, opts: Object = {}, url?:string, params?:string){
 		this.subjects['inFlight'].next(true);
-		let req = this.http.delete(this.generateUrl(url), opts);
+		let req = this.http.delete(this.generateUrl(url, params), opts);
     req.subscribe(data => this.subjects['inFlight'].next(false));
     return req;
 	}
@@ -65,6 +65,8 @@ export class BaseService {
 		return observable$.do(model => this[modelName] = model);
 	}
 
+  //URL stuff
+
   set url(url:string){
 		this._url = url;
 	}
@@ -73,8 +75,15 @@ export class BaseService {
 		return this.generateUrl(this._url);
 	}
 
-  generateUrl(url: string){
-    return url ? this.baseUrl + url : this.url;
+  generateUrl(url: string, params:string = ""){
+    return (url ? this.baseUrl + url : this.url) + params;
+  }
+
+  //This is a bit crap, but wasn't sure how to cast all args to string
+  params(a1:string,a2?:string,a3?:string,a4?:string,a5?:string,a6?:string){
+    let segments:string = "";
+    return [].slice.call(arguments)
+      .forEach((seg:string) => segments+= "/" + seg);
   }
 
 }

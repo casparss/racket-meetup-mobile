@@ -8,11 +8,11 @@
 
 	<div class="ios-padding">
 		<ion-segment [(ngModel)]="selectedSegment">
+      <ion-segment-button value="following">
+				Following ({{(followers.following$ | async)?.length}})
+			</ion-segment-button>
 			<ion-segment-button value="followers">
 				Followers ({{(followers.followers$ | async)?.length}})
-			</ion-segment-button>
-			<ion-segment-button value="following">
-				Following ({{(followers.following$ | async)?.length}})
 			</ion-segment-button>
 		</ion-segment>
 	</div>

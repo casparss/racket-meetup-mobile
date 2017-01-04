@@ -11,7 +11,7 @@ import {UserSvc} from '../user-service/user.service';
 })
 export class FollowersCom{
 
-	private selectedSegment = "followers";
+	private selectedSegment = "following";
 	private followers: any;
 
 	constructor(private nav: NavController, private userSvc: UserSvc){

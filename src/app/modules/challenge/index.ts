@@ -1,1 +1,0 @@
-export {ChallengeCom} from './challenge.component';

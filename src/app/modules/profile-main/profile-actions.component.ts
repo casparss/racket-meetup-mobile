@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NavController, ModalController} from 'ionic-angular';
-import {ChallengeCom} from '../challenge/challenge.component';
+import {ChallengeCom} from '../games/challenge.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
 
@@ -48,7 +48,7 @@ const pages: any = {
 
       <button *ngSwitchCase="true" (click)="openPage('searchPlayers')" ion-item>
 				<ion-icon name="search" item-left></ion-icon>
-				Search
+				Search players
 			</button>
 
 			<button *ngSwitchCase="true" (click)="openPage('myDetails')" ion-item>

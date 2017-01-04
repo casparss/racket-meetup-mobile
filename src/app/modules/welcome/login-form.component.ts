@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {TabsController} from '../../tabs/tabs-controller.component';
 import {UserSvc} from '../user-service/user.service';
-
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
@@ -31,7 +30,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 		</ion-item>
 
 		<ion-item>
-			<button block large>Login</button>
+			<button ion-button block large>Login</button>
 		</ion-item>
 	</form>
 
