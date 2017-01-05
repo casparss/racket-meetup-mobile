@@ -24,10 +24,10 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 
 				<availability
 					*ngSwitchCase="true"
-					[userId]="user?.id"
+					[user]="user"
 				></availability>
 
-				<games [userId]="user?.id"></games>
+				<games [user]="user"></games>
 
 			</main>
 

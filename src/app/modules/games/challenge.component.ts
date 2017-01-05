@@ -31,11 +31,10 @@ export class ChallengeCom{
 	}
 
 	challenge(challengeDetails, isValid:boolean){
-
     if(isValid){
-      this.gamesSvc.challenge(challengeDetails, this.challengee);
+      this.gamesSvc.challenge(challengeDetails, this.challengee)
+        .subscribe(() => this.viewCtrl.dismiss());
     }
-
   }
 
 }

@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {UserInt} from '../user-service/user.interface';
 import {GamesSvc} from './games.service';
 import {GameInt} from './games.interfaces';
 
@@ -8,7 +9,7 @@ import {GameInt} from './games.interfaces';
 })
 export class GamesCom {
 
-	@Input() userId: string;
+	@Input() user: UserInt;
 	private games$: any;
 
 	constructor(private svc: GamesSvc){
@@ -16,7 +17,7 @@ export class GamesCom {
 	}
 
 	ngOnInit(){
-		this.svc.get(this.userId);
+		this.svc.get(this.user._id);
 	}
 
 }

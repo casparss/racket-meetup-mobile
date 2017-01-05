@@ -11,7 +11,6 @@ import {GameInt} from './games.interfaces';
 export class GamesSvc extends BaseService{
 
 	url = "games";
-
 	public games$: any;
 
 	constructor(
@@ -29,7 +28,7 @@ export class GamesSvc extends BaseService{
 	}
 
   challenge(challengeDetails: Object, challengee: UserInt){
-    this._sync(challengeDetails, {}, null, this.params(challengee._id));
+    return this._sync(challengeDetails, {}, null, this.params(challengee._id));
   }
 
 }

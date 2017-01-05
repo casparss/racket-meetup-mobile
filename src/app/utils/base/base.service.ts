@@ -6,7 +6,7 @@ import '../custom-rx-operators/debounce-leading';
 export class BaseService {
 
 	private _url: string;
-	protected baseUrl: string = window['cordova'] ? "http://188.166.159.118:3000/api/" : "/api/";
+	protected baseUrl: string = window['cordova']  ? "http://188.166.159.118:3000/api/" : "/api/";
   public inFlight$: Observable<boolean>;
 	public model:any;
 	public subjects: Object = {};
@@ -82,8 +82,9 @@ export class BaseService {
   //This is a bit crap, but wasn't sure how to cast all args to string
   params(a1:string,a2?:string,a3?:string,a4?:string,a5?:string,a6?:string){
     let segments:string = "";
-    return [].slice.call(arguments)
+    [].slice.call(arguments)
       .forEach((seg:string) => segments+= "/" + seg);
+    return segments;
   }
 
 }

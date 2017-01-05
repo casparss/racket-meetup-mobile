@@ -18,7 +18,7 @@ import {LoginFormCom} from './login-form.component';
 			</ion-row>
 
 			<h6>
-				<button (click)="toggle()">
+				<button ion-button (click)="toggle()">
 					Switch to {{isToggled ? 'signup' : login}}
 				</button>
 			</h6>

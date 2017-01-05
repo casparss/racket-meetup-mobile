@@ -1,4 +1,5 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import {UserInt} from '../user-service/user.interface';
 import {debounce} from 'lodash';
 import {AvailabilitySvc} from './availability.service';
 
@@ -9,7 +10,7 @@ import {AvailabilitySvc} from './availability.service';
 })
 export class AvailabilityCom {
 
-	@Input() userId: string;
+	@Input() user: UserInt;
 	private isInFlight: boolean = false;
   private model: Object;
 
@@ -22,7 +23,7 @@ export class AvailabilityCom {
 	}
 
 	getAvailability(){
-		this.svc.get(this.userId).subscribe(model => this.model = model);
+		this.svc.get(this.user._id).subscribe(model => this.model = model);
 	}
 
 };
