@@ -4,7 +4,7 @@ import {ChatSvc} from './chat.service';
 import {FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
-	templateUrl: './messages/chat.view.html',
+	templateUrl: './chat.view.html',
 	providers: [ChatSvc]
 })
 export class ChatCom{

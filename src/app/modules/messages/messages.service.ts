@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {reject, forEach} from 'lodash';
+import {reject} from 'lodash';
 import {BaseService} from '../../utils/base/base.service';
-import {DecHttp} from '../../utils/http';
+import {DecHttp, HttpUtils} from '../../utils/http';
 import {UserSvc} from '../user-service/user.service';
 
 
@@ -31,5 +31,13 @@ export class MessagesSvc extends BaseService{
 	getChats(){
 		return this._get('chats');
 	}
+
+  getChat(patricipants:[string]){
+    return this._get(null, {
+      search: HttpUtils.urlParams({
+        userIds: patricipants.join(',')
+      })
+    }, "chat");
+  }
 
 }

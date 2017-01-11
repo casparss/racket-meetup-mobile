@@ -30,6 +30,7 @@ import {ToastCom} from './modules/toast/toast.component';
 import {GamesCom} from './modules/games/games.component';
 import {RankingsListCom} from './modules/rankings-list/rankings-list.component';
 import {MessageListCom} from './modules/messages/message-list.component';
+import {ChatCom} from './modules/messages/chat.component';
 import {ProfileMainCom} from './modules/profile-main/profile-main.component';
 import {MydetailsCom} from './modules/my-details/my-details.component';
 import {FollowersCom} from './modules/followers/followers.component';
@@ -45,6 +46,7 @@ import {UserSvc} from './modules/user-service/user.service';
 import {DecHttp} from './utils/http/';
 import {ToastSvc} from './modules/toast/toast.service';
 import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
+import {MessagesSvc} from './modules/messages/messages.service';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,9 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
 
     //Sub component imports
     MessageListCom,
-    ToastCom
+    ToastCom,
+
+    ChatCom
 
   ],
   imports: [
@@ -88,7 +92,8 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
     MydetailsCom,
     FollowersCom,
     ChallengeCom,
-    GamesCom
+    GamesCom,
+    ChatCom
   ],
   providers: [
     NavController,
@@ -100,7 +105,8 @@ import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
   	DecHttp,
   	UserSvc,
   	WsSvc,
-  	ColObjDifferFactory
+  	ColObjDifferFactory,
+    MessagesSvc
   ]
 })
 export class AppModule {}

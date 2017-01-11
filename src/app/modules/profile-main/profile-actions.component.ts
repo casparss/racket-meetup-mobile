@@ -3,12 +3,14 @@ import {NavController, ModalController} from 'ionic-angular';
 import {ChallengeCom} from '../games/challenge.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
+import {MessagesSvc} from '../messages/messages.service';
 
 import {SearchPlayersCom} from '../followers/search-players.component'
 
 import {ProfileMainCom} from '../profile-main/profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
 import {FollowersCom} from '../followers/followers.component';
+import {ChatCom} from '../messages/chat.component';
 
 const pages: any = {
 	myDetails: MydetailsCom,
@@ -68,7 +70,8 @@ export class ProfileActionsCom{
 		private nav: NavController,
 		private profileSvc: ProfileMainSvc,
 		private modalController : ModalController,
-		private userSvc: UserSvc
+		private userSvc: UserSvc,
+    private messagesSvc: MessagesSvc
 	){
      this.setIsFriend();
   }
@@ -90,7 +93,12 @@ export class ProfileActionsCom{
   }
 
 	messagePlayer(){
-		//Open message player modal
+		this.messagesSvc.getChat([this.user._id])
+      .subscribe(chat => {
+        this.nav.push(ChatCom, {
+    			id: chat._id
+    		});
+      });
 	}
 
 	toggleFollow(){
