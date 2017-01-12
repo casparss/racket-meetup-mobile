@@ -46,7 +46,7 @@ import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 		</ion-item>
 
 		<ion-item>
-			<button block large>Signup</button>
+			<button ion-button block medium>Signup</button>
 		</ion-item>
 	</form>
 

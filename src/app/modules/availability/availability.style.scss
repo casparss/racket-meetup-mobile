@@ -12,6 +12,10 @@
 		vertical-align:middle;
 	}
 
+  .day-period-title{
+    line-height: 40px;
+  }
+
 	label{
 		display:block;
 	}
@@ -20,13 +24,23 @@
 		visibility: hidden;
 	}
 
+  ion-checkbox{
+    margin:0!important;
+    position:relative!important;
+  }
+
 	ion-checkbox button.item-cover{
 		position:relative!important;
 		margin:5px;
 	}
 
 	.checkbox-icon{
-		margin:auto;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
 	}
 
 	.item-inner{

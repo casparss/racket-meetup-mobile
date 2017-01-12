@@ -30,7 +30,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 		</ion-item>
 
 		<ion-item>
-			<button ion-button block large>Login</button>
+			<button ion-button block medium>Login</button>
 		</ion-item>
 	</form>
 

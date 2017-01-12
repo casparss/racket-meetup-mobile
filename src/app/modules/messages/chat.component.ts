@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {NavParams} from 'ionic-angular';
 import {ChatSvc} from './chat.service';
-import {FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
 	templateUrl: './chat.view.html',
@@ -33,7 +33,7 @@ export class ChatCom{
 	}
 
 	clearInput(){
-		// clear messageInput field
+    this.sendMessageForm.patchValue({messageInput: ""});
 	}
 
 	ngOnDestroy(){
