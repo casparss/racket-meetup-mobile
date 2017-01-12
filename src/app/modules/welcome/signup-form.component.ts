@@ -14,22 +14,21 @@ import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 	>
 		<ion-item>
 
-			<ion-label floating>
+			<ion-label>
 				First name:
 			</ion-label>
 			<ion-input formControlName="firstName" type="text"></ion-input>
 		</ion-item>
 
 		<ion-item>
-			<ion-label floating>
+			<ion-label>
 				Last name:
 			</ion-label>
 			<ion-input formControlName="lastName" type="text"></ion-input>
 		</ion-item>
 
 		<ion-item>
-			<ion-icon name="heart"></ion-icon>
-			<ion-label floating>
+			<ion-label>
 				<ion-icon name="mail"></ion-icon>
 				Email:
 			</ion-label>
@@ -37,8 +36,7 @@ import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 		</ion-item>
 
 		<ion-item>
-
-			<ion-label floating>
+			<ion-label>
 				<ion-icon name="key"></ion-icon>
 				Password
 			</ion-label>

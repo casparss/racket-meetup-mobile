@@ -12,8 +12,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 		novalidate
 	>
 		<ion-item>
-			<ion-icon name="heart"></ion-icon>
-			<ion-label floating>
+			<ion-label>
 				<ion-icon name="mail"></ion-icon>
 				Email:
 			</ion-label>
@@ -22,7 +21,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 		<ion-item>
 
-			<ion-label floating>
+			<ion-label>
 				<ion-icon name="key"></ion-icon>
 				Password
 			</ion-label>
