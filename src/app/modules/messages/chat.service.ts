@@ -27,7 +27,7 @@ export class ChatSvc extends BaseService{
 	}
 
 	updateMessageHistory(messageHistory){
-		this.currentChat = messageHistory;
+		this.currentChat = messageHistory || [];
 		this.updateChat();
 	}
 
