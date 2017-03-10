@@ -13,7 +13,6 @@ import {ProfileTab} from './tabs/tab-profile.component';
 import {RankingsTab} from './tabs/tab-rankings.component';
 
 //Module imports
-import {TabsModule} from './tabs/tabs.module';
 import {MydetailsModule} from './modules/my-details/my-details.module';
 import {FollowersModule} from './modules/followers/followers.module';
 import {RankingsModule} from './modules/rankings-list/rankings.module';
