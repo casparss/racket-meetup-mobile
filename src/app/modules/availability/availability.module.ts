@@ -5,7 +5,7 @@ import {AvailabilitySvc} from './availability.service';
 
 @NgModule({
   declarations: [AvailabilityCom],
-  imports: [IonicModule.forRoot(AvailabilityCom)],
+  imports: [IonicModule],
   exports:[AvailabilityCom],
   providers: [AvailabilitySvc]
 })

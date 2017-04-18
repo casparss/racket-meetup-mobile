@@ -6,10 +6,7 @@ import {GamesSvc} from './games.service';
 
 @NgModule({
   declarations: [ChallengeCom, GamesCom],
-  imports: [
-    IonicModule.forRoot(ChallengeCom),
-    IonicModule.forRoot(GamesCom)
-  ],
+  imports: [IonicModule],
   exports:[ChallengeCom, GamesCom],
   providers: [GamesSvc]
 })

@@ -6,10 +6,7 @@ import {SearchPlayersCom} from '../followers/search-players.component'
 
 @NgModule({
   declarations: [FollowersCom, SearchPlayersCom],
-  imports: [
-    IonicModule.forRoot(FollowersCom),
-    IonicModule.forRoot(SearchPlayersCom)
-  ],
+  imports: [IonicModule],
   exports:[FollowersCom, SearchPlayersCom]
 })
 export class FollowersModule {}

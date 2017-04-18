@@ -23,9 +23,7 @@ import {SearchPlayersCom} from '../followers/search-players.component';
     SearchPlayersCom
   ],
   imports: [
-    IonicModule.forRoot(ProfileMainCom),
-    IonicModule.forRoot(ProfileActionsCom),
-    IonicModule.forRoot(ProfileHeaderCom),
+    IonicModule,
     AvailabilityModule,
     GamesModule
   ],
