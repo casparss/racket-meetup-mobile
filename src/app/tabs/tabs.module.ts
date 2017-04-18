@@ -18,12 +18,18 @@ import {MessagesModule} from '../modules/messages';
 @NgModule({
   declarations: [
     CourtsTab,
-    CourtsTab,
     GamesTab,
     MessagesTab,
     ProfileTab,
     RankingsTab,
     TabsController
+  ],
+  entryComponents: [
+    CourtsTab,
+    GamesTab,
+    MessagesTab,
+    ProfileTab,
+    RankingsTab,
   ],
   imports: [
     IonicModule,
