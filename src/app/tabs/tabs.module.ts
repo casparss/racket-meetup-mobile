@@ -9,12 +9,10 @@ import {ProfileTab} from './tab-profile.component';
 import {RankingsTab} from './tab-rankings.component';
 import {TabsController} from './tabs-controller.component';
 
-//@TODO: Messages Needs to be turned into module and imported here
-import {MessageListCom} from '../modules/messages/message-list.component';
-
 //Imports
 import {ProfileModule} from '../modules/profile-main';
 import {RankingsModule} from '../modules/rankings-list';
+import {MessagesModule} from '../modules/messages';
 
 
 @NgModule({
@@ -25,14 +23,13 @@ import {RankingsModule} from '../modules/rankings-list';
     MessagesTab,
     ProfileTab,
     RankingsTab,
-    TabsController,
-
-    MessageListCom
+    TabsController
   ],
   imports: [
     IonicModule,
     ProfileModule,
-    RankingsModule
+    RankingsModule,
+    MessagesModule
   ],
   exports: [TabsController]
 })
