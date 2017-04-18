@@ -7,8 +7,7 @@ import {ChatCom} from './chat.component';
 
 @Component({
 	templateUrl: './message-list.view.html',
-	selector:'message-list',
-	providers:[MessagesSvc]
+	selector:'message-list'
 })
 export class MessageListCom{
 

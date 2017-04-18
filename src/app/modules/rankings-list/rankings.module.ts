@@ -5,7 +5,7 @@ import {RankingsSvc} from './rankings.service';
 
 @NgModule({
   declarations: [RankingsListCom],
-  imports: [IonicModule.forRoot(RankingsListCom)],
+  imports: [IonicModule],
   exports:[RankingsListCom],
   providers: [RankingsSvc]
 })

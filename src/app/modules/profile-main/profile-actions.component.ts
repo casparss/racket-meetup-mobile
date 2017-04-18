@@ -1,15 +1,14 @@
 import {Component, Input} from '@angular/core';
 import {NavController, ModalController} from 'ionic-angular';
+
 import {ChallengeCom} from '../games/challenge.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
 import {MessagesSvc} from '../messages/messages.service';
-
-import {SearchPlayersCom} from '../followers/search-players.component'
-
 import {ProfileMainCom} from '../profile-main/profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
 import {FollowersCom} from '../followers/followers.component';
+import {SearchPlayersCom} from '../followers/search-players.component';
 import {ChatCom} from '../messages/chat.component';
 
 const pages: any = {

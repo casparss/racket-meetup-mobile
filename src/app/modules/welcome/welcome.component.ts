@@ -1,8 +1,5 @@
 import {Component} from '@angular/core';
 import {Toast} from 'ionic-angular';
-import {SignupFormCom} from './signup-form.component';
-import {LoginFormCom} from './login-form.component';
-
 
 @Component({
 	template: `

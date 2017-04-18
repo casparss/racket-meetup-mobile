@@ -4,7 +4,7 @@ import {MydetailsCom} from './my-details.component';
 
 @NgModule({
   declarations: [MydetailsCom],
-  imports: [IonicModule.forRoot(MydetailsCom)],
+  imports: [IonicModule],
   exports:[MydetailsCom]
 })
 export class MydetailsModule {}
