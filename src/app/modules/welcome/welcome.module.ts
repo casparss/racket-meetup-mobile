@@ -6,11 +6,7 @@ import {WelcomeCom} from './welcome.component';
 
 @NgModule({
   declarations: [LoginFormCom, SignupFormCom, WelcomeCom],
-  imports: [
-    IonicModule.forRoot(LoginFormCom),
-    IonicModule.forRoot(SignupFormCom),
-    IonicModule.forRoot(WelcomeCom)
-  ],
+  imports: [IonicModule],
   exports:[WelcomeCom]
 })
 export class WelcomeModule {}

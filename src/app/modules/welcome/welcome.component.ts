@@ -1,8 +1,5 @@
 import {Component} from '@angular/core';
 import {Toast} from 'ionic-angular';
-import {SignupFormCom} from './signup-form.component';
-import {LoginFormCom} from './login-form.component';
-
 
 @Component({
 	template: `
@@ -32,6 +29,7 @@ import {LoginFormCom} from './login-form.component';
 export class WelcomeCom{
 	private isToggled: boolean = true;
 	toggle(){
+		console.log("Toggle click!")
 		this.isToggled = !this.isToggled;
 	}
 }
