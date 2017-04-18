@@ -29,7 +29,6 @@ import {Toast} from 'ionic-angular';
 export class WelcomeCom{
 	private isToggled: boolean = true;
 	toggle(){
-		console.log("Toggle click!")
 		this.isToggled = !this.isToggled;
 	}
 }
