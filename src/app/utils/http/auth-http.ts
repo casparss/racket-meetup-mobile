@@ -10,22 +10,22 @@ export class AuthHttp {
 
 	protected _get(url:string, optionsArg?:Object) {
 		this.appendAuthHeader(optionsArg);
-		return this.http.get(url, optionsArg);
+		return this.http.get(url, optionsArg).share();
 	}
 
 	protected _post(url:string, data:any, optionsArg?:Object) {
 		this.appendAuthHeader(optionsArg);
-		return this.http.post(url, data, optionsArg);
+		return this.http.post(url, data, optionsArg).share();
 	}
 
 	protected _put(url:string, data:any, optionsArg?:Object) {
 		this.appendAuthHeader(optionsArg)
-		return this.http.put(url, data, optionsArg);
+		return this.http.put(url, data, optionsArg).share();
 	}
 
 	protected _delete(url:string, optionsArg?:Object) {
 		this.appendAuthHeader(optionsArg);
-		return this.http.delete(url, optionsArg);
+		return this.http.delete(url, optionsArg).share();
 	}
 
 	private appendAuthHeader(optionsArg: any) {
