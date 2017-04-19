@@ -8,7 +8,7 @@
 				<img src="{{chat.img}}">
 			</ion-avatar>
 			<h2>{{chat.otherUser.details.fullName}}</h2>
-			<p>{{chat.preview[0].message}}</p>
+			<p>{{(chat.preview[0] || {}).message}}</p>
 		</ion-item>
 		<ion-item-options>
 			<button primary>
