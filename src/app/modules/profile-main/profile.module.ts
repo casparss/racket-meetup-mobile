@@ -13,7 +13,9 @@ import {ProfileMainCom} from './profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
 import {FollowersCom} from '../followers/followers.component';
 import {SearchPlayersCom} from '../followers/search-players.component';
+import {ChallengeCom} from '../games/challenge.component';
 import {UserSvc} from '../user-service/user.service';
+
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {UserSvc} from '../user-service/user.service';
     FollowersCom,
     SearchPlayersCom,
     ProfileMainCom,
-    ChatCom
+    ChatCom,
+    ChallengeCom
   ],
   exports: [
     ProfileMainCom
