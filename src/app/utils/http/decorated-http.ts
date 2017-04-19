@@ -40,12 +40,12 @@ export class DecHttp extends AuthHttp{
 	}
 
 	private extractData(res) {
-		let body = res._body.length > 0 ? res.json().data : null;
+		let body = (res._body || []).length > 0 ? res.json().data : null;
     	return body || { };
 	}
 
 	private checkMessage = (res) => {
-		let message = res._body.length > 0 ? res.json().message : null;
+		let message = (res._body || []).length > 0 ? res.json().message : null;
 		if(message && message.length > 0){
 			this.onMessage.emit(message);
 		}
