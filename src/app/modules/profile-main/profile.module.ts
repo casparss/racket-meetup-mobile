@@ -1,17 +1,21 @@
 import {NgModule} from '@angular/core';
 import {IonicModule} from 'ionic-angular';
 
-import {ProfileActionsCom} from './profile-actions.component'
 import {AvailabilityModule} from '../availability/availability.module';
+import {GamesModule} from '../games/games.module';
+import {MessagesModule} from '../messages';
+
+import {ChatCom} from '../messages/chat.component';
+import {ProfileActionsCom} from './profile-actions.component'
 import {ProfileHeaderCom} from './profile-header.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {ProfileMainCom} from './profile-main.component';
-import {UserSvc} from '../user-service/user.service';
-import {GamesModule} from '../games/games.module';
-
 import {MydetailsCom} from '../my-details/my-details.component';
 import {FollowersCom} from '../followers/followers.component';
 import {SearchPlayersCom} from '../followers/search-players.component';
+import {ChallengeCom} from '../games/challenge.component';
+import {UserSvc} from '../user-service/user.service';
+
 
 @NgModule({
   declarations: [
@@ -25,12 +29,16 @@ import {SearchPlayersCom} from '../followers/search-players.component';
   imports: [
     IonicModule,
     AvailabilityModule,
-    GamesModule
+    GamesModule,
+    MessagesModule
   ],
   entryComponents: [
     MydetailsCom,
     FollowersCom,
-    SearchPlayersCom
+    SearchPlayersCom,
+    ProfileMainCom,
+    ChatCom,
+    ChallengeCom
   ],
   exports: [
     ProfileMainCom

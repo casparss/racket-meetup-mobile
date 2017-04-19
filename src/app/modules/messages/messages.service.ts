@@ -20,7 +20,7 @@ export class MessagesSvc extends BaseService{
 		return this._chats$.map(data => {
 			data.forEach(chat => {
 				let user = reject(chat.participants,
-					(user:any) =>  user.id === this.userSvc.current._id
+					(user:any) =>  user._id === this.userSvc.current._id
 				);
 				chat.otherUser = user[0];
 			});
