@@ -1,7 +1,9 @@
 //A2 deps
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-angular';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 //App import
 import { RacketMeetupApp } from './app.component';
 
@@ -35,6 +37,9 @@ import {MessagesSvc} from './modules/messages/messages.service';
 @NgModule({
   declarations: [RacketMeetupApp, ToastCom],
   imports: [
+    FormsModule,
+    HttpModule,
+    BrowserModule,
     TabsModule,
     WelcomeModule,
     IonicModule.forRoot(RacketMeetupApp)
@@ -47,10 +52,10 @@ import {MessagesSvc} from './modules/messages/messages.service';
     ToastCom
   ],
   providers: [
+    StatusBar,
+    SplashScreen,
     NavController,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    FormsModule,
-  	HttpModule,
   	ToastSvc,
   	WsSvc,
   	DecHttp,

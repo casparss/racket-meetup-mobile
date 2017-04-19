@@ -1,21 +1,24 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
-import { TabsController } from './tabs/tabs-controller.component';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { WelcomeCom } from './modules/welcome/welcome.component'
 
 @Component({
   template: `<ion-nav [root]="rootPage"></ion-nav><toast></toast>`
 })
 export class RacketMeetupApp {
-  rootPage = WelcomeCom;
+  public rootPage = WelcomeCom;
+  private platform: Platform;
+  private splash: SplashScreen;
+  private status: StatusBar;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform, splash: SplashScreen, status: StatusBar) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      !this.status || this.status.styleDefault();
+      !this.splash || this.splash.hide();
     });
   }
 }

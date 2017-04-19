@@ -5,7 +5,6 @@ import {AuthHttp} from './auth-http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/cache';
 import {Observable} from 'rxjs';
 
 @Injectable()
@@ -19,29 +18,25 @@ export class DecHttp extends AuthHttp{
 		return this._get(url, optionsArg)
 			.do(this.checkMessage)
 			.map(this.extractData)
-			.catch(this.handleError)
-			.cache();
+			.catch(this.handleError);
 	}
 
 	post(url:string, data:any, optionsArg:Object = {}) {
 		return this._post(url, data, optionsArg)
 			.do(this.checkMessage)
-			.map(this.extractData)
-			.cache();
+			.map(this.extractData);
 	}
 
 	put(url:string, data:any, optionsArg:Object = {}) {
 		return this._put(url, data, optionsArg)
 			.do(this.checkMessage)
-			.map(this.extractData)
-			.cache();
+			.map(this.extractData);
 	}
 
 	delete(url:string, optionsArg:Object = {}) {
 		return this._delete(url, optionsArg)
 			.do(this.checkMessage)
-			.map(this.extractData)
-			.cache();
+			.map(this.extractData);
 	}
 
 	private extractData(res) {
