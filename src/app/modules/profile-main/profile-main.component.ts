@@ -6,12 +6,6 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 @Component({
 	template:
 	`
-		<ion-header>
-			<ion-navbar>
-				<ion-title>Profile</ion-title>
-			</ion-navbar>
-		</ion-header>
-
 		<ion-content>
 
 			<profile-header [user]="user"></profile-header>
