@@ -11,9 +11,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { App, Config, Form, IonicModule, Keyboard, DomController, MenuController, NavController, Platform } from 'ionic-angular';
-import { ConfigMock, PlatformMock } from './mocks';
-import { ClickersServiceMock } from './services/clickers.mock';
-import { ClickersService } from './services';
+//import { ConfigMock, PlatformMock } from './mocks';
+//import { ClickersServiceMock } from './services/clickers.mock';
+//import { ClickersService } from './services';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare var __karma__: any;
@@ -55,10 +55,10 @@ export class TestUtils {
         ...components,
       ],
       providers: [
-        App, Form, Keyboard, DomController, MenuController, NavController,
+        App, Form, Keyboard, DomController, MenuController, NavController/*,
         {provide: Platform, useClass: PlatformMock},
         {provide: Config, useClass: ConfigMock},
-        {provide: ClickersService, useClass: ClickersServiceMock},
+        {provide: ClickersService, useClass: ClickersServiceMock},*/
       ],
       imports: [
         FormsModule,
