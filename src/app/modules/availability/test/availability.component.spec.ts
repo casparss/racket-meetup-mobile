@@ -1,25 +1,29 @@
-import {fakeAsync} from '@angular/core/testing';
-import {customAsyncInject, TestUtils} from '../../../../test/di-exports';
+import {async, ComponentFixture} from '@angular/core/testing';
+import {TestUtils} from '../../../../test';
 import {AvailabilitySvc} from '../availability.service';
 import {AvailabilityCom} from '../availability.component';
 import {model} from './availability.fixture';
 import {ServiceMock} from './availability.mocks';
 import {DecHttp} from '../../../utils/http';
 
-this.fixture = null;
-this.instance = null;
+let fixture: ComponentFixture<AvailabilityCom> = null;
+let instance: any = null;
 
 describe('Availability component', () => {
 
-	/*beforeEach(customAsyncInject({
-		Component: AvailabilityCom,
-		providers: [
-			provide(AvailabilitySvc, {useClass: ServiceMock}),
-			DecHttp
-		],
-		testSpecContext: this,
-		detectChanges: false
-	}));*/
+	let providers = [
+		{provide: AvailabilitySvc, useClass: ServiceMock},
+		DecHttp
+	];
+
+	beforeEach(async(() => TestUtils.beforeEachCompiler([AvailabilityCom], providers).then(compiled => {
+    fixture = compiled.fixture;
+    instance = compiled.instance;
+  })));
+
+  afterEach(() => {
+    fixture.destroy();
+  });
 
 	it('initialises', () => {
 		expect(this.instance).not.toBeNull();
@@ -27,7 +31,7 @@ describe('Availability component', () => {
 
 	it('Updates the availability model correctly after UI interaction.', () => {
 
-		this.fixture.detectChanges();
+		fixture.detectChanges();
 
 		let checkboxes = this.fixture.nativeElement.querySelectorAll('input');
 

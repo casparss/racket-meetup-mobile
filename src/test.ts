@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { App, Config, Form, IonicModule, Keyboard, DomController, MenuController, NavController, Platform } from 'ionic-angular';
-//import { ConfigMock, PlatformMock } from './mocks';
+import { ConfigMock } from './mocks';
 //import { ClickersServiceMock } from './services/clickers.mock';
 //import { ClickersService } from './services';
 
@@ -38,8 +38,8 @@ __karma__.start();
 
 export class TestUtils {
 
-  public static beforeEachCompiler(components: Array<any>): Promise<{fixture: any, instance: any}> {
-    return TestUtils.configureIonicTestingModule(components)
+  public static beforeEachCompiler(components: Array<any>, providers: Array<any> = []): Promise<{fixture: any, instance: any}> {
+    return TestUtils.configureIonicTestingModule(components, providers)
       .compileComponents().then(() => {
         let fixture: any = TestBed.createComponent(components[0]);
         return {
@@ -49,15 +49,19 @@ export class TestUtils {
       });
   }
 
-  public static configureIonicTestingModule(components: Array<any>): typeof TestBed {
+  public static configureIonicTestingModule(components: Array<any>, providers: Array<any>): typeof TestBed {
     return TestBed.configureTestingModule({
       declarations: [
         ...components,
       ],
       providers: [
-        App, Form, Keyboard, DomController, MenuController, NavController/*,
+        App, Form, Keyboard, DomController, MenuController, NavController, ...providers,
+        {provide: Config, useClass: ConfigMock}
+
+
+        /*,
         {provide: Platform, useClass: PlatformMock},
-        {provide: Config, useClass: ConfigMock},
+
         {provide: ClickersService, useClass: ClickersServiceMock},*/
       ],
       imports: [
