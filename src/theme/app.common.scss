@@ -8,6 +8,10 @@ ion-list-header{
 	background: $white;
 }
 
+.item-wrapper{
+	margin: 0 16px;
+}
+
 //mixins
 
 @mixin flexVerticalCenter{

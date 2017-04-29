@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { App, Config, Form, IonicModule, Keyboard, DomController, MenuController, NavController, Platform } from 'ionic-angular';
+import { By } from '@angular/platform-browser';
 import { ConfigMock } from './mocks';
 //import { ClickersServiceMock } from './services/clickers.mock';
 //import { ClickersService } from './services';
@@ -70,6 +71,10 @@ export class TestUtils {
         ReactiveFormsModule,
       ],
     });
+  }
+
+  public static findElement(fixture, selector) {
+    return fixture.debugElement.query(By.css(selector)).nativeElement;
   }
 
   // http://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript

@@ -2,12 +2,16 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs';
 
-import {model} from './availability.fixture';
+import {availabilityFixture} from './availability.fixture';
 import {BaseService} from "../../../utils/base/base.service";
 import {Utils} from '../../../utils/util-helpers';
 
-let subjectMock = new BehaviorSubject(model);
+let subjectMock = new BehaviorSubject(availabilityFixture);
 let observableMock$ = subjectMock.asObservable();
+
+export class UserMock {
+	public _id: string = "12345";
+}
 
 export class ServiceMock{
 
@@ -18,7 +22,7 @@ export class ServiceMock{
 	}
 
 	get(id:string):any {
-		subjectMock.next(model)
+		subjectMock.next(availabilityFixture)
 		return observableMock$; // need to return some data?
 	}
 
@@ -27,18 +31,6 @@ export class ServiceMock{
 	diff():void {}
 
 	debouncedSync():void {}
-
-	get morning$(){
-		return observableMock$.map((model:any) => model.morning);
-	}
-
-	get afternoon$(){
-		return observableMock$.map((model:any) => model.afternoon);
-	}
-
-	get evening$(){
-		return observableMock$.map((model:any) => model.evening);
-	}
 
 	inFlight: boolean = true;
 
@@ -62,5 +54,9 @@ export class CollectionObjectDifferMock{
 	diff(){
 		return Utils.observable.success({mock:"hello"});
 	}
+
+}
+
+export class DecHttpMock {
 
 }
