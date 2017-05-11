@@ -60,3 +60,11 @@ export class CollectionObjectDifferMock{
 export class DecHttpMock {
 
 }
+
+export const differ = {
+	diff(){
+		return {
+			then(cb){ cb() }
+		}
+	}
+}
