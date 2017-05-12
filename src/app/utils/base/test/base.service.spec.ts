@@ -32,7 +32,6 @@ describe('Base service', () => {
       facadeBaseService._get(null, {});
       expect(facadeBaseService.isInFlight).toHaveBeenCalled();
       expect(facadeBaseService.notInflight).toHaveBeenCalled();
-      console.log("What the fuck?");
   }));
 
   it('generateUrl()', inject([FacadeBaseService], facadeBaseService => {
