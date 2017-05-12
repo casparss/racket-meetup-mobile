@@ -1,5 +1,5 @@
-import {Observable} from 'rxjs';
-import {debounce} from 'lodash';
+import { Observable } from 'rxjs';
+import { debounce } from 'lodash';
 
 interface DebounceLeadingSignature<T> {
   <R>(time: number): Observable<R>;

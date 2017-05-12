@@ -23,11 +23,11 @@ describe("Availability Service", () => {
     expect(availabilitySvc).not.toBeNull();
 	}));
 
-  it("diff()", fakeAsync(inject([AvailabilitySvc], availabilitySvc => {
+  it("diff()", inject([AvailabilitySvc], availabilitySvc => {
     availabilitySvc.differ = differ;
     spyOn(availabilitySvc, 'debouncedSync');
     availabilitySvc.diff();
     expect(availabilitySvc.debouncedSync).toHaveBeenCalled();
-  })));
+  }));
 
 });
