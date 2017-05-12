@@ -3,6 +3,8 @@ import {Subject} from 'rxjs';
 import {Observable} from 'rxjs';
 import '../custom-rx-operators/debounce-leading';
 
+const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args, 0) ]
+
 export class BaseService {
 
 	private _url: string;
@@ -17,9 +19,9 @@ export class BaseService {
   }
 
 	_get(observableKey?:string, opts = {}, url?:string, params?:string){
-    this.subjects['inFlight'].next(true);
+    this.isInFlight();
 		let request = this.http.get(this.generateUrl(url, params), opts)
-      .do(data => this.subjects['inFlight'].next(false));
+      .do(data => this.notInflight());
 
 		request.subscribe(data => {
 			if(observableKey && this.subjects[observableKey]){
@@ -35,27 +37,23 @@ export class BaseService {
 		}, url);
 	}
 
-  //TODO: Repetion below, refactor
+  private httpWrapper(verb:string, model: any, opts: Object = {}, url?:string, params?:string){
+		this.isInFlight();
+		let req = this.http[verb](this.generateUrl(url, params), model, opts);
+    req.subscribe(data => this.notInflight());
+    return req;
+	}
 
 	_sync(model: any, opts: Object = {}, url?:string, params?:string){
-		this.subjects['inFlight'].next(true);
-		let req = this.http.post(this.generateUrl(url, params), model, opts);
-    req.subscribe(data => this.subjects['inFlight'].next(false));
-    return req;
+		return this.httpWrapper.apply(this, mergeArguments("post", arguments));
 	}
 
 	_update(model: any, opts: Object = {}, url?:string, params?:string){
-		this.subjects['inFlight'].next(true);
-		let req = this.http.put(this.generateUrl(url, params), model, opts);
-    req.subscribe(data => this.subjects['inFlight'].next(false));
-    return req;
+		return this.httpWrapper.apply(this, mergeArguments("put", arguments));
 	}
 
   _delete(model: any, opts: Object = {}, url?:string, params?:string){
-		this.subjects['inFlight'].next(true);
-		let req = this.http.delete(this.generateUrl(url, params), opts);
-    req.subscribe(data => this.subjects['inFlight'].next(false));
-    return req;
+		return this.httpWrapper.apply(this, mergeArguments("delete", arguments));
 	}
 
 	create$(modelName:string){
@@ -63,6 +61,14 @@ export class BaseService {
 		this.subjects[modelName] = newSubject;
 		let observable$ = newSubject.asObservable();
 		return observable$.do(model => this[modelName] = model);
+	}
+
+	private isInFlight(){
+		this.subjects['inFlight'].next(true);
+	}
+
+	private notInflight(){
+		this.subjects['inFlight'].next(false);
 	}
 
   //URL stuff
@@ -76,7 +82,7 @@ export class BaseService {
 	}
 
   generateUrl(url: string, params:string = ""){
-    return (url ? this.baseUrl + url : this.url) + params;
+    return `${this.baseUrl}${url}${params}`
   }
 
   //This is a bit crap, but wasn't sure how to cast all args to string
