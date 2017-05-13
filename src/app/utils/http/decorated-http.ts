@@ -7,6 +7,9 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs';
 
+export const extractValue = (res, key) =>
+	(res._body || []).length > 0 ? res.json()[key] : null;
+
 @Injectable()
 export class DecHttp extends AuthHttp{
 
@@ -24,28 +27,31 @@ export class DecHttp extends AuthHttp{
 	post(url:string, data:any, optionsArg:Object = {}) {
 		return this._post(url, data, optionsArg)
 			.do(this.checkMessage)
-			.map(this.extractData);
+			.map(this.extractData)
+			.catch(this.handleError);
 	}
 
 	put(url:string, data:any, optionsArg:Object = {}) {
 		return this._put(url, data, optionsArg)
 			.do(this.checkMessage)
-			.map(this.extractData);
+			.map(this.extractData)
+			.catch(this.handleError);
 	}
 
 	delete(url:string, optionsArg:Object = {}) {
 		return this._delete(url, optionsArg)
 			.do(this.checkMessage)
-			.map(this.extractData);
+			.map(this.extractData)
+			.catch(this.handleError);
 	}
 
 	private extractData(res) {
-		let body = (res._body || []).length > 0 ? res.json().data : null;
-    	return body || { };
+		let body = extractValue(res, "data");
+    return body || { };
 	}
 
 	private checkMessage = (res) => {
-		let message = (res._body || []).length > 0 ? res.json().message : null;
+		let message = extractValue(res, "message");
 		if(message && message.length > 0){
 			this.onMessage.emit(message);
 		}

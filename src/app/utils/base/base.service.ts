@@ -1,6 +1,5 @@
 import {DecHttp, HttpUtils} from '../http';
-import {Subject} from 'rxjs';
-import {Observable} from 'rxjs';
+import {Subject, Observable} from 'rxjs';
 import '../custom-rx-operators/debounce-leading';
 
 const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args, 0) ]
@@ -8,7 +7,7 @@ const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args
 export class BaseService {
 
 	private _url: string;
-	protected baseUrl: string = window['cordova']  ? "http://192.168.1.133:3000/api/" : "/api/";
+	public baseUrl: string = window['cordova']  ? "http://192.168.1.133:3000/api/" : "/api/";
   public inFlight$: Observable<boolean>;
 	public model:any;
 	public subjects: Object = {};
@@ -83,14 +82,6 @@ export class BaseService {
 
   generateUrl(url: string, params:string = ""){
     return `${this.baseUrl}${url}${params}`
-  }
-
-  //This is a bit crap, but wasn't sure how to cast all args to string
-  params(a1:string,a2?:string,a3?:string,a4?:string,a5?:string,a6?:string){
-    let segments:string = "";
-    [].slice.call(arguments)
-      .forEach((seg:string) => segments+= "/" + seg);
-    return segments;
   }
 
 }
