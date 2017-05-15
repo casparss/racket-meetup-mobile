@@ -1,5 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
+import { HttpInt } from './http.interface';
 
 @Injectable()
 export class AuthHttp {
@@ -8,24 +9,24 @@ export class AuthHttp {
 
 	constructor(private http: Http){}
 
-	protected _get(url:string, optionsArg?:Object) {
-		this.appendAuthHeader(optionsArg);
-		return this.http.get(url, optionsArg).share();
+	protected _get({ url, opts }:HttpInt) {
+		this.appendAuthHeader(opts);
+		return this.http.get(url, opts).share();
 	}
 
-	protected _post(url:string, data:any, optionsArg?:Object) {
-		this.appendAuthHeader(optionsArg);
-		return this.http.post(url, data, optionsArg).share();
+	protected _post({ url, data, opts }:HttpInt) {
+		this.appendAuthHeader(opts);
+		return this.http.post(url, data, opts).share();
 	}
 
-	protected _put(url:string, data:any, optionsArg?:Object) {
-		this.appendAuthHeader(optionsArg)
-		return this.http.put(url, data, optionsArg).share();
+	protected _put({ url, data, opts }:HttpInt) {
+		this.appendAuthHeader(opts)
+		return this.http.put(url, data, opts).share();
 	}
 
-	protected _delete(url:string, optionsArg?:Object) {
-		this.appendAuthHeader(optionsArg);
-		return this.http.delete(url, optionsArg).share();
+	protected _delete({ url, opts }:HttpInt) {
+		this.appendAuthHeader(opts);
+		return this.http.delete(url, opts).share();
 	}
 
 	private appendAuthHeader(optionsArg: any) {

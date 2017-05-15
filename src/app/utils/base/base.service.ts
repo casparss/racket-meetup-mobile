@@ -6,7 +6,7 @@ const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args
 
 export class BaseService {
 
-	private _url: string;
+	public url:string;
 	public baseUrl: string = window['cordova']  ? "http://192.168.1.133:3000/api/" : "/api/";
   public inFlight$: Observable<boolean>;
 	public model:any;
@@ -19,7 +19,9 @@ export class BaseService {
 
 	_get(observableKey?:string, opts = {}, url?:string, params?:string){
     this.isInFlight();
-		let request = this.http.get(this.generateUrl(url, params), opts)
+		let request = this.http.get({
+			url: this.generateUrl(url, params), opts
+		})
       .do(data => this.notInflight());
 
 		request.subscribe(data => {
@@ -36,11 +38,10 @@ export class BaseService {
 		}, url);
 	}
 
-  private httpWrapper(verb:string, model: any, opts: Object = {}, url?:string, params?:string){
+  private httpWrapper(verb:string, data: any, opts: Object = {}, url?:string, params?:string){
 		this.isInFlight();
-		let req = this.http[verb](this.generateUrl(url, params), model, opts);
-    req.subscribe(data => this.notInflight());
-    return req;
+		return this.http[verb]({url: this.generateUrl(url, params), data, opts})
+    .do(() => this.notInflight());
 	}
 
 	_sync(model: any, opts: Object = {}, url?:string, params?:string){
@@ -70,18 +71,8 @@ export class BaseService {
 		this.subjects['inFlight'].next(false);
 	}
 
-  //URL stuff
-
-  set url(url:string){
-		this._url = url;
-	}
-
-	get url(){
-		return this.generateUrl(this._url);
-	}
-
   generateUrl(url: string, params:string = ""){
-    return `${this.baseUrl}${url}${params}`
+    return `${this.baseUrl}${url ? url : this.url}${params}`
   }
 
 }

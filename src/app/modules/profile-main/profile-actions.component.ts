@@ -102,7 +102,7 @@ export class ProfileActionsCom{
 
 	toggleFollow(){
     this.userSvc.toggleFollow(this.user._id)
-      .subscribe(data => this.isFriend = data.isFriend);
+      .subscribe(isFriend => this.isFriend = isFriend);
 	}
 
 	openPage(pageName: string): void{

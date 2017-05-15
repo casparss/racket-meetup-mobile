@@ -6,9 +6,10 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs';
+import { HttpInt } from './http.interface';
 
 export const extractValue = (res, key) =>
-	(res._body || []).length > 0 ? res.json()[key] : null;
+	res._body ? res.json()[key] : null;
 
 @Injectable()
 export class DecHttp extends AuthHttp{
@@ -17,29 +18,29 @@ export class DecHttp extends AuthHttp{
 
 	constructor(http: Http){ super(http); }
 
-	get(url:string, optionsArg:Object = {}) {
-		return this._get(url, optionsArg)
+	get(httpArgs:HttpInt) {
+		return this._get(httpArgs)
 			.do(this.checkMessage)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}
 
-	post(url:string, data:any, optionsArg:Object = {}) {
-		return this._post(url, data, optionsArg)
+	post(httpArgs:HttpInt) {
+		return this._post(httpArgs)
 			.do(this.checkMessage)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}
 
-	put(url:string, data:any, optionsArg:Object = {}) {
-		return this._put(url, data, optionsArg)
+	put(httpArgs:HttpInt) {
+		return this._put(httpArgs)
 			.do(this.checkMessage)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}
 
-	delete(url:string, optionsArg:Object = {}) {
-		return this._delete(url, optionsArg)
+	delete(httpArgs:HttpInt) {
+		return this._delete(httpArgs)
 			.do(this.checkMessage)
 			.map(this.extractData)
 			.catch(this.handleError);

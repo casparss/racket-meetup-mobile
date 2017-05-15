@@ -64,5 +64,4 @@ describe('Base service', () => {
     subject.next(mockValue);
   })));
 
-
 });
