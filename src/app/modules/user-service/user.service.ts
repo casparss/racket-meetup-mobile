@@ -68,7 +68,7 @@ export class UserSvc extends BaseService {
       let { followingThem } = this._user.followers;
       data.isFriend ?
         followingThem.push(userId):
-        remove(followingThem, userId);
+        remove(followingThem, followerId => userId === followerId);
     })
 		.map(data => data.isFriend);
 	}

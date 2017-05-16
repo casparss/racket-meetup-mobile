@@ -67,23 +67,23 @@ describe("User service", () => {
   }));
 
   it("toggleFollow()", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
-    const mockResponse = {status:"success",data:{isFriend:true},message:"Successfully following user."}
+    const mockResponse = {status:"success",data:{isFriend:false},message:"Successfully following user."};
 
-    mockBackend.connections.subscribe(
-        (connection: any) => {
-          expect(connection.request.method).toBe(RequestMethod.Put);
+    mockBackend.connections.subscribe((connection: any) => {
+      expect(connection.request.method).toBe(RequestMethod.Put);
 
-          connection.mockRespond(new Response(
-            new ResponseOptions({ body: mockResponse })
-          ));
-        });
+      connection.mockRespond(new Response(
+        new ResponseOptions({ body: mockResponse })
+      ));
+    });
 
-        userSvc.userSuccess(userModel1Mock);
+    userSvc.userSuccess(userModel1Mock);
 
-        userSvc.toggleFollow(userModel2Mock)
-          .subscribe(isFriend => {
-            expect(isFriend).toEqual(mockResponse.data.isFriend);
-          });
+    userSvc.toggleFollow(userModel2Mock._id)
+      .subscribe(isFriend => {
+        expect(isFriend).toEqual(mockResponse.data.isFriend);
+        expect(userSvc.current.followers.followingThem.length).toBe(0);
+      });
   }));
 
   it("getFollowers()", inject([UserSvc], userSvc => {

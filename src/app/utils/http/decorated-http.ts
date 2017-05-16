@@ -1,11 +1,11 @@
-import {Injectable, EventEmitter} from '@angular/core';
-import {Http} from '@angular/http';
-import {Toast} from 'ionic-angular';
-import {AuthHttp} from './auth-http';
+import { Injectable, EventEmitter } from '@angular/core';
+import { Http } from '@angular/http';
+import { Toast } from 'ionic-angular';
+import { AuthHttp } from './auth-http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpInt } from './http.interface';
 
 export const extractValue = (res, key) =>

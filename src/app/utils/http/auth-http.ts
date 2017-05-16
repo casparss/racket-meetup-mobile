@@ -29,15 +29,13 @@ export class AuthHttp {
 		return this.http.delete(url, opts).share();
 	}
 
-	private appendAuthHeader(optionsArg: any) {
+	private appendAuthHeader(opts: any) {
 		if(this.isSet()){
-
-			if( !(optionsArg.headers instanceof Headers) ){
-				optionsArg.headers = new Headers();
+			if( !(opts.headers instanceof Headers) ){
+				opts.headers = new Headers();
 			}
 
-			optionsArg.headers.append('x-auth', this._token);
-
+			opts.headers.append('x-auth', this._token);
 		}
 	}
 
