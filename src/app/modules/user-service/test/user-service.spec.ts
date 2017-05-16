@@ -92,7 +92,7 @@ describe("User service", () => {
   it("toggleFollow() - follow scenario", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
     const mockResponse = {
       status:"success",
-      data:{ isFriend: true },
+      data: { isFriend: true },
       message:"Successfully unfollowing user."
     };
 
@@ -115,7 +115,11 @@ describe("User service", () => {
 
   it("getFollowers()", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
     const mockResponse = {
-
+      status: "success",
+      data: {
+        followingMe: ["456"],
+        followingThem:["456"]
+      }
     };
 
     mockBackend.connections.subscribe((connection: any) => {
@@ -124,6 +128,10 @@ describe("User service", () => {
       connection.mockRespond(new Response(
         new ResponseOptions({ body: mockResponse })
       ));
+    });
+
+    userSvc.getFollowers("123").subscribe(followers => {
+      expect(followers).toBe(mockResponse.data);
     });
 
   }));
