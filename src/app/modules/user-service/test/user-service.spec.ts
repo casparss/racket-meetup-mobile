@@ -30,7 +30,6 @@ describe("User service", () => {
       providers: [
         UserSvc,
         DecHttp,
-        //{ provide: DecHttp, useClass: DecHttpMock },
         { provide: XHRBackend, useClass: MockBackend }
       ]
     });
@@ -66,8 +65,12 @@ describe("User service", () => {
     expect(userSvc.doesFollow(userModel3Mock)).toBe(false);
   }));
 
-  it("toggleFollow()", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
-    const mockResponse = {status:"success",data:{isFriend:false},message:"Successfully following user."};
+  it("toggleFollow() - unfollow scenario", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
+    const mockResponse = {
+      status:"success",
+      data:{ isFriend:false },
+      message:"Successfully unfollowing user."
+    };
 
     mockBackend.connections.subscribe((connection: any) => {
       expect(connection.request.method).toBe(RequestMethod.Put);
@@ -86,7 +89,42 @@ describe("User service", () => {
       });
   }));
 
-  it("getFollowers()", inject([UserSvc], userSvc => {
+  it("toggleFollow() - follow scenario", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
+    const mockResponse = {
+      status:"success",
+      data:{ isFriend: true },
+      message:"Successfully unfollowing user."
+    };
+
+    mockBackend.connections.subscribe((connection: any) => {
+      expect(connection.request.method).toBe(RequestMethod.Put);
+
+      connection.mockRespond(new Response(
+        new ResponseOptions({ body: mockResponse })
+      ));
+    });
+
+    userSvc.userSuccess(userModel1Mock);
+
+    userSvc.toggleFollow(userModel3Mock._id)
+      .subscribe(isFriend => {
+        expect(isFriend).toEqual(mockResponse.data.isFriend);
+        expect(userSvc.current.followers.followingThem.length).toBe(2);
+      });
+  }));
+
+  it("getFollowers()", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
+    const mockResponse = {
+
+    };
+
+    mockBackend.connections.subscribe((connection: any) => {
+      expect(connection.request.method).toBe(RequestMethod.Get);
+
+      connection.mockRespond(new Response(
+        new ResponseOptions({ body: mockResponse })
+      ));
+    });
 
   }));
 

@@ -1,5 +1,5 @@
 import {DecHttp, HttpUtils} from '../http';
-import {Subject, Observable} from 'rxjs';
+import {Subject, BehaviorSubject, Observable} from 'rxjs';
 import '../custom-rx-operators/debounce-leading';
 
 const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args, 0) ]
@@ -57,8 +57,8 @@ export class BaseService {
 		return this.httpWrapper.apply(this, mergeArguments("delete", arguments));
 	}
 
-	create$(modelName:string){
-		let newSubject = new Subject();
+	create$(modelName:string, initialValue:any = {}){
+		let newSubject = new BehaviorSubject(initialValue);
 		this.subjects[modelName] = newSubject;
 		let observable$ = newSubject.asObservable();
 		return observable$.do(model => this[modelName] = model);

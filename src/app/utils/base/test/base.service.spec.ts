@@ -54,9 +54,10 @@ describe('Base service', () => {
       expect(error).toBeUndefined();
     };
 
-    const dave$ = facadeBaseService.create$('dave');
-    const subject = facadeBaseService.subjects['dave'];
     const mockValue = { some: "object" };
+    const dave$ = facadeBaseService.create$('dave', mockValue);
+    const subject = facadeBaseService.subjects['dave'];
+    
 
     expect(subject instanceof Subject).toBe(true);
 

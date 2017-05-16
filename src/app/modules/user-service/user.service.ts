@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { remove } from 'lodash';
+import { remove, cloneDeep } from 'lodash';
 import { Subject, Observable } from 'rxjs';
 import { BaseService } from '../../utils/base/base.service';
 import { DecHttp, HttpUtils } from '../../utils/http';
@@ -22,8 +22,9 @@ export class UserSvc extends BaseService {
 
 	constructor(http: DecHttp){
 		super(http);
-		this._user$ = this.create$("user");
-    this.searchedPlayers$ = this.create$('searchedPlayers');
+		this._user$ = <Observable<any>>this.create$("user");
+		this._user$.subscribe(user => this._user = user);
+    this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
 	}
 
 	login(user:UserLoginInt){
@@ -41,8 +42,7 @@ export class UserSvc extends BaseService {
 	}
 
 	public userSuccess = user => {
-		this.subjects['user'].next(user);
-		this._user = user;
+		this.current = user;
 		this.http.token = user.token;
 	}
 
@@ -65,10 +65,13 @@ export class UserSvc extends BaseService {
 			userId: userId
 		}, {}, this.followersUrl)
 		.do(data => {
-      let { followingThem } = this._user.followers;
-      data.isFriend ?
-        followingThem.push(userId):
-        remove(followingThem, followerId => userId === followerId);
+			this.mutateCurrentUser(currentUser => {
+				let { followingThem } = currentUser.followers;
+				data.isFriend ?
+	        followingThem.push(userId):
+	        remove(followingThem, followerId => userId === followerId);
+				return currentUser;
+			});
     })
 		.map(data => data.isFriend);
 	}
@@ -97,7 +100,11 @@ export class UserSvc extends BaseService {
 
 	syncDetails(details){
 		return this._sync(details)
-			.subscribe(() => this._user.details = details);
+			.subscribe(details => {
+				let user = this.current;
+				user.details = details;
+				this.current = user;
+			});
 	}
 
   search(searchTerm:string){
@@ -108,8 +115,16 @@ export class UserSvc extends BaseService {
 		}, this.searchUrl);
 	}
 
+	mutateCurrentUser(cb){
+		this.current = cb(this.current);
+	}
+
+	set current(user){
+		this.subjects['user'].next(user);
+	}
+
 	get current(){
-		return this._user;
+		return cloneDeep(this._user);
 	}
 
 	get current$(){
