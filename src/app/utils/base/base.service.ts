@@ -40,8 +40,9 @@ export class BaseService {
 
   private httpWrapper(verb:string, data: any, opts: Object = {}, url?:string, params?:string){
 		this.isInFlight();
-		return this.http[verb]({url: this.generateUrl(url, params), data, opts})
-    .do(() => this.notInflight());
+		let request = this.http[verb]({url: this.generateUrl(url, params), data, opts});
+		request.subscribe(() => this.notInflight());
+		return request;
 	}
 
 	_sync(model: any, opts: Object = {}, url?:string, params?:string){

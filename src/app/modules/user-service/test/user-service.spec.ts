@@ -67,7 +67,7 @@ describe("User service", () => {
   }));
 
   it("toggleFollow()", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
-    const mockResponse = {"status":"success","data":{"isFriend":true},"message":"Successfully following user."}
+    const mockResponse = {status:"success",data:{isFriend:true},message:"Successfully following user."}
 
     mockBackend.connections.subscribe(
         (connection: any) => {
@@ -78,14 +78,12 @@ describe("User service", () => {
           ));
         });
 
-        //Sets the user
         userSvc.userSuccess(userModel1Mock);
 
         userSvc.toggleFollow(userModel2Mock)
           .subscribe(isFriend => {
             expect(isFriend).toEqual(mockResponse.data.isFriend);
           });
-
   }));
 
   it("getFollowers()", inject([UserSvc], userSvc => {
