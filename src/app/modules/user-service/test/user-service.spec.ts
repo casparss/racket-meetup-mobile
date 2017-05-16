@@ -1,6 +1,7 @@
 import { async, TestBed, inject } from '@angular/core/testing';
 import { UserSvc } from '../user.service';
 import { DecHttp } from '../../../utils/http';
+import { Observable } from 'rxjs';
 import {
   HttpModule,
   XHRBackend,
@@ -22,6 +23,9 @@ import {
 const userSvc: UserSvc = null;
 const lastConnection: any = null;
 
+const failTest = error =>
+  expect(error).toBeUndefined();
+
 describe("User service", () => {
 
   beforeEach(() => {
@@ -42,9 +46,6 @@ describe("User service", () => {
   it("userSuccess()", inject([UserSvc], userSvc => {
     const runExpectation = user =>
       expect(user).toEqual(userModel1Mock);
-
-    const failTest = error =>
-      expect(error).toBeUndefined();
 
     userSvc.userSuccess(userModel1Mock);
     userSvc.current$.subscribe(runExpectation, failTest);
@@ -86,7 +87,7 @@ describe("User service", () => {
       .subscribe(isFriend => {
         expect(isFriend).toEqual(mockResponse.data.isFriend);
         expect(userSvc.current.followers.followingThem.length).toBe(0);
-      });
+      }, failTest);
   }));
 
   it("toggleFollow() - follow scenario", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
@@ -110,7 +111,7 @@ describe("User service", () => {
       .subscribe(isFriend => {
         expect(isFriend).toEqual(mockResponse.data.isFriend);
         expect(userSvc.current.followers.followingThem.length).toBe(2);
-      });
+      }, failTest);
   }));
 
   it("getFollowers()", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
@@ -132,12 +133,40 @@ describe("User service", () => {
 
     userSvc.getFollowers("123").subscribe(followers => {
       expect(followers).toBe(mockResponse.data);
-    });
+    }, failTest);
 
   }));
 
-  it("followersFactory()", inject([UserSvc], userSvc => {
+  it("followersFactory()", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
+    const mockResponse = {
+      status: "success",
+      data: {
+        followingMe: ["456"],
+        followingThem:["789"]
+      }
+    };
 
+    mockBackend.connections.subscribe((connection: any) => {
+      expect(connection.request.method).toBe(RequestMethod.Get);
+
+      connection.mockRespond(new Response(
+        new ResponseOptions({ body: mockResponse })
+      ));
+    });
+
+    let { following$, followers$, get } = userSvc.followersFactory("123");
+    expect(following$ instanceof Observable).toBe(true);
+    expect(followers$ instanceof Observable).toBe(true);
+
+    following$.subscribe(following => {
+      expect(following).toEqual(mockResponse.data.followingThem);
+    }, failTest);
+
+    followers$.subscribe(followers => {
+      expect(followers).toEqual(mockResponse.data.followingMe);
+    }, failTest);
+
+    get("456");
   }));
 
 
