@@ -57,8 +57,8 @@ export class BaseService {
 		return this.httpWrapper.apply(this, mergeArguments("delete", arguments));
 	}
 
-	create$(modelName:string, initialValue:any = {}){
-		let newSubject = new BehaviorSubject(initialValue);
+	create$(modelName:string){
+		let newSubject = new Subject();
 		this.subjects[modelName] = newSubject;
 		let observable$ = newSubject.asObservable();
 		return observable$.do(model => this[modelName] = model);
