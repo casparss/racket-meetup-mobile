@@ -28,7 +28,7 @@ export class GamesSvc extends BaseService{
 	}
 
   challenge(challengeDetails: Object, challengee: UserInt){
-    return this._sync(challengeDetails, {}, null, this.params(challengee._id));
+    return this._sync(challengeDetails, {}, null, `/${challengee._id}`);
   }
 
 }

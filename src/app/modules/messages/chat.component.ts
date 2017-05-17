@@ -17,7 +17,7 @@ export class ChatCom{
 		private params: NavParams
 	){
 		this.chatMessages$ = svc.chatMessages$;
-		this.svc.setChatId(this.params.get("id"));
+		this.svc.init(this.params.get("id"));
 		this.sendMessageForm = this.formBuilder.group({
 			messageInput: ['', [<any>Validators.required]]
 		});

@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {remove} from 'lodash';
-import {Subject, Observable} from 'rxjs';
-import {BaseService} from '../../utils/base/base.service';
-import {DecHttp, HttpUtils} from '../../utils/http';
-export {UserLoginInt, UserSignupInt, UserInt} from './user.interface';
-import {UserLoginInt, UserSignupInt} from './user.interface';
-import {BehaviorSubject} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { remove, cloneDeep } from 'lodash';
+import { Subject, Observable } from 'rxjs';
+import { BaseService } from '../../utils/base/base.service';
+import { DecHttp, HttpUtils } from '../../utils/http';
+export { UserLoginInt, UserSignupInt, UserInt } from './user.interface';
+import { UserLoginInt, UserSignupInt } from './user.interface';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable()
-export class UserSvc extends BaseService{
+export class UserSvc extends BaseService {
 
 	url = "user";
   followersUrl = "followers";
@@ -22,14 +22,15 @@ export class UserSvc extends BaseService{
 
 	constructor(http: DecHttp){
 		super(http);
-		this._user$ = this.create$("user");
-    this.searchedPlayers$ = this.create$('searchedPlayers');
+		this._user$ = <Observable<any>>this.create$("user");
+		this._user$.subscribe(user => this._user = user);
+    this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
 	}
 
 	login(user:UserLoginInt){
-		let request = this._get('user', {
+		let request = this._get(null, {
 			search: HttpUtils.urlParams(user)
-		});
+		}, 'user');
 		request.subscribe(this.userSuccess);
 		return request;
 	}
@@ -40,9 +41,8 @@ export class UserSvc extends BaseService{
 		return request;
 	}
 
-	private userSuccess = user => {
-		this.subjects['user'].next(user);
-		this._user = user;
+	public userSuccess = user => {
+		this.current = user;
 		this.http.token = user.token;
 	}
 
@@ -61,18 +61,19 @@ export class UserSvc extends BaseService{
   }
 
   toggleFollow(userId:string){
-		let request = this._update({
+		return this._update({
 			userId: userId
-		}, {}, this.followersUrl);
-
-    request.subscribe(data => {
-      let followingThem = this._user.followers.followingThem;
-      data.isFriend ?
-        followingThem.push(userId):
-        remove(followingThem, userId);
-    });
-
-    return request;
+		}, {}, this.followersUrl)
+		.do(data => {
+			this.mutateCurrentUser(currentUser => {
+				let { followingThem } = currentUser.followers;
+				data.isFriend ?
+	        followingThem.push(userId):
+	        remove(followingThem, followerId => userId === followerId);
+				return currentUser;
+			});
+    })
+		.map(data => data.isFriend);
 	}
 
   getFollowers(userId?: string){
@@ -99,7 +100,11 @@ export class UserSvc extends BaseService{
 
 	syncDetails(details){
 		return this._sync(details)
-			.subscribe(() => this._user.details = details);
+			.subscribe(details => {
+				let user = this.current;
+				user.details = details;
+				this.current = user;
+			});
 	}
 
   search(searchTerm:string){
@@ -110,8 +115,16 @@ export class UserSvc extends BaseService{
 		}, this.searchUrl);
 	}
 
+	mutateCurrentUser(cb){
+		this.current = cb(this.current);
+	}
+
+	set current(user){
+		this.subjects['user'].next(user);
+	}
+
 	get current(){
-		return this._user;
+		return cloneDeep(this._user);
 	}
 
 	get current$(){

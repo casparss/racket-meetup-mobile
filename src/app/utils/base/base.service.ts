@@ -1,12 +1,13 @@
 import {DecHttp, HttpUtils} from '../http';
-import {Subject} from 'rxjs';
-import {Observable} from 'rxjs';
+import {Subject, BehaviorSubject, Observable} from 'rxjs';
 import '../custom-rx-operators/debounce-leading';
+
+const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args, 0) ]
 
 export class BaseService {
 
-	private _url: string;
-	protected baseUrl: string = window['cordova']  ? "http://192.168.1.133:3000/api/" : "/api/";
+	public url:string;
+	public baseUrl: string = window['cordova']  ? "http://192.168.1.133:3000/api/" : "/api/";
   public inFlight$: Observable<boolean>;
 	public model:any;
 	public subjects: Object = {};
@@ -17,9 +18,11 @@ export class BaseService {
   }
 
 	_get(observableKey?:string, opts = {}, url?:string, params?:string){
-    this.subjects['inFlight'].next(true);
-		let request = this.http.get(this.generateUrl(url, params), opts)
-      .do(data => this.subjects['inFlight'].next(false));
+    this.isInFlight();
+		let request = this.http.get({
+			url: this.generateUrl(url, params), opts
+		})
+      .do(data => this.notInflight());
 
 		request.subscribe(data => {
 			if(observableKey && this.subjects[observableKey]){
@@ -35,27 +38,23 @@ export class BaseService {
 		}, url);
 	}
 
-  //TODO: Repetion below, refactor
+  private httpWrapper(verb:string, data: any, opts: Object = {}, url?:string, params?:string){
+		this.isInFlight();
+		let request = this.http[verb]({url: this.generateUrl(url, params), data, opts});
+		request.subscribe(() => this.notInflight());
+		return request;
+	}
 
 	_sync(model: any, opts: Object = {}, url?:string, params?:string){
-		this.subjects['inFlight'].next(true);
-		let req = this.http.post(this.generateUrl(url, params), model, opts);
-    req.subscribe(data => this.subjects['inFlight'].next(false));
-    return req;
+		return this.httpWrapper.apply(this, mergeArguments("post", arguments));
 	}
 
 	_update(model: any, opts: Object = {}, url?:string, params?:string){
-		this.subjects['inFlight'].next(true);
-		let req = this.http.put(this.generateUrl(url, params), model, opts);
-    req.subscribe(data => this.subjects['inFlight'].next(false));
-    return req;
+		return this.httpWrapper.apply(this, mergeArguments("put", arguments));
 	}
 
   _delete(model: any, opts: Object = {}, url?:string, params?:string){
-		this.subjects['inFlight'].next(true);
-		let req = this.http.delete(this.generateUrl(url, params), opts);
-    req.subscribe(data => this.subjects['inFlight'].next(false));
-    return req;
+		return this.httpWrapper.apply(this, mergeArguments("delete", arguments));
 	}
 
 	create$(modelName:string){
@@ -65,26 +64,16 @@ export class BaseService {
 		return observable$.do(model => this[modelName] = model);
 	}
 
-  //URL stuff
-
-  set url(url:string){
-		this._url = url;
+	private isInFlight(){
+		this.subjects['inFlight'].next(true);
 	}
 
-	get url(){
-		return this.generateUrl(this._url);
+	private notInflight(){
+		this.subjects['inFlight'].next(false);
 	}
 
   generateUrl(url: string, params:string = ""){
-    return (url ? this.baseUrl + url : this.url) + params;
-  }
-
-  //This is a bit crap, but wasn't sure how to cast all args to string
-  params(a1:string,a2?:string,a3?:string,a4?:string,a5?:string,a6?:string){
-    let segments:string = "";
-    [].slice.call(arguments)
-      .forEach((seg:string) => segments+= "/" + seg);
-    return segments;
+    return `${this.baseUrl}${url ? url : this.url}${params}`
   }
 
 }

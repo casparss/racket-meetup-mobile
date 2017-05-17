@@ -10,11 +10,18 @@ export class ChatSvc extends BaseService{
 
 	private _chatMessages$: any;
 	private _chatId: any;
-	private currentChat: any;
+	private currentChat: Array<any> = [];
 
 	constructor(http:DecHttp, private userSvc: UserSvc, private ws: WsSvc){
 		super(http);
 		this._chatMessages$ = this.create$('chatMessages');
+	}
+
+	init(chatId){
+		this._chatId = chatId;
+		this.ws.socket.emit("joining:chat", this._chatId);
+		this.setEvents();
+		this.getMessageHistory();
 	}
 
 	getMessageHistory(){
@@ -27,7 +34,7 @@ export class ChatSvc extends BaseService{
 	}
 
 	updateMessageHistory(messageHistory){
-		this.currentChat = messageHistory || [];
+		this.currentChat = messageHistory || this.currentChat;
 		this.updateChat();
 	}
 
@@ -47,13 +54,6 @@ export class ChatSvc extends BaseService{
 	sendMessage(message:string){
 		let msgPackage = {chatId: this._chatId, message: message};
 		this.ws.socket.emit("send:message", msgPackage);
-	}
-
-	setChatId(chatId){
-		this._chatId = chatId;
-		this.ws.socket.emit("joining:chat", this._chatId);
-		this.setEvents();
-		this.getMessageHistory();
 	}
 
 	destroy(){
