@@ -1,1 +1,1 @@
-export * from './tabs-controller.component';
+export * from './tabs.module';

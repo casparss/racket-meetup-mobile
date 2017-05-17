@@ -5,6 +5,7 @@ import {CourtsTab} from './tab-courts.component';
 import {RankingsTab} from './tab-rankings.component';
 import {MessagesTab} from './tab-messages.component';
 
+
 @Component({
 	template:
 	`
@@ -15,10 +16,9 @@ import {MessagesTab} from './tab-messages.component';
 		<ion-tab [root]="rankingsTabRoot" tabTitle="Rankings" tabIcon="trophy"></ion-tab>
 		<ion-tab [root]="messagesTabRoot" tabBadge="15" tabBadgeStyle="danger" tabTitle="Messages" tabIcon="filing"></ion-tab>
 	</ion-tabs>
-	<toast></toast>
 	`
 })
-export class TabsPageCom {
+export class TabsController {
 
 	private gamesTabRoot: any;
 	private profileTabRoot: any;

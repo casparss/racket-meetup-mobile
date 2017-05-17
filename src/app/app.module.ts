@@ -1,26 +1,26 @@
+//A2 deps
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-
+import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-angular';
+import { BrowserModule } from '@angular/platform-browser';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 //App import
 import { RacketMeetupApp } from './app.component';
 
 //Tabs imports
-import {TabsPageCom} from './tabs';
-import {CourtsTab} from './tabs-games.component';
-import {GamesTab} from './tabs-games.component';
-import {MessagesTab} from './tabs-messages.component';
-import {ProfileTab} from './tabs-profile.component';
-import {RankingsTab} from './tabs-rankings.component';
+import {TabsModule} from './tabs/tabs.module';
 
-//Module imports
-import {ProfileModule} from '../../modules/profile-main/profile.module';
-import {AvailabilityModule} from '../../modules/availability/availability.module';
+//Tabs controller
+import {TabsController} from './tabs/tabs-controller.component';
 
-//Sub component imports
-import {GamesCom} from '../../modules/games/games.component.ts';
-import {ToastCom} from '../toast/toast.component';
-import {RankingListCom} from '../../modules/rankings-list/rankings-list.component.ts';
-import {MessageListCom} from '../../modules/messages/message-list.component.ts';
+//Welcome module
+import {WelcomeModule} from './modules/welcome/welcome.module';
+
+//Welcome
+import {WelcomeCom} from './modules/welcome/welcome.component';
+
+//Toast component
+import {ToastCom} from './modules/toast/toast.component';
 
 //Angular2 services
 import {FormsModule} from '@angular/forms';
@@ -31,47 +31,38 @@ import {ColObjDifferFactory} from './utils/differs/collection-object-diff.ts';
 import {UserSvc} from './modules/user-service/user.service';
 import {DecHttp} from './utils/http/';
 import {ToastSvc} from './modules/toast/toast.service';
-import {WsSvc} from './modules/web-sockets-service/web-sockets-service';
+import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
+import {MessagesSvc} from './modules/messages/messages.service';
 
 @NgModule({
-  declarations: [
-
-    //Main app
-    RacketMeetupApp,
-
-    //Tabs imports
-    TabsPageCom,
-    CourtsTab,
-    GamesTab,
-    MessagesTab,
-    ProfileTab,
-    RankingsTab,
-
-    //Sub component imports
-    GamesCom,
-    ToastCom,
-    MessageListCom
-
-  ],
+  declarations: [RacketMeetupApp, ToastCom],
   imports: [
-    IonicModule.forRoot(RacketMeetupApp),
-    ProfileModule,
-    AvailabilityModule
+    FormsModule,
+    HttpModule,
+    BrowserModule,
+    TabsModule,
+    WelcomeModule,
+    IonicModule.forRoot(RacketMeetupApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    RacketMeetupApp
+    RacketMeetupApp,
+    TabsController,
+    WelcomeCom,
+    ToastCom
   ],
   providers: [
+    StatusBar,
+    SplashScreen,
+    NavController,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    FormsModule,
-  	HttpModule,
   	ToastSvc,
   	WsSvc,
   	DecHttp,
   	UserSvc,
   	WsSvc,
-  	ColObjDifferFactory
+  	ColObjDifferFactory,
+    MessagesSvc
   ]
 })
 export class AppModule {}

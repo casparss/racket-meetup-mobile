@@ -1,5 +1,4 @@
 import {Injectable, KeyValueDiffers} from '@angular/core';
-import Promise from "ts-promise";
 import {map, filter} from 'lodash';
 import {CollectionDiff} from './collection-diff';
 
@@ -23,7 +22,7 @@ export class CollectionObjectDiffer{
 	constructor(
 		collectionObject: any,
 		private keyValueDiffers: KeyValueDiffers
-	){		
+	){
 		this.attachDiffers(collectionObject);
 	}
 
@@ -33,7 +32,7 @@ export class CollectionObjectDiffer{
 		});
 	}
 
-	diff(){		
+	diff(){
 		return new Promise((resolve, reject) => {
 			if(this.differs){
 
@@ -41,7 +40,7 @@ export class CollectionObjectDiffer{
 					.then(
 						changes => resolve(changes),
 						err => reject(err)
-					);				
+					);
 
 	  		}
 	  		else {

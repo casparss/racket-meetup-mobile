@@ -1,0 +1,46 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Followers</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<div class="ios-padding">
+		<ion-segment [(ngModel)]="selectedSegment">
+      <ion-segment-button value="following">
+				Following ({{(followers.following$ | async)?.length}})
+			</ion-segment-button>
+			<ion-segment-button value="followers">
+				Followers ({{(followers.followers$ | async)?.length}})
+			</ion-segment-button>
+		</ion-segment>
+	</div>
+
+	<ion-list>
+
+    <div [hidden]="selectedSegment !== 'followers'">
+
+      <ion-item
+  			*ngFor="let user of followers.followers$ | async"
+  			(click)="openProfile(user)"
+  		>
+  			{{ user?.details.firstName + " " + user?.details.lastName }}
+  		</ion-item>
+
+    </div>
+
+    <div [hidden]="selectedSegment !== 'following'">
+
+      <ion-item
+  			*ngFor="let user of followers.following$ | async"
+  			(click)="openProfile(user)"
+  		>
+  			{{ user?.details.firstName + " " + user?.details.lastName }}
+  		</ion-item>
+
+    </div>
+
+	</ion-list>
+
+</ion-content>

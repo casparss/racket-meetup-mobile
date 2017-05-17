@@ -3,7 +3,6 @@ import {NavController} from 'ionic-angular';
 import {DecHttp} from '../../utils/http/';
 import {debounce} from 'lodash';
 import 'rxjs/add/operator/toPromise';
-import {Observable} from 'rxjs/Observable';
 import {map} from 'lodash';
 import {BaseService} from "../../utils/base/base.service";
 import {ColObjDifferFactory, CollectionObjectDiffer} from '../../utils/differs/collection-object-diff';
@@ -16,40 +15,17 @@ export class AvailabilitySvc extends BaseService implements Service {
 	url = "availability";
 	debouceTime = 800;
 	public differ: CollectionObjectDiffer;
-	private availability$:any;
 
 	constructor(
 		private colObjDifferFactory: ColObjDifferFactory,
 		http: DecHttp
 	){
-
-		super(http);
-		this.availability$ = this.createObservable('availability');
-		this.setEvents();
-
-	}
-
-	setEvents(){
-		this.availability$
-			.subscribe(
-				model => this.differ = this.colObjDifferFactory.create(model)
-			);
-	}
-
-	get morning$(){
-		return this.availability$.map(model => model.morning);
-	}
-
-	get afternoon$(){
-		return this.availability$.map(model => model.afternoon);
-	}
-
-	get evening$(){
-		return this.availability$.map(model => model.evening);
+    super(http);
 	}
 
 	get(id: string){
-		return this._getById('availability', id);
+		return this._getById('availability', id)
+      .do(model => this.differ = this.colObjDifferFactory.create(this.model = model));
 	}
 
 	debouncedSync = debounce(() => this._update(this.model), this.debouceTime, {

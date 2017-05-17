@@ -1,48 +1,54 @@
-import {fakeAsync, beforeEach, beforeEachProviders, describe, expect, it} from '@angular/core/testing';
-import {provide} from '@angular/core';
-import {customAsyncInject, TestUtils} from '../../../../test/di-exports';
-import {AvailabilitySvc} from '../availability.service';
-import {Promise} from 'ts-promise';
-import {AvailabilityCom} from '../availability.component';
-import {model} from './availability.fixture';
-import {ServiceMock} from './availability.mocks';
-import {DecHttp} from '../../../utils/http';
+import { async, fakeAsync, ComponentFixture } from '@angular/core/testing';
+import { TestUtils } from '../../../../test';
+import { AvailabilitySvc } from '../availability.service';
+import { AvailabilityCom } from '../availability.component';
+import { availabilityFixture } from './availability.fixture';
+import { ServiceMock, UserMock } from './availability.mocks';
+import { UserSvc } from '../../user-service';
+import { DecHttp } from '../../../utils/http';
 
-this.fixture = null;
-this.instance = null;
+let fixture: ComponentFixture<AvailabilityCom> = null;
+let instance: any = null;
+let stringToBool = str => str === 'true';
 
 describe('Availability component', () => {
 
-	beforeEach(customAsyncInject({
-		Component: AvailabilityCom,
-		providers: [
-			provide(AvailabilitySvc, {useClass: ServiceMock}),
-			DecHttp
-		],
-		testSpecContext: this,
-		detectChanges: false
-	}));
+	let providers = [
+		{provide: AvailabilitySvc, useClass: ServiceMock},
+		{provide: UserSvc, useClass: UserMock},
+		DecHttp
+	];
+
+	beforeEach(async(() => TestUtils.beforeEachCompiler([AvailabilityCom], providers).then(compiled => {
+    fixture = compiled.fixture;
+    instance = compiled.instance;
+  })));
+
+  afterEach(() => fixture.destroy());
 
 	it('initialises', () => {
 		expect(this.instance).not.toBeNull();
 	});
 
-	it('Updates the availability model correctly after UI interaction.', () => {
+	it('getAvailability() populates checkboxes', () => {
+		instance.user = {_id : "12345"};
+		instance.getAvailability();
+		fixture.detectChanges();
+		let checkboxes = fixture.nativeElement.querySelectorAll('ion-checkbox');
+		let getCheckBoxValue = index => stringToBool(checkboxes[index].getAttribute('ng-reflect-model'))
+		expect(getCheckBoxValue(0)).toEqual((availabilityFixture.morning[0].v));
+		expect(getCheckBoxValue(1)).toEqual((availabilityFixture.morning[1].v));
+		expect(getCheckBoxValue(2)).toEqual((availabilityFixture.morning[2].v));
+		expect(getCheckBoxValue(3)).toEqual((availabilityFixture.morning[3].v));
+	});
 
-		this.fixture.detectChanges();
-
-		let checkboxes = this.fixture.nativeElement.querySelectorAll('input');
-		
-		checkboxes[0].click();
-		checkboxes[1].click();
-		checkboxes[2].click();
-
-		let morningModel = model.morning;
-
-		expect(morningModel[0].v).toEqual(true);
-		expect(morningModel[1].v).toEqual(true);
-		expect(morningModel[2].v).toEqual(false);
-
+	it('Click on availability triggers diff.', () => {
+		instance.user = {_id : "12345"};
+		instance.ngOnInit();
+		fixture.detectChanges();
+		spyOn(instance['svc'], 'diff');
+    fixture.nativeElement.querySelectorAll('ion-checkbox')[0].click();
+    expect(instance['svc'].diff).toHaveBeenCalled();
 	});
 
 });

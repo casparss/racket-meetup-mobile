@@ -1,21 +1,24 @@
 import {Component, Input} from '@angular/core';
 import {NavController, ModalController} from 'ionic-angular';
-import {ChallengeCom} from '../challenge/challenge.component';
+
+import {ChallengeCom} from '../games/challenge.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
-
+import {MessagesSvc} from '../messages/messages.service';
 import {ProfileMainCom} from '../profile-main/profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
-import {FriendsCom} from '../friends/friends.component';
+import {FollowersCom} from '../followers/followers.component';
+import {SearchPlayersCom} from '../followers/search-players.component';
+import {ChatCom} from '../messages/chat.component';
 
 const pages: any = {
 	myDetails: MydetailsCom,
-	friends: FriendsCom
+	followers: FollowersCom,
+  searchPlayers: SearchPlayersCom
 };
 
 @Component({
 	selector:'profile-actions',
-	providers: [ProfileMainSvc],
 	template:`
 		<ion-list [ngSwitch]="user.id === userSvc.current.id">
 
@@ -33,15 +36,20 @@ const pages: any = {
 				Message player
 			</button>
 
-			<button *ngSwitchCase="false" ion-item (click)="addPlayer()" [ngSwitch]="isFriend">
+			<button *ngSwitchCase="false" ion-item (click)="toggleFollow()" [ngSwitch]="isFriend">
 				<ion-icon *ngSwitchCase="false" name="add" item-left></ion-icon>
 				<ion-icon *ngSwitchCase="true" name="remove" item-left></ion-icon>
 				{{isFriend ? "Remove" : "Add"}} player as friend
 			</button>
 
-			<button *ngSwitchCase="true" (click)="openPage('friends')" ion-item>
+			<button *ngSwitchCase="true" (click)="openPage('followers')" ion-item>
 				<ion-icon name="people" item-left></ion-icon>
-				Friends
+				Followers
+			</button>
+
+      <button *ngSwitchCase="true" (click)="openPage('searchPlayers')" ion-item>
+				<ion-icon name="search" item-left></ion-icon>
+				Search players
 			</button>
 
 			<button *ngSwitchCase="true" (click)="openPage('myDetails')" ion-item>
@@ -61,32 +69,48 @@ export class ProfileActionsCom{
 		private nav: NavController,
 		private profileSvc: ProfileMainSvc,
 		private modalController : ModalController,
-		private userSvc: UserSvc
-	){}
+		private userSvc: UserSvc,
+    private messagesSvc: MessagesSvc
+	){
+     this.setIsFriend();
+  }
+
+  setIsFriend(){
+    if(this.user) this.isFriend = this.userSvc.doesFollow(this.user);
+  }
 
 	challengePlayer(){
-
 		let challengeModal = this.modalController.create(ChallengeCom, {
 			user: this.user
 		});
 
 		challengeModal.present(challengeModal);
-
 	}
+
+  searchPlayers(){
+
+  }
 
 	messagePlayer(){
-		//Open message player modal
+		this.messagesSvc.getChat([this.user._id])
+      .subscribe(chat => {
+        this.nav.push(ChatCom, {
+    			id: chat._id
+    		});
+      });
 	}
 
-	addPlayer(){
-
-		this.profileSvc.addPlayer(this.user.id)
-			.subscribe(data => this.isFriend = data.isFriend);
-
+	toggleFollow(){
+    this.userSvc.toggleFollow(this.user._id)
+      .subscribe(isFriend => this.isFriend = isFriend);
 	}
 
 	openPage(pageName: string): void{
 		this.nav.push(pages[pageName]);
 	}
+
+  ngOnChanges(){
+    this.setIsFriend();
+  }
 
 }

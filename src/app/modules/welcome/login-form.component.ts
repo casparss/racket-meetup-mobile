@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {TabsPageCom} from '../tabs';
+import {TabsController} from '../../tabs/tabs-controller.component';
 import {UserSvc} from '../user-service/user.service';
-
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
@@ -13,8 +12,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 		novalidate
 	>
 		<ion-item>
-			<ion-icon name="heart"></ion-icon>
-			<ion-label floating>
+			<ion-label>
 				<ion-icon name="mail"></ion-icon>
 				Email:
 			</ion-label>
@@ -23,7 +21,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 		<ion-item>
 
-			<ion-label floating>
+			<ion-label>
 				<ion-icon name="key"></ion-icon>
 				Password
 			</ion-label>
@@ -31,7 +29,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 		</ion-item>
 
 		<ion-item>
-			<button block large>Login</button>
+			<button ion-button block medium>Login</button>
 		</ion-item>
 	</form>
 
@@ -57,7 +55,7 @@ export class LoginFormCom{
 	login(user, isValid:boolean){
 		if(isValid){
 			this.svc.login(user)
-				.subscribe(() => this.nav.push(TabsPageCom));
+				.subscribe(() => this.nav.push(TabsController));
 		}
 	}
 

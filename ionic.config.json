@@ -1,6 +1,12 @@
 {
-  "name": "cutePuppyPics",
-  "app_id": "",
+  "name": "Racket Meetup",
+  "app_id": "b9256a1c",
   "v2": true,
-  "typescript": true
+  "typescript": true,
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://localhost:3000/api/"
+    }
+  ]
 }

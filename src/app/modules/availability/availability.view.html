@@ -1,13 +1,14 @@
 <div class="availability">
 	<ion-list-header>
-	Weekly availability
+		Weekly availability
 	</ion-list-header>
-	<ion-item>
+
+	<div class="item-wrapper">
 
 		<table>
 			<thead>
 				<tr>
-					<td [class.invisible]="!isInFlight">
+					<td [class.invisible]="!(svc.inFlight$ | async)">
 						<ion-spinner icon="spiral" class="spinner-stable"></ion-spinner>
 					</td>
 					<td>M</td>
@@ -21,36 +22,36 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>
+					<td class="day-period-title">
 					   Morning
 					</td>
 
-					<td *ngFor="let day of morning$ | async">
-						<input type="checkbox" [(ngModel)]="day.v" />
+					<td *ngFor="let day of model?.morning">
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
 					</td>
 				</tr>
 
 				<tr>
-					<td>
+					<td class="day-period-title">
 					   Afternoon
 					</td>
 
-					<td *ngFor="let day of afternoon$ | async">
-						<input type="checkbox" [(ngModel)]="day.v" />
-					</td>  
+					<td *ngFor="let day of model?.afternoon">
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
+					</td>
 				</tr>
 
 				<tr>
-					<td>
+					<td class="day-period-title">
 					   Evening
 					</td>
 
-					<td *ngFor="let day of evening$ | async">
-						<input type="checkbox" [(ngModel)]="day.v" />
-					</td> 
+					<td *ngFor="let day of model?.evening">
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
+					</td>
 				</tr>
-			</tbody>            
+			</tbody>
 		</table>
-		
-	</ion-item>
+
+	</div>
 </div>

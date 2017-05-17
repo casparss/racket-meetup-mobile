@@ -5,12 +5,11 @@ import {NavController} from 'ionic-angular';
   template:
   `
   <ion-header>
-  	<ion-navbar>
-  		<ion-title>Messages</ion-title>
-  	</ion-navbar>
-	</ion-header>
-
-	<ion-content class="messages-tab">
+    <ion-navbar>
+      <ion-title>Messages</ion-title>
+    </ion-navbar>
+  </ion-header>
+  <ion-content class="messages-tab">
 		<message-list></message-list>
 	</ion-content>
   `

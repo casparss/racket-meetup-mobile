@@ -10,7 +10,7 @@ export class RankingsSvc extends BaseService{
 
 	constructor(http: DecHttp){
 		super(http);
-		this.rankingsList$ = this.createObservable('rankings');	
+		this.rankingsList$ = this.create$('rankings');	
 		this.getRankings();
 	}
 

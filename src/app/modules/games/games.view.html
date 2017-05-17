@@ -6,15 +6,15 @@
 	<div *ngFor="let game of games$ | async">
 
 		<ion-list-header class="item-header">
-			{{game?.date | date : ddmmyy}} @ <a>{{game?.venue.name}}</a>
+			{{game.date | date : ddmmyy}} @ <a>{{game.venue}}</a>
 		</ion-list-header>
-		
+
 		<ion-item class="upcoming">
 			<ion-grid>
-				<ion-row>	
+				<ion-row>
 					<ion-col width-33>
-						<img src="{{game.players.player1.img}}" alt="">
-						<div class="playerName">{{game?.players.player1.name}}</div>
+						<img src="{{game.opponents.side1[0].user.details.image}}" alt="">
+						<div class="playerName">{{game.opponents.side1[0].user.details.fullName}}</div>
 					</ion-col>
 
 					<ion-col width-33>
@@ -22,8 +22,8 @@
 					</ion-col>
 
 					<ion-col width-33>
-						<img src="{{game.players.player2.img}}">
-						<div class="playerName">{{game?.players.player2.name}}</div>
+						<img src="{{game.opponents.side2[0].user.details.image}}">
+						<div class="playerName">{{game.opponents.side2[0].user.details.fullName}}</div>
 					</ion-col>
 				</ion-row>
 			</ion-grid>
@@ -31,22 +31,22 @@
 
 	</div>
 
-	<ion-list-header>
+	<!--ion-list-header>
 		Previous games
-	</ion-list-header>
+	</ion-list-header-->
 
-	<div *ngFor="let game of games$ | async">
+	<!--div *ngFor="let game of games$ | async">
 
 		<ion-list-header class="item-header">
-			{{game?.date | date : ddmmyy}} @ <a>{{game?.venue.name}}</a>
+			{{game.date | date : ddmmyy}} @ <a>{{game.venue}}</a>
 		</ion-list-header>
-		
+
 		<ion-item class="previous">
 			<ion-grid>
 				<ion-row>
 					<ion-col width-20>
-						<img src="{{game.players.player1.img}}" alt="">
-						<div class="playerName">{{game?.players.player1.name}}</div>
+						<img src="{{game.opponents.side1[0].user.details.image}}" alt="">
+						<div class="playerName">{{game.opponents.side1[0].user.details.fullName}}</div>
 					</ion-col>
 
 					<ion-col width-80>
@@ -63,10 +63,10 @@
 
 				</ion-row>
 
-				<ion-row>	
+				<ion-row>
 					<ion-col width-20>
-						<img src="{{game.players.player1.img}}" alt="">
-						<div class="playerName">{{game?.players.player1.name}}</div>
+						<img src="{{game.opponents.side2[0].user.details.image}}" alt="">
+						<div class="playerName">{{game.opponents.side2[0].user.details.fullName}}</div>
 					</ion-col>
 
 					<ion-col width-80>
@@ -78,13 +78,13 @@
 								<td>1</td>
 								<td>1</td>
 							</tr>
-						</table>						
+						</table>
 					</ion-col>
 				</ion-row>
 
 			</ion-grid>
 		</ion-item>
 
-	</div>
+	</div-->
 
 </ion-list>

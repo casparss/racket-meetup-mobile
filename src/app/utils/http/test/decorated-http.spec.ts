@@ -1,157 +1,70 @@
-import {beforeEach, beforeEachProviders, describe, expect, it, inject} from '@angular/core/testing';
-import {MockBackend} from '@angular/http/testing';
-import {BaseRequestOptions, Http} from '@angular/http';
-import {provide} from '@angular/core';
-import {TestUtils} from '../../../../test/di-exports';
-import {DecHttp, AuthHttp} from '../';
+import { Http } from '@angular/http';
+import { AuthHttp } from '../auth-http';
+import { DecHttp } from '../decorated-http';
+import { TestBed, inject } from '@angular/core/testing';
+import {
+  HttpModule,
+  XHRBackend,
+  ResponseOptions,
+  Response,
+  RequestMethod
+} from '@angular/http';
+import {
+  MockBackend,
+  MockConnection
+} from '@angular/http/testing';
 
+describe("Decorated HTTP", () => {
 
-this.fixture = null;
-this.instance = null;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpModule],
+      providers: [
+        AuthHttp,
+        DecHttp,
+        { provide: XHRBackend, useClass: MockBackend }
+      ]
+    });
+  });
 
-class MockHttp{
-	do(){ return this; }
-	map(){ return this; }
-	catch(){ return this; }
-	cache(){ return this; }	
-}
+  it("initialises", inject([DecHttp], (decHttp) => {
+    expect(decHttp).not.toBeUndefined();
+  }));
 
-let mockResponse = {
-	message: "Hello there!",
-	data: {
-		stuff: "Hello"
-	}
-};
+  it("makes request with message property and correctly emits the message in onMessage", inject([DecHttp, XHRBackend], (decHttp, mockBackend) => {
+    let body = {
+      message: "Hello this is a message."
+    };
 
-describe('Decorated HTTP', () => {
+    mockBackend.connections.subscribe((connection: any) => {
+      connection.mockRespond(new Response(
+        new ResponseOptions({ body })
+      ));
+    });
 
-	beforeEachProviders(() => [
-		Http,
-		DecHttp,
-		AuthHttp,
-		BaseRequestOptions,
-		MockBackend,	
-		TestUtils.provideMockHttpProvider()
-	]);
+    decHttp.onMessage.subscribe(message => {
+      expect(message).toBe(body.message);
+    });
 
-	beforeEach(inject([MockBackend], TestUtils.createMockHttpResponse(mockResponse)));
+    decHttp.get({ url: '/something' })
+      .subscribe(data => {});
+  }));
 
-	const injectSvc = function (cb) {
-		return inject([DecHttp], (svc: DecHttp) => {
-			cb(svc);
-		});
-	}
+  it("extractData()", inject([DecHttp, XHRBackend], (decHttp, mockBackend) => {
+    let body = {
+      data: { hello: "Hello this is a message." }
+    };
 
-	it('initialises', injectSvc(svc => {
-		expect(svc).not.toBeNull();
-	}));
+    mockBackend.connections.subscribe((connection: any) => {
+      connection.mockRespond(new Response(
+        new ResponseOptions({ body })
+      ));
+    });
 
-	it('extractData()', done =>{
-
-		injectSvc(svc => {
-
-			svc.get('/url')
-				.subscribe(data => {
-					expect(data).toEqual(mockResponse.data);
-					done();
-				});
-
-		})();
-
-	});
-
-	it('checkMessage()', done => {
-
-		injectSvc(svc => {
-
-			svc.onMessage.subscribe((message) => {
-				expect(message).toEqual(mockResponse.message);
-				done();
-			});
-
-			svc.get('/url').subscribe(data => { console.log("Request"); });
-
-		})();
-
-	});
-
-	it('get()', done => {
-
-		let mockUrl = "/url";
-		let mockOpts = { hello: "hello" };
-
-		injectSvc(svc => {
-
-			spyOn(svc, '_get').and.returnValue(new MockHttp);
-			svc.get(mockUrl, mockOpts);
-
-			expect(svc._get).toHaveBeenCalled();
-			expect(svc._get).toHaveBeenCalledWith(mockUrl, mockOpts);
-
-			done();
-
-		})();
-
-	});
-
-	it('post()', done => {
-
-		let mockUrl = "/url";
-		let mockData = { hi: "hi"};
-		let mockOpts = { hello: "hello" };
-
-		injectSvc(svc => {
-
-			spyOn(svc, '_post').and.returnValue(new MockHttp);
-			svc.post(mockUrl, mockData, mockOpts);
-
-			expect(svc._post).toHaveBeenCalled();
-			expect(svc._post).toHaveBeenCalledWith(mockUrl, mockData, mockOpts);
-
-			done();
-
-		})();
-
-	});
-
-	it('put()', done => {
-
-		let mockUrl = "/url";
-		let mockData = { hi: "hi"};
-		let mockOpts = { hello: "hello" };
-
-		injectSvc(svc => {
-
-			spyOn(svc, '_put').and.returnValue(new MockHttp);
-			svc.put(mockUrl, mockData, mockOpts);
-
-			expect(svc._put).toHaveBeenCalled();
-			expect(svc._put).toHaveBeenCalledWith(mockUrl, mockData, mockOpts);
-
-			done();
-
-		})();
-
-	});
-
-	it('delete()', done => {
-
-		let mockUrl = "/url";
-		let mockOpts = { hello: "hello" };
-
-		injectSvc(svc => {
-
-			spyOn(svc, '_delete').and.returnValue(new MockHttp);
-			svc.delete(mockUrl, mockOpts);
-
-			expect(svc._delete).toHaveBeenCalled();
-			expect(svc._delete).toHaveBeenCalledWith(mockUrl, mockOpts);
-
-			done();
-
-		})();
-
-	});
-
+    decHttp.get({ url: '/something' })
+      .subscribe(data => {
+        expect(data).toBe(body.data);
+      });
+  }));
 
 });

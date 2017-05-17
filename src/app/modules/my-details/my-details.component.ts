@@ -4,7 +4,7 @@ import {UserDetailsInt} from './my-details.interface';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
-	templateUrl:'build/modules/my-details/my-details.view.html'
+	templateUrl:'./my-details.view.html'
 })
 export class MydetailsCom{
 

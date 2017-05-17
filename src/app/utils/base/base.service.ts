@@ -1,33 +1,35 @@
 import {DecHttp, HttpUtils} from '../http';
-import {EventEmitter} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Subject, BehaviorSubject, Observable} from 'rxjs';
+import '../custom-rx-operators/debounce-leading';
+
+const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args, 0) ]
 
 export class BaseService {
 
-	private _url: string;
-	protected baseUrl: string = (window['cordova'] ? "http://178.62.92.11:3000/" : "") + "api/";
-	public inFlightEvt = new EventEmitter();
+	public url:string;
+	public baseUrl: string = window['cordova']  ? "http://192.168.1.133:3000/api/" : "/api/";
+  public inFlight$: Observable<boolean>;
 	public model:any;
 	public subjects: Object = {};
 
-	constructor(protected http: DecHttp){}
+	constructor(protected http: DecHttp){
+    this.inFlight$ = <Observable<boolean>>this.create$('inFlight')
+      .debounceLeading(1000);
+  }
 
-	_get(observableKey?:string, opts = {}, url?:string){
+	_get(observableKey?:string, opts = {}, url?:string, params?:string){
+    this.isInFlight();
+		let request = this.http.get({
+			url: this.generateUrl(url, params), opts
+		})
+      .do(data => this.notInflight());
 
-		this.inFlightEvt.emit(true);
-		let request = this.http.get(url || this.url, opts);
-		if(observableKey){
-			request.subscribe(data => {
-				if(this.subjects[observableKey]){
-					this.subjects[observableKey].next(data)
-				} else {
-					throw new Error("Subject key not found for observable.");
-				}
-				this.inFlightEvt.emit(false);
-			});
-		}
+		request.subscribe(data => {
+			if(observableKey && this.subjects[observableKey]){
+				this.subjects[observableKey].next(data);
+			}
+		});
 		return request;
-
 	}
 
 	_getById(modelName:string, id:string, url?:string){
@@ -36,33 +38,42 @@ export class BaseService {
 		}, url);
 	}
 
-	_sync(model: any, opts: Object = {}, url?:string){
-		this.inFlightEvt.emit(true);
-		let request = this.http.post(url || this.url, model, opts);
-		request.subscribe(() => this.inFlightEvt.emit(false));
+  private httpWrapper(verb:string, data: any, opts: Object = {}, url?:string, params?:string){
+		this.isInFlight();
+		let request = this.http[verb]({url: this.generateUrl(url, params), data, opts});
+		request.subscribe(() => this.notInflight());
 		return request;
 	}
 
-	_update(model: any, opts: Object = {}, url?:string){
-		this.inFlightEvt.emit(true);
-		let request = this.http.put(url || this.url, model, opts);
-		request.subscribe(() => this.inFlightEvt.emit(false));
-		return request;
+	_sync(model: any, opts: Object = {}, url?:string, params?:string){
+		return this.httpWrapper.apply(this, mergeArguments("post", arguments));
 	}
 
-	set url(url:string){
-		this._url = url;
+	_update(model: any, opts: Object = {}, url?:string, params?:string){
+		return this.httpWrapper.apply(this, mergeArguments("put", arguments));
 	}
 
-	get url(){
-		return this.baseUrl + this._url;
+  _delete(model: any, opts: Object = {}, url?:string, params?:string){
+		return this.httpWrapper.apply(this, mergeArguments("delete", arguments));
 	}
 
-	createObservable(modelName:string){
+	create$(modelName:string){
 		let newSubject = new Subject();
 		this.subjects[modelName] = newSubject;
 		let observable$ = newSubject.asObservable();
 		return observable$.do(model => this[modelName] = model);
 	}
+
+	private isInFlight(){
+		this.subjects['inFlight'].next(true);
+	}
+
+	private notInflight(){
+		this.subjects['inFlight'].next(false);
+	}
+
+  generateUrl(url: string, params:string = ""){
+    return `${this.baseUrl}${url ? url : this.url}${params}`
+  }
 
 }

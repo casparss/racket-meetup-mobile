@@ -8,14 +8,14 @@ welcome,
 		font-weight:100;
 		font-size:2.5em;
 	}
-	
+
 	ion-grid{
-		height:100%;
+
 		align-items: center;
   		justify-content: center;
 
 	}
-	
+
 	.logo{
 		font-size:14em;
 		color:#fff;
@@ -43,7 +43,7 @@ welcome,
 		.item-inner, &:last-child{
 			border-bottom:1px solid #fff;
 		}
-		
+
 	}
 
 	input{
@@ -53,5 +53,5 @@ welcome,
 	h6, a{
 		color:#fff
 	}
-	
+
 }

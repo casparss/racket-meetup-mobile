@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
+import {IonicModule} from 'ionic-angular';
 import {AvailabilityCom} from './availability.component';
-import {Checkbox} from 'ionic-angular';
 import {AvailabilitySvc} from './availability.service';
 
 @NgModule({
-  declarations: [AvailabilityCom, Checkbox],
+  declarations: [AvailabilityCom],
+  imports: [IonicModule],
   exports:[AvailabilityCom],
   providers: [AvailabilitySvc]
 })

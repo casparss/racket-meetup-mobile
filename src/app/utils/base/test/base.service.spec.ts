@@ -1,93 +1,68 @@
-import {beforeEach, beforeEachProviders, describe, expect, it, inject} from '@angular/core/testing';
-import {MockBackend} from '@angular/http/testing';
-import {BaseRequestOptions, Http} from '@angular/http';
-import {provide} from '@angular/core';
-import {customAsyncInject, TestUtils} from '../../../../test/di-exports';
-import {BaseService} from '../base.service';
-import {ChildServiceMock} from './base.mock';
-import {DecHttp} from '../../../utils/http/';
-import {Observable, Subject} from 'rxjs';
-import {customMatchers} from '../../../../test/custom-jasmine-matchers';
-
-this.fixture = null;
-this.instance = null;
-
-
-let mockData = {
-	fixture: "I am a fixture"		
-}
-
-let fixture = {
-	data: mockData
-};
+import { async, TestBed, inject } from '@angular/core/testing';
+import { Subject, Observable } from 'rxjs';
+import { DecHttp } from '../../../utils/http/';
+import { FacadeBaseService, DecHttpMock } from './base.service.mocks';
 
 describe('Base service', () => {
 
-	beforeEachProviders(() => [
-		DecHttp,
-		ChildServiceMock,
-		BaseRequestOptions,
-		MockBackend,
-		TestUtils.provideMockHttpProvider()
-	]);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        FacadeBaseService,
+        { provide: DecHttp, useClass: DecHttpMock }
+      ]
+    });
+  });
 
-	beforeEach(() => {
-		jasmine.addMatchers(customMatchers);	
-	});
+  it('initialises', inject([FacadeBaseService], facadeBaseService => {
+    expect(facadeBaseService).not.toBeNull();
+  }));
 
-	beforeEach(inject([MockBackend], TestUtils.createMockHttpResponse(fixture)));
+  it('httpWrapper()', inject([FacadeBaseService, DecHttp], (facadeBaseService, http) => {
+    spyOn(http, 'post').and.callThrough();
+    spyOn(http, 'put').and.callThrough();
+    facadeBaseService._sync();
+    facadeBaseService._update();
+    expect(http.post).toHaveBeenCalled();
+    expect(http.put).toHaveBeenCalled();
+  }));
 
-	
+  it('inflight subject recieves a true before, and false after, requests', inject([FacadeBaseService], facadeBaseService => {
+    spyOn(facadeBaseService, 'isInFlight').and.callThrough();
+    spyOn(facadeBaseService, 'notInflight').and.callThrough();
+    facadeBaseService._get(null, {});
+    expect(facadeBaseService.isInFlight).toHaveBeenCalled();
+    expect(facadeBaseService.notInflight).toHaveBeenCalled();
+  }));
 
-	it('Initialises', inject([ChildServiceMock], (svc: ChildServiceMock) => {
-		expect(svc).not.toBeNull();
-	}));
+  it('generateUrl()', inject([FacadeBaseService], facadeBaseService => {
+    const baseUrl = facadeBaseService.baseUrl;
+    const url = "url/";
+    const params = "?hello=123"
+    const generatedUrl = facadeBaseService.generateUrl(url, params);
+    expect(generatedUrl).toBe(`${baseUrl}${url}${params}`);
+  }));
 
-	it('Get() with specified observable name pushes test data back through to that observable.', inject([ChildServiceMock], (svc: ChildServiceMock) => {
+  it('create$()', async(inject([FacadeBaseService], facadeBaseService => {
+    const runExpectation = value => {
+      expect(value).toEqual(mockValue);
+    };
 
-		const testPropertyName: string = 'mock';
+    const failTest = error => {
+      //Could probably find a more precise way of doing this
+      //perhaps doing an instanceof Error ?
+      expect(error).toBeUndefined();
+    };
 
-		svc.mock$.subscribe(
-				data => {
-					expect(data).toEqual(mockData);
-					expect(svc[testPropertyName]).toEqual(mockData);
-				}
-			);
+    const mockValue = { some: "object" };
+    const dave$ = facadeBaseService.create$('dave', mockValue);
+    const subject = facadeBaseService.subjects['dave'];
+    
 
-			svc._get(testPropertyName);
+    expect(subject instanceof Subject).toBe(true);
 
-	}));
-
-	it('createObservable() returns observable.', inject([ChildServiceMock], (svc: ChildServiceMock) => {
-		let test$ = svc.createObservable("test");
-		expect(test$).toBeInstanceOf(Observable);
-	}));
-
-	it('createObservable() creates corresponding subject to push to.', inject([ChildServiceMock], (svc: ChildServiceMock) => {
-		const observableName = "test";
-		let test$ = svc.createObservable(observableName);
-		expect(svc.subjects[observableName]).toBeInstanceOf(Subject);
-	}));
-
-	it('_getById() passes params correctly', inject([ChildServiceMock], (svc: ChildServiceMock) => {
-		//@#Refactor:30 Pretty pointless test. Really rather want to test the returned
-		//check mock back end for search query params
-		spyOn(svc, '_get');
-		svc._get(null, "1");
-		expect(svc._get).toHaveBeenCalled();
-		expect(svc._get).toHaveBeenCalledWith(null, "1");		
-	}));
-
-	it('inFlightEvt emits correctly when calling _sync()', inject([ChildServiceMock], (svc: ChildServiceMock) => {
-
-		spyOn(svc.inFlightEvt, 'emit');
-		svc._sync(null, {});
-
-		expect(svc.inFlightEvt.emit).toHaveBeenCalled();
-		expect(svc.inFlightEvt.emit).toHaveBeenCalledWith(true);
-		expect(svc.inFlightEvt.emit).toHaveBeenCalledWith(false);
-
-
-	}));
+    dave$.subscribe(runExpectation, failTest);
+    subject.next(mockValue);
+  })));
 
 });

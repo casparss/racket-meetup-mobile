@@ -1,11 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {NavParams} from 'ionic-angular';
 import {ChatSvc} from './chat.service';
-import {FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
-	templateUrl: 'build/modules/messages/chat.view.html',
-	providers: [ChatSvc]
+	templateUrl: './chat.view.html'
 })
 export class ChatCom{
 
@@ -18,7 +17,7 @@ export class ChatCom{
 		private params: NavParams
 	){
 		this.chatMessages$ = svc.chatMessages$;
-		this.svc.setChatId(this.params.get("id"));
+		this.svc.init(this.params.get("id"));
 		this.sendMessageForm = this.formBuilder.group({
 			messageInput: ['', [<any>Validators.required]]
 		});
@@ -33,7 +32,7 @@ export class ChatCom{
 	}
 
 	clearInput(){
-		// clear messageInput field
+    this.sendMessageForm.patchValue({messageInput: ""});
 	}
 
 	ngOnDestroy(){

@@ -1,51 +1,33 @@
-import {beforeEach, beforeEachProviders, describe, expect, it, inject} from '@angular/core/testing';
-import {MockBackend} from '@angular/http/testing';
-import {BaseRequestOptions, Http} from '@angular/http';
-import {provide} from '@angular/core';
-import {TestUtils} from '../../../../test/di-exports';
-import {ColObjDifferFactory} from '../../../utils/differs/collection-object-diff';
-import {ColObjDifferFactoryMock, CollectionObjectDifferMock} from './availability.mocks';
-import {AvailabilitySvc} from '../availability.service';
-import {model} from './availability.fixture';
-import {DecHttp} from '../../../utils/http/';
+import { async, fakeAsync, TestBed, inject } from '@angular/core/testing';
+import { AvailabilitySvc } from '../availability.service';
+import { DecHttp } from '../../../utils/http/';
+import { ColObjDifferFactory } from '../../../utils/differs/collection-object-diff';
+import { ColObjDifferFactoryMock, DecHttpMock, differ } from './availability.mocks';
 
-this.fixture = null;
-this.instance = null;
+//Service unit testing example
+//https://blog.thoughtram.io/angular/2016/11/28/testing-services-with-http-in-angular-2.html
 
-describe('Availability service', () => {
+describe("Availability Service", () => {
 
-	beforeEachProviders(() => [
-		DecHttp,
-		AvailabilitySvc,
-		BaseRequestOptions,
-		MockBackend,
-		provide(ColObjDifferFactory, {useClass: ColObjDifferFactoryMock}),		
-		TestUtils.provideMockHttpProvider()
-	]);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        AvailabilitySvc,
+        { provide: DecHttp, useClass: DecHttpMock },
+        { provide: ColObjDifferFactory, useClass: ColObjDifferFactoryMock}
+      ]
+    });
+  });
 
-	beforeEach(inject([MockBackend], TestUtils.createMockHttpResponse(model)));
-
-	const injectSvc = function (cb) {
-		return inject([AvailabilitySvc], (svc: AvailabilitySvc) => {
-			cb(svc);
-		});
-	}
-
-	it('initialises', injectSvc(svc => {
-		expect(svc).not.toBeNull();
+  it('initialises', inject([AvailabilitySvc], availabilitySvc => {
+    expect(availabilitySvc).not.toBeNull();
 	}));
 
-	it('get() sets [\'differ\'] property as instanceOf CollectionObjectDifferMock', done =>{
-
-		injectSvc(svc => {
-			svc.get().subscribe(
-				()=>{
-					expect(svc.differ).toEqual(jasmine.any(CollectionObjectDifferMock));
-					done();
-				}
-			);
-		})();
-
-	});
+  it("diff()", inject([AvailabilitySvc], availabilitySvc => {
+    availabilitySvc.differ = differ;
+    spyOn(availabilitySvc, 'debouncedSync');
+    availabilitySvc.diff();
+    expect(availabilitySvc.debouncedSync).toHaveBeenCalled();
+  }));
 
 });

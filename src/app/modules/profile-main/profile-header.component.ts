@@ -6,11 +6,11 @@ import {Component, Input} from '@angular/core';
 		<header>
 
 			<img src="{{user?.details.image}}" alt="">
-			
+
 			<h1 class="playerName">
 				{{user?.details.firstName + " " + user?.details.lastName}}
 			</h1>
-			
+
 			<ion-grid class="playerInfo">
 				<ion-row>
 					<ion-col width-33>
@@ -18,7 +18,7 @@ import {Component, Input} from '@angular/core';
 						<dt>Ranking</dt>
 					</ion-col>
 					<ion-col width-33>
-						<dd>{{user?.stats.matchesPlayed}}</dd>			
+						<dd>{{user?.stats.matchesPlayed}}</dd>
 						<dt>Matches</dt>
 					</ion-col>
 					<ion-col width-33>
@@ -37,5 +37,3 @@ export class ProfileHeaderCom{
 	@Input() user: any;
 	constructor(){}
 }
-
-

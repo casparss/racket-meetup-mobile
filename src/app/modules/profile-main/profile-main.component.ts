@@ -6,12 +6,6 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 @Component({
 	template:
 	`
-		<ion-header>
-			<ion-navbar>
-				<ion-title>Profile</ion-title>
-			</ion-navbar>
-		</ion-header>
-
 		<ion-content>
 
 			<profile-header [user]="user"></profile-header>
@@ -20,19 +14,18 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 				[user]="user"
 			></profile-actions>
 
-			<main [ngSwitch]="user.id === userSvc.current.id">
+			<main [ngSwitch]="user?.id === userSvc?.current.id">
 
 				<availability
 					*ngSwitchCase="true"
-					[userId]="user.id"
+					[user]="user"
 				></availability>
 
-				<games [userId]="user.id"></games>
+				<games [user]="user"></games>
 
 			</main>
 
 		</ion-content>
-
 	`,
 	selector:'profile-main'
 })

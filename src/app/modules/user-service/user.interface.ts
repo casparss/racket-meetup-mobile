@@ -11,6 +11,7 @@ export interface UserSignupInt {
 }
 
 export interface UserInt{
+  _id:string,
 	id:string,
 	details:{
 		email: string,
@@ -24,6 +25,9 @@ export interface UserInt{
 	stats: {
 		ranking: number,
 		matchesPlayed: number
-	}
+	},
+  followers: {
+    followingThem: Array<string>,
+    followingMe: Array<string>
+  }
 }
-
