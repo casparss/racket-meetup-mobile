@@ -34,7 +34,6 @@ export class CollectionDiff {
 	  			if(objChanges){
 
 	  				objChanges.forEachChangedItem(changedObj => {
-	  					console.log("Changed");
 	  					changedResultArr.push(changedObj);
 	  				});
 
