@@ -30,8 +30,7 @@ import { Observable } from 'rxjs';
 })
 export class WelcomeCom{
 	private isToggled: boolean = true;
-	private isKeyboardShowing:any;
-	private show$: Observable<any>;
+	private isKeyboardShowing:boolean;
 	constructor(private keyboard: Keyboard, private _ngZone: NgZone ){
 		this.toggleSignupVisibility();
 	}
