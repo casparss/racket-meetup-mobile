@@ -10,26 +10,36 @@
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$primaryColor: #16a086;
+$darkcyan: #16a086;
+$lightseagreen: #20c0a3;
+
+$lightgreen: #1dd4b1;
+$white: #fff;
+
+
+$primaryColor: $darkcyan;
 $primaryTintLight: #f3fdfb;
 $text-white: #fff;
 $text-color:#444;
 $lighter-grey: rgba(68, 68, 68, 0.8);
 $text-colour-light-grey:#333;
 $text-colour-grey: $text-color;
-$white: #fff;
 $border-colour-grey:#c8c7cc;
 $quiet-grey: #fcfcfc;
 $toolbar-grey: #f8f8f8;
-$primary-gradient: linear-gradient(to bottom, #1dd4b1 0%,#16a086 77%);
+$primary-gradient: linear-gradient(to bottom, $lightgreen 0%, $darkcyan 77%);
 
 $colors: (
   primary:    $primaryColor,
-  secondary:  #32db64,
+  secondary:  red,
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-  favorite:   #69BB7B
+  favorite:   #69BB7B,
+  navbarColor: (
+    base: red,
+    contrast: white
+  )
 );
 
 // Named Color Variables

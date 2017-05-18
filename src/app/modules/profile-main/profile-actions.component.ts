@@ -22,7 +22,7 @@ const pages: any = {
 	template:`
 		<ion-list [ngSwitch]="user.id === userSvc.current.id">
 
-			<ion-list-header>
+			<ion-list-header class="component-header">
 				Actions
 			</ion-list-header>
 

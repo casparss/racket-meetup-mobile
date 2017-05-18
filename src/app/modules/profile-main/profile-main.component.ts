@@ -12,24 +12,28 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 			</ion-navbar>
 		</ion-header>
 
-		<ion-content>
+		<ion-content no-bounce>
 
-			<profile-header [user]="user"></profile-header>
+			<div class="content-background">
 
-			<profile-actions
-				[user]="user"
-			></profile-actions>
+				<profile-header [user]="user"></profile-header>
 
-			<main [ngSwitch]="user?.id === userSvc?.current.id">
-
-				<availability
-					*ngSwitchCase="true"
+				<profile-actions
 					[user]="user"
-				></availability>
+				></profile-actions>
 
-				<games [user]="user"></games>
+				<main [ngSwitch]="user?.id === userSvc?.current.id">
 
-			</main>
+					<availability
+						*ngSwitchCase="true"
+						[user]="user"
+					></availability>
+
+					<games [user]="user"></games>
+
+				</main>
+
+			</div>
 
 		</ion-content>
 	`,
