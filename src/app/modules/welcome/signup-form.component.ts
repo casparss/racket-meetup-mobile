@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {TabsController} from '../../tabs/tabs-controller.component';
+import {TabsController} from '../tabs/tabs-controller.component';
 import {UserSvc} from '../user-service/user.service';
 
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
@@ -12,40 +12,39 @@ import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 		(ngSubmit)="signup(signupForm.value, signupForm.valid)"
 		novalidate
 	>
-		<ion-item>
+		<ion-list>
+			<ion-item>
+				<ion-label>
+					First name:
+				</ion-label>
+				<ion-input formControlName="firstName" type="text"></ion-input>
+			</ion-item>
 
-			<ion-label>
-				First name:
-			</ion-label>
-			<ion-input formControlName="firstName" type="text"></ion-input>
-		</ion-item>
+			<ion-item>
+				<ion-label>
+					Last name:
+				</ion-label>
+				<ion-input formControlName="lastName" type="text"></ion-input>
+			</ion-item>
 
-		<ion-item>
-			<ion-label>
-				Last name:
-			</ion-label>
-			<ion-input formControlName="lastName" type="text"></ion-input>
-		</ion-item>
+			<ion-item>
+				<ion-label>
+					<ion-icon name="mail"></ion-icon>
+					Email:
+				</ion-label>
+				<ion-input formControlName="email" type="email"></ion-input>
+			</ion-item>
 
-		<ion-item>
-			<ion-label>
-				<ion-icon name="mail"></ion-icon>
-				Email:
-			</ion-label>
-			<ion-input formControlName="email" type="email"></ion-input>
-		</ion-item>
+			<ion-item>
+				<ion-label>
+					<ion-icon name="key"></ion-icon>
+					Password
+				</ion-label>
+				<ion-input formControlName="password" type="password"></ion-input>
+			</ion-item>
+		</ion-list>
 
-		<ion-item>
-			<ion-label>
-				<ion-icon name="key"></ion-icon>
-				Password
-			</ion-label>
-			<ion-input formControlName="password" type="password"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<button ion-button block medium>Signup</button>
-		</ion-item>
+		<button ion-button block medium>Signup</button>
 	</form>
 
 	`,

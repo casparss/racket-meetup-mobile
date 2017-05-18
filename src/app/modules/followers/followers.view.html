@@ -6,7 +6,7 @@
 
 <ion-content>
 
-	<div class="ios-padding">
+	<div [attr.text-center]="isIOS ? 'padding' : null">
 		<ion-segment [(ngModel)]="selectedSegment">
       <ion-segment-button value="following">
 				Following ({{(followers.following$ | async)?.length}})

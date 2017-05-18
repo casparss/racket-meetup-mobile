@@ -1,20 +1,25 @@
 //A2 deps
+import { Keyboard } from '@ionic-native/keyboard';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
 //App import
 import { RacketMeetupApp } from './app.component';
 
 //Tabs imports
-import {TabsModule} from './tabs/tabs.module';
+import {TabsModule} from './modules/tabs/tabs.module';
 
 //Tabs controller
-import {TabsController} from './tabs/tabs-controller.component';
+import {TabsController} from './modules/tabs/tabs-controller.component';
 
 //Welcome module
 import {WelcomeModule} from './modules/welcome/welcome.module';
+import { RankingsListCom } from './modules/rankings-list/rankings-list.component';
+import { MessageListCom } from './modules/messages/message-list.component';
 
 //Welcome
 import {WelcomeCom} from './modules/welcome/welcome.component';
@@ -49,7 +54,9 @@ import {MessagesSvc} from './modules/messages/messages.service';
     RacketMeetupApp,
     TabsController,
     WelcomeCom,
-    ToastCom
+    ToastCom,
+    RankingsListCom,
+    MessageListCom
   ],
   providers: [
     StatusBar,
@@ -62,7 +69,9 @@ import {MessagesSvc} from './modules/messages/messages.service';
   	UserSvc,
   	WsSvc,
   	ColObjDifferFactory,
-    MessagesSvc
+    MessagesSvc,
+    Keyboard,
+    SpinnerDialog
   ]
 })
 export class AppModule {}
