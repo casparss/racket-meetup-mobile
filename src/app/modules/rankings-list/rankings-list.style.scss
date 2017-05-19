@@ -1,6 +1,12 @@
 rankings-list,
 rankings-list-com{
 
+	background: $white;
+
+	.ios-padding{
+		padding: 16px;
+	}
+
 	header{
 
 		color:$white;
@@ -16,7 +22,7 @@ rankings-list-com{
 
 	}
 
-	.ranking-board{		
+	.ranking-board{
 
 		ion-row{
 			@include flexVerticalCenter;
@@ -56,8 +62,8 @@ rankings-list-com{
 	ion-list .item .item-inner,
 	ion-list > .item:last-child, ion-list > .item-wrapper:last-child .item{
 		border-bottom:1px solid rgba(0,0,0,0.1);
-	}	
+	}
 
-	
-	
+
+
 }
