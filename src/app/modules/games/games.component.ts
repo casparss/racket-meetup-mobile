@@ -4,7 +4,14 @@ import {GamesSvc} from './games.service';
 import {GameInt} from './games.interfaces';
 
 @Component({
-	templateUrl:'./games.view.html',
+	template:`
+	<ion-list class="games">
+		<ion-list-header class="component-header">
+			Upcoming games
+		</ion-list-header>
+		<games-list [games]="svc.games$"></games-list>
+	</ion-list>
+	`,
 	selector: 'games'
 })
 export class GamesCom {
@@ -12,9 +19,7 @@ export class GamesCom {
 	@Input() user: UserInt;
 	private games$: any;
 
-	constructor(private svc: GamesSvc){
-		this.games$ = this.svc.games$;
-	}
+	constructor(private svc: GamesSvc){}
 
 	ngOnInit(){
 		this.svc.get(this.user._id);

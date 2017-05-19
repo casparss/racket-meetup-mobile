@@ -33,7 +33,10 @@ $colors: (
   primary:    $primaryColor,
   secondary:  red,
   danger:     #f53d3d,
-  light:      #f4f4f4,
+  light: (
+    contrast: #333,
+    base: #f3f3f3
+  ),
   dark:       #222,
   favorite:   #69BB7B,
   navbarColor: (
