@@ -1,4 +1,4 @@
-export interface UserDetailsInt{
+export interface UserDetailsInt {
 	username: string,
 	email:string,
 	password: string,
@@ -7,4 +7,9 @@ export interface UserDetailsInt{
 	dob: Date,
 	image: string,
 	location: string
+}
+
+export interface ActionSheetActionsInt {
+	event: Function,
+	label: string
 }

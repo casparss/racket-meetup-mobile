@@ -6,7 +6,9 @@ import { DecHttp, HttpUtils } from '../../utils/http';
 export { UserLoginInt, UserSignupInt, UserInt } from './user.interface';
 import { UserLoginInt, UserSignupInt } from './user.interface';
 import { BehaviorSubject } from 'rxjs';
+import config from '../../config.json';
 
+const IMAGE_BASE_URL = config[window['cordova'] ? "device" : "local"].imageUrl;
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -17,12 +19,15 @@ export class UserSvc extends BaseService {
 	//@#Refactor:0 convert into behaviour subject observable!
 	private _user: any;
 	private _user$;
+	private _profileImage$;
   public searchedPlayers$:any;
   public followers$:any;
 
 	constructor(http: DecHttp){
 		super(http);
 		this._user$ = <Observable<any>>this.create$("user");
+		this._profileImage$ = <Observable<any>>this.create$("profileImage")
+			.map(userId => (IMAGE_BASE_URL + userId));
 		this._user$.subscribe(user => this._user = user);
     this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
 	}
@@ -42,6 +47,7 @@ export class UserSvc extends BaseService {
 	}
 
 	public userSuccess = user => {
+		this._profileImage$.next(user._id);
 		this.current = user;
 		this.http.token = user.token;
 	}
@@ -98,13 +104,27 @@ export class UserSvc extends BaseService {
     return exports;
   }
 
-	syncDetails(details){
-		return this._sync(details)
+	updateDetails(details){
+		return this._update(details)
 			.subscribe(details => {
 				let user = this.current;
 				user.details = details;
 				this.current = user;
 			});
+	}
+
+	uploadPhoto(image: string){
+		let request = this._update({ image });
+		request.subscribe(() => this.refreshProfileImage())
+		return request;
+	}
+
+	refreshProfileImage(){
+		this._profileImage$.next(`${this._user._id}?${new Date().getTime()}`);
+	}
+
+	get profileImage() {
+		return this._profileImage$
 	}
 
   search(searchTerm:string){

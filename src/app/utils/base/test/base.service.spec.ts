@@ -21,6 +21,7 @@ describe('Base service', () => {
   it('httpWrapper()', inject([FacadeBaseService, DecHttp], (facadeBaseService, http) => {
     spyOn(http, 'post').and.callThrough();
     spyOn(http, 'put').and.callThrough();
+    facadeBaseService.url  = "/url";
     facadeBaseService._sync();
     facadeBaseService._update();
     expect(http.post).toHaveBeenCalled();
@@ -30,7 +31,7 @@ describe('Base service', () => {
   it('inflight subject recieves a true before, and false after, requests', inject([FacadeBaseService], facadeBaseService => {
     spyOn(facadeBaseService, 'isInFlight').and.callThrough();
     spyOn(facadeBaseService, 'notInflight').and.callThrough();
-    facadeBaseService._get(null, {});
+    facadeBaseService._get(null, {}, '/url');
     expect(facadeBaseService.isInFlight).toHaveBeenCalled();
     expect(facadeBaseService.notInflight).toHaveBeenCalled();
   }));
@@ -57,7 +58,7 @@ describe('Base service', () => {
     const mockValue = { some: "object" };
     const dave$ = facadeBaseService.create$('dave', mockValue);
     const subject = facadeBaseService.subjects['dave'];
-    
+
 
     expect(subject instanceof Subject).toBe(true);
 

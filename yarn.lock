@@ -112,6 +112,14 @@
   dependencies:
     tsickle "^0.21.0"
 
+"@ionic-native/action-sheet@^3.10.0":
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/action-sheet/-/action-sheet-3.10.0.tgz#f8614a9cb04c06cd397daf666d1415ff663821f1"
+
+"@ionic-native/camera@^3.10.0":
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/camera/-/camera-3.10.0.tgz#2b841c291ebe2d44f2bcc5b5add669d727fc7b2d"
+
 "@ionic-native/core@^3.9.2":
   version "3.9.2"
   resolved "https://registry.yarnpkg.com/@ionic-native/core/-/core-3.9.2.tgz#ea016b80540db034de2ed0910599ecd8e678b282"
@@ -119,6 +127,10 @@
 "@ionic-native/keyboard@^3.9.2":
   version "3.9.2"
   resolved "https://registry.yarnpkg.com/@ionic-native/keyboard/-/keyboard-3.9.2.tgz#9cd7fb972733e1971b2004b5133d235a59a99f9d"
+
+"@ionic-native/photo-library@^3.10.0":
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/photo-library/-/photo-library-3.10.0.tgz#cd17b319f14d53e7c2044267927a2e1d65882e47"
 
 "@ionic-native/spinner-dialog@^3.9.2":
   version "3.9.2"

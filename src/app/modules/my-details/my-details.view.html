@@ -5,21 +5,46 @@
 </ion-header>
 
 <ion-content>
-	
+
 	<form
 		[formGroup]='mydetailsForm'
 		(ngSubmit)='syncDetails(mydetailsForm.value, mydetailsForm.valid)'
-		novalidate ion-list padding
+		novalidate ion-list
 	>
 		<ion-list>
 
+			<ion-item-divider color="light">
+				Profile image
+			</ion-item-divider>
+
 			<ion-item>
-				<ion-thumbnail item-left>
-					<img src="{{details.image}}">
-				</ion-thumbnail>
-				<h2>Profile image</h2>
-				<button right>Change</button>
+
+			<ion-avatar item-left>
+      	<img src="{{details.image}}" />
+    	</ion-avatar>
+
+
+
+				<button ion-button item-right (click)="showActionSheet(e)">Change</button>
 			</ion-item>
+
+			<ion-item-divider color="light">
+				Password
+			</ion-item-divider>
+
+			<ion-item>
+				<ion-label floating>Current password</ion-label>
+				<ion-input
+					formControlName="password"
+					type="password"
+					value="xxxxxxxxx"
+				></ion-input>
+				<button ion-button item-right>Change</button>
+			</ion-item>
+
+			<ion-item-divider color="light">
+				Personal details
+			</ion-item-divider>
 
 			<ion-item>
 				<ion-label floating>Email:</ion-label>
@@ -27,14 +52,6 @@
 					formControlName="email"
 				 	type="email"
 				 ></ion-input>
-			</ion-item>
-
-			<ion-item>
-				<ion-label floating>Username</ion-label>
-				<ion-input
-					formControlName="username"
-					type="text"
-				></ion-input>
 			</ion-item>
 
 			<ion-item>
@@ -54,14 +71,6 @@
 			</ion-item>
 
 			<ion-item>
-				<ion-label floating>Password</ion-label>
-				<ion-input
-					formControlName="password"
-					type="password"
-				></ion-input>
-			</ion-item>
-
-			<ion-item>
 				<ion-label floating>Date of birth</ion-label>
 				<ion-datetime
 					displayFormat="DD / M / YYYY"
@@ -70,7 +79,7 @@
 			</ion-item>
 
 			<ion-item>
-				<button block large>Update details</button>
+				<button type="submit" ion-button block large>Update personal details</button>
 			</ion-item>
 
 		</ion-list>

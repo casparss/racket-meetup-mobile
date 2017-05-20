@@ -8,7 +8,7 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 	`
 		<ion-header>
 			<ion-navbar>
-				<ion-title>{{user.details.fullName}}</ion-title>
+				<ion-title>Profile</ion-title>
 			</ion-navbar>
 		</ion-header>
 

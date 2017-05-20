@@ -46,15 +46,15 @@ export class BaseService {
 		return request;
 	}
 
-	_sync(model: any, opts: Object = {}, url?:string, params?:string){
+	_sync(data: any, opts: Object = {}, url?:string, params?:string){
 		return this.httpWrapper.apply(this, mergeArguments("post", arguments));
 	}
 
-	_update(model: any, opts: Object = {}, url?:string, params?:string){
+	_update(data: any, opts: Object = {}, url?:string, params?:string){
 		return this.httpWrapper.apply(this, mergeArguments("put", arguments));
 	}
 
-  _delete(model: any, opts: Object = {}, url?:string, params?:string){
+  _delete(data: any, opts: Object = {}, url?:string, params?:string){
 		return this.httpWrapper.apply(this, mergeArguments("delete", arguments));
 	}
 
@@ -74,6 +74,9 @@ export class BaseService {
 	}
 
   generateUrl(url: string, params:string = ""){
+		if(!url && !this.url){
+			throw new Error("No url property has been set for request.");
+		}
     return `${this.baseUrl}${url ? url : this.url}${params}`
   }
 

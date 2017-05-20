@@ -1,4 +1,7 @@
 //A2 deps
+
+import { Camera } from '@ionic-native/camera';
+import { ActionSheet } from '@ionic-native/action-sheet';
 import { Keyboard } from '@ionic-native/keyboard';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -71,7 +74,9 @@ import {MessagesSvc} from './modules/messages/messages.service';
   	ColObjDifferFactory,
     MessagesSvc,
     Keyboard,
-    SpinnerDialog
+    SpinnerDialog,
+    ActionSheet,
+    Camera
   ]
 })
 export class AppModule {}

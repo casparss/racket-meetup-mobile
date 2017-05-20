@@ -1,5 +1,9 @@
-.profile-mydetails-com{
+my-details {
 	ion-thumbnail img{
 		border-radius:4rem;
+	}
+	.item-ios ion-avatar img {
+		width: 100px;
+		height: 100px;
 	}
 }
