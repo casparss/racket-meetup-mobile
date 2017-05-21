@@ -3,7 +3,8 @@ import {map} from 'lodash';
 import {BaseService} from '../../utils/base/base.service';
 import {DecHttp} from '../../utils/http';
 import {UserSvc} from '../user-service/user.service';
-import {WsSvc} from '../web-sockets-service/'
+import {WsSvc} from '../web-sockets-service/';
+import { ConfigSvc } from '../config/config.service';
 
 @Injectable()
 export class ChatSvc extends BaseService{
@@ -12,8 +13,13 @@ export class ChatSvc extends BaseService{
 	private _chatId: any;
 	private currentChat: Array<any> = [];
 
-	constructor(http:DecHttp, private userSvc: UserSvc, private ws: WsSvc){
-		super(http);
+	constructor(
+		http:DecHttp,
+		private userSvc: UserSvc,
+		private ws: WsSvc,
+		configSvc: ConfigSvc
+	){
+		super(http, configSvc);
 		this._chatMessages$ = this.create$('chatMessages');
 	}
 

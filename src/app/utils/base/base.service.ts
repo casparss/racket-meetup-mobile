@@ -1,5 +1,5 @@
 import {DecHttp, HttpUtils} from '../http';
-import config from '../../config.json';
+import { ConfigSvc } from '../../modules/config/config.service';
 import {Subject, BehaviorSubject, Observable} from 'rxjs';
 import '../custom-rx-operators/debounce-leading';
 
@@ -8,12 +8,13 @@ const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args
 export class BaseService {
 
 	public url:string;
-	public baseUrl: string = window['cordova']  ? config.device.baseUrl : "/api/";
+	public baseUrl: string;
   public inFlight$: Observable<boolean>;
 	public model:any;
 	public subjects: Object = {};
 
-	constructor(protected http: DecHttp){
+	constructor(protected http: DecHttp, configSvc: ConfigSvc){
+		this.baseUrl = configSvc.get('baseUrl');
     this.inFlight$ = <Observable<boolean>>this.create$('inFlight')
       .debounceLeading(1000);
   }

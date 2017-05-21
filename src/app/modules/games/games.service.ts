@@ -6,6 +6,7 @@ import {BaseService} from "../../utils/base/base.service";
 import {Utils} from '../../utils/util-helpers';
 import {Observable} from 'rxjs/Observable';
 import {GameInt} from './games.interfaces';
+import { ConfigSvc } from '../config/config.service';
 
 @Injectable()
 export class GamesSvc extends BaseService{
@@ -15,9 +16,10 @@ export class GamesSvc extends BaseService{
 
 	constructor(
 		protected nav: NavController,
-		http: DecHttp
+		http: DecHttp,
+		configSvc: ConfigSvc
 	){
-		super(http);
+		super(http, configSvc);
 		this.games$ = this.create$('games');
 	}
 

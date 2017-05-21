@@ -6,9 +6,7 @@ import { DecHttp, HttpUtils } from '../../utils/http';
 export { UserLoginInt, UserSignupInt, UserInt } from './user.interface';
 import { UserLoginInt, UserSignupInt } from './user.interface';
 import { BehaviorSubject } from 'rxjs';
-import config from '../../config.json';
-
-const IMAGE_BASE_URL = config[window['cordova'] ? "device" : "local"].imageUrl;
+import { ConfigSvc } from '../config/config.service';
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -23,11 +21,14 @@ export class UserSvc extends BaseService {
   public searchedPlayers$:any;
   public followers$:any;
 
-	constructor(http: DecHttp){
-		super(http);
+	constructor(
+		http: DecHttp,
+		private configSvc: ConfigSvc
+	){
+		super(http, configSvc);
 		this._user$ = <Observable<any>>this.create$("user");
 		this._profileImage$ = <Observable<any>>this.create$("profileImage")
-			.map(userId => (IMAGE_BASE_URL + userId));
+			.map(userId => (configSvc.get('imageUrl') + userId));
 		this._user$.subscribe(user => this._user = user);
     this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
 	}
@@ -47,7 +48,7 @@ export class UserSvc extends BaseService {
 	}
 
 	public userSuccess = user => {
-		this._profileImage$.next(user._id);
+		this.subjects['profileImage'].next(user._id);
 		this.current = user;
 		this.http.token = user.token;
 	}

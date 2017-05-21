@@ -20,7 +20,7 @@ import {TabsModule} from './modules/tabs/tabs.module';
 import {TabsController} from './modules/tabs/tabs-controller.component';
 
 //Welcome module
-import {WelcomeModule} from './modules/welcome/welcome.module';
+import { WelcomeModule } from './modules/welcome/welcome.module';
 import { RankingsListCom } from './modules/rankings-list/rankings-list.component';
 import { MessageListCom } from './modules/messages/message-list.component';
 
@@ -41,6 +41,7 @@ import {DecHttp} from './utils/http/';
 import {ToastSvc} from './modules/toast/toast.service';
 import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
 import {MessagesSvc} from './modules/messages/messages.service';
+import { ConfigSvc } from './modules/config/config.service';
 
 @NgModule({
   declarations: [RacketMeetupApp, ToastCom],
@@ -70,6 +71,7 @@ import {MessagesSvc} from './modules/messages/messages.service';
   	WsSvc,
   	DecHttp,
   	UserSvc,
+    ConfigSvc,
   	WsSvc,
   	ColObjDifferFactory,
     MessagesSvc,

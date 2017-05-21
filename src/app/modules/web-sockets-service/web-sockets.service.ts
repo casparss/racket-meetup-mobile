@@ -1,16 +1,20 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import * as io from 'socket.io-client';
 import {UserSvc} from '../user-service/user.service';
-import config from '../../config.json';
+import { ConfigSvc } from '../config/config.service';
 
 @Injectable()
 export class WsSvc{
 
-	public socket = io(config[window['cordova'] ? 'device' : 'local'].wsUrl);
+	public socket;
 	private _authenticated = false;
 	public onAuthenticted = new EventEmitter();
 
-	constructor(private userSvc: UserSvc){
+	constructor(
+		private userSvc: UserSvc,
+		configSvc: ConfigSvc
+	){
+		this.socket = io(configSvc.get('wsUrl'));
 		this.authenticate();
 	}
 

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BaseService} from '../../utils/base/base.service';
 import {DecHttp} from '../../utils/http';
+import { ConfigSvc } from '../config/config.service';
 
 @Injectable()
 export class RankingsSvc extends BaseService{
@@ -8,9 +9,9 @@ export class RankingsSvc extends BaseService{
 	url = 'rankings';
 	private rankingsList$: any;
 
-	constructor(http: DecHttp){
-		super(http);
-		this.rankingsList$ = this.create$('rankings');	
+	constructor(http: DecHttp, configSvc: ConfigSvc){
+		super(http, configSvc);
+		this.rankingsList$ = this.create$('rankings');
 		this.getRankings();
 	}
 

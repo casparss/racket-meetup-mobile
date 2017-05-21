@@ -7,13 +7,33 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve",
+    "ionic:serve": "NODE_ENV=local ionic-app-scripts serve",
     "e2e": "ionic-app-scripts build && protractor",
     "postinstall": "ionic state restore && webdriver-manager update",
     "test": "ng test",
     "test-coverage": "ng test --code-coverage",
     "test-ci": "ng test --watch=false --code-coverage",
-    "ios": "ionic cordova run ios"
+    "ios": "ionic cordova run ios",
+    "build:jacq": "NODE_ENV=jacq npm run ios",
+    "build:mum": "NODE_ENV=mum npm run ios",
+    "build:local": "NODE_ENV=local npm run ios"
+  },
+  "envConfig": {
+    "local": {
+      "baseUrl": "'api/'",
+      "wsUrl": "'ws://127.0.0.1:3000'",
+      "imageUrl": "'http://127.0.0.1:3000/assets/'"
+    },
+    "jacq": {
+      "baseUrl": "'http://192.168.1.72:3000/api/'",
+      "wsUrl": "'ws://192.168.1.72:3000'",
+      "imageUrl": "'http://192.168.1.72:3000/assets/'"
+    },
+    "mum": {
+      "baseUrl": "'http://192.168.0.18:3000/api/'",
+      "wsUrl": "'ws://192.168.0.18:3000'",
+      "imageUrl": "'http://192.168.0.18:3000/assets/'"
+    }
   },
   "dependencies": {
     "@angular/common": "4.0.0",
@@ -81,5 +101,8 @@
       "locator": "ios"
     }
   ],
-  "description": "RacketMeetupMobileApp"
+  "description": "RacketMeetupMobileApp",
+  "config": {
+    "ionic_webpack": "./webpack.config.js"
+  }
 }
