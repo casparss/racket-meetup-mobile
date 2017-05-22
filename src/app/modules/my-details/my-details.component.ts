@@ -4,6 +4,7 @@ import { UserDetailsInt, ActionSheetActionsInt } from './my-details.interface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Crop } from '@ionic-native/crop';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 
 const sourceTypes = {
@@ -11,6 +12,8 @@ const sourceTypes = {
 	CAMERA: 1,
 	SAVEDPHOTOALBUM: 2
 };
+
+const UPLOAD_MESSAGE = "Uploading photo";
 
 @Component({
 	templateUrl:'./my-details.view.html',
@@ -29,7 +32,8 @@ export class MydetailsCom{
 		private formBuilder: FormBuilder,
 		private actionSheet: ActionSheet,
 		private camera: Camera,
-		private spinnerDialog: SpinnerDialog
+		private spinnerDialog: SpinnerDialog,
+		private crop: Crop
 	){
 		this.details = this.userSvc.current.details;
 		this.defineForm();
@@ -54,7 +58,8 @@ export class MydetailsCom{
 			quality: 100,
 			destinationType: this.camera.DestinationType.DATA_URL,
 			encodingType: this.camera.EncodingType.JPEG,
-			mediaType: this.camera.MediaType.PICTURE
+			mediaType: this.camera.MediaType.PICTURE,
+			allowEdit: true
 		};
 	}
 
@@ -77,8 +82,9 @@ export class MydetailsCom{
 
 	useCamera(sourceType:number){
 		return this.camera.getPicture(Object.assign({}, this.cameraOpts, { sourceType }))
+			.then(imageUri => this.crop.crop(imageUri, {quality: 100}))
 			.then(imageUri => {
-				this.spinnerDialog.show("Uploading photo", "Uploading photo", true);
+				this.spinnerDialog.show(UPLOAD_MESSAGE, UPLOAD_MESSAGE, true);
 				return this.userSvc.uploadPhoto(imageUri);
 			})
 			.then(() => this.spinnerDialog.hide())

@@ -124,6 +124,10 @@
   version "3.9.2"
   resolved "https://registry.yarnpkg.com/@ionic-native/core/-/core-3.9.2.tgz#ea016b80540db034de2ed0910599ecd8e678b282"
 
+"@ionic-native/crop@^3.10.3":
+  version "3.10.3"
+  resolved "https://registry.yarnpkg.com/@ionic-native/crop/-/crop-3.10.3.tgz#787481fad1b85540f58e9e2ffe999e3a22c90207"
+
 "@ionic-native/file@^3.10.2":
   version "3.10.2"
   resolved "https://registry.yarnpkg.com/@ionic-native/file/-/file-3.10.2.tgz#3dca5c3469fde4ab5daec34a7a61d867c4895754"

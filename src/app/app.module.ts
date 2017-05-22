@@ -1,5 +1,6 @@
 //A2 deps
 
+import { Crop } from '@ionic-native/crop';
 import { Transfer } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
@@ -80,7 +81,8 @@ import { ConfigSvc } from './modules/config/config.service';
     ActionSheet,
     Camera,
     Transfer,
-    File
+    File,
+    Crop
   ]
 })
 export class AppModule {}

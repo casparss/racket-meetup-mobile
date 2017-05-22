@@ -12,7 +12,11 @@ import { Component, Input } from '@angular/core';
       justify-content: center;
       align-items: center;
     }
-    img { -webkit-transform: translateZ(0); width:100%!important; height:100%!important; }
+    img {
+      -webkit-transform: translateZ(0);
+      width:100%!important;
+      height:100%!important;
+    }
   `]
 })
 export class LoadingImg {
