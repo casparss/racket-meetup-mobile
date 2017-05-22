@@ -13,5 +13,8 @@ export class LoadingImg {
   @Input() src: string;
   @Input() className: string
   onLoad(){ this.isLoading = false; }
-  ngOnChanges(){ this.isLoading = true; }
+  ngOnChanges(){
+    console.log(arguments);
+    this.isLoading = true;
+  }
 }
