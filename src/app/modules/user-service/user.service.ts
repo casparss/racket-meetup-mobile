@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { remove, cloneDeep } from 'lodash';
-import { Subject, Observable } from 'rxjs';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { BaseService } from '../../utils/base/base.service';
 import { DecHttp, HttpUtils } from '../../utils/http';
 export { UserLoginInt, UserSignupInt, UserInt } from './user.interface';
 import { UserLoginInt, UserSignupInt } from './user.interface';
-import { BehaviorSubject } from 'rxjs';
 import { ConfigSvc } from '../config/config.service';
+import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
+import { File } from '@ionic-native/file';
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -14,7 +15,6 @@ export class UserSvc extends BaseService {
 	url = "user";
   followersUrl = "followers";
   searchUrl = "user/search";
-	//@#Refactor:0 convert into behaviour subject observable!
 	private _user: any;
 	private _user$;
 	private _profileImage$;
@@ -23,14 +23,33 @@ export class UserSvc extends BaseService {
 
 	constructor(
 		http: DecHttp,
-		private configSvc: ConfigSvc
+		private configSvc: ConfigSvc,
+		private transfer: Transfer,
+		private file: File
 	){
 		super(http, configSvc);
+		this.defineObservables()
+	}
+
+	defineObservables(){
 		this._user$ = <Observable<any>>this.create$("user");
-		this._profileImage$ = <Observable<any>>this.create$("profileImage")
-			.map(userId => (configSvc.get('imageUrl') + userId));
 		this._user$.subscribe(user => this._user = user);
-    this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
+
+		this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
+
+		this.subjects['profileImage'] = new BehaviorSubject('default');
+		this._profileImage$ = this.subjects['profileImage'].asObservable()
+			.map(userId => {
+				const splitUid = userId.split("?");
+				const url = this.configSvc.get('imageUrl');
+
+				return splitUid[1] ?
+					`${url}${splitUid[0]}.jpeg?${splitUid[1]}` :
+					`${url}${userId}.jpeg`
+			});
+			this._profileImage$.subscribe(value => { console.log("value: ", value)
+
+			});
 	}
 
 	login(user:UserLoginInt){
@@ -114,18 +133,32 @@ export class UserSvc extends BaseService {
 			});
 	}
 
-	uploadPhoto(image: string){
-		let request = this._update({ image });
-		request.subscribe(() => this.refreshProfileImage())
-		return request;
+	uploadPhoto(imageUri: string){
+		let fileTransfer: TransferObject = this.transfer.create();
+
+		let options: FileUploadOptions = {
+	     fileKey: 'image',
+	     fileName: this._user._id,
+	     headers: { 'x-auth': this.http.token },
+			 httpMethod: "PUT"
+	  };
+
+	  return fileTransfer.upload(
+				imageUri,
+				this.configSvc.get('baseUrl') + 'user',
+				options
+			)
+	   .then(() => this.refreshProfileImage())
+		 .catch(console.log);
 	}
 
 	refreshProfileImage(){
-		this._profileImage$.next(`${this._user._id}?${new Date().getTime()}`);
+		this.subjects['profileImage']
+			.next(`${this._user._id}?${new Date().getTime()}`);
 	}
 
 	get profileImage() {
-		return this._profileImage$
+		return this._profileImage$;
 	}
 
   search(searchTerm:string){

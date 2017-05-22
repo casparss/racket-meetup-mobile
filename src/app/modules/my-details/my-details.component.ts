@@ -4,6 +4,7 @@ import { UserDetailsInt, ActionSheetActionsInt } from './my-details.interface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 
 const sourceTypes = {
 	PHOTOLIBRARY: 0,
@@ -29,7 +30,8 @@ export class MydetailsCom{
 		private userSvc: UserSvc,
 		private formBuilder: FormBuilder,
 		private actionSheet: ActionSheet,
-		private camera: Camera
+		private camera: Camera,
+		private spinnerDialog: SpinnerDialog
 	){
 		this.details = this.userSvc.current.details;
 		this.defineForm();
@@ -77,9 +79,15 @@ export class MydetailsCom{
 
 	useCamera(sourceType:number){
 		return this.camera.getPicture(Object.assign({}, this.cameraOpts, { sourceType }))
-			.then(imageData => this.userSvc.uploadPhoto(BASE64PREFIX + imageData).toPromise())
-			.then(() => console.log("Success!"))
-			.catch(err => console.log(err));
+			.then(imageUri => {
+				this.spinnerDialog.show("Uploading photo", "Uploading photo", true);
+				return this.userSvc.uploadPhoto(imageUri);
+			})
+			.then(() => this.spinnerDialog.hide())
+			.catch(err => {
+				this.spinnerDialog.hide();
+				console.log(err);
+			});
 	}
 
 	showActionSheet(){

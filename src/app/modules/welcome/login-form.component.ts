@@ -61,7 +61,7 @@ export class LoginFormCom{
 				.subscribe(() => {
 					this.nav.push(TabsController);
 					this.spinnerDialog.hide();
-				});
+				}, () => this.spinnerDialog.hide());
 		}
 	}
 

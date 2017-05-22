@@ -19,11 +19,9 @@
 
 			<ion-item>
 
-			<ion-avatar item-left>
-      	<img src="{{details.image}}" />
-    	</ion-avatar>
-
-
+				<ion-avatar item-left>
+					<loading-img [src]="userSvc.profileImage | async"></loading-img>
+	    	</ion-avatar>
 
 				<button ion-button item-right (click)="showActionSheet(e)">Change</button>
 			</ion-item>

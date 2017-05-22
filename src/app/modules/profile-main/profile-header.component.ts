@@ -1,11 +1,14 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { UserSvc } from '../user-service/user.service';
 
 @Component({
 	selector:'profile-header',
 	template:`
 		<header>
 
-			<img src="{{user?.details.image}}" alt="">
+			<img
+				src="{{ (userSvc.profileImage | async) }}"
+				alt="">
 
 			<h1 class="playerName">
 				{{user?.details.firstName + " " + user?.details.lastName}}
@@ -33,7 +36,8 @@ import {Component, Input} from '@angular/core';
 		</header>
 	`
 })
-export class ProfileHeaderCom{
+export class ProfileHeaderCom {
 	@Input() user: any;
-	constructor(){}
+	@Input() isCurrentUser: boolean;
+	constructor(private userSvc: UserSvc){}
 }

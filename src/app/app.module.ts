@@ -1,5 +1,7 @@
 //A2 deps
 
+import { Transfer } from '@ionic-native/transfer';
+import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
 import { ActionSheet } from '@ionic-native/action-sheet';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -26,8 +28,6 @@ import { MessageListCom } from './modules/messages/message-list.component';
 
 //Welcome
 import {WelcomeCom} from './modules/welcome/welcome.component';
-
-//Toast component
 import {ToastCom} from './modules/toast/toast.component';
 
 //Angular2 services
@@ -78,7 +78,9 @@ import { ConfigSvc } from './modules/config/config.service';
     Keyboard,
     SpinnerDialog,
     ActionSheet,
-    Camera
+    Camera,
+    Transfer,
+    File
   ]
 })
 export class AppModule {}

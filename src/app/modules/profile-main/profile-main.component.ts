@@ -16,13 +16,16 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 
 			<div class="content-background">
 
-				<profile-header [user]="user"></profile-header>
+				<profile-header
+					[user]="user"
+					[isCurrentUser]="isCurrentUser"
+				></profile-header>
 
 				<profile-actions
 					[user]="user"
 				></profile-actions>
 
-				<main [ngSwitch]="user?.id === userSvc?.current.id">
+				<main [ngSwitch]="isCurrentUser">
 
 					<availability
 						*ngSwitchCase="true"
@@ -42,6 +45,7 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 export class ProfileMainCom{
 
 	private user: UserInt;
+	private isCurrentUser: boolean;
 
 	constructor(
 		private profileSvc: ProfileMainSvc,
@@ -67,6 +71,7 @@ export class ProfileMainCom{
 			this.user = user;
 		}
 		else {
+			this.isCurrentUser = true;
 			this.user = this.userSvc.current;
 		}
 
