@@ -12,8 +12,6 @@ const sourceTypes = {
 	SAVEDPHOTOALBUM: 2
 };
 
-const BASE64PREFIX = 'data:image/jpeg;base64,';
-
 @Component({
 	templateUrl:'./my-details.view.html',
 	selector: "my-details"

@@ -6,9 +6,9 @@ import { UserSvc } from '../user-service/user.service';
 	template:`
 		<header>
 
-			<img
-				src="{{ (userSvc.profileImage | async) }}"
-				alt="">
+			<loading-img
+				[src]="userSvc.profileImage | async"
+				alt=""></loading-img>
 
 			<h1 class="playerName">
 				{{user?.details.firstName + " " + user?.details.lastName}}

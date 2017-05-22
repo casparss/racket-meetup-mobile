@@ -17,12 +17,14 @@ profile-main,
 		color:$text-colour;
 		background: $primary-gradient;
 
-		img{
+		loading-img{
 			width:14rem;
 			height:14rem;
-			border-radius:7rem;
 			display:block;
 			margin:auto;
+			img {
+				border-radius:7rem;
+			}
 		}
 
 		.playerName{

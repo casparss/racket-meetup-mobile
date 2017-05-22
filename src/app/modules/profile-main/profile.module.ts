@@ -5,6 +5,7 @@ import {AvailabilityModule} from '../availability/availability.module';
 import {GamesModule} from '../games/games.module';
 import {MessagesModule} from '../messages';
 import {MydetailsModule} from '../my-details/my-details.module';
+import {LoadingImgModule} from '../../utils/loading-img';
 
 import {ChatCom} from '../messages/chat.component';
 import {ProfileActionsCom} from './profile-actions.component'
@@ -31,7 +32,8 @@ import {UserSvc} from '../user-service/user.service';
     AvailabilityModule,
     GamesModule,
     MessagesModule,
-    MydetailsModule
+    MydetailsModule,
+    LoadingImgModule
   ],
   entryComponents: [
     MydetailsCom,

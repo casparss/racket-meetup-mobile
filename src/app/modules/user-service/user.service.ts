@@ -39,16 +39,13 @@ export class UserSvc extends BaseService {
 
 		this.subjects['profileImage'] = new BehaviorSubject('default');
 		this._profileImage$ = this.subjects['profileImage'].asObservable()
-			.map(userId => {
-				const splitUid = userId.split("?");
+			.map(obj => {
 				const url = this.configSvc.get('imageUrl');
+				const imagePath = `${url}${obj.id}.jpeg`;
 
-				return splitUid[1] ?
-					`${url}${splitUid[0]}.jpeg?${splitUid[1]}` :
-					`${url}${userId}.jpeg`
-			});
-			this._profileImage$.subscribe(value => { console.log("value: ", value)
-
+				return obj.refresh ?
+					`${imagePath}?${new Date().getTime()}` :
+					imagePath
 			});
 	}
 
@@ -67,7 +64,7 @@ export class UserSvc extends BaseService {
 	}
 
 	public userSuccess = user => {
-		this.subjects['profileImage'].next(user._id);
+		this.subjects['profileImage'].next({id: user._id});
 		this.current = user;
 		this.http.token = user.token;
 	}
@@ -154,7 +151,10 @@ export class UserSvc extends BaseService {
 
 	refreshProfileImage(){
 		this.subjects['profileImage']
-			.next(`${this._user._id}?${new Date().getTime()}`);
+			.next({
+				id: this._user._id,
+				refresh: true
+			});
 	}
 
 	get profileImage() {

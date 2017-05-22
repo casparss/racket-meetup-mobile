@@ -4,17 +4,24 @@ import { Component, Input } from '@angular/core';
   selector: 'loading-img',
   template: `
     <ion-spinner *ngIf="isLoading" icon="spiral" class="spinner-stable"></ion-spinner>
-    <img *ngIf="isLoading" src="/assets/isLoading.gif" alt="loading" />
-    <img class="{{className}}" [hidden]="loading" (load)="onLoad()" src="{{src}}" />
-  `
+    <img [hidden]="isLoading" (load)="onLoad()" src="{{src}}" />
+  `,
+  styles: [`
+    :host {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    img { -webkit-transform: translateZ(0); width:100%!important; height:100%!important; }
+  `]
 })
 export class LoadingImg {
   private isLoading: boolean;
   @Input() src: string;
-  @Input() className: string
-  onLoad(){ this.isLoading = false; }
+  onLoad(){
+    this.isLoading = false;
+  }
   ngOnChanges(){
-    console.log(arguments);
     this.isLoading = true;
   }
 }

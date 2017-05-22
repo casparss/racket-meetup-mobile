@@ -2,7 +2,8 @@ my-details {
 	ion-thumbnail img{
 		border-radius:4rem;
 	}
-	.item-ios ion-avatar img {
+	.item-ios ion-avatar loading-img,
+	.item-md ion-avatar loading-img{
 		width: 100px;
 		height: 100px;
 	}
