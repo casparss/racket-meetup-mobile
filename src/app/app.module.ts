@@ -1,5 +1,4 @@
 //A2 deps
-
 import { Crop } from '@ionic-native/crop';
 import { Transfer } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';

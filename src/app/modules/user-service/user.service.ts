@@ -121,13 +121,15 @@ export class UserSvc extends BaseService {
     return exports;
   }
 
-	updateDetails(details){
-		return this._update(details)
-			.subscribe(details => {
-				let user = this.current;
-				user.details = details;
-				this.current = user;
-			});
+	updateDetails(details, isValid){
+		if(isValid){
+			this._update(details)
+				.subscribe(details => {
+					let user = this.current;
+					user.details = details;
+					this.current = user;
+				});
+		}
 	}
 
 	uploadPhoto(imageUri: string){

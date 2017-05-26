@@ -8,3 +8,9 @@ my-details {
 		height: 100px;
 	}
 }
+
+change-password {
+	.validation-message {
+		color: $red;
+	}
+}
