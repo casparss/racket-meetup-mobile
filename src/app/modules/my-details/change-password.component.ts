@@ -46,11 +46,24 @@ import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.v
 	        ></ion-input>
 	      </ion-item>
 
-				<ion-item *ngIf="newestField.errors && (newestField.dirty || newestField.touched)">
-					<p class="validation-message" *ngIf="newestField.errors.counterpart">
-						<ion-icon name="alert"></ion-icon> Passwords must match.
-					</p>
-				</ion-item>
+				<div *ngIf="newestField.dirty || newestField.touched">
+					<ion-item *ngIf="newestField.errors; else passwordMatch">
+						<p class="validation-message" *ngIf="newestField.errors.counterpart">
+							<ion-icon name="alert"></ion-icon> Passwords must match.
+						</p>
+					</ion-item>
+
+					<template #passwordMatch>
+						<ion-item>
+							<p class="validation-message success">
+								<ion-icon name="checkmark"></ion-icon> Passwords match.
+							</p>
+						</ion-item>
+					</template>
+				</div>
+
+
+
 
 	      <ion-item>
 	        <button type="submit" [disabled]="!changePasswordForm.valid" ion-button block large>Change password</button>
