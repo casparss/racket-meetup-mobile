@@ -3,7 +3,7 @@ import { ViewController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
 import { UserDetailsInt, ActionSheetActionsInt } from './my-details.interface';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { equalFieldsValidator } from '../../utils/custom-validators/equal-fields.validator';
+import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.validator';
 
 @Component({
 	selector: "change-password",
@@ -19,7 +19,7 @@ import { equalFieldsValidator } from '../../utils/custom-validators/equal-fields
 	<ion-content>
 		<form
 	    [formGroup]='changePasswordForm'
-	    (ngSubmit)='userSvc.updateDetails(changePasswordForm.value, changePasswordForm.valid)'
+	    (ngSubmit)='changePassword(changePasswordForm.value, changePasswordForm.valid)'
 	    novalidate ion-list
 	  >
 	      <ion-item>
@@ -71,12 +71,25 @@ export class ChangePasswordCom {
 		private formBuilder: FormBuilder,
 		private viewCtrl: ViewController,
 	){
+		let { validator } = new EqualFieldsFactory;
     this.changePasswordForm = this.formBuilder.group({
 			current: ["", [<any>Validators.required]],
-      newest: ["", [<any>Validators.required, equalFieldsValidator('confirm')]],
-      confirm: ["", [<any>Validators.required, equalFieldsValidator('newest')]]
+      newest: ["", [<any>Validators.required, validator('confirm')]],
+      confirm: ["", [<any>Validators.required, validator('newest')]]
 		});
 		this.newestField = this.changePasswordForm.controls.newest;
+	}
+
+	changePassword(formValue, valid){
+		let request = this.userSvc.updateDetails(formValue, valid, "password");
+
+		if(request){
+			request.subscribe(() => this.viewCtrl.dismiss())
+		}
+	}
+
+	ngOnDestroy(){
+
 	}
 
 }

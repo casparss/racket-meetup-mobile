@@ -121,14 +121,21 @@ export class UserSvc extends BaseService {
     return exports;
   }
 
-	updateDetails(details, isValid){
+	updateDetails(details, isValid: boolean, requestType: string){
 		if(isValid){
-			this._update(details)
-				.subscribe(details => {
-					let user = this.current;
-					user.details = details;
-					this.current = user;
-				});
+			let request = this._update(details, {
+				search: HttpUtils.urlParams({
+					requestType: requestType
+				})
+			});
+
+			request.subscribe(details => {
+				let user = this.current;
+				user.details = details;
+				this.current = user;
+			});
+
+			return request;
 		}
 	}
 

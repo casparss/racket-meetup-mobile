@@ -8,21 +8,23 @@ const doesNotMatch = counterpartName => {
   return { counterpart: `Does not match ${counterpartName}` }
 }
 
-let counterpartControl: FormControl;
+export function EqualFieldsFactory()  {
+  let counterpartControl: FormControl;
 
-export const equalFieldsValidator = (counterpartName: string) => {
-  return (control: FormControl) => {
-    let { value, parent } = control;
+  this.validator = (counterpartName: string) => {
+    return (control: FormControl) => {
+      let { value, parent } = control;
 
-    if(!parent) return null;
+      if(!parent) return null;
 
-    if(!counterpartControl) {
-      counterpartControl = parent.controls[counterpartName];
-      counterpartControl.valueChanges.subscribe(() => control.updateValueAndValidity());
+      if(!counterpartControl) {
+        counterpartControl = parent.controls[counterpartName];
+        counterpartControl.valueChanges.subscribe(() => control.updateValueAndValidity());
+      }
+
+      const doMatch = counterpartControl.value === value;
+
+      return doMatch ? doesMatch() : doesNotMatch(counterpartName);
     }
-
-    const doMatch = counterpartControl.value === value;
-
-    return doMatch ? doesMatch() : doesNotMatch(counterpartName);
   }
 }
