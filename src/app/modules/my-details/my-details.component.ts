@@ -27,8 +27,7 @@ export class MydetailsCom {
 		let u = this.details;
 		this.mydetailsForm = this.formBuilder.group({
 			email: [u.email, [<any>Validators.required]],
-			username: [u.username, [<any>Validators.required]],
-			firstName: [u.email, [<any>Validators.required]],
+			firstName: [u.firstName, [<any>Validators.required]],
 			lastName: [u.lastName, [<any>Validators.required]],
 			password: [{ value: u.password, disabled: true}, [<any>Validators.required]],
 			location: [u.location, [<any>Validators.required]],

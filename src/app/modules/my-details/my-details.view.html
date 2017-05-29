@@ -85,7 +85,12 @@
 			</ion-item>
 
 			<ion-item>
-				<button type="submit" ion-button block large>Update personal details</button>
+				<button
+					[disabled]="mydetailsForm.valid && !mydetailsForm.dirty"
+					type="submit"
+					ion-button
+					block
+					large>Update personal details</button>
 			</ion-item>
 
 		</ion-list>

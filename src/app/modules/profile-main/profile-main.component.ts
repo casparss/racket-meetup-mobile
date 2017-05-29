@@ -1,4 +1,5 @@
 import {Component, EventEmitter} from '@angular/core';
+import { Observable } from 'rxjs';
 import {NavParams} from 'ionic-angular';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
@@ -44,7 +45,7 @@ import {UserSvc, UserInt} from '../user-service/user.service';
 })
 export class ProfileMainCom{
 
-	private user: UserInt;
+	private user: Observable<UserInt>;
 	private isCurrentUser: boolean;
 
 	constructor(
@@ -58,23 +59,19 @@ export class ProfileMainCom{
 	}
 
 	loadUser(){
-
-		//@#Refactor:10 convert everything to use observables - just worked out how to do objs properly
-
 		let id: string = this.params.get("id");
-		let user: UserInt = this.params.get("user");
+		let user: Observable<UserInt> = this.params.get("user");
 
 		if(id){
-			this.profileSvc.get(id).subscribe(user => this.user = user);
+			this.user = this.profileSvc.get(id);
 		}
 		else if(user){
 			this.user = user;
 		}
 		else {
 			this.isCurrentUser = true;
-			this.user = this.userSvc.current;
+			this.user = this.userSvc.current$;
 		}
-
 	}
 
 }

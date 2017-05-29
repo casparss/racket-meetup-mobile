@@ -9,6 +9,9 @@ import { ConfigSvc } from '../config/config.service';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';
 
+const transformUser$ = user => new BehaviorSubject(user).asObservable();
+const profileImage = (url, id) => `${url}${id}.jpeg`;
+
 @Injectable()
 export class UserSvc extends BaseService {
 
@@ -32,16 +35,22 @@ export class UserSvc extends BaseService {
 	}
 
 	defineObservables(){
-		this._user$ = <Observable<any>>this.create$("user");
+
+		//User
+		this.subjects['user'] = new BehaviorSubject({});
+		this._user$ = <Observable<any>>this.subjects['user'].asObservable();
 		this._user$.subscribe(user => this._user = user);
 
-		this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
+		//searchedPlayers
+		this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers')
+			.map((users: any) => users.map(transformUser$));
 
+		//Profile image
 		this.subjects['profileImage'] = new BehaviorSubject('default');
 		this._profileImage$ = this.subjects['profileImage'].asObservable()
 			.map(obj => {
 				const url = this.configSvc.get('imageUrl');
-				const imagePath = `${url}${obj.id}.jpeg`;
+				const imagePath = profileImage(url, obj.id);
 
 				return obj.refresh ?
 					`${imagePath}?${new Date().getTime()}` :
@@ -75,12 +84,12 @@ export class UserSvc extends BaseService {
 
   isFollowedBy(user){
     return !!this._user.followers.followingMe
-      .find(userId => user._id === userId);
+      .find(userId => user.source.getValue._id === userId);
   }
 
   doesFollow(user){
     return !!this._user.followers.followingThem
-      .find(userId => user._id === userId);
+      .find(userId => user.source.getValue._id === userId);
   }
 
   toggleFollow(userId:string){
@@ -111,10 +120,17 @@ export class UserSvc extends BaseService {
       following$: followingSubject.asObservable(),
       followers$: followersSubject.asObservable(),
       get: () => {
-        this.getFollowers(userId).subscribe(data => {
-          followingSubject.next(data.followingThem);
-          followersSubject.next(data.followingMe);
-        });
+        this.getFollowers(userId)
+					.map(({followingMe, followingThem}) => {
+						return {
+							followingMe: followingMe.map(transformUser$),
+							followingThem: followingThem.map(transformUser$)
+						};
+					})
+					.subscribe(({followingThem, followingMe}:any) => {
+	          followingSubject.next(followingThem);
+	          followersSubject.next(followingMe);
+	        });
         return exports;
       }
     }
@@ -127,7 +143,8 @@ export class UserSvc extends BaseService {
 				search: HttpUtils.urlParams({
 					requestType: requestType
 				})
-			});
+			})
+			.map(user => user.details);
 
 			request.subscribe(details => {
 				let user = this.current;
@@ -166,16 +183,22 @@ export class UserSvc extends BaseService {
 			});
 	}
 
+	generateProfileImage(user: any){
+		const url = this.configSvc.get('imageUrl');
+		return profileImage(url, user.source.getValue()._id);
+	}
+
 	get profileImage() {
 		return this._profileImage$;
 	}
 
   search(searchTerm:string){
-		return this._get('searchedPlayers', {
+		const opts = {
 			search: HttpUtils.urlParams({
 				searchTerm: searchTerm
 			})
-		}, this.searchUrl);
+		};
+		return this._get('searchedPlayers', opts, this.searchUrl);
 	}
 
 	mutateCurrentUser(cb){

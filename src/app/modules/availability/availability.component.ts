@@ -10,7 +10,7 @@ import {AvailabilitySvc} from './availability.service';
 })
 export class AvailabilityCom {
 
-	@Input() user: UserInt;
+	@Input() user: any;
 	private isInFlight: boolean = false;
   private model: Object;
 
@@ -23,7 +23,7 @@ export class AvailabilityCom {
 	}
 
 	getAvailability(){
-		this.svc.get(this.user._id).subscribe(model => this.model = model);
+		this.svc.get(this.user.source.getValue()._id).subscribe(model => this.model = model);
 	}
 
 };

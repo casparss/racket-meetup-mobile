@@ -28,7 +28,7 @@ import {UserSvc} from '../user-service/user.service';
   			*ngFor="let user of userSvc.searchedPlayers$ | async"
   			(click)="openProfile(user)"
   		>
-  			{{ user?.details.firstName + " " + user?.details.lastName }}
+  			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
   		</ion-item>
   	</ion-list>
 
@@ -46,7 +46,7 @@ export class SearchPlayersCom{
 	){}
 
 	openProfile(user){
-		this.nav.push(ProfileMainCom, {user: user});
+		this.nav.push(ProfileMainCom, { user: user });
 	}
 
   searchPlayers(ev){

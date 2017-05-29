@@ -62,12 +62,9 @@ import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.v
 					</template>
 				</div>
 
-
-
-
 	      <ion-item>
 	        <button type="submit" [disabled]="!changePasswordForm.valid" ion-button block large>Change password</button>
-					<button (click)="viewCtrl.dismiss()" ion-button block large>Cancel</button>
+					<button type="button" (click)="viewCtrl.dismiss()" ion-button block large>Cancel</button>
 	      </ion-item>
 	  </form>
 	</ion-content>

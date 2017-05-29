@@ -5,7 +5,6 @@ import {ChallengeCom} from '../games/challenge.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
 import {MessagesSvc} from '../messages/messages.service';
-import {ProfileMainCom} from '../profile-main/profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
 import {FollowersCom} from '../followers/followers.component';
 import {SearchPlayersCom} from '../followers/search-players.component';
@@ -60,7 +59,7 @@ const pages: any = {
 		</ion-list>
 	`
 })
-export class ProfileActionsCom{
+export class ProfileActionsCom {
 
 	@Input() user: UserInt;
 	private isFriend: boolean = false;

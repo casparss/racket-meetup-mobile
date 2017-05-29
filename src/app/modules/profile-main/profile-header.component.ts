@@ -5,34 +5,32 @@ import { UserSvc } from '../user-service/user.service';
 	selector:'profile-header',
 	template:`
 		<header>
-
 			<loading-img
-				[src]="userSvc.profileImage | async"
+				[src]="isCurrentUser ? (userSvc.profileImage | async) : userSvc.generateProfileImage(user)"
 				alt=""></loading-img>
 
 			<h1 class="playerName">
-				{{user?.details.firstName + " " + user?.details.lastName}}
+				{{(user | async)?.details.firstName + " " + (user | async)?.details.lastName}}
 			</h1>
 
 			<ion-grid class="playerInfo">
 				<ion-row>
 					<ion-col width-33>
-						<dd>{{user?.stats.ranking}}</dd>
+						<dd>{{(user | async)?.stats.ranking}}</dd>
 						<dt>Ranking</dt>
 					</ion-col>
 					<ion-col width-33>
-						<dd>{{user?.stats.matchesPlayed}}</dd>
+						<dd>{{(user | async)?.stats.matchesPlayed}}</dd>
 						<dt>Matches</dt>
 					</ion-col>
 					<ion-col width-33>
-						<dd>{{user?.details.location}}</dd>
+						<dd>{{(user | async)?.details.location}}</dd>
 						<dt>
 							Location
 						</dt>
 					</ion-col>
 				</ion-row>
 			</ion-grid>
-
 		</header>
 	`
 })
