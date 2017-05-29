@@ -27,7 +27,7 @@ export class ChallengeCom{
   ){
     this.challengeForm = formBuilder.group(this.formModel);
     this.challenger = userSvc.current;
-		this.challengee = viewCtrl.data.user;
+		this.challengee = viewCtrl.data.user.source.getValue();
 	}
 
 	challenge(challengeDetails, isValid:boolean){

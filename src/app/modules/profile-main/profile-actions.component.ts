@@ -19,7 +19,7 @@ const pages: any = {
 @Component({
 	selector:'profile-actions',
 	template:`
-		<ion-list [ngSwitch]="user.id === userSvc.current.id">
+		<ion-list [ngSwitch]="(user | async)?._id === userSvc.current._id">
 
 			<ion-list-header class="component-header">
 				Actions
@@ -61,7 +61,7 @@ const pages: any = {
 })
 export class ProfileActionsCom {
 
-	@Input() user: UserInt;
+	@Input() user:any;
 	private isFriend: boolean = false;
 
 	constructor(
@@ -100,7 +100,7 @@ export class ProfileActionsCom {
 	}
 
 	toggleFollow(){
-    this.userSvc.toggleFollow(this.user._id)
+    this.userSvc.toggleFollow(this.user.source.getValue()._id)
       .subscribe(isFriend => this.isFriend = isFriend);
 	}
 
