@@ -57,7 +57,6 @@ export class DecHttp extends AuthHttp{
 	private checkMessage = (res) => {
 		let message = extractValue(res, "message");
 		if(message && message.length > 0){
-			console.log("Check message method: ");
 			this.onMessage.emit(message);
 		}
  	}

@@ -5,6 +5,7 @@ import { WsSvc }  from '../../web-sockets-service/'
 import { DecHttp } from '../../../utils/http';
 import { UserSvc } from '../../user-service';
 import { trigger, on } from 'simple-pub-sub';
+import { mockConfig } from '../../../modules/config/test/config.mock';
 import {
   MockWsSvc,
   UserSvcMock,
@@ -20,6 +21,7 @@ describe("Chat service", () => {
       providers: [
         ChatSvc,
         DecHttp,
+        mockConfig,
         { provide: WsSvc, useClass: MockWsSvc },
         { provide: UserSvc, useClass: UserSvcMock }
       ]

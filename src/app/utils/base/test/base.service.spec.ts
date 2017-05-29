@@ -2,6 +2,7 @@ import { async, TestBed, inject } from '@angular/core/testing';
 import { Subject, Observable } from 'rxjs';
 import { DecHttp } from '../../../utils/http/';
 import { FacadeBaseService, DecHttpMock } from './base.service.mocks';
+import { mockConfig } from '../../../modules/config/test/config.mock';
 
 describe('Base service', () => {
 
@@ -9,6 +10,7 @@ describe('Base service', () => {
     TestBed.configureTestingModule({
       providers: [
         FacadeBaseService,
+        mockConfig,
         { provide: DecHttp, useClass: DecHttpMock }
       ]
     });

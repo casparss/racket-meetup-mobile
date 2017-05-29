@@ -84,12 +84,12 @@ export class UserSvc extends BaseService {
 
   isFollowedBy(user){
     return !!this._user.followers.followingMe
-      .find(userId => user.source.getValue._id === userId);
+      .find(userId => user.source.getValue()._id === userId);
   }
 
   doesFollow(user){
     return !!this._user.followers.followingThem
-      .find(userId => user.source.getValue._id === userId);
+      .find(userId => user.source.getValue()._id === userId);
   }
 
   toggleFollow(userId:string){

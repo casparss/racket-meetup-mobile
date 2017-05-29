@@ -2,6 +2,10 @@ import { async, TestBed, inject } from '@angular/core/testing';
 import { UserSvc } from '../user.service';
 import { DecHttp } from '../../../utils/http';
 import { Observable } from 'rxjs';
+import { ConfigSvc } from '../../config/config.service';
+import { mockConfig } from '../../../modules/config/test/config.mock';
+import { Transfer } from '@ionic-native/transfer';
+import { File } from '@ionic-native/file';
 import {
   HttpModule,
   XHRBackend,
@@ -17,7 +21,10 @@ import {
   DecHttpMock,
   userModel1Mock,
   userModel2Mock,
-  userModel3Mock
+  userModel3Mock,
+  userModel1Mock$,
+  userModel2Mock$,
+  userModel3Mock$
 } from './user-service.mock';
 
 const userSvc: UserSvc = null;
@@ -33,6 +40,9 @@ describe("User service", () => {
       imports: [HttpModule],
       providers: [
         UserSvc,
+        Transfer,
+        File,
+        mockConfig,
         DecHttp,
         { provide: XHRBackend, useClass: MockBackend }
       ]
@@ -56,14 +66,14 @@ describe("User service", () => {
 
   it("isFollowedBy()", inject([UserSvc], userSvc => {
     userSvc.userSuccess(userModel1Mock);
-    expect(userSvc.isFollowedBy(userModel2Mock)).toBe(true);
-    expect(userSvc.isFollowedBy(userModel3Mock)).toBe(false);
+    expect(userSvc.isFollowedBy(userModel2Mock$)).toBe(true);
+    expect(userSvc.isFollowedBy(userModel3Mock$)).toBe(false);
   }));
 
   it("doesFollow()", inject([UserSvc], userSvc => {
     userSvc.userSuccess(userModel1Mock);
-    expect(userSvc.doesFollow(userModel2Mock)).toBe(true);
-    expect(userSvc.doesFollow(userModel3Mock)).toBe(false);
+    expect(userSvc.doesFollow(userModel2Mock$)).toBe(true);
+    expect(userSvc.doesFollow(userModel3Mock$)).toBe(false);
   }));
 
   it("toggleFollow() - unfollow scenario", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
@@ -134,7 +144,6 @@ describe("User service", () => {
     userSvc.getFollowers("123").subscribe(followers => {
       expect(followers).toBe(mockResponse.data);
     }, failTest);
-
   }));
 
   it("followersFactory()", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
@@ -159,11 +168,11 @@ describe("User service", () => {
     expect(followers$ instanceof Observable).toBe(true);
 
     following$.subscribe(following => {
-      expect(following).toEqual(mockResponse.data.followingThem);
+      expect(following[0].source.getValue()).toEqual(mockResponse.data.followingThem[0]);
     }, failTest);
 
     followers$.subscribe(followers => {
-      expect(followers).toEqual(mockResponse.data.followingMe);
+      expect(followers[0].source.getValue()).toEqual(mockResponse.data.followingMe[0]);
     }, failTest);
 
     get("456");
