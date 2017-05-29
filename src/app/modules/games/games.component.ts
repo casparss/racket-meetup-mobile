@@ -16,13 +16,13 @@ import {GameInt} from './games.interfaces';
 })
 export class GamesCom {
 
-	@Input() user: UserInt;
+	@Input() user: any;
 	private games$: any;
 
 	constructor(private svc: GamesSvc){}
 
 	ngOnInit(){
-		this.svc.get(this.user._id);
+		this.svc.get(this.user.source.getValue()._id);
 	}
 
 }
