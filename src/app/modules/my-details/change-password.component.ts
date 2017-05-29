@@ -53,13 +53,13 @@ import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.v
 						</p>
 					</ion-item>
 
-					<template #passwordMatch>
+					<ng-template #passwordMatch>
 						<ion-item>
 							<p class="validation-message success">
 								<ion-icon name="checkmark"></ion-icon> Passwords match.
 							</p>
 						</ion-item>
-					</template>
+					</ng-template>
 				</div>
 
 	      <ion-item>
