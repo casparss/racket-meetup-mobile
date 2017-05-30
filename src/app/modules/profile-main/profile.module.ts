@@ -6,6 +6,7 @@ import {GamesModule} from '../games/games.module';
 import {MessagesModule} from '../messages';
 import {MydetailsModule} from '../my-details/my-details.module';
 import {LoadingImgModule} from '../../utils/loading-img';
+import {ChallengeModule} from '../challenge';
 
 import {ChatCom} from '../messages/chat.component';
 import {ProfileActionsCom} from './profile-actions.component'
@@ -15,7 +16,6 @@ import {ProfileMainCom} from './profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
 import {FollowersCom} from '../followers/followers.component';
 import {SearchPlayersCom} from '../followers/search-players.component';
-import {ChallengeCom} from '../games/challenge.component';
 import {UserSvc} from '../user-service/user.service';
 
 
@@ -33,15 +33,15 @@ import {UserSvc} from '../user-service/user.service';
     GamesModule,
     MessagesModule,
     MydetailsModule,
-    LoadingImgModule
+    LoadingImgModule,
+    ChallengeModule
   ],
   entryComponents: [
     MydetailsCom,
     FollowersCom,
     SearchPlayersCom,
     ProfileMainCom,
-    ChatCom,
-    ChallengeCom
+    ChatCom
   ],
   exports: [
     ProfileMainCom
