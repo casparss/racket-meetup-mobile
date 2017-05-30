@@ -5,7 +5,6 @@ import {ChallengeCom} from '../games/challenge.component';
 import {ProfileMainSvc} from './profile-main.service';
 import {UserSvc, UserInt} from '../user-service/user.service';
 import {MessagesSvc} from '../messages/messages.service';
-import {ProfileMainCom} from '../profile-main/profile-main.component';
 import {MydetailsCom} from '../my-details/my-details.component';
 import {FollowersCom} from '../followers/followers.component';
 import {SearchPlayersCom} from '../followers/search-players.component';
@@ -20,9 +19,9 @@ const pages: any = {
 @Component({
 	selector:'profile-actions',
 	template:`
-		<ion-list [ngSwitch]="user.id === userSvc.current.id">
+		<ion-list [ngSwitch]="(user | async)?._id === userSvc.current._id">
 
-			<ion-list-header>
+			<ion-list-header class="component-header">
 				Actions
 			</ion-list-header>
 
@@ -60,9 +59,9 @@ const pages: any = {
 		</ion-list>
 	`
 })
-export class ProfileActionsCom{
+export class ProfileActionsCom {
 
-	@Input() user: UserInt;
+	@Input() user:any;
 	private isFriend: boolean = false;
 
 	constructor(
@@ -101,7 +100,7 @@ export class ProfileActionsCom{
 	}
 
 	toggleFollow(){
-    this.userSvc.toggleFollow(this.user._id)
+    this.userSvc.toggleFollow(this.user.source.getValue()._id)
       .subscribe(isFriend => this.isFriend = isFriend);
 	}
 

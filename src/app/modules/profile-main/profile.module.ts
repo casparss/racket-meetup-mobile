@@ -4,6 +4,8 @@ import {IonicModule} from 'ionic-angular';
 import {AvailabilityModule} from '../availability/availability.module';
 import {GamesModule} from '../games/games.module';
 import {MessagesModule} from '../messages';
+import {MydetailsModule} from '../my-details/my-details.module';
+import {LoadingImgModule} from '../../utils/loading-img';
 
 import {ChatCom} from '../messages/chat.component';
 import {ProfileActionsCom} from './profile-actions.component'
@@ -22,7 +24,6 @@ import {UserSvc} from '../user-service/user.service';
     ProfileMainCom,
     ProfileActionsCom,
     ProfileHeaderCom,
-    MydetailsCom,
     FollowersCom,
     SearchPlayersCom
   ],
@@ -30,7 +31,9 @@ import {UserSvc} from '../user-service/user.service';
     IonicModule,
     AvailabilityModule,
     GamesModule,
-    MessagesModule
+    MessagesModule,
+    MydetailsModule,
+    LoadingImgModule
   ],
   entryComponents: [
     MydetailsCom,

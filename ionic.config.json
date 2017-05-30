@@ -5,6 +5,10 @@
     {
       "path": "/api",
       "proxyUrl": "http://localhost:3000/api/"
+    },
+    {
+      "path": "/assets",
+      "proxyUrl": "http://localhost:3000/assets/"
     }
   ],
   "type": "ionic-angular"

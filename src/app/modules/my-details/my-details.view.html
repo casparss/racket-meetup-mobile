@@ -5,21 +5,44 @@
 </ion-header>
 
 <ion-content>
-	
+
 	<form
 		[formGroup]='mydetailsForm'
-		(ngSubmit)='syncDetails(mydetailsForm.value, mydetailsForm.valid)'
-		novalidate ion-list padding
+		(ngSubmit)='userSvc.updateDetails(mydetailsForm.value, mydetailsForm.valid, "details")'
+		novalidate ion-list
 	>
 		<ion-list>
 
+			<ion-item-divider color="light">
+				Profile image
+			</ion-item-divider>
+
 			<ion-item>
-				<ion-thumbnail item-left>
-					<img src="{{details.image}}">
-				</ion-thumbnail>
-				<h2>Profile image</h2>
-				<button right>Change</button>
+
+				<ion-avatar item-left>
+					<loading-img [src]="userSvc.profileImage | async"></loading-img>
+	    	</ion-avatar>
+
+				<button image-uploader ion-button item-right>Change</button>
 			</ion-item>
+
+			<ion-item-divider color="light">
+				Password
+			</ion-item-divider>
+
+			<ion-item>
+				<ion-label floating>Current password</ion-label>
+				<ion-input
+					formControlName="password"
+					type="password"
+					value="xxxxxxxxx"
+				></ion-input>
+				<button ion-button item-right (click)="changePassword()">Change</button>
+			</ion-item>
+
+			<ion-item-divider color="light">
+				Personal details
+			</ion-item-divider>
 
 			<ion-item>
 				<ion-label floating>Email:</ion-label>
@@ -30,9 +53,9 @@
 			</ion-item>
 
 			<ion-item>
-				<ion-label floating>Username</ion-label>
+				<ion-label floating>Location</ion-label>
 				<ion-input
-					formControlName="username"
+					formControlName="location"
 					type="text"
 				></ion-input>
 			</ion-item>
@@ -54,14 +77,6 @@
 			</ion-item>
 
 			<ion-item>
-				<ion-label floating>Password</ion-label>
-				<ion-input
-					formControlName="password"
-					type="password"
-				></ion-input>
-			</ion-item>
-
-			<ion-item>
 				<ion-label floating>Date of birth</ion-label>
 				<ion-datetime
 					displayFormat="DD / M / YYYY"
@@ -70,7 +85,12 @@
 			</ion-item>
 
 			<ion-item>
-				<button block large>Update details</button>
+				<button
+					[disabled]="mydetailsForm.valid && !mydetailsForm.dirty"
+					type="submit"
+					ion-button
+					block
+					large>Update personal details</button>
 			</ion-item>
 
 		</ion-list>

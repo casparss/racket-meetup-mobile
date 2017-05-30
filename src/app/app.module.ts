@@ -1,4 +1,9 @@
 //A2 deps
+import { Crop } from '@ionic-native/crop';
+import { Transfer } from '@ionic-native/transfer';
+import { File } from '@ionic-native/file';
+import { Camera } from '@ionic-native/camera';
+import { ActionSheet } from '@ionic-native/action-sheet';
 import { Keyboard } from '@ionic-native/keyboard';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -17,14 +22,12 @@ import {TabsModule} from './modules/tabs/tabs.module';
 import {TabsController} from './modules/tabs/tabs-controller.component';
 
 //Welcome module
-import {WelcomeModule} from './modules/welcome/welcome.module';
+import { WelcomeModule } from './modules/welcome/welcome.module';
 import { RankingsListCom } from './modules/rankings-list/rankings-list.component';
 import { MessageListCom } from './modules/messages/message-list.component';
 
 //Welcome
 import {WelcomeCom} from './modules/welcome/welcome.component';
-
-//Toast component
 import {ToastCom} from './modules/toast/toast.component';
 
 //Angular2 services
@@ -38,6 +41,7 @@ import {DecHttp} from './utils/http/';
 import {ToastSvc} from './modules/toast/toast.service';
 import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
 import {MessagesSvc} from './modules/messages/messages.service';
+import { ConfigSvc } from './modules/config/config.service';
 
 @NgModule({
   declarations: [RacketMeetupApp, ToastCom],
@@ -67,11 +71,17 @@ import {MessagesSvc} from './modules/messages/messages.service';
   	WsSvc,
   	DecHttp,
   	UserSvc,
+    ConfigSvc,
   	WsSvc,
   	ColObjDifferFactory,
     MessagesSvc,
     Keyboard,
-    SpinnerDialog
+    SpinnerDialog,
+    ActionSheet,
+    Camera,
+    Transfer,
+    File,
+    Crop
   ]
 })
 export class AppModule {}

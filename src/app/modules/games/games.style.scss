@@ -1,6 +1,10 @@
 games{
 
 	//@TODO:60 make sure using variables for colours
+	.no-games-message{
+		text-align:center;
+		margin:20px;
+	}
 
 	img{
 		width:6rem;
@@ -34,19 +38,20 @@ games{
 	}
 
 	ion-item.item{
-		border-bottom: 1px solid #c8c7cc;		
-	}	
+		border-bottom: 1px solid #c8c7cc;
+	}
 
-	ion-list .item .item-inner{
+	ion-list .item .item-inner,
+	.list-ios .item-block .item-inner{
 		border:none;
 	}
 
 	.upcoming{
-		border-left: 3px solid green;
+		border-left: 3px solid $darkcyan;
 	}
 
 	.previous{
-		border-left: 3px solid red;
+		border-left: 3px solid $lightgreen;
 
 		table{
 			width:100%;

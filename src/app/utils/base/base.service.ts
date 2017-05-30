@@ -1,4 +1,5 @@
 import {DecHttp, HttpUtils} from '../http';
+import { ConfigSvc } from '../../modules/config/config.service';
 import {Subject, BehaviorSubject, Observable} from 'rxjs';
 import '../custom-rx-operators/debounce-leading';
 
@@ -7,12 +8,13 @@ const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args
 export class BaseService {
 
 	public url:string;
-	public baseUrl: string = window['cordova']  ? "http://192.168.1.72:3000/api/" : "/api/";
+	public baseUrl: string;
   public inFlight$: Observable<boolean>;
 	public model:any;
 	public subjects: Object = {};
 
-	constructor(protected http: DecHttp){
+	constructor(protected http: DecHttp, configSvc: ConfigSvc){
+		this.baseUrl = configSvc.get('baseUrl');
     this.inFlight$ = <Observable<boolean>>this.create$('inFlight')
       .debounceLeading(1000);
   }
@@ -45,15 +47,15 @@ export class BaseService {
 		return request;
 	}
 
-	_sync(model: any, opts: Object = {}, url?:string, params?:string){
+	_sync(data: any, opts: Object = {}, url?:string, params?:string){
 		return this.httpWrapper.apply(this, mergeArguments("post", arguments));
 	}
 
-	_update(model: any, opts: Object = {}, url?:string, params?:string){
+	_update(data: any, opts: Object = {}, url?:string, params?:string){
 		return this.httpWrapper.apply(this, mergeArguments("put", arguments));
 	}
 
-  _delete(model: any, opts: Object = {}, url?:string, params?:string){
+  _delete(data: any, opts: Object = {}, url?:string, params?:string){
 		return this.httpWrapper.apply(this, mergeArguments("delete", arguments));
 	}
 
@@ -73,6 +75,9 @@ export class BaseService {
 	}
 
   generateUrl(url: string, params:string = ""){
+		if(!url && !this.url){
+			throw new Error("No url property has been set for request.");
+		}
     return `${this.baseUrl}${url ? url : this.url}${params}`
   }
 

@@ -4,27 +4,29 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-list>
-	<ion-item-sliding
-		*ngFor="let chat of chats$ | async"
-		(click)="openMessage(chat.id)"
-	>
-		<ion-item>
-			<ion-avatar item-left>
-				<img src="{{chat.img}}">
-			</ion-avatar>
-			<h2>{{chat.otherUser.details.fullName}}</h2>
-			<p>{{(chat.preview[0] || {}).message}}</p>
-		</ion-item>
-		<ion-item-options>
-			<button primary>
-				<ion-icon name="text"></ion-icon>
-					Text
+<ion-content>
+	<ion-list>
+		<ion-item-sliding
+			*ngFor="let chat of chats$ | async"
+			(click)="openMessage(chat.id)"
+		>
+			<ion-item>
+				<ion-avatar item-left>
+					<img src="{{chat.img}}">
+				</ion-avatar>
+				<h2>{{chat.otherUser.details.firstName}} {{chat.otherUser.details.lastName}}</h2>
+				<p>{{(chat.preview[0] || {}).message}}</p>
+			</ion-item>
+			<ion-item-options>
+				<button primary>
+					<ion-icon name="text"></ion-icon>
+						Text
+					</button>
+				<button secondary>
+					<ion-icon name="call"></ion-icon>
+						Call
 				</button>
-			<button secondary>
-				<ion-icon name="call"></ion-icon>
-					Call
-			</button>
-		</ion-item-options>
-	</ion-item-sliding>
-</ion-list>
+			</ion-item-options>
+		</ion-item-sliding>
+	</ion-list>
+</ion-content>

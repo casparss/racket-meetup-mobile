@@ -44,7 +44,7 @@ import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 			</ion-item>
 		</ion-list>
 
-		<button ion-button block medium>Signup</button>
+		<button [disabled]="! signupForm.valid" ion-button block medium>Signup</button>
 	</form>
 
 	`,

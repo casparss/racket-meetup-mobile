@@ -4,17 +4,27 @@ profile-main,
 	$text-colour: #fff;
 	$background-colour:#16a086;
 
+	ion-list-header.component-header ion-label.label-ios{
+		margin-top:30px;
+	}
+
+	.content-background{
+		background: $white;
+	}
+
 	header{
 		padding: 45px 25px;
 		color:$text-colour;
-		background: linear-gradient(to bottom, #1dd4b1 0%,#16a086 77%);
+		background: $primary-gradient;
 
-		img{
+		loading-img{
 			width:14rem;
 			height:14rem;
-			border-radius:7rem;
 			display:block;
-			margin:auto;	
+			margin:auto;
+			img {
+				border-radius:7rem;
+			}
 		}
 
 		.playerName{
@@ -30,7 +40,7 @@ profile-main,
 				font-weight: 100;
 			}
 
-			dd{			
+			dd{
 				font-size: 2.5rem;
 	    		font-weight: bold;
 			}
@@ -38,6 +48,6 @@ profile-main,
 		}
 
 
-	}	
-	
+	}
+
 }

@@ -8,6 +8,7 @@ import {BaseService} from "../../utils/base/base.service";
 import {ColObjDifferFactory, CollectionObjectDiffer} from '../../utils/differs/collection-object-diff';
 import {Service} from './availability.interface';
 import {Utils} from '../../utils/util-helpers';
+import { ConfigSvc } from '../config/config.service';
 
 @Injectable()
 export class AvailabilitySvc extends BaseService implements Service {
@@ -18,9 +19,10 @@ export class AvailabilitySvc extends BaseService implements Service {
 
 	constructor(
 		private colObjDifferFactory: ColObjDifferFactory,
-		http: DecHttp
+		http: DecHttp,
+		configSvc: ConfigSvc
 	){
-    super(http);
+    super(http, configSvc);
 	}
 
 	get(id: string){

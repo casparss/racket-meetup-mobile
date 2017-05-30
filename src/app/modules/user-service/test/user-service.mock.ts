@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 export class DecHttpMock {
 
 }
@@ -74,3 +75,7 @@ export const userModel3Mock = {
 
   token: tokenUser3Id
 };
+
+export const userModel1Mock$ = new BehaviorSubject(userModel1Mock).asObservable();
+export const userModel2Mock$ = new BehaviorSubject(userModel2Mock).asObservable();
+export const userModel3Mock$ = new BehaviorSubject(userModel3Mock).asObservable();

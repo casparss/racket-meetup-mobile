@@ -6,6 +6,7 @@ import { availabilityFixture } from './availability.fixture';
 import { ServiceMock, UserMock } from './availability.mocks';
 import { UserSvc } from '../../user-service';
 import { DecHttp } from '../../../utils/http';
+import { BehaviorSubject } from 'rxjs';
 
 let fixture: ComponentFixture<AvailabilityCom> = null;
 let instance: any = null;
@@ -31,7 +32,8 @@ describe('Availability component', () => {
 	});
 
 	it('getAvailability() populates checkboxes', () => {
-		instance.user = {_id : "12345"};
+
+		instance.user = new BehaviorSubject({_id : "12345"}).asObservable();
 		instance.getAvailability();
 		fixture.detectChanges();
 		let checkboxes = fixture.nativeElement.querySelectorAll('ion-checkbox');
@@ -43,7 +45,7 @@ describe('Availability component', () => {
 	});
 
 	it('Click on availability triggers diff.', () => {
-		instance.user = {_id : "12345"};
+		instance.user = new BehaviorSubject({_id : "12345"}).asObservable();
 		instance.ngOnInit();
 		fixture.detectChanges();
 		spyOn(instance['svc'], 'diff');

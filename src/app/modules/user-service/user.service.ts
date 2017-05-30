@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { remove, cloneDeep } from 'lodash';
-import { Subject, Observable } from 'rxjs';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { BaseService } from '../../utils/base/base.service';
 import { DecHttp, HttpUtils } from '../../utils/http';
 export { UserLoginInt, UserSignupInt, UserInt } from './user.interface';
 import { UserLoginInt, UserSignupInt } from './user.interface';
-import { BehaviorSubject } from 'rxjs';
+import { ConfigSvc } from '../config/config.service';
+import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
+import { File } from '@ionic-native/file';
 
+const transformUser$ = user => new BehaviorSubject(user).asObservable();
+const profileImage = (url, id) => `${url}${id}.jpeg`;
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -14,17 +18,44 @@ export class UserSvc extends BaseService {
 	url = "user";
   followersUrl = "followers";
   searchUrl = "user/search";
-	//@#Refactor:0 convert into behaviour subject observable!
 	private _user: any;
 	private _user$;
+	private _profileImage$;
   public searchedPlayers$:any;
   public followers$:any;
 
-	constructor(http: DecHttp){
-		super(http);
-		this._user$ = <Observable<any>>this.create$("user");
+	constructor(
+		http: DecHttp,
+		private configSvc: ConfigSvc,
+		private transfer: Transfer,
+		private file: File
+	){
+		super(http, configSvc);
+		this.defineObservables()
+	}
+
+	defineObservables(){
+
+		//User
+		this.subjects['user'] = new BehaviorSubject({});
+		this._user$ = <Observable<any>>this.subjects['user'].asObservable();
 		this._user$.subscribe(user => this._user = user);
-    this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
+
+		//searchedPlayers
+		this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers')
+			.map((users: any) => users.map(transformUser$));
+
+		//Profile image
+		this.subjects['profileImage'] = new BehaviorSubject('default');
+		this._profileImage$ = this.subjects['profileImage'].asObservable()
+			.map(obj => {
+				const url = this.configSvc.get('imageUrl');
+				const imagePath = profileImage(url, obj.id);
+
+				return obj.refresh ?
+					`${imagePath}?${new Date().getTime()}` :
+					imagePath
+			});
 	}
 
 	login(user:UserLoginInt){
@@ -42,6 +73,7 @@ export class UserSvc extends BaseService {
 	}
 
 	public userSuccess = user => {
+		this.subjects['profileImage'].next({id: user._id});
 		this.current = user;
 		this.http.token = user.token;
 	}
@@ -52,12 +84,12 @@ export class UserSvc extends BaseService {
 
   isFollowedBy(user){
     return !!this._user.followers.followingMe
-      .find(userId => user._id === userId);
+      .find(userId => user.source.getValue()._id === userId);
   }
 
   doesFollow(user){
     return !!this._user.followers.followingThem
-      .find(userId => user._id === userId);
+      .find(userId => user.source.getValue()._id === userId);
   }
 
   toggleFollow(userId:string){
@@ -88,31 +120,85 @@ export class UserSvc extends BaseService {
       following$: followingSubject.asObservable(),
       followers$: followersSubject.asObservable(),
       get: () => {
-        this.getFollowers(userId).subscribe(data => {
-          followingSubject.next(data.followingThem);
-          followersSubject.next(data.followingMe);
-        });
+        this.getFollowers(userId)
+					.map(({followingMe, followingThem}) => {
+						return {
+							followingMe: followingMe.map(transformUser$),
+							followingThem: followingThem.map(transformUser$)
+						};
+					})
+					.subscribe(({followingThem, followingMe}:any) => {
+	          followingSubject.next(followingThem);
+	          followersSubject.next(followingMe);
+	        });
         return exports;
       }
     }
     return exports;
   }
 
-	syncDetails(details){
-		return this._sync(details)
-			.subscribe(details => {
+	updateDetails(details, isValid: boolean, requestType: string){
+		if(isValid){
+			let request = this._update(details, {
+				search: HttpUtils.urlParams({
+					requestType: requestType
+				})
+			})
+			.map(user => user.details);
+
+			request.subscribe(details => {
 				let user = this.current;
 				user.details = details;
 				this.current = user;
 			});
+
+			return request;
+		}
+	}
+
+	uploadPhoto(imageUri: string){
+		let fileTransfer: TransferObject = this.transfer.create();
+
+		let options: FileUploadOptions = {
+	     fileKey: 'image',
+	     fileName: this._user._id,
+	     headers: { 'x-auth': this.http.token },
+			 httpMethod: "PUT"
+	  };
+
+	  return fileTransfer.upload(
+				imageUri,
+				this.configSvc.get('baseUrl') + 'user',
+				options
+			)
+	   .then(() => this.refreshProfileImage())
+		 .catch(console.log);
+	}
+
+	refreshProfileImage(){
+		this.subjects['profileImage']
+			.next({
+				id: this._user._id,
+				refresh: true
+			});
+	}
+
+	generateProfileImage(user: any){
+		const url = this.configSvc.get('imageUrl');
+		return profileImage(url, user.source.getValue()._id);
+	}
+
+	get profileImage() {
+		return this._profileImage$;
 	}
 
   search(searchTerm:string){
-		return this._get('searchedPlayers', {
+		const opts = {
 			search: HttpUtils.urlParams({
 				searchTerm: searchTerm
 			})
-		}, this.searchUrl);
+		};
+		return this._get('searchedPlayers', opts, this.searchUrl);
 	}
 
 	mutateCurrentUser(cb){

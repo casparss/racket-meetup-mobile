@@ -25,7 +25,7 @@
   			*ngFor="let user of followers.followers$ | async"
   			(click)="openProfile(user)"
   		>
-  			{{ user?.details.firstName + " " + user?.details.lastName }}
+  			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
   		</ion-item>
 
     </div>
@@ -36,7 +36,7 @@
   			*ngFor="let user of followers.following$ | async"
   			(click)="openProfile(user)"
   		>
-  			{{ user?.details.firstName + " " + user?.details.lastName }}
+  			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
   		</ion-item>
 
     </div>

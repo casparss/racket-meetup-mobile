@@ -7,13 +7,39 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve",
+    "ionic:serve": "NODE_ENV=local ionic-app-scripts serve",
     "e2e": "ionic-app-scripts build && protractor",
     "postinstall": "ionic state restore && webdriver-manager update",
     "test": "ng test",
     "test-coverage": "ng test --code-coverage",
     "test-ci": "ng test --watch=false --code-coverage",
-    "ios": "ionic cordova run ios"
+    "ios": "ionic cordova run ios",
+    "simulator": "NODE_ENV=local ionic cordova emulate",
+    "build:jacq": "NODE_ENV=jacq npm run ios",
+    "build:mum": "NODE_ENV=mum npm run ios",
+    "build:local": "NODE_ENV=local npm run ios"
+  },
+  "envConfig": {
+    "local": {
+      "baseUrl": "'api/'",
+      "wsUrl": "'ws://127.0.0.1:3000'",
+      "imageUrl": "'assets/'"
+    },
+    "dev": {
+      "baseUrl": "'http://188.166.159.118:3000/api/'",
+      "wsUrl": "'ws://188.166.159.118:3000'",
+      "imageUrl": "'http://188.166.159.118:3000/assets/'"
+    },
+    "jacq": {
+      "baseUrl": "'http://192.168.1.72:3000/api/'",
+      "wsUrl": "'ws://192.168.1.72:3000'",
+      "imageUrl": "'http://192.168.1.72:3000/assets/'"
+    },
+    "mum": {
+      "baseUrl": "'http://192.168.0.18:3000/api/'",
+      "wsUrl": "'ws://192.168.0.18:3000'",
+      "imageUrl": "'http://192.168.0.18:3000/assets/'"
+    }
   },
   "dependencies": {
     "@angular/common": "4.0.0",
@@ -25,11 +51,17 @@
     "@angular/platform-browser": "4.0.0",
     "@angular/platform-browser-dynamic": "4.0.0",
     "@angular/router": "4.0.0",
+    "@ionic-native/action-sheet": "^3.10.0",
+    "@ionic-native/camera": "^3.10.0",
     "@ionic-native/core": "^3.9.2",
+    "@ionic-native/crop": "^3.10.3",
+    "@ionic-native/file": "^3.10.2",
     "@ionic-native/keyboard": "^3.9.2",
+    "@ionic-native/photo-library": "^3.10.0",
     "@ionic-native/spinner-dialog": "^3.9.2",
     "@ionic-native/splash-screen": "3.4.2",
     "@ionic-native/status-bar": "3.4.2",
+    "@ionic-native/transfer": "^3.10.2",
     "@ionic/storage": "2.0.1",
     "ionic-angular": "3.0.1",
     "ionicons": "3.0.0",
@@ -56,6 +88,9 @@
     "karma-jasmine": "1.1.0",
     "karma-jasmine-html-reporter": "0.2.2",
     "protractor": "5.1.0",
+    "raw-loader": "^0.5.1",
+    "sass": "^0.5.0",
+    "sass-loader": "^6.0.5",
     "simple-pub-sub": "^0.1.1",
     "ts-node": "2.0.0",
     "tslint": "4.5.0",
@@ -78,5 +113,8 @@
       "locator": "ios"
     }
   ],
-  "description": "RacketMeetupMobileApp"
+  "description": "RacketMeetupMobileApp",
+  "config": {
+    "ionic_webpack": "./webpack.config.js"
+  }
 }

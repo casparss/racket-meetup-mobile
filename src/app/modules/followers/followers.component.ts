@@ -19,7 +19,7 @@ export class FollowersCom{
   }
 
 	openProfile(user){
-		this.nav.push(ProfileMainCom, {user: user});
+		this.nav.push(ProfileMainCom, { user: user });
 	}
 
 }

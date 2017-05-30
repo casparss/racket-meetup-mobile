@@ -1,5 +1,19 @@
-.profile-mydetails-com{
+my-details {
 	ion-thumbnail img{
 		border-radius:4rem;
+	}
+	.item-ios ion-avatar loading-img,
+	.item-md ion-avatar loading-img{
+		width: 100px;
+		height: 100px;
+	}
+}
+
+change-password {
+	.validation-message {
+		color: $red;
+	}
+	.success {
+		color: $lightseagreen;
 	}
 }

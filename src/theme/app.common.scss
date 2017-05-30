@@ -12,6 +12,21 @@ ion-list-header{
 	margin: 0 16px;
 }
 
+ion-navbar{
+	.toolbar-background-md, .toolbar-background-ios {
+		background:$lightseagreen;
+		border-color: transparent!important;
+	}
+	.toolbar-title-md, .toolbar-title-ios {
+		color: $text-white;
+	}
+	.bar-button-default-md, .bar-button-default-ios {
+		color: $text-white;
+	}
+
+}
+
+
 //mixins
 
 @mixin flexVerticalCenter{
