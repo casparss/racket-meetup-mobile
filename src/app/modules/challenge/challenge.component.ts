@@ -8,7 +8,7 @@ import { ChallengeSvc } from './challenge.service';
 @Component({
 	templateUrl: './challenge.view.html'
 })
-export class ChallengeCom{
+export class ChallengeCom {
 
 	private challenger: UserInt;
   private challengee: UserInt;
@@ -23,11 +23,11 @@ export class ChallengeCom{
     private viewCtrl: ViewController,
     private challengeSvc: ChallengeSvc,
     formBuilder: FormBuilder,
-    userSvc: UserSvc
+    private userSvc: UserSvc
   ){
     this.challengeForm = formBuilder.group(this.formModel);
     this.challenger = userSvc.current;
-		this.challengee = viewCtrl.data.user.source.getValue();
+		viewCtrl.data.user$.subscribe(user => this.challengee = user);
 	}
 
 	challenge(challengeDetails, isValid:boolean){

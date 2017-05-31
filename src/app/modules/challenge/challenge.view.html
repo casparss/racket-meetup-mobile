@@ -10,35 +10,10 @@
 
   <form [formGroup]="challengeForm" (ngSubmit)="challenge(challengeForm.value, challengeForm.valid)">
 
-  	<ion-grid>
-
-			<ion-row class="opponents">
-
-  			<ion-grid>
-  				<ion-row>
-  					<ion-col width-100>
-  							<ion-grid>
-  								<ion-row>
-  									<ion-col width-33>
-  										<img [src]="challenger.image" alt="">
-  										<div class="playerName">{{challenger.fullName}}</div>
-  									</ion-col>
-
-  									<ion-col width-33>
-  										<div class="vs">Vs.</div>
-  									</ion-col>
-
-  									<ion-col width-33>
-  										<img [src]="challengee.image">
-  										<div class="playerName">{{challengee.fullName}}</div>
-  									</ion-col>
-  								</ion-row>
-  							</ion-grid>
-  					</ion-col>
-  				</ion-row>
-  			</ion-grid>
-
-  		</ion-row>
+  		<opponents
+				[challenger]='challenger'
+				[challengee]='challengee'>
+			</opponents>
 
   		<ion-row class="top">
   			<ion-col width-100>
@@ -70,9 +45,6 @@
 
   			</ion-col>
   		</ion-row>
-
-  	</ion-grid>
-
 
 		<ion-row class="buttons">
 			<ion-col width-50>

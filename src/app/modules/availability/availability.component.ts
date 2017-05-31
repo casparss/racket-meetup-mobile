@@ -1,8 +1,9 @@
-import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
-import {UserInt} from '../user-service/user.interface';
-import {debounce} from 'lodash';
-import {AvailabilitySvc} from './availability.service';
 
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { UserInt } from '../user-service/user.interface';
+import { debounce } from 'lodash';
+import { AvailabilitySvc } from './availability.service';
+import { toPromise } from '../../utils/util-helpers';
 
 @Component({
 	templateUrl: './availability.view.html',
@@ -10,7 +11,7 @@ import {AvailabilitySvc} from './availability.service';
 })
 export class AvailabilityCom {
 
-	@Input() user: any;
+	@Input() user$: any;
 	private isInFlight: boolean = false;
   private model: Object;
 
@@ -23,7 +24,9 @@ export class AvailabilityCom {
 	}
 
 	getAvailability(){
-		this.svc.get(this.user.source.getValue()._id).subscribe(model => this.model = model);
+		toPromise(this.user$)
+			.then(({ _id }) => this.svc.get(_id).toPromise())
+			.then(model => this.model = model);
 	}
 
 };

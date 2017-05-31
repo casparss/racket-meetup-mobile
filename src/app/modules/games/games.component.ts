@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {UserInt} from '../user-service/user.interface';
 import {GamesSvc} from './games.service';
 import {GameInt} from './games.interfaces';
+import { toPromise } from '../../utils/util-helpers';
 
 @Component({
 	template:`
@@ -16,13 +17,13 @@ import {GameInt} from './games.interfaces';
 })
 export class GamesCom {
 
-	@Input() user: any;
+	@Input() user$: any;
 	private games$: any;
 
 	constructor(private svc: GamesSvc){}
 
 	ngOnInit(){
-		this.svc.get(this.user.source.getValue()._id);
+		toPromise(this.user$).then(({ _id }) => this.svc.get(_id));
 	}
 
 }
