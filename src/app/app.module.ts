@@ -27,20 +27,21 @@ import { RankingsListCom } from './modules/rankings-list/rankings-list.component
 import { MessageListCom } from './modules/messages/message-list.component';
 
 //Welcome
-import {WelcomeCom} from './modules/welcome/welcome.component';
-import {ToastCom} from './modules/toast/toast.component';
+import { WelcomeCom } from './modules/welcome/welcome.component';
+import { ToastCom } from './modules/toast/toast.component';
 
 //Angular2 services
-import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
 //Services
-import {ColObjDifferFactory} from './utils/differs/collection-object-diff.ts';
-import {UserSvc} from './modules/user-service/user.service';
-import {DecHttp} from './utils/http/';
-import {ToastSvc} from './modules/toast/toast.service';
-import {WsSvc} from './modules/web-sockets-service/web-sockets.service';
-import {MessagesSvc} from './modules/messages/messages.service';
+import { ColObjDifferFactory } from './utils/differs/collection-object-diff.ts';
+import { UserSvc } from './modules/user-service/user.service';
+import { GamesSvc } from './modules/games/games.service';
+import { DecHttp } from './utils/http/';
+import { ToastSvc } from './modules/toast/toast.service';
+import { WsSvc } from './modules/web-sockets-service/web-sockets.service';
+import { MessagesSvc } from './modules/messages/messages.service';
 import { ConfigSvc } from './modules/config/config.service';
 
 @NgModule({
@@ -71,6 +72,7 @@ import { ConfigSvc } from './modules/config/config.service';
   	WsSvc,
   	DecHttp,
   	UserSvc,
+    GamesSvc,
     ConfigSvc,
   	WsSvc,
   	ColObjDifferFactory,

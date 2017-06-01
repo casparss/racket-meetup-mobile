@@ -3,7 +3,7 @@ import { ViewController } from 'ionic-angular';
 import { FormGroup , FormBuilder, Validators} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
 import { UserSvc } from '../user-service/user.service';
-import { ChallengeSvc } from './challenge.service';
+import { GamesSvc } from '../games/games.service';
 
 @Component({
 	templateUrl: './challenge.view.html'
@@ -21,9 +21,9 @@ export class ChallengeCom {
 
 	constructor(
     private viewCtrl: ViewController,
-    private challengeSvc: ChallengeSvc,
     formBuilder: FormBuilder,
-    private userSvc: UserSvc
+    private userSvc: UserSvc,
+		private gamesSvc: GamesSvc
   ){
     this.challengeForm = formBuilder.group(this.formModel);
     this.challenger = userSvc.current;
@@ -32,8 +32,11 @@ export class ChallengeCom {
 
 	challenge(challengeDetails, isValid:boolean){
     if(isValid){
-      this.challengeSvc.challenge(challengeDetails, this.challengee)
-        .subscribe(() => this.viewCtrl.dismiss());
+      this.gamesSvc.challenge(challengeDetails, this.challengee)
+        .subscribe(game => {
+					this.gamesSvc.pushToCurrent(game);
+					this.viewCtrl.dismiss();
+				});
     }
   }
 
