@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 import {NavController} from 'ionic-angular';
 import {TabsController} from '../tabs/tabs-controller.component';
 import {UserSvc} from '../user-service/user.service';
@@ -44,7 +45,7 @@ import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 			</ion-item>
 		</ion-list>
 
-		<button [disabled]="! signupForm.valid" ion-button block medium>Signup</button>
+		<button [disabled]="!signupForm.valid" ion-button block medium>Signup</button>
 	</form>
 
 	`,
@@ -63,7 +64,8 @@ export class SignupFormCom{
 	constructor(
 		private svc: UserSvc,
 		private nav: NavController,
-		private formBuilder: FormBuilder
+		private formBuilder: FormBuilder,
+		private spinnerDialog: SpinnerDialog
 	){
 		this.signupForm = this.formBuilder.group(this.formModel);
 	}
@@ -71,7 +73,10 @@ export class SignupFormCom{
 	signup(user, isValid:boolean){
 		if(isValid){
 			this.svc.signup(user)
-				.subscribe(() => this.nav.push(TabsController));
+				.subscribe(
+					() => this.nav.push(TabsController),
+					() => this.spinnerDialog.hide()
+				);
 		}
 	}
 

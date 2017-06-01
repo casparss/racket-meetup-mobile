@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { remove, cloneDeep } from 'lodash';
+import { remove, cloneDeep, isEmpty } from 'lodash';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { BaseService } from '../../utils/base/base.service';
 import { DecHttp, HttpUtils } from '../../utils/http';
@@ -8,9 +8,6 @@ import { UserLoginInt, UserSignupInt } from './user.interface';
 import { ConfigSvc } from '../config/config.service';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';
-
-const transformUser$ = user => new BehaviorSubject(user).asObservable();
-const profileImage = (url, id) => `${url}${id}.jpeg`;
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -38,19 +35,19 @@ export class UserSvc extends BaseService {
 
 		//User
 		this.subjects['user'] = new BehaviorSubject({});
-		this._user$ = <Observable<any>>this.subjects['user'].asObservable();
+		this._user$ = <Observable<any>>this.subjects['user'].asObservable()
+			.map(user => this.populateExtraFields(user));
 		this._user$.subscribe(user => this._user = user);
 
 		//searchedPlayers
 		this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers')
-			.map((users: any) => users.map(transformUser$));
+			.map((users: any) => users.map(user => this.transformUser$(user)));
 
 		//Profile image
 		this.subjects['profileImage'] = new BehaviorSubject('default');
 		this._profileImage$ = this.subjects['profileImage'].asObservable()
 			.map(obj => {
-				const url = this.configSvc.get('imageUrl');
-				const imagePath = profileImage(url, obj.id);
+				const imagePath = this.generateImageUri(obj.id);
 
 				return obj.refresh ?
 					`${imagePath}?${new Date().getTime()}` :
@@ -59,17 +56,14 @@ export class UserSvc extends BaseService {
 	}
 
 	login(user:UserLoginInt){
-		let request = this._get(null, {
-			search: HttpUtils.urlParams(user)
-		}, 'user');
-		request.subscribe(this.userSuccess);
-		return request;
+		let search = HttpUtils.urlParams(user);
+		return this._get(null, { search }, 'user')
+			.do(this.userSuccess)
 	}
 
 	signup(user:UserSignupInt){
-		let request = this._sync(user);
-		request.subscribe(this.userSuccess);
-		return request;
+		return this._sync(user)
+			.do(this.userSuccess);
 	}
 
 	public userSuccess = user => {
@@ -82,14 +76,14 @@ export class UserSvc extends BaseService {
 
 	}
 
-  isFollowedBy(user){
+  isFollowedBy(queriedUserId){
     return !!this._user.followers.followingMe
-      .find(userId => user.source.getValue()._id === userId);
+      .find(userId => queriedUserId === userId);
   }
 
-  doesFollow(user){
+  doesFollow(queriedUserId){
     return !!this._user.followers.followingThem
-      .find(userId => user.source.getValue()._id === userId);
+      .find(userId => queriedUserId === userId);
   }
 
   toggleFollow(userId:string){
@@ -123,8 +117,8 @@ export class UserSvc extends BaseService {
         this.getFollowers(userId)
 					.map(({followingMe, followingThem}) => {
 						return {
-							followingMe: followingMe.map(transformUser$),
-							followingThem: followingThem.map(transformUser$)
+							followingMe: followingMe.map(user => this.transformUser$(user)),
+							followingThem: followingThem.map(user => this.transformUser$(user))
 						};
 					})
 					.subscribe(({followingThem, followingMe}:any) => {
@@ -139,20 +133,14 @@ export class UserSvc extends BaseService {
 
 	updateDetails(details, isValid: boolean, requestType: string){
 		if(isValid){
-			let request = this._update(details, {
-				search: HttpUtils.urlParams({
-					requestType: requestType
-				})
-			})
-			.map(user => user.details);
-
-			request.subscribe(details => {
-				let user = this.current;
-				user.details = details;
-				this.current = user;
-			});
-
-			return request;
+			let search = HttpUtils.urlParams({ requestType });
+			return this._update(details, { search })
+				.map(user => user.details)
+				.do(details => {
+					let user = this.current;
+					user.details = details;
+					this.current = user;
+				});
 		}
 	}
 
@@ -183,9 +171,12 @@ export class UserSvc extends BaseService {
 			});
 	}
 
-	generateProfileImage(user: any){
-		const url = this.configSvc.get('imageUrl');
-		return profileImage(url, user.source.getValue()._id);
+	generateProfileImage({ _id }){
+		return this.generateImageUri(_id);
+	}
+
+	private generateImageUri(filename){
+		return `${this.configSvc.get('imageUrl')}${filename}.jpeg`;
 	}
 
 	get profileImage() {
@@ -193,12 +184,8 @@ export class UserSvc extends BaseService {
 	}
 
   search(searchTerm:string){
-		const opts = {
-			search: HttpUtils.urlParams({
-				searchTerm: searchTerm
-			})
-		};
-		return this._get('searchedPlayers', opts, this.searchUrl);
+		let search = HttpUtils.urlParams({ searchTerm });
+		return this._get('searchedPlayers', { search }, this.searchUrl);
 	}
 
 	mutateCurrentUser(cb){
@@ -217,4 +204,15 @@ export class UserSvc extends BaseService {
 		return this._user$;
 	}
 
+	private transformUser$(user){
+		return new BehaviorSubject(user)
+			.map(user => this.populateExtraFields(user));
+	}
+
+	private populateExtraFields(user){
+		if(!isEmpty(user)){
+			user.details.image = this.generateImageUri(user._id);
+		}
+		return user;
+	}
 }

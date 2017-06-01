@@ -15,7 +15,6 @@ import {UserSvc} from '../user-service/user.service';
   </ion-header>
 
   <ion-content>
-
     <ion-toolbar primary>
   		<ion-searchbar
   			(ionInput)="searchPlayers($event)"
@@ -25,32 +24,29 @@ import {UserSvc} from '../user-service/user.service';
 
   	<ion-list>
   		<ion-item
-  			*ngFor="let user of userSvc.searchedPlayers$ | async"
-  			(click)="openProfile(user)"
+  			*ngFor="let user$ of userSvc.searchedPlayers$ | async"
+  			(click)="openProfile(user$)"
   		>
-  			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
+  			{{ (user$ | async)?.details.fullName }}
   		</ion-item>
   	</ion-list>
-
   </ion-content>
 
   `
 })
 export class SearchPlayersCom{
 
-	private userList$: any;
-
 	constructor(
 		private nav: NavController,
 		private userSvc: UserSvc
 	){}
 
-	openProfile(user){
-		this.nav.push(ProfileMainCom, { user: user });
+	openProfile(user$){
+		this.nav.push(ProfileMainCom, { user$ });
 	}
 
-  searchPlayers(ev){
-    this.userSvc.search(ev.target.value);
+  searchPlayers({target: { value }}){
+    this.userSvc.search(value).subscribe();
   }
 
 }

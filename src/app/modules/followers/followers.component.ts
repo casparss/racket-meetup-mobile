@@ -18,8 +18,8 @@ export class FollowersCom{
     this.followers = this.userSvc.followersFactory(null).get();
   }
 
-	openProfile(user){
-		this.nav.push(ProfileMainCom, { user: user });
+	openProfile(user$){
+		this.nav.push(ProfileMainCom, { user$ });
 	}
 
 }

@@ -14,7 +14,7 @@
     "test-coverage": "ng test --code-coverage",
     "test-ci": "ng test --watch=false --code-coverage",
     "ios": "ionic cordova run ios",
-    "simulator": "NODE_ENV=local ionic cordova emulate",
+    "simulator": "NODE_ENV=jacq ionic cordova emulate",
     "build:jacq": "NODE_ENV=jacq npm run ios",
     "build:mum": "NODE_ENV=mum npm run ios",
     "build:local": "NODE_ENV=local npm run ios"
@@ -31,9 +31,9 @@
       "imageUrl": "'http://188.166.159.118:3000/assets/'"
     },
     "jacq": {
-      "baseUrl": "'http://192.168.1.72:3000/api/'",
-      "wsUrl": "'ws://192.168.1.72:3000'",
-      "imageUrl": "'http://192.168.1.72:3000/assets/'"
+      "baseUrl": "'http://192.168.1.70:3000/api/'",
+      "wsUrl": "'ws://192.168.1.70:3000'",
+      "imageUrl": "'http://192.168.1.70:3000/assets/'"
     },
     "mum": {
       "baseUrl": "'http://192.168.0.18:3000/api/'",

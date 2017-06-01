@@ -1,6 +1,6 @@
 'use strict';
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 export class Utils {
 
@@ -20,3 +20,12 @@ export class Utils {
     }
   }
 }
+
+export const toPromise = (observable$: Observable<any>) => {
+  return new Promise<any>((resolve, reject) =>
+    observable$.subscribe(
+      value => resolve(value),
+      err => reject(err)
+    )
+  );
+};

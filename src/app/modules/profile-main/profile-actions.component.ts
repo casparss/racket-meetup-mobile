@@ -1,14 +1,16 @@
-import {Component, Input} from '@angular/core';
-import {NavController, ModalController} from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { NavController, ModalController } from 'ionic-angular';
+import { Observable } from 'rxjs';
+import { toPromise } from '../../utils/util-helpers';
 
-import {ChallengeCom} from '../games/challenge.component';
-import {ProfileMainSvc} from './profile-main.service';
-import {UserSvc, UserInt} from '../user-service/user.service';
-import {MessagesSvc} from '../messages/messages.service';
-import {MydetailsCom} from '../my-details/my-details.component';
-import {FollowersCom} from '../followers/followers.component';
-import {SearchPlayersCom} from '../followers/search-players.component';
-import {ChatCom} from '../messages/chat.component';
+import { ChallengeCom } from '../challenge/challenge.component';
+import { ProfileMainSvc } from './profile-main.service';
+import { UserSvc, UserInt } from '../user-service/user.service';
+import { MessagesSvc } from '../messages/messages.service';
+import { MydetailsCom } from '../my-details/my-details.component';
+import { FollowersCom } from '../followers/followers.component';
+import { SearchPlayersCom } from '../followers/search-players.component';
+import { ChatCom } from '../messages/chat.component';
 
 const pages: any = {
 	myDetails: MydetailsCom,
@@ -19,13 +21,12 @@ const pages: any = {
 @Component({
 	selector:'profile-actions',
 	template:`
-		<ion-list [ngSwitch]="(user | async)?._id === userSvc.current._id">
-
+		<ion-list [ngSwitch]="(user$ | async)?._id === userSvc.current._id">
 			<ion-list-header class="component-header">
 				Actions
 			</ion-list-header>
 
-			<button *ngSwitchCase="false" ion-item (click)="challengePlayer()">
+			<button *ngSwitchCase="false" type="button" ion-item (click)="challengePlayer()">
 				<ion-icon name="tennisball" item-left></ion-icon>
 				Challenge player
 			</button>
@@ -55,13 +56,12 @@ const pages: any = {
 				<ion-icon name="trophy" item-left></ion-icon>
 				My details
 			</button>
-
 		</ion-list>
 	`
 })
 export class ProfileActionsCom {
 
-	@Input() user:any;
+	@Input() user$: Observable<UserInt>;
 	private isFriend: boolean = false;
 
 	constructor(
@@ -70,17 +70,17 @@ export class ProfileActionsCom {
 		private modalController : ModalController,
 		private userSvc: UserSvc,
     private messagesSvc: MessagesSvc
-	){
-     this.setIsFriend();
-  }
+	){ this.setIsFriend(); }
 
   setIsFriend(){
-    if(this.user) this.isFriend = this.userSvc.doesFollow(this.user);
+		if(this.user$){
+			this.user$.subscribe(({ _id }) => this.isFriend = this.userSvc.doesFollow(_id));
+		}
   }
 
 	challengePlayer(){
 		let challengeModal = this.modalController.create(ChallengeCom, {
-			user: this.user
+			user$: this.user$
 		});
 
 		challengeModal.present(challengeModal);
@@ -91,17 +91,15 @@ export class ProfileActionsCom {
   }
 
 	messagePlayer(){
-		this.messagesSvc.getChat([this.user._id])
-      .subscribe(chat => {
-        this.nav.push(ChatCom, {
-    			id: chat._id
-    		});
-      });
+		toPromise(this.user$)
+			.then(({ _id }) => this.messagesSvc.getChat([_id]).toPromise())
+      .then(({ _id }) => this.nav.push(ChatCom, { _id }));
 	}
 
 	toggleFollow(){
-    this.userSvc.toggleFollow(this.user.source.getValue()._id)
-      .subscribe(isFriend => this.isFriend = isFriend);
+		toPromise(this.user$)
+			.then(({ _id }) => this.userSvc.toggleFollow(_id).toPromise())
+			.then(isFriend => this.isFriend = isFriend);
 	}
 
 	openPage(pageName: string): void{

@@ -1,0 +1,64 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>
+			Challenge
+		</ion-title>
+		<ion-buttons end>
+			<button small icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close" ></ion-icon></button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="challengeForm" (ngSubmit)="challenge(challengeForm.value, challengeForm.valid)">
+
+  		<opponents
+				[challenger]='challenger'
+				[challengee]='challengee'>
+			</opponents>
+
+  		<ion-row class="top">
+  			<ion-col width-100>
+
+  				<ion-list>
+
+
+  					<ion-item>
+							<ion-label primary>Date:</ion-label>
+							<ion-icon name="calendar" item-left></ion-icon>
+  						<ion-datetime formControlName="date"
+  							displayFormat="D MMM YYYY"
+  						></ion-datetime>
+  					</ion-item>
+
+  					<ion-item>
+							<ion-label primary>Time:</ion-label>
+							<ion-icon name="time" item-left></ion-icon>
+  						<ion-datetime formControlName="time"
+  							displayFormat="hh:mm A"
+  							pickerFormat="hh:mm A"
+  						></ion-datetime>
+  					</ion-item>
+
+  					<ion-item>
+							<ion-label primary>Location:</ion-label>
+							<ion-icon name="pin" item-left></ion-icon>
+  						<ion-input type="text" formControlName="venue"></ion-input>
+  					</ion-item>
+
+  				</ion-list>
+
+					<ion-item>
+						<button [disabled]="!challengeForm.valid" ion-button icon-left large block type="submit">
+							<ion-icon name="tennisball" ></ion-icon>
+							Challenge
+						</button>
+					</ion-item>
+
+  			</ion-col>
+  		</ion-row>
+
+  </form>
+
+</ion-content>
