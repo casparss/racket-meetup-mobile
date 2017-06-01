@@ -13,13 +13,7 @@
 	}
 
 	.opponents{
-		color:$text-white;
-		background:$primary-gradient;
 
-		ion-grid ion-row{
-			@include flexVerticalCenter;
-			text-align:center;
-		}
 	}
 
 
@@ -27,25 +21,45 @@
 
 	//this code is cut and pasted from games
 	//@#Test:0 Code should be shared.
-	img{
-		width:6rem;
-		height:6rem;
-		display:block;
-		margin:auto;
 
-		border-radius: 3rem;
-	}
 
 	.playerName{
 		text-align:center;
 		margin-top:10px;
 	}
 
+
+
+
+
+
+}
+
+opponents{
+	display: block;
+	background:$primary-gradient;
+	color: $white;
+
+	ion-grid ion-row{
+		@include flexVerticalCenter;
+		text-align:center;
+	}
+
+	loading-img{
+		img {
+			border-radius: 5rem;
+		}
+		width:9rem;
+		height:9rem;
+		display:block;
+		margin:auto;
+	}
+
 	.vs{
 		text-align:center;
 	}
 
-
-
-
+	.playerName{
+		margin-top:10px;
+	}
 }

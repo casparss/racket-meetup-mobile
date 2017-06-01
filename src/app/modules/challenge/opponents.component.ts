@@ -5,15 +5,15 @@ import { UserInt } from '../user-service/user.interface';
   selector: 'opponents',
 	template: `
     <ion-grid>
-      <ion-row class="opponents">
+      <ion-row>
         <ion-grid>
           <ion-row>
             <ion-col width-100>
               <ion-grid>
                 <ion-row>
                   <ion-col width-33>
-                    <img [src]="challenger.details.image" alt="">
-                    <div class="playerName">{{challenger.fullName}}</div>
+                    <loading-img [src]="challenger.details.image" alt=""></loading-img>
+                    <div class="playerName">{{challenger.details.firstName}}</div>
                   </ion-col>
 
                   <ion-col width-33>
@@ -21,8 +21,8 @@ import { UserInt } from '../user-service/user.interface';
                   </ion-col>
 
                   <ion-col width-33>
-                    <img [src]="challenger.details.image">
-                    <div class="playerName">{{challengee.fullName}}</div>
+                    <loading-img [src]="challengee.details.image"></loading-img>
+                    <div class="playerName">{{challengee.details.firstName}}</div>
                   </ion-col>
                 </ion-row>
               </ion-grid>

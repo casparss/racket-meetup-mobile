@@ -30,7 +30,7 @@ export class AvailabilitySvc extends BaseService implements Service {
       .do(model => this.differ = this.colObjDifferFactory.create(this.model = model));
 	}
 
-	debouncedSync = debounce(() => this._update(this.model), this.debouceTime, {
+	debouncedSync = debounce(() => this._update(this.model).subscribe(), this.debouceTime, {
 		trailing: true
 	});
 

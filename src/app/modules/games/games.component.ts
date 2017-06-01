@@ -23,7 +23,7 @@ export class GamesCom {
 	constructor(private svc: GamesSvc){}
 
 	ngOnInit(){
-		toPromise(this.user$).then(({ _id }) => this.svc.get(_id));
+		toPromise(this.user$).then(({ _id }) => this.svc.get(_id).subscribe());
 	}
 
 }

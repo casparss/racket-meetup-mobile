@@ -33,11 +33,10 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 		<button [disabled]="!loginForm.valid" ion-button block medium>Login</button>
 	</form>
-
 	`,
 	selector:"login-form"
 })
-export class LoginFormCom{
+export class LoginFormCom {
 
 	private formModel = {
 		email: ['', [<any>Validators.required]],
@@ -58,10 +57,10 @@ export class LoginFormCom{
 		if(isValid){
 			this.spinnerDialog.show("Logging in...", "Logging in...", true);
 			this.svc.login(user)
-				.subscribe(() => {
-					this.nav.push(TabsController);
-					this.spinnerDialog.hide();
-				}, null, () => this.spinnerDialog.hide());
+				.subscribe(
+					() => this.nav.push(TabsController),
+					err => this.spinnerDialog.hide()
+				);
 		}
 	}
 

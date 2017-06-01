@@ -1,6 +1,6 @@
-import {DecHttp, HttpUtils} from '../http';
+import { DecHttp, HttpUtils } from '../http';
 import { ConfigSvc } from '../../modules/config/config.service';
-import {Subject, BehaviorSubject, Observable} from 'rxjs';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import '../custom-rx-operators/debounce-leading';
 
 const mergeArguments = (verb, args) => [verb, ...Array.prototype.slice.call(args, 0) ]
@@ -21,30 +21,24 @@ export class BaseService {
 
 	_get(observableKey?:string, opts = {}, url?:string, params?:string){
     this.isInFlight();
-		let request = this.http.get({
-			url: this.generateUrl(url, params), opts
-		})
-      .do(data => this.notInflight());
-
-		request.subscribe(data => {
-			if(observableKey && this.subjects[observableKey]){
-				this.subjects[observableKey].next(data);
-			}
-		});
-		return request;
+		return this.http.get({ url: this.generateUrl(url, params), opts })
+      .do(data => this.notInflight())
+			.do(data =>
+				observableKey && this.subjects[observableKey] ?
+					this.subjects[observableKey].next(data) : null
+			);
 	}
 
 	_getById(modelName:string, id:string, url?:string){
 		return this._get(modelName, {
-			search: HttpUtils.urlParams({id: id})
+			search: HttpUtils.urlParams({ id })
 		}, url);
 	}
 
   private httpWrapper(verb:string, data: any, opts: Object = {}, url?:string, params?:string){
 		this.isInFlight();
-		let request = this.http[verb]({url: this.generateUrl(url, params), data, opts});
-		request.subscribe(() => this.notInflight());
-		return request;
+		return this.http[verb]({url: this.generateUrl(url, params), data, opts})
+			.do(() => this.notInflight());
 	}
 
 	_sync(data: any, opts: Object = {}, url?:string, params?:string){

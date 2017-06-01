@@ -46,7 +46,7 @@ export class SearchPlayersCom{
 	}
 
   searchPlayers({target: { value }}){
-    this.userSvc.search(value);
+    this.userSvc.search(value).subscribe();
   }
 
 }

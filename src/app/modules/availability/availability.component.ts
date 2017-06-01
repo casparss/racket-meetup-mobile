@@ -25,7 +25,7 @@ export class AvailabilityCom {
 
 	getAvailability(){
 		toPromise(this.user$)
-			.then(({ _id }) => this.svc.get(_id).toPromise())
+			.then(({ _id }) => toPromise(this.svc.get(_id)))
 			.then(model => this.model = model);
 	}
 

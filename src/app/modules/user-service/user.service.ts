@@ -56,17 +56,14 @@ export class UserSvc extends BaseService {
 	}
 
 	login(user:UserLoginInt){
-		let request = this._get(null, {
-			search: HttpUtils.urlParams(user)
-		}, 'user');
-		request.subscribe(this.userSuccess);
-		return request;
+		let search = HttpUtils.urlParams(user);
+		return this._get(null, { search }, 'user')
+			.do(this.userSuccess)
 	}
 
 	signup(user:UserSignupInt){
-		let request = this._sync(user);
-		request.subscribe(this.userSuccess);
-		return request;
+		return this._sync(user)
+			.do(this.userSuccess);
 	}
 
 	public userSuccess = user => {
@@ -136,18 +133,14 @@ export class UserSvc extends BaseService {
 
 	updateDetails(details, isValid: boolean, requestType: string){
 		if(isValid){
-			let request = this._update(details, {
-				search: HttpUtils.urlParams({ requestType })
-			})
-			.map(user => user.details);
-
-			request.subscribe(details => {
-				let user = this.current;
-				user.details = details;
-				this.current = user;
-			});
-
-			return request;
+			let search = HttpUtils.urlParams({ requestType });
+			return this._update(details, { search })
+				.map(user => user.details)
+				.do(details => {
+					let user = this.current;
+					user.details = details;
+					this.current = user;
+				});
 		}
 	}
 
@@ -191,10 +184,8 @@ export class UserSvc extends BaseService {
 	}
 
   search(searchTerm:string){
-		const opts = {
-			search: HttpUtils.urlParams({ searchTerm })
-		};
-		return this._get('searchedPlayers', opts, this.searchUrl);
+		let search = HttpUtils.urlParams({ searchTerm });
+		return this._get('searchedPlayers', { search }, this.searchUrl);
 	}
 
 	mutateCurrentUser(cb){

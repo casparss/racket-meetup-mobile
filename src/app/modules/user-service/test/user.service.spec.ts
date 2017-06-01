@@ -25,7 +25,7 @@ import {
   userModel1Mock$,
   userModel2Mock$,
   userModel3Mock$
-} from './user-service.mock';
+} from './user.service.mock';
 
 const userSvc: UserSvc = null;
 const lastConnection: any = null;
@@ -66,14 +66,14 @@ describe("User service", () => {
 
   it("isFollowedBy()", inject([UserSvc], userSvc => {
     userSvc.userSuccess(userModel1Mock);
-    expect(userSvc.isFollowedBy(userModel2Mock$)).toBe(true);
-    expect(userSvc.isFollowedBy(userModel3Mock$)).toBe(false);
+    expect(userSvc.isFollowedBy(userModel2Mock._id)).toBe(true);
+    expect(userSvc.isFollowedBy(userModel3Mock._id)).toBe(false);
   }));
 
   it("doesFollow()", inject([UserSvc], userSvc => {
     userSvc.userSuccess(userModel1Mock);
-    expect(userSvc.doesFollow(userModel2Mock$)).toBe(true);
-    expect(userSvc.doesFollow(userModel3Mock$)).toBe(false);
+    expect(userSvc.doesFollow(userModel2Mock._id)).toBe(true);
+    expect(userSvc.doesFollow(userModel3Mock._id)).toBe(false);
   }));
 
   it("toggleFollow() - unfollow scenario", inject([UserSvc, XHRBackend], (userSvc, mockBackend) => {
@@ -150,8 +150,8 @@ describe("User service", () => {
     const mockResponse = {
       status: "success",
       data: {
-        followingMe: ["456"],
-        followingThem:["789"]
+        followingMe: [userModel1Mock],
+        followingThem:[userModel2Mock]
       }
     };
 
@@ -168,11 +168,11 @@ describe("User service", () => {
     expect(followers$ instanceof Observable).toBe(true);
 
     following$.subscribe(following => {
-      expect(following[0].source.getValue()).toEqual(mockResponse.data.followingThem[0]);
+      following[0].subscribe(user => expect(user).toEqual(mockResponse.data.followingThem[0]));
     }, failTest);
 
     followers$.subscribe(followers => {
-      expect(followers[0].source.getValue()).toEqual(mockResponse.data.followingMe[0]);
+      followers[0].subscribe(user => expect(user).toEqual(mockResponse.data.followingMe[0]));
     }, failTest);
 
     get("456");
