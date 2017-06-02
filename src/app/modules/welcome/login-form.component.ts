@@ -59,7 +59,8 @@ export class LoginFormCom {
 			this.svc.login(user)
 				.subscribe(
 					() => this.nav.push(TabsController),
-					err => this.spinnerDialog.hide()
+					err => this.spinnerDialog.hide(),
+					() => this.spinnerDialog.hide()
 				);
 		}
 	}

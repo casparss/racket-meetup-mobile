@@ -6,17 +6,15 @@
 
 <ion-content>
 
-	<div [attr.text-center]="isIOS ? 'padding' : null">
-		<ion-segment [(ngModel)]="selectedSegment">
-      <ion-segment-button value="following">
-				Following ({{(followers.following$ | async)?.length}})
-			</ion-segment-button>
-			<ion-segment-button value="followers">
-				Followers ({{(followers.followers$ | async)?.length}})
-			</ion-segment-button>
-		</ion-segment>
-	</div>
-
+	<ion-segment [(ngModel)]="selectedSegment">
+    <ion-segment-button value="following">
+			Following ({{(followers.following$ | async)?.length}})
+		</ion-segment-button>
+		<ion-segment-button value="followers">
+			Followers ({{(followers.followers$ | async)?.length}})
+		</ion-segment-button>
+	</ion-segment>
+	
 	<ion-list>
 
     <div [hidden]="selectedSegment !== 'followers'">
@@ -25,6 +23,9 @@
   			*ngFor="let user of followers.followers$ | async"
   			(click)="openProfile(user)"
   		>
+				<ion-avatar item-left>
+					<loading-img [src]="(user | async)?.details.image"></loading-img>
+				</ion-avatar>
   			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
   		</ion-item>
 
@@ -36,6 +37,9 @@
   			*ngFor="let user of followers.following$ | async"
   			(click)="openProfile(user)"
   		>
+				<ion-avatar item-left>
+					<loading-img [src]="(user | async)?.details.image"></loading-img>
+				</ion-avatar>
   			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
   		</ion-item>
 

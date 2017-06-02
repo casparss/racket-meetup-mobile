@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { GameInt } from './games.interfaces';
+import { UserSvc } from '../user-service';
 
 @Component({
 	template:`
@@ -15,7 +16,7 @@ import { GameInt } from './games.interfaces';
 	      <ion-grid>
 	        <ion-row>
 	          <ion-col width-33>
-	            <img src="{{game.opponents.side1[0].user.details.image}}" alt="">
+	            <img [src]="userSvc.generateProfileImage(game.opponents.side1[0].user)" alt="">
 	            <div class="playerName">{{game.opponents.side1[0].user.details.fullName}}</div>
 	          </ion-col>
 
@@ -24,7 +25,7 @@ import { GameInt } from './games.interfaces';
 	          </ion-col>
 
 	          <ion-col width-33>
-	            <img src="{{game.opponents.side2[0].user.details.image}}">
+	            <img [src]="userSvc.generateProfileImage(game.opponents.side2[0].user)">
 	            <div class="playerName">{{game.opponents.side2[0].user.details.fullName}}</div>
 	          </ion-col>
 	        </ion-row>
@@ -36,4 +37,5 @@ import { GameInt } from './games.interfaces';
 })
 export class GamesListCom {
 	@Input() games: any;
+	constructor(private userSvc: UserSvc){}
 }

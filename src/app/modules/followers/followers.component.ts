@@ -7,7 +7,8 @@ import {UserSvc} from '../user-service/user.service';
 
 @Component({
 	templateUrl:"./followers.view.html",
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+	selector: 'followers'
 })
 export class FollowersCom{
 
