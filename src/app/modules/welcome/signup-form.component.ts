@@ -75,7 +75,7 @@ export class SignupFormCom{
 			this.svc.signup(user)
 				.subscribe(
 					() => this.nav.push(TabsController),
-					() => this.spinnerDialog.hide(),
+					err => this.spinnerDialog.hide(),
 					() => this.spinnerDialog.hide()
 				);
 		}

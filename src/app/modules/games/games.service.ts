@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { UserInt } from '../user-service/user.interface';
 import { DecHttp } from '../../utils/http/';
 import { NavController } from 'ionic-angular';
@@ -8,8 +9,10 @@ import { Observable } from 'rxjs/Observable';
 import { GameInt } from './games.interfaces';
 import { ConfigSvc } from '../config/config.service';
 
+let mapToSubject = game => new BehaviorSubject(game);
+
 @Injectable()
-export class GamesSvc extends BaseService{
+export class GamesSvc extends BaseService {
 
 	url = "games";
 	public onPushToCurrent: EventEmitter<any> = new EventEmitter();
@@ -24,13 +27,21 @@ export class GamesSvc extends BaseService{
 
 	get(id:string = ""){
     return id !== "" ?
-      this._getById(null, id) :
+      this._getById(null, id).map(games => games.map(mapToSubject)) :
       Utils.observable.error("No ID passed to games svc.");
 	}
 
-	challenge(challengeDetails: Object, challengee: UserInt){
-    return this._sync(challengeDetails, {}, null, `/${challengee._id}`);
+	challenge(challengeDetails: Object, { _id }){
+    return this._sync(challengeDetails, {}, null, `/${_id}`).map(mapToSubject);
   }
+
+	acceptChallenge(_id){
+		return this._update(null, {}, 'game/accept/', _id);
+	}
+
+	rejectChallenge(_id){
+		return this._update(null, {}, 'game/reject/', _id);
+	}
 
 	pushToCurrent(game){
 		this.onPushToCurrent.emit(game);

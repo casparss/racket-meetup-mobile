@@ -39,8 +39,7 @@ export class WelcomeCom{
 		let { onKeyboardShow, onKeyboardHide } = this.keyboard;
 
 		onKeyboardShow()
-			.subscribe(e => { console.log("Show");
-				this._ngZone.run(() => this.isKeyboardShowing = true)});
+			.subscribe(e => this._ngZone.run(() => this.isKeyboardShowing = true) );
 
 		onKeyboardHide()
 			.subscribe(e => {

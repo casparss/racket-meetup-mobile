@@ -12,12 +12,6 @@ import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
 import { ChatCom } from '../messages/chat.component';
 
-const pages: any = {
-	myDetails: MydetailsCom,
-	followers: FollowersCom,
-  searchPlayers: SearchPlayersCom
-};
-
 @Component({
 	selector:'profile-actions',
 	template:`
@@ -42,20 +36,11 @@ const pages: any = {
 				{{isFriend ? "Remove" : "Add"}} player as friend
 			</button>
 
-			<button *ngSwitchCase="true" (click)="openPage('followers')" ion-item>
+			<button *ngSwitchCase="true" (click)="openFollowers()" ion-item>
 				<ion-icon name="people" item-left></ion-icon>
 				Followers
 			</button>
 
-      <button *ngSwitchCase="true" (click)="openPage('searchPlayers')" ion-item>
-				<ion-icon name="search" item-left></ion-icon>
-				Search players
-			</button>
-
-			<button *ngSwitchCase="true" (click)="openPage('myDetails')" ion-item>
-				<ion-icon name="trophy" item-left></ion-icon>
-				My details
-			</button>
 		</ion-list>
 	`
 })
@@ -86,10 +71,6 @@ export class ProfileActionsCom {
 		challengeModal.present(challengeModal);
 	}
 
-  searchPlayers(){
-
-  }
-
 	messagePlayer(){
 		toPromise(this.user$)
 			.then(({ _id }) => this.messagesSvc.getChat([_id]).toPromise())
@@ -102,8 +83,8 @@ export class ProfileActionsCom {
 			.then(isFriend => this.isFriend = isFriend);
 	}
 
-	openPage(pageName: string): void{
-		this.nav.push(pages[pageName]);
+	openFollowers(): void{
+		this.nav.push(FollowersCom);
 	}
 
   ngOnChanges(){

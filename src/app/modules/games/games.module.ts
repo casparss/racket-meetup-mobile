@@ -3,10 +3,10 @@ import { IonicModule } from 'ionic-angular';
 import { LoadingImgModule } from '../../utils/loading-img';
 
 import { GamesCom } from './games.component';
-import { GamesListCom } from './games-list.component';
+import { GameCardCom } from './game-card.component';
 
 @NgModule({
-  declarations: [GamesCom, GamesListCom],
+  declarations: [GamesCom, GameCardCom],
   imports: [IonicModule, LoadingImgModule],
   exports:[GamesCom]
 })

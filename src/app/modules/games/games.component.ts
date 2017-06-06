@@ -6,15 +6,18 @@ import { GameInt } from './games.interfaces';
 import { toPromise } from '../../utils/util-helpers';
 
 @Component({
+	selector: 'games',
 	template:`
 	<ion-list class="games">
 		<ion-list-header class="component-header">
 			Upcoming games
 		</ion-list-header>
-		<games-list [games]="games$"></games-list>
+		<game-card *ngFor="let game$ of games$ | async" [game$]="game$"></game-card>
+		<div class="no-games-message" *ngIf="(games$ | async)?.length === 0">
+			<button ion-button color="light" round>No upcoming games at the moment</button>
+		</div>
 	</ion-list>
-	`,
-	selector: 'games'
+	`
 })
 export class GamesCom {
 
@@ -33,7 +36,7 @@ export class GamesCom {
 
 	pushToGames(game){
 		let games = this.gamesSubject$.getValue();
-		games.push(game);
+		games.unshift(game);
 		this.gamesSubject$.next(games);
 	}
 

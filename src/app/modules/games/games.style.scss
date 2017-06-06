@@ -1,23 +1,86 @@
 games{
 
-	//@TODO:60 make sure using variables for colours
-	.no-games-message{
-		text-align:center;
-		margin:20px;
+	.card {
+		border-left: 3px solid;
+		font-size:14px;
+		padding-left: 0;
+
+		.list {
+			margin-bottom: 0;
+		}
+
+		ion-label, ion-item {
+			font-size: 14px;
+		}
 	}
 
-	img{
-		width:6rem;
-		height:6rem;
-		display:block;
-		margin:auto;
-
-		border-radius: 3rem;
+	[status=pending] {
+		border-color: $red-faded;
 	}
 
-	.playerName{
-		text-align:center;
-		margin-top:10px;
+	[status=accepted] {
+		border-color: $darkcyan;
+	}
+
+	[status=rejected] {
+		border-color: $darkcyan;
+	}
+
+	[status=forfeit] {
+		border-color: $darkcyan;
+	}
+
+	[status=played] {
+		border-color: $darkcyan;
+	}
+
+	.menu-col{
+		padding: 0px 0px 5px 5px!important;
+		text-align: right;
+	}
+
+	.menu{
+		background: none;
+		font-size: 1.8em;
+		padding: 0;
+		ion-icon {
+			padding: 0 .3em;
+			color: #16a086;
+		}
+	}
+
+	.details {
+		background:$quiet-grey;
+		ion-icon{
+			font-size: 1.5em;
+		}
+		ion-col{
+			text-align:center;
+		}
+	}
+
+	ion-list.players {
+
+		margin-bottom: 0;
+
+		ion-list .item .item-inner,
+		.item-inner, .item-block{
+			border:none!important;
+		}
+
+		img, ion-thumbnail {
+			$size: 40px;
+			width: $size;
+			height: $size;
+			min-width: $size;
+			min-height: $size;
+			border-radius: 3rem;
+		}
+
+		ion-item{
+			padding-left: 0;
+		}
+
 	}
 
 	.vs{
@@ -32,37 +95,9 @@ games{
 		}
 	}
 
-	ion-row{
-		align-items: center;
-  		justify-content: center;
-	}
-
-	ion-item.item{
-		border-bottom: 1px solid #c8c7cc;
-	}
-
-	ion-list .item .item-inner,
-	.list-ios .item-block .item-inner{
-		border:none;
-	}
-
-	.upcoming{
-		border-left: 3px solid $darkcyan;
-	}
-
-	.previous{
-		border-left: 3px solid $lightgreen;
-
-		table{
-			width:100%;
-		}
-
-		td{
-			text-align:center;
-			border:1px solid #c8c7cc;
-			padding:8px 0;
-		}
-
+	.no-games-message{
+		text-align:center;
+		margin:20px;
 	}
 
 }
