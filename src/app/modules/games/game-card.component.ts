@@ -105,10 +105,12 @@ export class GameCardCom {
 	){}
 
 	ngOnInit(){
-		this.game$.subscribe(game => {
-			this.game = game;
-			this.isGameAccepted = this.isAccepted();
-		});
+		this.game$.subscribe(game => this.gameResponse(game));
+	}
+
+	gameResponse(game) {
+		this.game = game;
+		this.isGameAccepted = this.isAccepted();
 	}
 
 	getTitle({ status }){
@@ -124,12 +126,12 @@ export class GameCardCom {
 
 	acceptChallenge({ _id }){
 		this.gamesSvc.acceptChallenge(_id)
-			.subscribe(game => this.game = game);
+			.subscribe(game => this.gameResponse(game));
 	}
 
 	rejectChallenge({ _id }){
 		this.gamesSvc.rejectChallenge(_id)
-			.subscribe(game => this.game = game);
+			.subscribe(game => this.gameResponse(game));
 	}
 
 	showActionSheet(game){
