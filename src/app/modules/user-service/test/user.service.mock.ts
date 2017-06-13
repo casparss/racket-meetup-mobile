@@ -15,7 +15,7 @@ export const userModel1Mock = {
     firstName: 'Bob',
     lastName: 'Hoskins',
     email: 'bob.hoskins@email.com',
-    dob: new Date,
+    dob: new Date(),
     image: "path",
     location:"location"
   },
@@ -38,7 +38,7 @@ export const userModel2Mock = {
     firstName: 'Davey',
     lastName: 'Jobson',
     email: 'davey.jobson@email.com',
-    dob: new Date,
+    dob: new Date(),
     image: "path",
     location:"location"
   },
@@ -61,7 +61,7 @@ export const userModel3Mock = {
     firstName: 'Ryan',
     lastName: 'Smith',
     email: 'ryan.smith@email.com',
-    dob: new Date,
+    dob: new Date(),
     image: "path",
     location:"location"
   },

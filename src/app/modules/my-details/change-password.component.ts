@@ -81,7 +81,7 @@ export class ChangePasswordCom {
 		private formBuilder: FormBuilder,
 		private viewCtrl: ViewController,
 	){
-		let { validator } = new EqualFieldsFactory;
+		let { validator } = new EqualFieldsFactory();
     this.changePasswordForm = this.formBuilder.group({
 			current: ["", [<any>Validators.required]],
       newest: ["", [<any>Validators.required, validator('confirm')]],

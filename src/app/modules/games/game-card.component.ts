@@ -26,7 +26,12 @@ const TITLES = {
 						<p>{{game.date | date : 'EEEE, d/M/y'}}</p>
 					</ion-col>
 					<ion-col col-3 class="menu-col">
-						<button *ngIf="game.status !== 'pending'" class="menu" icon-only (click)="showActionSheet(game)">
+						<button
+							*ngIf="status(game, ['accepted', 'played'])"
+							class="menu"
+							(click)="showActionSheet(game)"
+							icon-only
+						>
 							<ion-icon name="more"></ion-icon>
 						</button>
 					</ion-col>
@@ -105,6 +110,7 @@ export class GameCardCom {
 	){}
 
 	ngOnInit(){
+		this.configureActionSheet();
 		this.game$.subscribe(game => this.gameResponse(game));
 	}
 
@@ -124,6 +130,10 @@ export class GameCardCom {
 		return user ? user.accepted : null;
 	}
 
+	status({ status }, list){
+		return !!list.find(state => state === status);
+	}
+
 	acceptChallenge({ _id }){
 		this.gamesSvc.acceptChallenge(_id)
 			.subscribe(game => this.gameResponse(game));
@@ -136,17 +146,16 @@ export class GameCardCom {
 
 	showActionSheet(game){
 		this.actionSheet.show(this.actionSheetOpts)
-
-			.then((i: number) => this.actionSheetActions[i-1].event());
+			.then((i: number) => this.actionSheetActions[i-1].event(game));
 	}
 
 	configureActionSheet(){
 		this.actionSheetActions = [{
-				label: 'One',
-				event: () => alert('One')
+				label: 'Cancel match',
+				event: game => this.rejectChallenge(game)
 			},
 			{
-				label: 'Two',
+				label: 'Change details',
 				event: () => alert('Two')
 			}
 		];

@@ -1,10 +1,7 @@
 import { Component } from '@angular/core'
-import { GamesTab } from './tab-games.component';
-
 import { ProfileMainCom } from '../profile-main/profile-main.component';
 import { RankingsListCom } from '../rankings-list/rankings-list.component';
 import { MessageListCom } from '../messages/message-list.component';
-
 
 @Component({
 	template:

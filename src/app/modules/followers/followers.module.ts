@@ -7,6 +7,7 @@ import { LoadingImgModule } from '../../utils/loading-img';
 @NgModule({
   declarations: [FollowersCom, SearchPlayersCom],
   imports: [IonicModule, LoadingImgModule],
-  exports: [FollowersCom, SearchPlayersCom]
+  exports: [FollowersCom, SearchPlayersCom],
+  entryComponents: [FollowersCom, SearchPlayersCom]
 })
 export class FollowersModule {}
