@@ -11,6 +11,7 @@ import { MydetailsCom } from '../my-details/my-details.component';
 import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
 import { ChatCom } from '../messages/chat.component';
+import { AllGamesCom } from '../games/all-games.component';
 
 @Component({
 	selector:'profile-actions',
@@ -21,7 +22,7 @@ import { ChatCom } from '../messages/chat.component';
 			</ion-list-header>
 
 			<button *ngSwitchCase="false" type="button" ion-item (click)="challengePlayer()">
-				<ion-icon name="tennisball" item-left></ion-icon>
+				<ion-icon color="navbarColor" name="tennisball" item-left></ion-icon>
 				Challenge player
 			</button>
 
@@ -39,6 +40,11 @@ import { ChatCom } from '../messages/chat.component';
 			<button *ngSwitchCase="true" (click)="openFollowers()" ion-item>
 				<ion-icon name="people" item-left></ion-icon>
 				Followers
+			</button>
+
+			<button (click)='openGames()' ion-item>
+				<ion-icon name="tennisball" item-left></ion-icon>
+				Games
 			</button>
 
 		</ion-list>
@@ -83,8 +89,12 @@ export class ProfileActionsCom {
 			.then(isFriend => this.isFriend = isFriend);
 	}
 
-	openFollowers(): void{
+	openFollowers(): void {
 		this.nav.push(FollowersCom);
+	}
+
+	openGames(): void {
+		this.nav.push(AllGamesCom);
 	}
 
   ngOnChanges(){
