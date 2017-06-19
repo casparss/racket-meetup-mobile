@@ -8,8 +8,9 @@ import { Utils } from '../../utils/util-helpers';
 import { Observable } from 'rxjs/Observable';
 import { GameInt } from './games.interfaces';
 import { ConfigSvc } from '../config/config.service';
+import { GameModel } from './game.model';
 
-let mapToSubject = game => new BehaviorSubject(game);
+let mapToModel = game => new GameModel(game);
 
 @Injectable()
 export class GamesSvc extends BaseService {
@@ -27,12 +28,12 @@ export class GamesSvc extends BaseService {
 
 	get(id:string = ""){
     return id !== "" ?
-      this._getById(null, id).map(games => games.map(mapToSubject)) :
+      this._getById(null, id).map(games => games.map(mapToModel)) :
       Utils.observable.error("No ID passed to games svc.");
 	}
 
 	challenge(challengeDetails: Object, { _id }){
-    return this._sync(challengeDetails, {}, null, `/${_id}`).map(mapToSubject);
+    return this._sync(challengeDetails, {}, null, `/${_id}`).map(mapToModel);
   }
 
 	acceptChallenge(_id){

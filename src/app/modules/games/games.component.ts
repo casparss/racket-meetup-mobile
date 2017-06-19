@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { CustomSubject } from '../../utils/custom-subject';
 import { UserInt } from '../user-service/user.interface';
 import { GamesSvc } from './games.service';
 import { GameInt } from './games.interfaces';
@@ -12,7 +13,7 @@ import { toPromise } from '../../utils/util-helpers';
 		<ion-list-header class="component-header">
 			Upcoming games
 		</ion-list-header>
-		<game-card *ngFor="let game$ of games$ | async" [game$]="game$"></game-card>
+		<games-summary [games$]="games$"></games-summary>
 		<div class="no-games-message" *ngIf="(games$ | async)?.length === 0">
 			<button ion-button color="light" round>No upcoming games at the moment</button>
 		</div>
@@ -22,8 +23,8 @@ import { toPromise } from '../../utils/util-helpers';
 export class GamesCom {
 
 	@Input() user$: any;
-	gamesSubject$: BehaviorSubject<any> = new BehaviorSubject([]);
-	games$: Observable<any> = this.gamesSubject$.asObservable();
+	gamesSubject: CustomSubject = new CustomSubject();
+	games$: Observable<any> = this.gamesSubject.$;
 
 	constructor(private gamesSvc: GamesSvc){
 		this.gamesSvc.onPushToCurrent
@@ -35,15 +36,15 @@ export class GamesCom {
 	}
 
 	pushToGames(game){
-		let games = this.gamesSubject$.getValue();
+		let games = this.gamesSubject.getValue();
 		games.unshift(game);
-		this.gamesSubject$.next(games);
+		this.gamesSubject.next(games);
 	}
 
 	getGames(){
 		toPromise(this.user$)
 			.then(({ _id }) => toPromise(this.gamesSvc.get(_id)))
-			.then(games => this.gamesSubject$.next(games));
+			.then(games => this.gamesSubject.next(games));
 	}
 
 }
