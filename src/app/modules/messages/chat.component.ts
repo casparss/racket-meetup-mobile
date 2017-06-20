@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {NavParams} from 'ionic-angular';
-import {ChatSvc} from './chat.service';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { NavParams } from 'ionic-angular';
+import { ChatSvc } from './chat.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
 	templateUrl: './chat.view.html'

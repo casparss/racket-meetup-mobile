@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NavParams } from 'ionic-angular';
+import { Observable, Subject } from 'rxjs';
+import { GameModel } from './game.model';
+import { GamesSvc } from './games.service';
 
 @Component({
+  selector: 'all-games',
   template: `
   <ion-header>
     <ion-navbar>
@@ -23,16 +28,33 @@ import { Component } from '@angular/core';
     </ion-segment>
 
     <ion-list>
-
-
-
+      <game-card
+        *ngFor="let gameModel of gamesList$ | async"
+        [gameModel]="gameModel"
+      ></game-card>
     </ion-list>
 
   </ion-content>
-
-
   `
 })
 export class AllGamesCom {
+
+  private userId: string;
+  private gamesListSubject: Subject<Array<GameModel>> = new Subject();
+  private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
+  private selectedSegment = "upcoming";
+
+  constructor(
+    private gamesSvc: GamesSvc,
+    private navParams: NavParams
+  ){
+    this.userId = this.navParams.get("_id");
+    this.getBySegment();
+  }
+
+  getBySegment(){
+    this.gamesSvc.get(this.userId)
+      .subscribe((games: any) => this.gamesListSubject.next(games));
+  }
 
 }

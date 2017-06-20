@@ -97,7 +97,7 @@ const TITLES = {
 })
 export class GameCardCom {
 
-	@Input() game$: any;
+	@Input() gameModel: any;
 	private game: any;
 	private actionSheetOpts: ActionSheetOptions;
 	private actionSheetActions: Array<any>;
@@ -111,7 +111,7 @@ export class GameCardCom {
 
 	ngOnInit(){
 		this.configureActionSheet();
-		this.game$.subscribe(game => this.gameResponse(game));
+		this.gameModel.$.subscribe(game => this.gameResponse(game));
 	}
 
 	gameResponse(game) {

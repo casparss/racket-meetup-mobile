@@ -94,7 +94,8 @@ export class ProfileActionsCom {
 	}
 
 	openGames(): void {
-		this.nav.push(AllGamesCom);
+		this.user$.subscribe(({ _id }) => this.nav.push(AllGamesCom, { _id }));
+		
 	}
 
   ngOnChanges(){
