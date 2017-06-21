@@ -1,6 +1,7 @@
 <div class="availability">
 	<ion-list-header class="component-header">
-		Weekly availability
+		<span *ngIf="isMesh()">Meshed availability</span>
+		<span *ngIf="!isMesh()">Weekly availability</span>
 	</ion-list-header>
 
 	<div class="item-wrapper">
@@ -27,7 +28,7 @@
 					</td>
 
 					<td *ngFor="let day of model?.morning">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
 				</tr>
 
@@ -37,7 +38,7 @@
 					</td>
 
 					<td *ngFor="let day of model?.afternoon">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
 				</tr>
 
@@ -47,7 +48,7 @@
 					</td>
 
 					<td *ngFor="let day of model?.evening">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
 				</tr>
 			</tbody>

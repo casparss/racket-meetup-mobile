@@ -11,7 +11,7 @@ import { toPromise } from '../../utils/util-helpers';
 	template:`
 	<ion-list class="games">
 		<ion-list-header class="component-header">
-			Upcoming games
+			Upcoming
 		</ion-list-header>
 		<games-summary [games$]="games$"></games-summary>
 		<div class="no-games-message" *ngIf="(games$ | async)?.length === 0">

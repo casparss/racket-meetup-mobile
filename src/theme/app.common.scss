@@ -30,6 +30,10 @@ ion-navbar{
 	padding: 8px;
 }
 
+ion-list-header.component-header ion-label.label-ios{
+	margin-top:30px;
+}
+
 //mixins
 
 @mixin flexVerticalCenter{

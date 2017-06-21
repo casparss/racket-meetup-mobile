@@ -21,8 +21,13 @@ import { AllGamesCom } from '../games/all-games.component';
 				Actions
 			</ion-list-header>
 
+			<button (click)='openGames()' ion-item>
+				<ion-icon name="tennisball" item-left></ion-icon>
+				Games
+			</button>
+
 			<button *ngSwitchCase="false" type="button" ion-item (click)="challengePlayer()">
-				<ion-icon color="navbarColor" name="tennisball" item-left></ion-icon>
+				<ion-icon name="tennisball" item-left></ion-icon>
 				Challenge player
 			</button>
 
@@ -40,11 +45,6 @@ import { AllGamesCom } from '../games/all-games.component';
 			<button *ngSwitchCase="true" (click)="openFollowers()" ion-item>
 				<ion-icon name="people" item-left></ion-icon>
 				Followers
-			</button>
-
-			<button (click)='openGames()' ion-item>
-				<ion-icon name="tennisball" item-left></ion-icon>
-				Games
 			</button>
 
 		</ion-list>
@@ -95,7 +95,7 @@ export class ProfileActionsCom {
 
 	openGames(): void {
 		this.user$.subscribe(({ _id }) => this.nav.push(AllGamesCom, { _id }));
-		
+
 	}
 
   ngOnChanges(){

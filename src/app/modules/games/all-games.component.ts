@@ -16,6 +16,9 @@ import { GamesSvc } from './games.service';
   <ion-content>
 
     <ion-segment [(ngModel)]="selectedSegment">
+      <ion-segment-button value="pending">
+        Pending
+      </ion-segment-button>
       <ion-segment-button value="upcoming">
         Upcoming
       </ion-segment-button>

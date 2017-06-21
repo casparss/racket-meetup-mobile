@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ViewController } from 'ionic-angular';
 import { FormGroup , FormBuilder, Validators} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
@@ -12,6 +13,8 @@ export class ChallengeCom {
 
 	private challenger: UserInt;
   private challengee: UserInt;
+	private challenger$: Observable<UserInt>;
+  private challengee$: Observable<UserInt>;
   private challengeForm:FormGroup;
 	private formModel = {
 		date: [new Date().toJSON().slice(0,10), [<any>Validators.required]],
@@ -27,7 +30,9 @@ export class ChallengeCom {
   ){
     this.challengeForm = formBuilder.group(this.formModel);
     this.challenger = userSvc.current;
+		this.challenger$ = userSvc.current$;
 		viewCtrl.data.user$.subscribe(user => this.challengee = user);
+		this.challengee$ = viewCtrl.data.user$;
 	}
 
 	challenge(challengeDetails, isValid:boolean){

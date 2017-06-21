@@ -14,15 +14,19 @@
   <form [formGroup]="challengeForm" (ngSubmit)="challenge(challengeForm.value, challengeForm.valid)">
 
   		<opponents
-				[challenger]='challenger'
-				[challengee]='challengee'>
+				[challenger]='challenger$ | async'
+				[challengee]='challengee$ | async'>
 			</opponents>
+
+			<availability [user$]="challenger$" [user2$]="challengee$"></availability>
 
   		<ion-row class="top">
   			<ion-col width-100>
+					<ion-list-header class="component-header">
+						Details
+					</ion-list-header>
 
   				<ion-list>
-
 
   					<ion-item>
 							<ion-label primary>Date:</ion-label>
