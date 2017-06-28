@@ -21,19 +21,21 @@ import { AllGamesCom } from '../games/all-games.component';
 				Actions
 			</ion-list-header>
 
-			<button (click)='openGames()' ion-item>
-				<ion-icon name="tennisball" item-left></ion-icon>
-				Games
-			</button>
-
 			<button *ngSwitchCase="false" type="button" ion-item (click)="challengePlayer()">
-				<ion-icon name="tennisball" item-left></ion-icon>
+				<ion-icon name="medal" item-left></ion-icon>
 				Challenge player
 			</button>
 
 			<button *ngSwitchCase="false" ion-item (click)="messagePlayer()">
 				<ion-icon name="mail" item-left></ion-icon>
 				Message player
+			</button>
+
+			<button (click)='openGames()' ion-item>
+				<ion-icon name="tennisball" item-left></ion-icon>
+				Games
+				<ion-badge item-end color="danger">3</ion-badge>
+				<ion-badge item-end>1</ion-badge>
 			</button>
 
 			<button *ngSwitchCase="false" ion-item (click)="toggleFollow()" [ngSwitch]="isFriend">
@@ -46,7 +48,6 @@ import { AllGamesCom } from '../games/all-games.component';
 				<ion-icon name="people" item-left></ion-icon>
 				Followers
 			</button>
-
 		</ion-list>
 	`
 })

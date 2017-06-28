@@ -18,6 +18,18 @@
 				[challengee]='challengee$ | async'>
 			</opponents>
 
+			<ion-list>
+				<ion-list-header class="component-header">
+					Actions
+				</ion-list-header>
+
+				<button ion-item>
+					<ion-icon name="more" item-left></ion-icon>
+					Change arrangements
+				</button>
+
+			</ion-list>
+
 			<availability [user$]="challenger$" [user2$]="challengee$"></availability>
 
   		<ion-row class="top">
@@ -32,7 +44,9 @@
 							<ion-label primary>Date:</ion-label>
 							<ion-icon name="calendar" item-left></ion-icon>
   						<ion-datetime formControlName="date"
-  							displayFormat="D MMM YYYY"
+  							displayFormat="DDDD MMM YYYY"
+  								pickerFormat="DDDD MMM YYYY"
+
   						></ion-datetime>
   					</ion-item>
 

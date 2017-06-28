@@ -29,9 +29,7 @@ export class ChallengeCom {
 		private gamesSvc: GamesSvc
   ){
     this.challengeForm = formBuilder.group(this.formModel);
-    this.challenger = userSvc.current;
 		this.challenger$ = userSvc.current$;
-		viewCtrl.data.user$.subscribe(user => this.challengee = user);
 		this.challengee$ = viewCtrl.data.user$;
 	}
 
