@@ -1,70 +1,54 @@
 import { Component, Input } from '@angular/core';
-import { GamesSvc } from './games.service'
-import { UserSvc } from '../user-service';
-import { GameModel } from './game.model';
+import { Observable } from 'rxjs';
+import { CustomSubject } from '../../utils/custom-subject';
+import { UserInt } from '../user-service/user.interface';
+import { GamesSvc } from './games.service';
+import { GameInt } from './games.interfaces';
+import { toPromise } from '../../utils/util-helpers';
 
 @Component({
-  selector: 'games-summary',
-  styles: [``],
-  template: `
-  <ion-list>
-    <ng-container *ngFor="let gameModel of games$ | async; let i=index">
-      <games-summary-item *ngIf="i < 3" [gameModel]="gameModel"></games-summary-item>
-    </ng-container>
-  </ion-list>
-  `
+	selector: 'games-summary',
+	template:`
+	<ion-list class="games">
+		<ion-list-header class="component-header">
+			Upcoming
+		</ion-list-header>
+		<ion-list>
+	    <ng-container *ngFor="let gameModel of games$ | async; let i=index">
+	      <games-summary-item *ngIf="i < 3" [gameModel]="gameModel"></games-summary-item>
+	    </ng-container>
+	  </ion-list>
+		<div class="no-games-message" *ngIf="(games$ | async)?.length === 0">
+			<button ion-button color="light" round>No upcoming games at the moment</button>
+		</div>
+	</ion-list>
+	`
 })
 export class GamesSummaryCom {
-  @Input() games$: any;
 
-  constructor(private gamesSvc: GamesSvc){}
-}
+	@Input() user$: any;
+	gamesSubject: CustomSubject = new CustomSubject();
+	games$: Observable<any> = this.gamesSubject.$;
 
-@Component({
-  selector: 'games-summary-item',
-  template: `
-    <button type="button" ion-item>
-      <ion-icon name="tennisball" color="primary" item-left></ion-icon>
+	constructor(private gamesSvc: GamesSvc){
+		this.gamesSvc.onPushToCurrent
+			.subscribe(game => this.pushToGames(game));
+	}
 
-      <h3>Match</h3>
+	ngOnInit(){
+		this.getGames();
+	}
 
-      <ion-row align-items-center>
-        <ion-col col-6>
-          <ion-list class="players">
-            <ion-item>
-              <ion-thumbnail item-left>
-                <img [src]="userSvc.generateProfileImage(game.opponents.side1[0].user)">
-              </ion-thumbnail>
-              {{game.opponents.side1[0].user.details.firstName}}
-            </ion-item>
-            <ion-item>
-              <ion-thumbnail item-left>
-                <img [src]="userSvc.generateProfileImage(game.opponents.side2[0].user)">
-              </ion-thumbnail>
-              {{game.opponents.side2[0].user.details.firstName}}
-            </ion-item>
-          </ion-list>
-        </ion-col>
+	pushToGames(game){
+		let games = this.gamesSubject.getValue();
+		games.unshift(game);
+		this.gamesSubject.next(games);
+	}
 
-        <ion-col col-6 class="location-time">
-          <ion-list>
-            <ion-item><ion-icon item-start name="calendar"></ion-icon> <span>{{game.date | date: 'shortDate' }}</span></ion-item>
-            <ion-item><ion-icon item-start name="clock"></ion-icon> <span>{{game.date | date :'shortTime'}}</span></ion-item>
-            <ion-item><ion-icon item-start name="pin"></ion-icon> <span>{{game.venue}}</span></ion-item>
-          </ion-list>
-        </ion-col>
+	getGames(){
+		toPromise(this.user$)
+			.then(({ _id }) => toPromise(this.gamesSvc.get(_id)))
+			.then(games => this.gamesSubject.next(games));
+	}
 
-      </ion-row>
-    </button>
-  `
-})
-export class GamesSummaryItemCom {
-  @Input() gameModel: GameModel;
-  private game: any;
-
-  constructor(private userSvc: UserSvc){}
-
-  ngOnInit(){
-    this.gameModel.$.subscribe(game => this.game = game);
-  }
 }

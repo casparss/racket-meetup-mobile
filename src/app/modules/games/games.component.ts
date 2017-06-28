@@ -1,50 +1,63 @@
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CustomSubject } from '../../utils/custom-subject';
-import { UserInt } from '../user-service/user.interface';
+import { NavParams } from 'ionic-angular';
+import { Observable, Subject } from 'rxjs';
+import { GameModel } from './game.model';
 import { GamesSvc } from './games.service';
-import { GameInt } from './games.interfaces';
-import { toPromise } from '../../utils/util-helpers';
 
 @Component({
-	selector: 'games',
-	template:`
-	<ion-list class="games">
-		<ion-list-header class="component-header">
-			Upcoming
-		</ion-list-header>
-		<games-summary [games$]="games$"></games-summary>
-		<div class="no-games-message" *ngIf="(games$ | async)?.length === 0">
-			<button ion-button color="light" round>No upcoming games at the moment</button>
-		</div>
-	</ion-list>
-	`
+  selector: 'games',
+  template: `
+  <ion-header>
+    <ion-navbar>
+      <ion-title>Games</ion-title>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content>
+
+    <ion-segment [(ngModel)]="selectedSegment">
+      <ion-segment-button value="pending">
+        Pending
+      </ion-segment-button>
+      <ion-segment-button value="upcoming">
+        Upcoming
+      </ion-segment-button>
+      <ion-segment-button value="previous">
+        Previous
+      </ion-segment-button>
+      <ion-segment-button value="cancelled">
+        Cancelled
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-list>
+      <game-card
+        *ngFor="let gameModel of gamesList$ | async"
+        [gameModel]="gameModel"
+      ></game-card>
+    </ion-list>
+
+  </ion-content>
+  `
 })
 export class GamesCom {
 
-	@Input() user$: any;
-	gamesSubject: CustomSubject = new CustomSubject();
-	games$: Observable<any> = this.gamesSubject.$;
+  private userId: string;
+  private gamesListSubject: Subject<Array<GameModel>> = new Subject();
+  private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
+  private selectedSegment = "upcoming";
 
-	constructor(private gamesSvc: GamesSvc){
-		this.gamesSvc.onPushToCurrent
-			.subscribe(game => this.pushToGames(game));
-	}
+  constructor(
+    private gamesSvc: GamesSvc,
+    private navParams: NavParams
+  ){
+    this.userId = this.navParams.get("_id");
+    this.getBySegment();
+  }
 
-	ngOnInit(){
-		this.getGames();
-	}
-
-	pushToGames(game){
-		let games = this.gamesSubject.getValue();
-		games.unshift(game);
-		this.gamesSubject.next(games);
-	}
-
-	getGames(){
-		toPromise(this.user$)
-			.then(({ _id }) => toPromise(this.gamesSvc.get(_id)))
-			.then(games => this.gamesSubject.next(games));
-	}
+  getBySegment(){
+    this.gamesSvc.get(this.userId)
+      .subscribe((games: any) => this.gamesListSubject.next(games));
+  }
 
 }

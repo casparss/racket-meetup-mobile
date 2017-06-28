@@ -46,7 +46,7 @@ import { MydetailsCom } from '../my-details/my-details.component';
 						[user$]="user$"
 					></availability>
 
-					<games [user$]="user$"></games>
+					<games-summary [user$]="user$"></games-summary>
 				</main>
 			</div>
 		</ion-content>

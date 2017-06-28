@@ -11,7 +11,7 @@ import { MydetailsCom } from '../my-details/my-details.component';
 import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
 import { ChatCom } from '../messages/chat.component';
-import { AllGamesCom } from '../games/all-games.component';
+import { GamesCom } from '../games/games.component';
 
 @Component({
 	selector:'profile-actions',
@@ -95,7 +95,7 @@ export class ProfileActionsCom {
 	}
 
 	openGames(): void {
-		this.user$.subscribe(({ _id }) => this.nav.push(AllGamesCom, { _id }));
+		this.user$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id }));
 
 	}
 
