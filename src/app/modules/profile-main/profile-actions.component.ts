@@ -58,7 +58,6 @@ export class ProfileActionsCom {
 
 	constructor(
 		private nav: NavController,
-		private profileSvc: ProfileMainSvc,
 		private modalController : ModalController,
 		private userSvc: UserSvc,
     private messagesSvc: MessagesSvc
@@ -96,7 +95,6 @@ export class ProfileActionsCom {
 
 	openGames(): void {
 		this.user$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id }));
-
 	}
 
   ngOnChanges(){

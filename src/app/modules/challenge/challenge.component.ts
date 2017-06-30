@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ViewController } from 'ionic-angular';
+import { ViewController, ModalController } from 'ionic-angular';
 import { FormGroup , FormBuilder, Validators} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from '../games/games.service';
+import { ChallengeTimeDate } from './challenge-time-date.component';
 
 @Component({
-	templateUrl: './challenge.view.html'
+	templateUrl: './challenge.view.html',
+	selector: 'challenge'
 })
 export class ChallengeCom {
 
@@ -24,6 +26,7 @@ export class ChallengeCom {
 
 	constructor(
     private viewCtrl: ViewController,
+		private modalController : ModalController,
     formBuilder: FormBuilder,
     private userSvc: UserSvc,
 		private gamesSvc: GamesSvc
@@ -42,5 +45,18 @@ export class ChallengeCom {
 				});
     }
   }
+
+	openDateTime(){
+		let dateTimeModal = this.modalController.create(ChallengeTimeDate, {
+			challenger$: this.challenger$,
+			challengee$: this.challengee$
+		});
+
+		dateTimeModal.onDidDismiss(data => {
+			console.log(data);
+   	});
+
+		dateTimeModal.present();
+	}
 
 }

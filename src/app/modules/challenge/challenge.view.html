@@ -4,7 +4,7 @@
 			Challenge
 		</ion-title>
 		<ion-buttons end>
-			<button small icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close" ></ion-icon></button>
+			<button small icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>
@@ -40,23 +40,23 @@
 
   				<ion-list>
 
-  					<ion-item>
-							<ion-label primary>Date:</ion-label>
-							<ion-icon name="calendar" item-left></ion-icon>
-  						<ion-datetime formControlName="date"
-  							displayFormat="DDDD MMM YYYY"
-  								pickerFormat="DDDD MMM YYYY"
-
-  						></ion-datetime>
-  					</ion-item>
-
-  					<ion-item>
+						<ion-item>
 							<ion-label primary>Time:</ion-label>
 							<ion-icon name="time" item-left></ion-icon>
   						<ion-datetime formControlName="time"
   							displayFormat="hh:mm A"
   							pickerFormat="hh:mm A"
   						></ion-datetime>
+  					</ion-item>
+
+  					<ion-item>
+
+							<ion-icon name="calendar" item-start></ion-icon>
+
+							date
+							<button (click)="openDateTime()" ion-button item-end type="button">
+								Change
+							</button>
   					</ion-item>
 
   					<ion-item>

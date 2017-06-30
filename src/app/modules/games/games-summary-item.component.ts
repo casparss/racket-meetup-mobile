@@ -1,12 +1,14 @@
 import { Component, Input } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { GamesSvc } from './games.service'
 import { UserSvc } from '../user-service';
 import { GameModel } from './game.model';
+import { ChallengeCom } from '../challenge/challenge.component';
 
 @Component({
   selector: 'games-summary-item',
   template: `
-    <button type="button" ion-item>
+    <button (click)="openGame()" type="button" ion-item>
       <ion-icon name="tennisball" color="primary" item-left></ion-icon>
 
       <h3>Match</h3>
@@ -45,9 +47,17 @@ export class GamesSummaryItemCom {
   @Input() gameModel: GameModel;
   private game: any;
 
-  constructor(private userSvc: UserSvc){}
+  constructor(
+    private userSvc: UserSvc,
+    private nav: NavController
+  ){}
 
   ngOnInit(){
     this.gameModel.$.subscribe(game => this.game = game);
+  }
+
+  openGame(){
+    let { _id } = this.game;
+    this.nav.push(ChallengeCom, { _id });
   }
 }

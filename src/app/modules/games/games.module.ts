@@ -7,6 +7,7 @@ import { GamesSummaryItemCom } from './games-summary-item.component';
 import { GamesCom } from './games.component';
 import { GameCardCom } from './game-card.component';
 
+
 @NgModule({
   declarations: [
     GamesCom,
