@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { keyBy } from 'lodash';
 import { ViewController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
@@ -61,10 +62,10 @@ import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
 
             <ion-item>
               <ion-label primary>Period:</ion-label>
-              <ion-icon name="time" item-left></ion-icon>
-              <ion-select interface="popover" formControlName="week">
-                <ion-option *ngFor="let period of periods; let i=index" [value]='period' [selected]='periods[0]'>
-                  {{period}}
+              <ion-icon name="time" item-left (ionChange)="clearTime()"></ion-icon>
+              <ion-select interface="popover" formControlName="period" (ionChange)="reflectPeriodInTime()">
+                <ion-option *ngFor="let period of periods; let i=index" [value]='period.name' [selected]='periods[0].name'>
+                  {{period.name}}
                 </ion-option>
               </ion-select>
             </ion-item>
@@ -73,8 +74,10 @@ import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
               <ion-label primary>Time:</ion-label>
               <ion-icon name="time" item-left></ion-icon>
               <ion-datetime formControlName="time"
-                displayFormat="DDD D MMM YYYY"
-                pickerFormat="DDD D MMM YYYY"
+                displayFormat="HH:mm"
+                pickerFormat="HH:mm"
+                [min]="timeMin"
+                [max]="timeMax"
               ></ion-datetime>
             </ion-item>
 
@@ -97,13 +100,14 @@ import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
 })
 export class ChallengeTimeDate {
 
-  private periods = ['Morning', 'Afternoon', 'Evening'];
-
   private weeks:any;
   private days:any;
+  private timeMin: any;
+  private timeMax: any;
   private selectDateAndTime: FormGroup;
   private challenger$: Observable<UserInt>;
   private challengee$: Observable<UserInt>;
+  private periods: any;
 
 	constructor(
     private viewCtrl: ViewController,
@@ -116,6 +120,7 @@ export class ChallengeTimeDate {
     this.challenger$ = challenger$;
 		this.challengee$ = challengee$;
     this.weeks = utils.weeks;
+    this.periods = utils.periods;
     this.buildForm();
     this.setDaysInput();
   }
@@ -128,13 +133,24 @@ export class ChallengeTimeDate {
     this.selectDateAndTime = this.formBuilder.group({
       week: [this.weeks[0].date, [<any>Validators.required]],
   		day: ['', [<any>Validators.required]],
-      period: [{ value:'', disabled: false }, [<any>Validators.required]],
-      time: [{ value:'', disabled: false }, [<any>Validators.required]]
+      period: ['', [<any>Validators.required]],
+      time: ['', [<any>Validators.required]]
   	});
   }
 
   select(value, valid){
     if(valid) this.viewCtrl.dismiss(value);
+  }
+
+  reflectPeriodInTime(){
+    let selectedPeriod = this.selectDateAndTime.controls.period.value;
+    let { min, max } = this.periods.find(period => period.name === selectedPeriod).range;
+    this.timeMin = min;
+    this.timeMax = max;
+  }
+
+  clearTime(){
+    this.selectDateAndTime.controls.time.patchValue(null);
   }
 
 }

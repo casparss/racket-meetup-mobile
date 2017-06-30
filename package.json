@@ -14,6 +14,7 @@
     "test-coverage": "ng test --code-coverage",
     "test-ci": "ng test --watch=false --code-coverage",
     "ios": "ionic cordova run ios --prod",
+    "dev": "npm run ionic:serve",
     "simulator:dev": "NODE_ENV=dev ionic cordova emulate",
     "simulator:jacq": "NODE_ENV=jacq ionic cordova emulate",
     "build:dev": "NODE_ENV=dev npm run ios",
