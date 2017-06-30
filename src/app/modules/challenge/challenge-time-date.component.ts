@@ -38,8 +38,11 @@ import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
             <ion-item>
               <ion-label primary>Week:</ion-label>
               <ion-icon name="calendar" item-left></ion-icon>
-              <ion-select interface="popover" formControlName="week">
-                <ion-option *ngFor="let week of weeks; let i=index" [value]="week.date" [selected]='week.selected'>
+              <ion-select interface="popover" formControlName="week" (ionChange)="setDaysInput()">
+                <ion-option
+                  *ngFor="let week of weeks; let i=index"
+                  [value]="week.date"
+                  [selected]='week.selected'>
                   {{week.label}}
                 </ion-option>
               </ion-select>
@@ -50,7 +53,7 @@ import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
               <ion-icon name="calendar" item-left></ion-icon>
               <ion-select formControlName="day">
                 <ion-option
-                  *ngFor="let day of utils.days(this.selectDateAndTime.controls.week.value)"
+                  *ngFor="let day of days"
                   [value]="day.date"
                   [disabled]="day.disabled">{{day.label}}</ion-option>
               </ion-select>
@@ -97,6 +100,7 @@ export class ChallengeTimeDate {
   private periods = ['Morning', 'Afternoon', 'Evening'];
 
   private weeks:any;
+  private days:any;
   private selectDateAndTime: FormGroup;
   private challenger$: Observable<UserInt>;
   private challengee$: Observable<UserInt>;
@@ -113,12 +117,17 @@ export class ChallengeTimeDate {
 		this.challengee$ = challengee$;
     this.weeks = utils.weeks;
     this.buildForm();
+    this.setDaysInput();
+  }
+
+  setDaysInput(){
+    this.days = this.utils.days(this.selectDateAndTime.controls.week.value);
   }
 
   buildForm(){
     this.selectDateAndTime = this.formBuilder.group({
       week: [this.weeks[0].date, [<any>Validators.required]],
-  		day: [{ value:'', disabled: false }, [<any>Validators.required]],
+  		day: ['', [<any>Validators.required]],
       period: [{ value:'', disabled: false }, [<any>Validators.required]],
       time: [{ value:'', disabled: false }, [<any>Validators.required]]
   	});
