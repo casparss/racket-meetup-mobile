@@ -1,13 +1,5 @@
 challenge {
 
-	ion-grid{
-		height: 100%;
-	}
-
-	ion-row{
-		height:50%;
-	}
-
 	.playerName{
 		text-align:center;
 		margin-top:10px;
@@ -19,6 +11,10 @@ opponents {
 	display: block;
 	background:$primary-gradient;
 	color: $white;
+
+	ion-grid.grid {
+		padding:0;
+	}
 
 	ion-grid ion-row{
 		@include flexVerticalCenter;

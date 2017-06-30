@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ViewController, ModalController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 import { FormGroup , FormBuilder, Validators} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
 import { UserSvc } from '../user-service/user.service';
@@ -20,13 +20,11 @@ export class ChallengeCom {
   private challengeForm:FormGroup;
 	private formModel = {
 		date: [new Date().toJSON().slice(0,10), [<any>Validators.required]],
-		time: ['', [<any>Validators.required]],
     venue: ['', [<any>Validators.required]]
 	};
 
 	constructor(
     private viewCtrl: ViewController,
-		private modalController : ModalController,
     formBuilder: FormBuilder,
     private userSvc: UserSvc,
 		private gamesSvc: GamesSvc
@@ -45,18 +43,5 @@ export class ChallengeCom {
 				});
     }
   }
-
-	openDateTime(){
-		let dateTimeModal = this.modalController.create(ChallengeTimeDate, {
-			challenger$: this.challenger$,
-			challengee$: this.challengee$
-		});
-
-		dateTimeModal.onDidDismiss(data => {
-			console.log(data);
-   	});
-
-		dateTimeModal.present();
-	}
 
 }

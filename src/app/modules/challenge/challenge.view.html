@@ -18,46 +18,40 @@
 				[challengee]='challengee$ | async'>
 			</opponents>
 
-			<ion-list>
-				<ion-list-header class="component-header">
-					Actions
-				</ion-list-header>
-
-				<button ion-item>
-					<ion-icon name="more" item-left></ion-icon>
-					Change arrangements
-				</button>
-
-			</ion-list>
-
-			<availability [user$]="challenger$" [user2$]="challengee$"></availability>
-
   		<ion-row class="top">
   			<ion-col width-100>
+					<ion-list radio-group>
+					  <ion-list-header>
+					    Type of play
+					  </ion-list-header>
+
+						<ion-item>
+					    <ion-label>Just to hit</ion-label>
+					    <ion-radio value="hit"></ion-radio>
+					  </ion-item>
+
+						<ion-item>
+					    <ion-label>Match</ion-label>
+					    <ion-radio checked="true" value="match"></ion-radio>
+					  </ion-item>
+
+						<ion-item>
+					    <ion-label>Tournament game</ion-label>
+					    <ion-radio value="tournament"></ion-radio>
+					  </ion-item>
+					</ion-list>
+
 					<ion-list-header class="component-header">
 						Details
 					</ion-list-header>
 
   				<ion-list>
 
-						<ion-item>
-							<ion-label primary>Time:</ion-label>
-							<ion-icon name="time" item-left></ion-icon>
-  						<ion-datetime formControlName="time"
-  							displayFormat="hh:mm A"
-  							pickerFormat="hh:mm A"
-  						></ion-datetime>
-  					</ion-item>
-
-  					<ion-item>
-
-							<ion-icon name="calendar" item-start></ion-icon>
-
-							date
-							<button (click)="openDateTime()" ion-button item-end type="button">
-								Change
-							</button>
-  					</ion-item>
+  					<challenge-time-date-input
+							formControlName="date"
+  						[challenger$]="challenger$"
+							[challengee$]="challengee$"
+  					></challenge-time-date-input>
 
   					<ion-item>
 							<ion-label primary>Location:</ion-label>

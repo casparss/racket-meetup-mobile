@@ -1,12 +1,68 @@
-import { Component } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ViewController, ModalController } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators, ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { keyBy } from 'lodash';
-import { ViewController } from 'ionic-angular';
-import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from '../games/games.service';
 import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
+
+@Component({
+  selector: 'challenge-time-date-input',
+  template: `
+    <ion-item>
+      <ion-icon name="calendar" item-left></ion-icon>
+        Date
+      <button item-right (click)="openDateTime()" ion-button type="button">
+        Change
+      </button>
+    </ion-item>
+  `,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ChallengeTimeDateInput),
+      multi: true
+    }
+  ]
+})
+export class ChallengeTimeDateInput implements ControlValueAccessor {
+
+  private value: any;
+  private propagateChange = (_: any) => {};
+
+  @Input() challenger$: any;
+  @Input() challengee$: any;
+
+  constructor(private modalController: ModalController){}
+
+  writeValue(value: any){
+    if(value !== undefined) this.value = value;
+  }
+
+  registerOnChange(fn) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched() {}
+
+  openDateTime(){
+		let dateTimeModal = this.modalController.create(ChallengeTimeDate, {
+			challenger$: this.challenger$,
+			challengee$: this.challengee$
+		});
+
+		dateTimeModal.onDidDismiss(data => {
+      if(data){
+        this.value = data;
+        this.propagateChange(this.value);
+      }
+    });
+
+		dateTimeModal.present();
+	}
+}
 
 @Component({
   selector: 'challenge-time-date',
@@ -112,8 +168,6 @@ export class ChallengeTimeDate {
 	constructor(
     private viewCtrl: ViewController,
     private formBuilder: FormBuilder,
-    private userSvc: UserSvc,
-		private gamesSvc: GamesSvc,
     private utils: ChallengeTimeDateUtils
   ){
     let { challenger$, challengee$ } = viewCtrl.data;

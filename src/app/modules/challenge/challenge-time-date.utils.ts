@@ -34,10 +34,12 @@ export class ChallengeTimeDateUtils {
 
     for(let i = 0; i < 16 ; i++){
       let date = moment().day(1).add(i, 'week');
-      let weekCommencing = `w/c ${date.format('Do MMMM')}`;
-      let label = CUSTOM_LABELS[i] ? CUSTOM_LABELS[i] : weekCommencing;
-      let selected;
-      weeks[i] = { label, date, selected };
+
+      let label = CUSTOM_LABELS[i] ?
+        CUSTOM_LABELS[i]:
+        `w/c ${date.format('Do MMMM')}`;
+
+      weeks[i] = { label, date };
     }
 
     return weeks;
