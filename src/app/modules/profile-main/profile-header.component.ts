@@ -6,6 +6,7 @@ import { UserSvc } from '../user-service/user.service';
 	template:`
 		<header>
 			<loading-img
+				[class.no-photo-avatar]="!(user$ | async)?.details.hasPhoto"
 				[src]="isCurrentUser ? (userSvc.profileImage | async) : userSvc.generateProfileImage(user$ | async)"
 				alt=""></loading-img>
 

@@ -1,5 +1,4 @@
-profile-main,
-.profile-main-com{
+profile-main {
 
 	$text-colour: #fff;
 	$background-colour:#16a086;
@@ -13,7 +12,10 @@ profile-main,
 		color:$text-colour;
 		background: $primary-gradient;
 
-		loading-img{
+		loading-img {
+			&.no-photo-avatar{
+				opacity: 0.5;
+			}
 			width:14rem;
 			height:14rem;
 			display:block;
