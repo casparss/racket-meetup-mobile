@@ -193,7 +193,8 @@ export class ChallengeTimeDate {
   }
 
   select(value, valid){
-    if(valid) this.viewCtrl.dismiss(value);
+    if(valid)
+      this.viewCtrl.dismiss(this.utils.generateDate(value));
   }
 
   reflectPeriodInTime(){

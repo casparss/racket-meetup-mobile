@@ -32,7 +32,7 @@ export class GamesSvc extends BaseService {
       Utils.observable.error("No ID passed to games svc.");
 	}
 
-	challenge(challengeDetails: Object, { _id }){
+	challenge(challengeDetails: Object, _id){
     return this._sync(challengeDetails, {}, null, `/${_id}`).map(mapToModel);
   }
 

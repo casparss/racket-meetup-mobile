@@ -34,14 +34,19 @@ export class ChallengeCom {
 		this.challengee$ = viewCtrl.data.user$;
 	}
 
-	challenge(challengeDetails, isValid:boolean){
-    if(isValid){
-      this.gamesSvc.challenge(challengeDetails, this.challengee)
-        .subscribe(game => {
-					this.gamesSvc.pushToCurrent(game);
-					this.viewCtrl.dismiss();
-				});
-    }
+	challenge(challengeDetails, isValid:boolean, $event: Event){
+		$event.preventDefault();
+		this.challengee$.subscribe(({ _id }) => {
+			if(isValid){
+	      this.gamesSvc.challenge(challengeDetails, _id)
+	        .subscribe(game => {
+						this.gamesSvc.pushToCurrent(game);
+						this.viewCtrl.dismiss();
+					});
+	    }
+		});
+
+
   }
 
 }

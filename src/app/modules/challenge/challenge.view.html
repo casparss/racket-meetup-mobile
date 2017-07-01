@@ -11,7 +11,7 @@
 
 <ion-content>
 
-  <form [formGroup]="challengeForm" (ngSubmit)="challenge(challengeForm.value, challengeForm.valid)">
+  <form [formGroup]="challengeForm" (ngSubmit)="challenge(challengeForm.value, challengeForm.valid, $event)">
 
   		<opponents
 				[challenger]='challenger$ | async'

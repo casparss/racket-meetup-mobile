@@ -45,9 +45,6 @@ export class ChallengeTimeDateUtils {
     return weeks;
   }
 
-  //@TODO: Currently having to add on a sday to get the last day to be Sunday,
-  //@TODO: apparently you can use ISO format which will be Sunday as the last day
-  //@TODO: without tweaking and messing with it
   days(wcDate){
     let weDate = moment(wcDate).day(6).add(1, "day");
     let entireWeek = Array.from(_moment.range(wcDate, weDate).by('days'));
@@ -58,6 +55,11 @@ export class ChallengeTimeDateUtils {
       label: date.format("dddd"),
       disabled: date.isBefore(today)
     }));
+  }
+
+  generateDate({ day, time }){
+    let [hours, minutes] = time.split(":");
+    return moment(day).hours(hours).minutes(minutes);
   }
 
 }
