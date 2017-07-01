@@ -19,7 +19,7 @@ export class ChallengeCom {
   private challengee$: Observable<UserInt>;
   private challengeForm:FormGroup;
 	private formModel = {
-		date: [new Date().toJSON().slice(0,10), [<any>Validators.required]],
+		date: ['', [<any>Validators.required]],
     venue: ['', [<any>Validators.required]]
 	};
 
@@ -45,7 +45,6 @@ export class ChallengeCom {
 					});
 	    }
 		});
-
 
   }
 
