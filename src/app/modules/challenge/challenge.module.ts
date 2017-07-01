@@ -18,7 +18,6 @@ import { ChallengeDateTimeModule } from '../challenge-time-date';
     ChallengeDateTimeModule
   ],
   entryComponents: [ChallengeCom],
-
   exports: [ChallengeCom]
 })
 export class ChallengeModule {}

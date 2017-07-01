@@ -10,10 +10,10 @@ import { ChallengeTimeDateCom } from './challenge-time-date.component';
   template: `
     <ion-item>
       <ion-icon name="calendar" item-left></ion-icon>
-        <span *ngIf="!this.value" class="label">Date</span>
-        <span *ngIf="this.value" class="value">{{this.value}}</span>
+        <span *ngIf="!this.value" class="label">Date and time</span>
+        <span *ngIf="this.value" class="value">{{this.value.format("Mo MMM YYYY - HH:mm")}}</span>
       <button item-right (click)="openDateTime()" ion-button type="button">
-        Change
+        {{value ? 'Change' : 'Select'}}
       </button>
     </ion-item>
   `,
@@ -30,8 +30,8 @@ export class ChallengeTimeDateInputCom implements ControlValueAccessor {
   private value: any;
   private propagateChange = (_: any) => {};
 
-  @Input() challenger$: Observable<UserInt>;;
-  @Input() challengee$: Observable<UserInt>;;
+  @Input() challenger$: Observable<UserInt>;
+  @Input() challengee$: Observable<UserInt>;
 
   constructor(private modalController: ModalController){}
 
@@ -40,7 +40,7 @@ export class ChallengeTimeDateInputCom implements ControlValueAccessor {
   }
 
   registerOnChange(fn) {
-    this.propagateChange = fn;
+    this.propagateChange = value => fn(this.value = value)
   }
 
   registerOnTouched() {}
@@ -52,12 +52,10 @@ export class ChallengeTimeDateInputCom implements ControlValueAccessor {
 		});
 
 		dateTimeModal.onDidDismiss(data => {
-      if(data){
-        this.value = data;
-        this.propagateChange(this.value);
-      }
+      if(data) this.propagateChange(data);
     });
 
 		dateTimeModal.present();
 	}
+
 }
