@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UserInt } from '../user-service/user.interface';
-import { DecHttp } from '../../utils/http/';
+import { DecHttp,  HttpUtils } from '../../utils/http/';
 import { NavController } from 'ionic-angular';
 import { BaseService } from "../../utils/base/base.service";
 import { Utils } from '../../utils/util-helpers';
@@ -26,10 +26,18 @@ export class GamesSvc extends BaseService {
 		super(http, configSvc);
 	}
 
-	get(id:string = ""){
-    return id !== "" ?
-      this._getById(null, id).map(games => games.map(mapToModel)) :
-      Utils.observable.error("No ID passed to games svc.");
+	getByStatus(_id: string, status: string, isSummary?){
+		let search = HttpUtils.urlParams({ status, isSummary});
+		return this._get(null, { search }, null, `/${_id}`)
+			.map(data => {
+				let map = value => value.map(mapToModel);
+				isSummary ? data = map(data):	data.games = map(data.games);
+				return data;
+			})
+	}
+
+	getSummary(_id: string){
+		return this.getByStatus(_id, "accepted", true);
 	}
 
 	challenge(challengeDetails: Object, _id){

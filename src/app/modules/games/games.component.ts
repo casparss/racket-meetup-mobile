@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavParams, LoadingController } from 'ionic-angular';
 import { Observable, Subject } from 'rxjs';
 import { GameModel } from './game.model';
 import { GamesSvc } from './games.service';
+
 
 @Component({
   selector: 'games',
@@ -15,18 +16,15 @@ import { GamesSvc } from './games.service';
 
   <ion-content>
 
-    <ion-segment [(ngModel)]="selectedSegment">
+    <ion-segment (ionChange)="getByStatus()" [(ngModel)]="selectedSegment">
       <ion-segment-button value="pending">
-        Pending
+        Pending ({{lengths.pending}})
       </ion-segment-button>
-      <ion-segment-button value="upcoming">
-        Upcoming
+      <ion-segment-button value="accepted">
+        Upcoming ({{lengths.accepted}})
       </ion-segment-button>
-      <ion-segment-button value="previous">
-        Previous
-      </ion-segment-button>
-      <ion-segment-button value="cancelled">
-        Cancelled
+      <ion-segment-button value="played">
+        Previous ({{lengths.played}})
       </ion-segment-button>
     </ion-segment>
 
@@ -45,19 +43,32 @@ export class GamesCom {
   private userId: string;
   private gamesListSubject: Subject<Array<GameModel>> = new Subject();
   private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
-  private selectedSegment = "upcoming";
+  private selectedSegment = "pending";
+  private lengths: Object = {};
 
   constructor(
     private gamesSvc: GamesSvc,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private loadingCtrl: LoadingController
   ){
     this.userId = this.navParams.get("_id");
-    this.getBySegment();
+    this.getByStatus();
   }
 
-  getBySegment(){
-    this.gamesSvc.get(this.userId)
-      .subscribe((games: any) => this.gamesListSubject.next(games));
+  getByStatus(){
+    let loading = this.loadingCtrl.create({
+      content: 'Loading games...',
+      showBackdrop: false
+    });
+
+    loading.present();
+
+    this.gamesSvc.getByStatus(this.userId, this.selectedSegment)
+      .subscribe(({games, lengths}) => {
+        this.lengths = lengths;
+        this.gamesListSubject.next(games);
+        loading.dismiss();
+      });
   }
 
 }

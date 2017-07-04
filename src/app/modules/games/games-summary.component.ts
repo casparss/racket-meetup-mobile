@@ -16,9 +16,11 @@ import { GamesCom } from '../games/games.component';
 			Upcoming
 		</ion-list-header>
 		<ion-list>
-	    <ng-container *ngFor="let gameModel of games$ | async; let i=index">
-	      <games-summary-item *ngIf="i < 3" [gameModel]="gameModel"></games-summary-item>
-	    </ng-container>
+			<games-summary-item
+				*ngFor="let gameModel of games$ | async; let i=index"
+				[gameModel]="gameModel"
+			></games-summary-item>
+
 			<button *ngIf="(games$ | async)?.length > 0" (click)="openGames()" type="button" ion-item>View more</button>
 	  </ion-list>
 		<div class="no-games-message" *ngIf="(games$ | async)?.length === 0">
@@ -53,7 +55,7 @@ export class GamesSummaryCom {
 
 	getGames(){
 		toPromise(this.user$)
-			.then(({ _id }) => toPromise(this.gamesSvc.get(_id)))
+			.then(({ _id }) => toPromise(this.gamesSvc.getSummary(_id)))
 			.then(games => this.gamesSubject.next(games));
 	}
 
