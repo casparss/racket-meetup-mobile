@@ -17,14 +17,14 @@ import { GamesSvc } from './games.service';
   <ion-content>
 
     <ion-segment (ionChange)="getByStatus()" [(ngModel)]="selectedSegment">
-      <ion-segment-button value="pending">
+      <ion-segment-button [disabled]="lengths.pending === 0" value="pending">
         Pending ({{lengths.pending}})
       </ion-segment-button>
-      <ion-segment-button value="accepted">
+      <ion-segment-button [disabled]="lengths.accepted === 0" value="accepted">
         Upcoming ({{lengths.accepted}})
       </ion-segment-button>
-      <ion-segment-button value="played">
-        Previous ({{lengths.played}})
+      <ion-segment-button [disabled]="(lengths.played + lengths.rejected + lengths.forfeit) === 0" value="played,rejected,forfeit">
+        Previous ({{(lengths.played + lengths.rejected + lengths.forfeit)}})
       </ion-segment-button>
     </ion-segment>
 

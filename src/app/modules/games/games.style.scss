@@ -1,103 +1,22 @@
 games {
 
-	.card {
-		border-left: 3px solid;
-		font-size:14px;
-		padding-left: 0;
-
-		.list {
-			margin-bottom: 0;
-		}
-
-		ion-label, ion-item {
-			font-size: 14px;
-		}
-	}
-
-	[status=pending] {
-		border-color: $red-faded;
-	}
-
-	[status=accepted] {
-		border-color: $darkcyan;
-	}
-
-	[status=rejected] {
-		border-color: $darkcyan;
-	}
-
-	[status=forfeit] {
-		border-color: $darkcyan;
-	}
-
-	[status=played] {
-		border-color: $darkcyan;
-	}
-
-	.menu-col{
-		padding: 0px 0px 5px 5px!important;
-		text-align: right;
-	}
-
-	.menu{
-		background: none;
-		font-size: 1.8em;
-		padding: 0;
-		ion-icon {
-			padding: 0 .3em;
-			color: #16a086;
-		}
-	}
-
-	.details {
-		background:$quiet-grey;
-		ion-icon{
-			font-size: 1.5em;
-		}
-		ion-col{
-			text-align:center;
-		}
-	}
-
-	ion-list.players {
-
-		margin-bottom: 0;
-
-		ion-list .item .item-inner,
-		.item-inner, .item-block{
-			border:none!important;
-		}
-
-		img, ion-thumbnail {
-			$size: 40px;
-			width: $size;
-			height: $size;
-			min-width: $size;
-			min-height: $size;
-			border-radius: 3rem;
-		}
-
-		ion-item{
-			padding-left: 0;
-		}
-
-	}
-
-	.vs{
-		text-align:center;
-	}
-
-	.item-header{
-		background:#fcfcfc;
-		ion-label{
-			font-size:1rem;
-			margin:0;
-		}
-	}
-
 	.no-games-message{
 		text-align:center;
 		margin:20px;
+	}
+
+	span.status-text {
+		font-weight: bold;
+
+		&[status=played]{
+			color: color($colors, primary, base);
+		}
+
+		&[status=rejected],
+		&[status=forfeit]{
+			color: color($colors, danger, base);
+		}
+
 	}
 
 }
