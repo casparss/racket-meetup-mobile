@@ -31,7 +31,7 @@ import { GamesCom } from '../games/games.component';
 })
 export class GamesSummaryCom {
 
-	@Input() user$: any;
+	@Input() user: any;
 	gamesSubject: CustomSubject = new CustomSubject();
 	games$: Observable<any> = this.gamesSubject.$;
 
@@ -54,14 +54,14 @@ export class GamesSummaryCom {
 	}
 
 	getGames(){
-		toPromise(this.user$)
+		toPromise(this.user.$)
 			.then(({ _id }) => toPromise(this.gamesSvc.getSummary(_id)))
 			.then(games => this.gamesSubject.next(games));
 	}
 
 	openGames(): void {
 		let tab = 'upcoming';
-		this.user$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id, tab }));
+		this.user.$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id, tab }));
 	}
 
 }

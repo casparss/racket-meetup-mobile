@@ -86,7 +86,7 @@ class Message {
 	}
 
 	isMe(){
-		return this._id === this.userSvc.current._id;
+		return this._id === this.userSvc.current.user._id;
 	}
 
 }

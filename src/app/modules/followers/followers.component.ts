@@ -10,7 +10,7 @@ import {UserSvc} from '../user-service/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'followers'
 })
-export class FollowersCom{
+export class FollowersCom {
 
 	private selectedSegment = "following";
 	private followers: any;
@@ -19,8 +19,8 @@ export class FollowersCom{
     this.followers = this.userSvc.followersFactory(null).get();
   }
 
-	openProfile(user$){
-		this.nav.push(ProfileMainCom, { user$ });
+	openProfile(user){
+		this.nav.push(ProfileMainCom, { user });
 	}
 
 }

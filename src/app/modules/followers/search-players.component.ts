@@ -25,13 +25,13 @@ import { UserSvc } from '../user-service/user.service';
 
   	<ion-list>
   		<ion-item
-  			*ngFor="let user$ of userSvc.searchedPlayers$ | async"
-  			(click)="openProfile(user$)"
+  			*ngFor="let user of userSvc.searchedPlayers$ | async"
+  			(click)="openProfile(user)"
   		>
 				<ion-avatar item-left>
-					<loading-img [src]="(user$ | async)?.details.image"></loading-img>
+					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
 				</ion-avatar>
-  			{{ (user$ | async)?.details.fullName }}
+  			{{ (user.$ | async)?.details.fullName }}
   		</ion-item>
   	</ion-list>
   </ion-content>
@@ -45,8 +45,8 @@ export class SearchPlayersCom{
 		private userSvc: UserSvc
 	){}
 
-	openProfile(user$){
-		this.nav.push(ProfileMainCom, { user$ });
+	openProfile(user){
+		this.nav.push(ProfileMainCom, { user });
 	}
 
   searchPlayers({target: { value }}){

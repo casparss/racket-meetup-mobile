@@ -5,7 +5,7 @@ import { DecHttp,  HttpUtils } from '../../utils/http/';
 import { NavController } from 'ionic-angular';
 import { BaseService } from "../../utils/base/base.service";
 import { Utils } from '../../utils/util-helpers';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 import { GameInt } from './games.interfaces';
 import { ConfigSvc } from '../config/config.service';
 import { GameModel } from './game.model';
@@ -17,6 +17,8 @@ export class GamesSvc extends BaseService {
 
 	url = "games";
 	public onPushToCurrent: EventEmitter<any> = new EventEmitter();
+	private lengthsSubject: Subject<any> = new Subject();
+	public lengths$: Observable<any> = this.lengthsSubject.asObservable();
 
 	constructor(
 		protected nav: NavController,
@@ -29,11 +31,8 @@ export class GamesSvc extends BaseService {
 	getByStatus(_id: string, status: string, isSummary?){
 		let search = HttpUtils.urlParams({ status, isSummary});
 		return this._get(null, { search }, null, `/${_id}`)
-			.map(data => {
-				let map = value => value.map(mapToModel);
-				isSummary ? data = map(data):	data.games = map(data.games);
-				return data;
-			})
+			.do(({ lengths }) => this.lengthsSubject.next(lengths))
+			.map(({ games }) => games.map(mapToModel));
 	}
 
 	getSummary(_id: string){

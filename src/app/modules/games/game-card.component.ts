@@ -68,6 +68,7 @@ let TEXT_STATE_COLOR_HASH = {
 					ion-button
 					icon-left
 					item-right
+					outline
 					(click)="acceptChallenge(game)"
 					*ngIf="status(game, ['accepted', 'played'])">
 	        <ion-icon name="more"></ion-icon>
@@ -90,15 +91,27 @@ let TEXT_STATE_COLOR_HASH = {
 			  </ion-item>
 		  </ion-item-group>
 
-			<ion-item *ngIf="!isGameAccepted">
+			<ion-item *ngIf="status(game, ['pending']) && !isAccepted()">
 	      <button ion-button icon-left item-left (click)="acceptChallenge(game)">
 	        <ion-icon name="thumbs-up"></ion-icon>
 	        Accept
 	      </button>
 
+				<button ion-button danger icon-left item-right outline color="primary">
+	        <ion-icon name="text"></ion-icon>
+	        Suggest changes
+	      </button>
+
 	      <button ion-button danger icon-left item-right color="danger" (click)="rejectChallenge(game)">
 	        <ion-icon name="text"></ion-icon>
 	        Reject
+	      </button>
+		  </ion-item>
+
+			<ion-item *ngIf="status(game, ['pending']) && isAccepted()">
+	      <button ion-button danger icon-left item-right color="danger" (click)="rejectChallenge(game)">
+	        <ion-icon name="text"></ion-icon>
+	        Cancel match challenge
 	      </button>
 		  </ion-item>
 
@@ -131,7 +144,7 @@ export class GameCardCom {
 	}
 
 	isAccepted(){
-		let currentUserId = this.userSvc.current._id;
+		let currentUserId = this.userSvc.current.user._id;
 		let { side1, side2 } = this.game.opponents;
 		let user = findUser(side1, currentUserId) || findUser(side2, currentUserId);
 		return user ? user.accepted : null;

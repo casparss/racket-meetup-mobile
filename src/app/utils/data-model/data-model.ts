@@ -1,13 +1,12 @@
-import { Subject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-export class CustomSubject {
-  public subject: Subject<any>;
+export class DataModel {
+  public subject: BehaviorSubject<any>;
   private value: any;
 
   constructor(model?:any){
-    this.subject = new Subject();
+    this.subject = new BehaviorSubject(model);
     this.subject.subscribe(value => this.value = value);
-    if(model) this.next(model);
   }
 
   protected get$(){

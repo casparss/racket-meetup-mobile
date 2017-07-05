@@ -20,7 +20,7 @@ export class WsSvc{
 
 	private authenticate(){
 		this.socket.on('connect', () => {
-			this.socket.emit('authentication', this.userSvc.current.token);
+			this.socket.emit('authentication', this.userSvc.current.user.token);
 			this.socket.on('authenticated', () => {
 				this._authenticated = true;
 				this.onAuthenticted.emit(this._authenticated);

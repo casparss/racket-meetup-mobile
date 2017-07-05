@@ -52,6 +52,7 @@ export class GamesCom {
     private loadingCtrl: LoadingController
   ){
     this.userId = this.navParams.get("_id");
+    this.gamesSvc.lengths$.subscribe(lengths => this.lengths = lengths);
     this.getByStatus();
   }
 
@@ -64,8 +65,7 @@ export class GamesCom {
     loading.present();
 
     this.gamesSvc.getByStatus(this.userId, this.selectedSegment)
-      .subscribe(({games, lengths}) => {
-        this.lengths = lengths;
+      .subscribe(games => {
         this.gamesListSubject.next(games);
         loading.dismiss();
       });

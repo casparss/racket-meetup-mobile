@@ -14,7 +14,7 @@
 			Followers ({{(followers.followers$ | async)?.length}})
 		</ion-segment-button>
 	</ion-segment>
-	
+
 	<ion-list>
 
     <div [hidden]="selectedSegment !== 'followers'">
@@ -24,9 +24,9 @@
   			(click)="openProfile(user)"
   		>
 				<ion-avatar item-left>
-					<loading-img [src]="(user | async)?.details.image"></loading-img>
+					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
 				</ion-avatar>
-  			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
+  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
   		</ion-item>
 
     </div>
@@ -38,9 +38,9 @@
   			(click)="openProfile(user)"
   		>
 				<ion-avatar item-left>
-					<loading-img [src]="(user | async)?.details.image"></loading-img>
+					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
 				</ion-avatar>
-  			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
+  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
   		</ion-item>
 
     </div>

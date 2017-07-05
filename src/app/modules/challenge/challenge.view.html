@@ -14,8 +14,8 @@
   <form [formGroup]="challengeForm" (ngSubmit)="challenge(challengeForm.value, challengeForm.valid, $event)">
 
   		<opponents
-				[challenger]='challenger$ | async'
-				[challengee]='challengee$ | async'>
+				[challenger]='challenger.$ | async'
+				[challengee]='challengee.$ | async'>
 			</opponents>
 
   		<ion-row class="top">
@@ -49,8 +49,8 @@
 
   					<challenge-time-date-input
 							formControlName="date"
-  						[challenger$]="challenger$"
-							[challengee$]="challengee$"
+  						[challenger]="challenger"
+							[challengee]="challengee"
   					></challenge-time-date-input>
 
   					<ion-item>

@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
-import { Observable } from 'rxjs';
+import { UserModel } from '../user-service/user.model.service';
 import { toPromise } from '../../utils/util-helpers';
 
+import { GamesSvc } from '../games/games.service';
 import { ChallengeCom } from '../challenge/challenge.component';
 import { ProfileMainSvc } from './profile-main.service';
 import { UserSvc, UserInt } from '../user-service/user.service';
@@ -16,7 +17,7 @@ import { GamesCom } from '../games/games.component';
 @Component({
 	selector:'profile-actions',
 	template:`
-		<ion-list [ngSwitch]="(user$ | async)?._id === userSvc.current._id">
+		<ion-list [ngSwitch]="(user.$ | async)?._id === userSvc.current.user._id">
 			<ion-list-header class="component-header">
 				Actions
 			</ion-list-header>
@@ -34,8 +35,8 @@ import { GamesCom } from '../games/games.component';
 			<button (click)='openGames()' ion-item>
 				<ion-icon name="tennisball" item-left></ion-icon>
 				Games
-				<ion-badge item-end color="danger">3</ion-badge>
-				<ion-badge item-end>1</ion-badge>
+				<ion-badge *ngIf="pending > 0" item-end color="danger">{{pending}}</ion-badge>
+				<ion-badge *ngIf="accepted > 0" item-end>{{accepted}}</ion-badge>
 			</button>
 
 			<button *ngSwitchCase="false" ion-item (click)="toggleFollow()" [ngSwitch]="isFriend">
@@ -53,38 +54,47 @@ import { GamesCom } from '../games/games.component';
 })
 export class ProfileActionsCom {
 
-	@Input() user$: Observable<UserInt>;
+	@Input() user: UserModel;
 	private isFriend: boolean = false;
+	private pending: number;
+	private accepted: number;
 
 	constructor(
 		private nav: NavController,
 		private modalController : ModalController,
 		private userSvc: UserSvc,
-    private messagesSvc: MessagesSvc
-	){ this.setIsFriend(); }
+    private messagesSvc: MessagesSvc,
+		private gamesSvc: GamesSvc
+	){
+		this.setIsFriend();
+		this.gamesSvc.lengths$.subscribe(({pending, accepted}) => {
+			this.pending = pending;
+			this.accepted = accepted;
+		});
+	}
 
   setIsFriend(){
-		if(this.user$){
-			this.user$.subscribe(({ _id }) => this.isFriend = this.userSvc.doesFollow(_id));
+		if(this.user){
+			this.user.$.subscribe(({ _id }) => this.isFriend = this.userSvc.doesFollow(_id));
 		}
   }
 
 	challengePlayer(){
 		let challengeModal = this.modalController.create(ChallengeCom, {
-			user$: this.user$
+			user: this.user
 		});
 
 		challengeModal.present(challengeModal);
 	}
 
 	messagePlayer(){
-		toPromise(this.user$)
+		toPromise(this.user.$)
 			.then(({ _id }) => this.messagesSvc.getChat([_id]).toPromise())
       .then(({ _id }) => this.nav.push(ChatCom, { _id }));
 	}
 
 	toggleFollow(){
-		toPromise(this.user$)
+		toPromise(this.user.$)
 			.then(({ _id }) => this.userSvc.toggleFollow(_id).toPromise())
 			.then(isFriend => this.isFriend = isFriend);
 	}
@@ -94,7 +104,7 @@ export class ProfileActionsCom {
 	}
 
 	openGames(): void {
-		this.user$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id }));
+		this.user.$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id }));
 	}
 
   ngOnChanges(){

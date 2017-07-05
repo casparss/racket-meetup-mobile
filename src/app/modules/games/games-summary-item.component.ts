@@ -4,6 +4,7 @@ import { GamesSvc } from './games.service'
 import { UserSvc } from '../user-service';
 import { GameModel } from './game.model';
 import { ChallengeCom } from '../challenge/challenge.component';
+import { UserUtils } from '../user-service/user.utils';
 
 @Component({
   selector: 'games-summary-item',
@@ -18,13 +19,13 @@ import { ChallengeCom } from '../challenge/challenge.component';
           <ion-list class="players">
             <ion-item>
               <ion-thumbnail item-left>
-                <img [src]="userSvc.generateProfileImage(game.opponents.side1[0].user)">
+                <loading-img [src]="side1img"></loading-img>
               </ion-thumbnail>
               {{game.opponents.side1[0].user.details.firstName}}
             </ion-item>
             <ion-item>
               <ion-thumbnail item-left>
-                <img [src]="userSvc.generateProfileImage(game.opponents.side2[0].user)">
+                <loading-img [src]="side2img"></loading-img>
               </ion-thumbnail>
               {{game.opponents.side2[0].user.details.firstName}}
             </ion-item>
@@ -46,18 +47,31 @@ import { ChallengeCom } from '../challenge/challenge.component';
 export class GamesSummaryItemCom {
   @Input() gameModel: GameModel;
   private game: any;
+  private side1img: string;
+  private side2img: string;
 
   constructor(
     private userSvc: UserSvc,
-    private nav: NavController
+    private nav: NavController,
+    private userUtils: UserUtils
   ){}
 
   ngOnInit(){
-    this.gameModel.$.subscribe(game => this.game = game);
+    this.gameModel.$.subscribe(game => {
+      this.game = game;
+      this.generateProfileImages();
+    });
   }
 
   openGame(){
     let { _id } = this.game;
     this.nav.push(ChallengeCom, { _id });
   }
+
+  generateProfileImages(){
+    let { side1, side2 } = this.game.opponents;
+    this.side1img = this.userUtils.generateProfileImage(side1[0].user._id);
+    this.side2img = this.userUtils.generateProfileImage(side2[0].user._id);
+  }
+
 }

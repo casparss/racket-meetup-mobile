@@ -12,7 +12,6 @@ import { FollowersModule } from '../followers'
 import { ChatCom } from '../messages/chat.component';
 import { ProfileActionsCom } from './profile-actions.component'
 import { ProfileHeaderCom } from './profile-header.component';
-import { ProfileMainSvc } from './profile-main.service';
 import { ProfileMainCom } from './profile-main.component';
 import { MydetailsCom } from '../my-details/my-details.component';
 
@@ -41,7 +40,6 @@ import { UserSvc } from '../user-service/user.service';
   ],
   exports: [
     ProfileMainCom
-  ],
-  providers: [ProfileMainSvc]
+  ]
 })
 export class ProfileModule {}

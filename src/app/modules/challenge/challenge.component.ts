@@ -4,6 +4,7 @@ import { ViewController } from 'ionic-angular';
 import { FormGroup , FormBuilder, Validators} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
 import { UserSvc } from '../user-service/user.service';
+import { UserModel } from '../user-service/user.model.service';
 import { GamesSvc } from '../games/games.service';
 import { ChallengeTimeDate } from './challenge-time-date.component';
 
@@ -13,10 +14,8 @@ import { ChallengeTimeDate } from './challenge-time-date.component';
 })
 export class ChallengeCom {
 
-	private challenger: UserInt;
-  private challengee: UserInt;
-	private challenger$: Observable<UserInt>;
-  private challengee$: Observable<UserInt>;
+	private challenger: UserModel;
+  private challengee: UserModel;
   private challengeForm:FormGroup;
 	private formModel = {
 		date: ['', [<any>Validators.required]],
@@ -30,13 +29,13 @@ export class ChallengeCom {
 		private gamesSvc: GamesSvc
   ){
     this.challengeForm = formBuilder.group(this.formModel);
-		this.challenger$ = userSvc.current$;
-		this.challengee$ = viewCtrl.data.user$;
+		this.challenger = userSvc.current;
+		this.challengee = viewCtrl.data.user;
 	}
 
 	challenge(challengeDetails, isValid:boolean, $event: Event){
 		$event.preventDefault();
-		this.challengee$.subscribe(({ _id }) => {
+		this.challengee.$.subscribe(({ _id }) => {
 			if(isValid){
 	      this.gamesSvc.challenge(challengeDetails, _id)
 	        .subscribe(game => {

@@ -12,8 +12,8 @@ import { AvailabilityUtils } from './availability.utils';
 })
 export class AvailabilityCom {
 
-	@Input() user$: any;
-	@Input() user2$: any;
+	@Input() user: any;
+	@Input() user2: any;
 	private isInFlight: boolean = false;
   private model: Object;
 
@@ -29,13 +29,13 @@ export class AvailabilityCom {
 	getAvailabilityType(){
 		return this.isMesh() ?
 			this.getAvailabilityMesh():
-			this.getAvailability(this.user$);
+			this.getAvailability(this.user.$);
 	}
 
 	getAvailabilityMesh(){
 		return Promise.all([
-			this.getAvailability(this.user$),
-			this.getAvailability(this.user2$)
+			this.getAvailability(this.user.$),
+			this.getAvailability(this.user2.$)
 		])
 			.then(this.utils.generateUnityObject);
 	}
@@ -46,7 +46,7 @@ export class AvailabilityCom {
 	}
 
 	isMesh(){
-		return !!this.user2$;
+		return !!this.user2;
 	}
 
 };
