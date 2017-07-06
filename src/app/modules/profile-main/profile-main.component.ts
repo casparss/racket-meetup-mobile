@@ -65,10 +65,10 @@ export class ProfileMainCom{
 	){}
 
 	ngOnInit(){
-		this.loadUser();
+		this.setUser();
 	}
 
-	loadUser(){
+	setUser(){
 		let id: string = this.params.get("id");
 		let user: UserModel = this.params.get("user");
 

@@ -9,6 +9,8 @@ import { Observable, Subject } from 'rxjs';
 import { GameInt } from './games.interfaces';
 import { ConfigSvc } from '../config/config.service';
 import { GameModel } from './game.model';
+import { UserModelSvc } from '../user-service/user.model.service';
+import { UserSvc } from '../user-service/user.service';
 
 let mapToModel = game => new GameModel(game);
 
@@ -22,37 +24,54 @@ export class GamesSvc extends BaseService {
 
 	constructor(
 		protected nav: NavController,
+		private userModelSvc: UserModelSvc,
+		private userSvc: UserSvc,
 		http: DecHttp,
 		configSvc: ConfigSvc
 	){
 		super(http, configSvc);
 	}
 
-	getByStatus(_id: string, status: string, isSummary?){
-		let search = HttpUtils.urlParams({ status, isSummary});
+	getByStatus(_id: string, status: string, type?){
+		let search = HttpUtils.urlParams({ status, type });
 		return this._get(null, { search }, null, `/${_id}`)
 			.do(({ lengths }) => this.lengthsSubject.next(lengths))
+			.do(({ lengths }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
 			.map(({ games }) => games.map(mapToModel));
 	}
 
 	getSummary(_id: string){
-		return this.getByStatus(_id, "accepted", true);
+		return this.getByStatus(_id, 'accepted', 'summary');
+	}
+
+	getLengthsOnly(_id: string){
+		let search = HttpUtils.urlParams({ type: 'lengths' });
+		return this._get(null, { search }, null, `/${_id}`)
+			.do(({ lengths }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
 	}
 
 	challenge(challengeDetails: Object, _id){
-    return this._sync(challengeDetails, {}, null, `/${_id}`).map(mapToModel);
+    return this._sync(challengeDetails, {}, null, `/${_id}`)
+			.map(mapToModel)
+			.do(() => this.getLengths());
   }
 
 	acceptChallenge(_id){
-		return this._update(null, {}, 'game/accept/', _id);
+		return this._update(null, {}, 'game/accept/', _id)
+			.do(() => this.getLengths());
 	}
 
 	rejectChallenge(_id){
-		return this._update(null, {}, 'game/reject/', _id);
+		return this._update(null, {}, 'game/reject/', _id)
+			.do(() => this.getLengths());
 	}
 
 	pushToCurrent(game){
 		this.onPushToCurrent.emit(game);
+	}
+
+	getLengths(){
+		return this.getLengthsOnly(this.userSvc.current.user._id).subscribe();
 	}
 
 }

@@ -67,7 +67,10 @@ export class ProfileActionsCom {
 		private gamesSvc: GamesSvc
 	){
 		this.setIsFriend();
-		this.gamesSvc.lengths$.subscribe(({pending, accepted}) => {
+	}
+
+	ngOnInit(){
+		this.user.statusLengths$.subscribe(({pending, accepted}) => {
 			this.pending = pending;
 			this.accepted = accepted;
 		});

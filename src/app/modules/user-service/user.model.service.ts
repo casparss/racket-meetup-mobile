@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
 import { UserUtils } from './user.utils';
 import { DataModel } from '../../utils/data-model';
 import { UserInt } from './user.interface';
@@ -6,16 +7,20 @@ import { remove } from 'lodash';
 
 @Injectable()
 export class UserModelSvc {
+  public onLengthsRetrieval: EventEmitter<any> = new EventEmitter();
   constructor(private userUtils: UserUtils){}
 
   create(userModel: UserInt){
-    return new UserModel(userModel, this.userUtils);
+    return new UserModel(userModel, this.userUtils, this.onLengthsRetrieval);
   }
 }
 
 export class UserModel extends DataModel {
-  constructor(userModel: UserInt, private utils){
+  public statusLengths$: Subject<any> = new Subject();
+
+  constructor(userModel: UserInt, private utils, private onLengthsRetrieval){
     super(userModel);
+    this.onLengthsRetrieval.subscribe(lengthsData => this.lengthsRetrieval(lengthsData));
   }
 
   get $(){
@@ -47,5 +52,10 @@ export class UserModel extends DataModel {
   generateProfileImage(){
     let user = this.getValue();
     return this.utils.generateProfileImage(user._id);
+  }
+
+  lengthsRetrieval({ _id, lengths }){
+    let user = this.getValue();
+    if(user._id === _id) this.statusLengths$.next(lengths);
   }
 }
