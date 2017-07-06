@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { UserUtils } from './user.utils';
 import { DataModel } from '../../utils/data-model';
 import { UserInt } from './user.interface';
@@ -16,7 +16,7 @@ export class UserModelSvc {
 }
 
 export class UserModel extends DataModel {
-  public statusLengths$: Subject<any> = new Subject();
+  public statusLengths$: BehaviorSubject<any> = new BehaviorSubject({});
 
   constructor(userModel: UserInt, private utils, private onLengthsRetrieval){
     super(userModel);

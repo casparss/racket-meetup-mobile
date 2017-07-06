@@ -3,6 +3,7 @@ import { NavParams, LoadingController } from 'ionic-angular';
 import { Observable, Subject } from 'rxjs';
 import { GameModel } from './game.model';
 import { GamesSvc } from './games.service';
+import { findKey, once } from 'lodash';
 
 
 @Component({
@@ -40,21 +41,48 @@ import { GamesSvc } from './games.service';
 })
 export class GamesCom {
 
-  private userId: string;
+  private user: any;
   private gamesListSubject: Subject<Array<GameModel>> = new Subject();
   private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
   private selectedSegment = "pending";
-  private lengths: Object = {};
+  private lengths: any = {};
+  private showEmptyState: boolean = false;
+  private firstLoad: boolean = true;
 
   constructor(
     private gamesSvc: GamesSvc,
     private navParams: NavParams,
     private loadingCtrl: LoadingController
   ){
-    this.userId = this.navParams.get("_id");
-    this.gamesSvc.lengths$.subscribe(lengths => this.lengths = lengths);
-    this.getByStatus();
+    this.user = this.navParams.get("user");
   }
+
+  ngOnInit(){
+    this.user.statusLengths$.subscribe(lengths => {
+      this.lengths = lengths;
+      this.tabSelectionOnce();
+    });
+  }
+
+  initialTabSelection(){
+      let { pending, accepted, played, rejected, forfeit } = this.lengths;
+      let isLengths = () => !findKey(this.lengths, length => length > 0);
+
+      if(isLengths()){
+        this.showEmptyState = true;
+        this.selectedSegment = "";
+      } else if(pending > 0){
+        this.selectedSegment = 'pending';
+      } else if(accepted > 0){
+        this.selectedSegment = 'accepted';
+      } else {
+        this.selectedSegment = 'played,rejected,forfeit';
+      }
+
+      this.getByStatus();
+  }
+
+  private tabSelectionOnce = once(this.initialTabSelection);
 
   getByStatus(){
     let loading = this.loadingCtrl.create({
@@ -64,7 +92,7 @@ export class GamesCom {
 
     loading.present();
 
-    this.gamesSvc.getByStatus(this.userId, this.selectedSegment)
+    this.gamesSvc.getByStatus(this.user.user._id, this.selectedSegment)
       .subscribe(games => {
         this.gamesListSubject.next(games);
         loading.dismiss();
