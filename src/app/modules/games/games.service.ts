@@ -50,28 +50,28 @@ export class GamesSvc extends BaseService {
 			.do(({ lengths }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
 	}
 
+	getLengthsForCurrentUser(){
+		return this.getLengthsOnly(this.userSvc.current.user._id).subscribe();
+	}
+
 	challenge(challengeDetails: Object, _id){
     return this._sync(challengeDetails, {}, null, `/${_id}`)
 			.map(mapToModel)
-			.do(() => this.getLengths());
+			.do(() => this.getLengthsForCurrentUser());
   }
 
 	acceptChallenge(_id){
 		return this._update(null, {}, 'game/accept/', _id)
-			.do(() => this.getLengths());
+			.do(() => this.getLengthsForCurrentUser());
 	}
 
 	rejectChallenge(_id){
 		return this._update(null, {}, 'game/reject/', _id)
-			.do(() => this.getLengths());
+			.do(() => this.getLengthsForCurrentUser());
 	}
 
 	pushToCurrent(game){
 		this.onPushToCurrent.emit(game);
-	}
-
-	getLengths(){
-		return this.getLengthsOnly(this.userSvc.current.user._id).subscribe();
 	}
 
 }
