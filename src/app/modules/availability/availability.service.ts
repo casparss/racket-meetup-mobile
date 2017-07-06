@@ -9,6 +9,7 @@ import { ColObjDifferFactory, CollectionObjectDiffer } from '../../utils/differs
 import { Service } from './availability.interface';
 import { Utils } from '../../utils/util-helpers';
 import { ConfigSvc  } from '../config/config.service';
+import { AvailabilityUtils } from './availability.utils';
 
 @Injectable()
 export class AvailabilitySvc extends BaseService implements Service {
@@ -20,14 +21,16 @@ export class AvailabilitySvc extends BaseService implements Service {
 	constructor(
 		private colObjDifferFactory: ColObjDifferFactory,
 		http: DecHttp,
-		configSvc: ConfigSvc
+		configSvc: ConfigSvc,
+		private utils: AvailabilityUtils
 	){
     super(http, configSvc);
 	}
 
 	get(id: string){
 		return this._getById('availability', id)
-      .do(model => this.differ = this.colObjDifferFactory.create(this.model = model));
+      .do(model => this.differ = this.colObjDifferFactory.create(this.model = model))
+			.map(model => this.utils.addClassPropTransform(model));
 	}
 
 	debouncedSync = debounce(() => this._update(this.model).subscribe(), this.debouceTime, {

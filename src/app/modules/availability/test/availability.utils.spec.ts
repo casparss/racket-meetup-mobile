@@ -28,4 +28,9 @@ describe("Availability Utils", () => {
     expect(isEqual(unityObj, availabilityUnityFixture)).toBe(true);
 	}));
 
+  it('addClassPropTransform()', inject([AvailabilityUtils], ({ addClassPropTransform }) => {
+    let availWithAddedClassProp = addClassPropTransform(availabilityFixture);
+    expect(availWithAddedClassProp.morning[0].class).toBe("default");
+	}));
+
 });

@@ -27,7 +27,7 @@
 					   Morning
 					</td>
 
-					<td *ngFor="let day of model?.morning">
+					<td *ngFor="let day of model?.morning" [@selectionAnimation]="day.class">
 						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
 				</tr>
@@ -37,7 +37,7 @@
 					   Afternoon
 					</td>
 
-					<td *ngFor="let day of model?.afternoon">
+					<td *ngFor="let day of model?.afternoon" [@selectionAnimation]="day.class">
 						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
 				</tr>
@@ -47,7 +47,7 @@
 					   Evening
 					</td>
 
-					<td *ngFor="let day of model?.evening">
+					<td *ngFor="let day of model?.evening" [@selectionAnimation]="day.class">
 						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
 				</tr>

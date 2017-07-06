@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { mapValues } from 'lodash';
 
 @Injectable()
 export class AvailabilityUtils {
@@ -16,5 +17,14 @@ export class AvailabilityUtils {
       afternoon: mapOn("afternoon"),
       evening: mapOn("evening")
     };
+  }
+
+  addClassPropTransform(avail){
+    const NORMAL_CLASS = 'normal';
+    return mapValues(avail, period =>
+      period.map(
+        ({v}) => ({ v, class: NORMAL_CLASS})
+      )
+    );
   }
 }
