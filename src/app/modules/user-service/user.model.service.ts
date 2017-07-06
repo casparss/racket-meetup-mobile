@@ -51,7 +51,7 @@ export class UserModel extends DataModel {
 
   generateProfileImage(){
     let user = this.getValue();
-    return this.utils.generateProfileImage(user._id);
+    return this.utils.generateProfileImage(user);
   }
 
   lengthsRetrieval({ _id, lengths }){

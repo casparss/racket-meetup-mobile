@@ -4,11 +4,11 @@
   "proxies": [
     {
       "path": "/api",
-      "proxyUrl": "http://localhost:3000/api/"
+      "proxyUrl": "http://188.166.159.118:3000/api/"
     },
     {
       "path": "/assets",
-      "proxyUrl": "http://localhost:3000/assets/"
+      "proxyUrl": "http://188.166.159.118:3000/assets/"
     }
   ],
   "type": "ionic-angular"
