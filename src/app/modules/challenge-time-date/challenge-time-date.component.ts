@@ -30,6 +30,7 @@ import { AvailabilityCom } from '../availability/availability.component';
         [user]="challenger"
         [user2]="challengee"
         [selectedDay]="selectDateAndTime.controls.day.value"
+        [selectedPeriod]="selectDateAndTime.controls.period.value"
       ></availability>
 
       <ion-row class="top">
