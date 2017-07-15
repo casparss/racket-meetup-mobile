@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { NavParams, LoadingController } from 'ionic-angular';
 import { Observable, Subject } from 'rxjs';
 import { GameModel } from './game.model';
+import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from './games.service';
 import { findKey, once } from 'lodash';
-
 
 @Component({
   selector: 'games',
@@ -29,7 +29,9 @@ import { findKey, once } from 'lodash';
       </ion-segment-button>
     </ion-segment>
 
-    <ion-list>
+    <div *ngIf="isEmptyState()">No games yet</div>
+
+    <ion-list *ngIf="!isEmptyState()">
       <game-card
         *ngFor="let gameModel of gamesList$ | async"
         [gameModel]="gameModel"
@@ -42,6 +44,7 @@ import { findKey, once } from 'lodash';
 export class GamesCom {
 
   private user: any;
+  private requestedTab: any;
   private gamesListSubject: Subject<Array<GameModel>> = new Subject();
   private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
   private selectedSegment = "pending";
@@ -52,9 +55,11 @@ export class GamesCom {
   constructor(
     private gamesSvc: GamesSvc,
     private navParams: NavParams,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private userSvc: UserSvc
   ){
-    this.user = this.navParams.get("user");
+    this.user = this.navParams.get("user") || this.userSvc.current;
+    this.requestedTab = this.navParams.get("requestedTab");
   }
 
   ngOnInit(){
@@ -66,11 +71,12 @@ export class GamesCom {
 
   initialTabSelection(){
       let { pending, accepted, played, rejected, forfeit } = this.lengths;
-      let isLengths = () => !findKey(this.lengths, length => length > 0);
+      let areLengthsEmpty = () => !findKey(this.lengths, length => length > 0);
 
-      if(isLengths()){
-        this.showEmptyState = true;
+      if(areLengthsEmpty()){
         this.selectedSegment = "";
+      } else if(this.requestedTab){
+        this.selectedSegment = this.requestedTab;
       } else if(pending > 0){
         this.selectedSegment = 'pending';
       } else if(accepted > 0){
@@ -83,6 +89,10 @@ export class GamesCom {
   }
 
   private tabSelectionOnce = once(this.initialTabSelection);
+
+  isEmptyState(){
+    return this.selectedSegment === "";
+  }
 
   getByStatus(){
     let loading = this.loadingCtrl.create({

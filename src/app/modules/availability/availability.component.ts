@@ -83,10 +83,6 @@ export class AvailabilityCom {
 		return user$ instanceof Observable ? toPromise(user$).then(get) : get(user$);
 	}
 
-	isMesh(){
-		return !!this.user2;
-	}
-
 	ngOnChanges(changes){
 		if(changes.selectedDay && !changes.selectedDay.firstChange){
 			this.daySelected();
@@ -114,6 +110,10 @@ export class AvailabilityCom {
 	isPeriodSelected(period: string){
 		const isSelectedFunc = () => this.selectedPeriod === period ? NORMAL_CLASS : UNSELECTED_CLASS;
 		return this.selectedPeriod ? isSelectedFunc() : NORMAL_CLASS;
+	}
+
+	isMesh(){
+		return !!this.user2;
 	}
 
 };

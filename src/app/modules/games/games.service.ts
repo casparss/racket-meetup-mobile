@@ -35,9 +35,9 @@ export class GamesSvc extends BaseService {
 	getByStatus(_id: string, status: string, type?){
 		let search = HttpUtils.urlParams({ status, type });
 		return this._get(null, { search }, null, `/${_id}`)
-			.do(({ lengths }) => this.lengthsSubject.next(lengths))
-			.do(({ lengths }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
-			.map(({ games }) => games.map(mapToModel));
+			.do(({ lengths = {} }) => this.lengthsSubject.next(lengths))
+			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
+			.map(({ games = [] }) => games.map(mapToModel));
 	}
 
 	getSummary(_id: string){

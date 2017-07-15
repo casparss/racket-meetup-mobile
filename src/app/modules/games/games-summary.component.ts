@@ -60,8 +60,8 @@ export class GamesSummaryCom {
 	}
 
 	openGames(): void {
-		let tab = 'upcoming';
-		this.user.$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id, tab }));
+		let requestedTab = 'accepted';
+		this.user.$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id, requestedTab }));
 	}
 
 }

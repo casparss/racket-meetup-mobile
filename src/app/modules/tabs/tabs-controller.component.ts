@@ -32,7 +32,8 @@ export class TabsController {
 	}
 
 	ngOnInit(){
-		this.userSvc.current.statusLengths$.subscribe(({pending, accepted}) => {
+		this.userSvc.current.statusLengths$.subscribe(statuses => {
+			let { pending, accepted } = statuses;
 			this.pendingLength = pending;
 			//this.accepted = accepted;
 		});
