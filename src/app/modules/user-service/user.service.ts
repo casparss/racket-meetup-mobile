@@ -68,11 +68,13 @@ export class UserSvc extends BaseService {
 
 	}
 
+	//@TODO: moveto utils class
   isFollowedBy(queriedUserId){
     return !!this.current.user.followers.followingMe
       .find(userId => queriedUserId === userId);
   }
 
+	//@TODO: moveto utils class
   doesFollow(queriedUserId){
     return !!this.current.user.followers.followingThem
       .find(userId => queriedUserId === userId);
@@ -140,6 +142,8 @@ export class UserSvc extends BaseService {
 		 .catch(console.log);
 	}
 
+	//@TODO: profile image stuff should be moved to the usermodel, this might
+	//dissapear with #29 anyway
 	updateProfileImage(opts:any = {}){
 		this.subjects['profileImage']
 			.next(this.utils.generateImageUri(this.current.user._id, opts.refresh));

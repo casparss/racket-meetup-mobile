@@ -10,33 +10,19 @@ import { UserUtils } from '../user-service/user.utils';
   selector: 'games-summary-item',
   template: `
     <button (click)="openGame()" type="button" ion-item>
-      <ion-icon name="tennisball" color="primary" item-left></ion-icon>
 
-      <h3>Match</h3>
-
-      <ion-row align-items-center>
+      <ion-row align-items-center >
         <ion-col col-6>
-          <ion-list class="players">
-            <ion-item>
-              <ion-thumbnail item-left>
-                <loading-img [src]="side1img"></loading-img>
-              </ion-thumbnail>
-              {{game.opponents.side1[0].user.details.firstName}}
-            </ion-item>
-            <ion-item>
-              <ion-thumbnail item-left>
-                <loading-img [src]="side2img"></loading-img>
-              </ion-thumbnail>
-              {{game.opponents.side2[0].user.details.firstName}}
-            </ion-item>
+          <ion-list class="custom-list">
+            <ion-item><ion-icon item-start color="primary" name="tennisball"></ion-icon> <span>Match</span></ion-item>
+            <ion-item><ion-icon item-start name="pin"></ion-icon> <span>{{game.venue}}</span></ion-item>
           </ion-list>
         </ion-col>
 
-        <ion-col col-6 class="location-time">
-          <ion-list>
+        <ion-col col-6 >
+          <ion-list class="custom-list">
             <ion-item><ion-icon item-start name="calendar"></ion-icon> <span>{{game.date | date: 'shortDate' }}</span></ion-item>
             <ion-item><ion-icon item-start name="clock"></ion-icon> <span>{{game.date | date :'shortTime'}}</span></ion-item>
-            <ion-item><ion-icon item-start name="pin"></ion-icon> <span>{{game.venue}}</span></ion-item>
           </ion-list>
         </ion-col>
 
