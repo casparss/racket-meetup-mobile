@@ -8,7 +8,9 @@ import { UserLoginInt, UserSignupInt } from './user.interface';
 import { ConfigSvc } from '../config/config.service';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';
-import { UserModelSvc, UserModel } from './user.model.service';
+import { UserModelSvc } from './user.model.service';
+import { UserModel } from './user.model';
+import { ModelSvc } from '../model-service/model.service';
 import { UserUtils } from './user.utils';
 
 @Injectable()
@@ -23,7 +25,7 @@ export class UserSvc extends BaseService {
 	public current: UserModel;
 
 	constructor(
-		private userModelSvc: UserModelSvc,
+		private modelSvc: ModelSvc,
 		private utils: UserUtils,
 		http: DecHttp,
 		private configSvc: ConfigSvc,
@@ -40,7 +42,7 @@ export class UserSvc extends BaseService {
 		//exactly, needs investigating
 		//searchedPlayers
 		this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers')
-			.map((users: any) => users.map(user => this.userModelSvc.create(user)));
+			.map((users: any) => users.map(user => this.modelSvc.create(user)));
 
 		//Profile image
 		this.subjects['profileImage'] = new BehaviorSubject('default');
@@ -59,7 +61,7 @@ export class UserSvc extends BaseService {
 	}
 
 	public userSuccess = user => {
-		this.current = this.userModelSvc.create(user);
+		this.current = this.modelSvc.create(user);
 		this.updateProfileImage();
 		this.http.token = user.token;
 	}
@@ -101,8 +103,8 @@ export class UserSvc extends BaseService {
         this.getFollowers(userId)
 					.map(({followingMe, followingThem}) => {
 						return {
-							followingMe: followingMe.map(user => this.userModelSvc.create(user)),
-							followingThem: followingThem.map(user => this.userModelSvc.create(user))
+							followingMe: followingMe.map(user => this.modelSvc.create(user)),
+							followingThem: followingThem.map(user => this.modelSvc.create(user))
 						};
 					})
 					.subscribe(({followingThem, followingMe}:any) => {

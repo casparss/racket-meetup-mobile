@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
-import { UserModel } from '../user-service/user.model.service';
+import { UserModel } from '../user-service/user.model';
 import { toPromise } from '../../utils/util-helpers';
 
 import { GamesSvc } from '../games/games.service';

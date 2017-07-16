@@ -8,11 +8,9 @@ import { Utils } from '../../utils/util-helpers';
 import { Observable, Subject } from 'rxjs';
 import { GameInt } from './games.interfaces';
 import { ConfigSvc } from '../config/config.service';
-import { GameModel } from './game.model';
+import { ModelSvc } from '../model-service/model.service';
 import { UserModelSvc } from '../user-service/user.model.service';
 import { UserSvc } from '../user-service/user.service';
-
-let mapToModel = game => new GameModel(game);
 
 @Injectable()
 export class GamesSvc extends BaseService {
@@ -26,6 +24,7 @@ export class GamesSvc extends BaseService {
 		protected nav: NavController,
 		private userModelSvc: UserModelSvc,
 		private userSvc: UserSvc,
+		private modelSvc: ModelSvc,
 		http: DecHttp,
 		configSvc: ConfigSvc
 	){
@@ -37,7 +36,7 @@ export class GamesSvc extends BaseService {
 		return this._get(null, { search }, null, `/${_id}`)
 			.do(({ lengths = {} }) => this.lengthsSubject.next(lengths))
 			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
-			.map(({ games = [] }) => games.map(mapToModel));
+			.map(({ games = [] }) => games.map(game => this.modelSvc.create(game)));
 	}
 
 	getSummary(_id: string){
@@ -56,7 +55,7 @@ export class GamesSvc extends BaseService {
 
 	challenge(challengeDetails: Object, _id){
     return this._sync(challengeDetails, {}, null, `/${_id}`)
-			.map(mapToModel)
+			.map(game => this.modelSvc.create(game))
 			.do(() => this.getLengthsForCurrentUser());
   }
 

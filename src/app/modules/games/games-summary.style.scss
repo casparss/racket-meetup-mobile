@@ -13,36 +13,6 @@ games-summary-item {
     }
   }
 
-  ion-list.players {
-
-		margin-bottom: 0;
-    @include no-borders;
-
-		img, ion-thumbnail {
-			$size: 20px;
-			width: $size;
-			height: $size;
-			min-width: $size;
-			min-height: $size;
-			border-radius: 3rem;
-		}
-
-		ion-item{
-			padding-left: 0;
-		}
-
-    ion-label{
-      margin-top: 0;
-      margin-bottom: 0;
-      font-size: 14px;
-    }
-
-    .item-inner{
-      background-image: none!important;
-    }
-
-	}
-
   .custom-list {
 
     margin-bottom: 0;

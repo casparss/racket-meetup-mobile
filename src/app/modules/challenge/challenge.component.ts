@@ -4,7 +4,7 @@ import { ViewController } from 'ionic-angular';
 import { FormGroup , FormBuilder, Validators} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
 import { UserSvc } from '../user-service/user.service';
-import { UserModel } from '../user-service/user.model.service';
+import { UserModel } from '../user-service/user.model';
 import { GamesSvc } from '../games/games.service';
 import { ChallengeTimeDate } from './challenge-time-date.component';
 

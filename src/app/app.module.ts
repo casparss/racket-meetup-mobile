@@ -38,6 +38,7 @@ import { HttpModule } from '@angular/http';
 import { ColObjDifferFactory } from './utils/differs/collection-object-diff.ts';
 import { UserSvc } from './modules/user-service/user.service';
 import { UserUtils } from './modules/user-service/user.utils';
+import { ModelSvc } from './modules/model-service/model.service';
 import { UserModelSvc } from './modules/user-service/user.model.service';
 import { GamesSvc } from './modules/games/games.service';
 import { DecHttp } from './utils/http/';
@@ -75,6 +76,7 @@ import { ConfigSvc } from './modules/config/config.service';
   	DecHttp,
   	UserSvc,
     UserUtils,
+    ModelSvc,
     UserModelSvc,
     GamesSvc,
     ConfigSvc,

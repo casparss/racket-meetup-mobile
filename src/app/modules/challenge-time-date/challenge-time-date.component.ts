@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { UserModel } from '../user-service/user.model.service';
+import { UserModel } from '../user-service/user.model';
 import { ViewController, ModalController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators, ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';

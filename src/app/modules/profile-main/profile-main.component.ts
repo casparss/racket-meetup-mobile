@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { NavParams } from 'ionic-angular';
 import { UserSvc, UserInt } from '../user-service/user.service';
-import { UserModel } from '../user-service/user.model.service';
+import { UserModel } from '../user-service/user.model';
 import { SearchPlayersCom } from '../followers/search-players.component';
 import { MydetailsCom } from '../my-details/my-details.component';
 

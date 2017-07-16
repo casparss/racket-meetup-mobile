@@ -1,13 +1,7 @@
-import { BehaviorSubject } from 'rxjs';
+import { DataModel } from '../../utils/data-model';
 
-export class GameModel {
-  private subject: BehaviorSubject<any>;
-
-  constructor(game){
-    this.subject = new BehaviorSubject(game);
-  }
-
-  get $(){
-    return this.subject.asObservable();
+export class GameModel extends DataModel {
+  constructor(model, injector){
+    super(model);
   }
 }
