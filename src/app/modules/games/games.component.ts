@@ -5,6 +5,7 @@ import { GameModel } from './game.model';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from './games.service';
 import { findKey, once } from 'lodash';
+import { ModelSvc, GAME } from '../model-service/model.service';
 
 @Component({
   selector: 'games',
@@ -33,7 +34,7 @@ import { findKey, once } from 'lodash';
 
     <ion-list *ngIf="!isEmptyState()">
       <game-card
-        *ngFor="let gameModel of gamesList$ | async"
+        *ngFor="let gameModel of gamesListCollection.$ | async"
         [gameModel]="gameModel"
       ></game-card>
     </ion-list>
@@ -47,48 +48,47 @@ export class GamesCom {
   private requestedTab: any;
   private gamesListSubject: Subject<Array<GameModel>> = new Subject();
   private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
+  private gamesListCollection: any;
   private selectedSegment = "pending";
   private lengths: any = {};
-  private showEmptyState: boolean = false;
-  private firstLoad: boolean = true;
 
   constructor(
     private gamesSvc: GamesSvc,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
-    private userSvc: UserSvc
+    private userSvc: UserSvc,
+    private modelSvc: ModelSvc
   ){
     this.user = this.navParams.get("user") || this.userSvc.current;
     this.requestedTab = this.navParams.get("requestedTab");
+    this.gamesListCollection = this.modelSvc.createCollection(GAME);
   }
 
   ngOnInit(){
     this.user.statusLengths$.subscribe(lengths => {
       this.lengths = lengths;
-      this.tabSelectionOnce();
+      this.tabSelection();
     });
   }
 
-  initialTabSelection(){
-      let { pending, accepted, played, rejected, forfeit } = this.lengths;
-      let areLengthsEmpty = () => !findKey(this.lengths, length => length > 0);
+  private tabSelection = once(() => {
+    let { pending, accepted, played, rejected, forfeit } = this.lengths;
+    let areLengthsEmpty = () => !findKey(this.lengths, length => length > 0);
 
-      if(areLengthsEmpty()){
-        this.selectedSegment = "";
-      } else if(this.requestedTab){
-        this.selectedSegment = this.requestedTab;
-      } else if(pending > 0){
-        this.selectedSegment = 'pending';
-      } else if(accepted > 0){
-        this.selectedSegment = 'accepted';
-      } else {
-        this.selectedSegment = 'played,rejected,forfeit';
-      }
+    if(areLengthsEmpty()){
+      this.selectedSegment = "";
+    } else if(this.requestedTab){
+      this.selectedSegment = this.requestedTab;
+    } else if(pending > 0){
+      this.selectedSegment = 'pending';
+    } else if(accepted > 0){
+      this.selectedSegment = 'accepted';
+    } else {
+      this.selectedSegment = 'played,rejected,forfeit';
+    }
 
-      this.getByStatus();
-  }
-
-  private tabSelectionOnce = once(this.initialTabSelection);
+    this.getByStatus();
+  });
 
   isEmptyState(){
     return this.selectedSegment === "";
@@ -104,9 +104,13 @@ export class GamesCom {
 
     this.gamesSvc.getByStatus(this.user.user._id, this.selectedSegment)
       .subscribe(games => {
-        this.gamesListSubject.next(games);
+        this.gamesListCollection.update(games);
         loading.dismiss();
       });
+  }
+
+  ngOnDestroy(){
+    this.gamesListCollection.destroy();
   }
 
 }

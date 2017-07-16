@@ -56,6 +56,7 @@ export class GamesSvc extends BaseService {
 	challenge(challengeDetails: Object, _id){
     return this._sync(challengeDetails, {}, null, `/${_id}`)
 			.map(game => this.modelSvc.create(game))
+			.do(game => this.pushToCurrent(game))
 			.do(() => this.getLengthsForCurrentUser());
   }
 

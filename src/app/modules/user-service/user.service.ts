@@ -10,8 +10,8 @@ import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/trans
 import { File } from '@ionic-native/file';
 import { UserModelSvc } from './user.model.service';
 import { UserModel } from './user.model';
-import { ModelSvc } from '../model-service/model.service';
 import { UserUtils } from './user.utils';
+import { ModelSvc, USER } from '../model-service/model.service';
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -25,12 +25,12 @@ export class UserSvc extends BaseService {
 	public current: UserModel;
 
 	constructor(
-		private modelSvc: ModelSvc,
 		private utils: UserUtils,
 		http: DecHttp,
 		private configSvc: ConfigSvc,
 		private transfer: Transfer,
-		private file: File
+		private file: File,
+		private modelSvc: ModelSvc
 	){
 		super(http, configSvc);
 		this.defineObservables()
@@ -87,35 +87,6 @@ export class UserSvc extends BaseService {
 		.do(({ isFriend }) => this.current.toggleFollow(userId, isFriend))
 		.map(({ isFriend }) => isFriend);
 	}
-
-  getFollowers(userId?: string){
-    let userParam = userId ? "/" + userId : "";
-    return this._get(null, {}, this.followersUrl + userParam);
-  }
-
-  followersFactory(userId: string){
-    let followingSubject = new Subject();
-    let followersSubject = new Subject();
-    let exports = {
-      following$: followingSubject.asObservable(),
-      followers$: followersSubject.asObservable(),
-      get: () => {
-        this.getFollowers(userId)
-					.map(({followingMe, followingThem}) => {
-						return {
-							followingMe: followingMe.map(user => this.modelSvc.create(user)),
-							followingThem: followingThem.map(user => this.modelSvc.create(user))
-						};
-					})
-					.subscribe(({followingThem, followingMe}:any) => {
-	          followingSubject.next(followingThem);
-	          followersSubject.next(followingMe);
-	        });
-        return exports;
-      }
-    }
-    return exports;
-  }
 
 	updateDetails(details, isValid: boolean, requestType: string){
 		if(isValid){

@@ -8,10 +8,10 @@
 
 	<ion-segment [(ngModel)]="selectedSegment">
     <ion-segment-button value="following">
-			Following ({{(followers.following$ | async)?.length}})
+			Following ({{(followingCollection.$ | async)?.length}})
 		</ion-segment-button>
 		<ion-segment-button value="followers">
-			Followers ({{(followers.followers$ | async)?.length}})
+			Followers ({{(followersCollection.$ | async)?.length}})
 		</ion-segment-button>
 	</ion-segment>
 
@@ -20,7 +20,7 @@
     <div [hidden]="selectedSegment !== 'followers'">
 
       <ion-item
-  			*ngFor="let user of followers.followers$ | async"
+  			*ngFor="let user of followersCollection.$ | async"
   			(click)="openProfile(user)"
   		>
 				<ion-avatar item-left>
@@ -34,7 +34,7 @@
     <div [hidden]="selectedSegment !== 'following'">
 
       <ion-item
-  			*ngFor="let user of followers.following$ | async"
+  			*ngFor="let user of followingCollection.$ | async"
   			(click)="openProfile(user)"
   		>
 				<ion-avatar item-left>

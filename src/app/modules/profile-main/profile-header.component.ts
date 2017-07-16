@@ -39,8 +39,4 @@ export class ProfileHeaderCom {
 	@Input() user: any;
 	@Input() isCurrentUser: boolean;
 	constructor(private userSvc: UserSvc){}
-
-	ngOnInit(){
-		this.user.$.subscribe(user => console.log(user));
-	}
 }

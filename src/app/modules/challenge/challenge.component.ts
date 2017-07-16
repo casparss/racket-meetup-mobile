@@ -38,10 +38,7 @@ export class ChallengeCom {
 		this.challengee.$.subscribe(({ _id }) => {
 			if(isValid){
 	      this.gamesSvc.challenge(challengeDetails, _id)
-	        .subscribe(game => {
-						this.gamesSvc.pushToCurrent(game);
-						this.viewCtrl.dismiss();
-					});
+	        .subscribe(game => this.viewCtrl.dismiss());
 	    }
 		});
 

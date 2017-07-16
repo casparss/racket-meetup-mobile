@@ -7,6 +7,7 @@ import { GamesSvc } from './games.service';
 import { GameInt } from './games.interfaces';
 import { toPromise } from '../../utils/util-helpers';
 import { GamesCom } from '../games/games.component';
+import { ModelSvc, GAME } from '../model-service/model.service';
 
 @Component({
 	selector: 'games-summary',
@@ -17,13 +18,13 @@ import { GamesCom } from '../games/games.component';
 		</ion-list-header>
 		<ion-list>
 			<games-summary-item
-				*ngFor="let gameModel of games$ | async; let i=index"
+				*ngFor="let gameModel of gamesCollection.$ | async; let i=index"
 				[gameModel]="gameModel"
 			></games-summary-item>
 
-			<button *ngIf="(games$ | async)?.length > 0" (click)="openGames()" type="button" ion-item>View more</button>
+			<button *ngIf="(gamesCollection.$ | async)?.length > 0" (click)="openGames()" type="button" ion-item>View more</button>
 	  </ion-list>
-		<div class="no-games-message" *ngIf="(games$ | async)?.length === 0">
+		<div class="no-games-message" *ngIf="(gamesCollection.$ | async)?.length === 0">
 			<button ion-button color="light" round>No upcoming games at the moment</button>
 		</div>
 	</ion-list>
@@ -33,35 +34,34 @@ export class GamesSummaryCom {
 
 	@Input() user: any;
 	gamesSubject: CustomSubject = new CustomSubject();
-	games$: Observable<any> = this.gamesSubject.$;
+	gamesCollection: any;
 
 	constructor(
 		private gamesSvc: GamesSvc,
-		private nav: NavController
+		private nav: NavController,
+		private modelSvc: ModelSvc
 	){
-		this.gamesSvc.onPushToCurrent
-			.subscribe(game => this.pushToGames(game));
+		this.gamesCollection = this.modelSvc.createCollection(GAME);
+		this.gamesSvc.onPushToCurrent.subscribe(game => this.gamesCollection.unshift(game));
 	}
 
 	ngOnInit(){
 		this.getGames();
 	}
 
-	pushToGames(game){
-		let games = this.gamesSubject.getValue();
-		games.unshift(game);
-		this.gamesSubject.next(games);
-	}
-
 	getGames(){
 		toPromise(this.user.$)
 			.then(({ _id }) => toPromise(this.gamesSvc.getSummary(_id)))
-			.then(games => this.gamesSubject.next(games));
+			.then(games => this.gamesCollection.update(games));
 	}
 
 	openGames(): void {
 		let requestedTab = 'accepted';
 		this.user.$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id, requestedTab }));
+	}
+
+	ngOnDestroy(){
+		this.gamesCollection.destroy();
 	}
 
 }
