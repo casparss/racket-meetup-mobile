@@ -31,13 +31,16 @@ const ANIMATION_STR = '800ms cubic-bezier(0.68, -0.55, 0.265, 1.55)';
     ]),
 		trigger('periodSelected', [
 			state('normal', style({
-        transform: 'scale(1)'
+        transform: 'scale(1)',
+				filter: 'grayscale(0%)'
       })),
 			state('selected', style({
-        transform: 'scale(1.05)'
+        transform: 'scale(1.05)',
+				filter: 'grayscale(0%)'
       })),
 			state('unselected', style({
-        transform: 'scale(0.7)'
+        transform: 'scale(0.7)',
+				filter: 'grayscale(100%)'
       })),
 			transition('normal <=> selected', animate(ANIMATION_STR)),
 			transition('normal <=> unselected', animate(ANIMATION_STR)),

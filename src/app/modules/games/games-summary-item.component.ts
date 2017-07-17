@@ -51,7 +51,7 @@ export class GamesSummaryItemCom {
   }
 
   viewGameDetails(){
-    this.nav.push(GameDetailsCom, this.game);
+    this.nav.push(GameDetailsCom, { gameModel: this.gameModel });
   }
 
   generateProfileImages(){

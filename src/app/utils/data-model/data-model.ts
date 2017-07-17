@@ -21,14 +21,7 @@ export class DataModel {
   }
 
   update(model: any){
-
-    let modelValue;
-    if(model.getValue){
-      modelValue = model.getValue();
-    } else {
-      modelValue = model;
-    }
-
+    let modelValue = model.getValue ? model.getValue() : model;
     let isOlder = moment(this.value.updatedAt).isBefore(moment(modelValue.updatedAt));
     if(isOlder) this.next(model);
   }

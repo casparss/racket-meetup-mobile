@@ -158,17 +158,17 @@ export class GameCardCom {
 	}
 
 	viewGameDetails(){
-		this.nav.push(GameDetailsCom, this.game);
+		this.nav.push(GameDetailsCom, { gameModel: this.gameModel });
 	}
 
 	acceptChallenge({ _id }){
 		this.gamesSvc.acceptChallenge(_id)
-			.subscribe();
+			.subscribe(game => this.gameResponse(game));
 	}
 
 	rejectChallenge({ _id }){
 		this.gamesSvc.rejectChallenge(_id)
-			.subscribe();
+			.subscribe(game => this.gameResponse(game));
 	}
 
 	showActionSheet(game){

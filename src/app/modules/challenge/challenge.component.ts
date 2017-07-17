@@ -7,6 +7,7 @@ import { UserSvc } from '../user-service/user.service';
 import { UserModel } from '../user-service/user.model';
 import { GamesSvc } from '../games/games.service';
 import { ChallengeTimeDate } from './challenge-time-date.component';
+import GAME_TYPES from './game-types';
 
 @Component({
 	templateUrl: './challenge.view.html',
@@ -14,12 +15,14 @@ import { ChallengeTimeDate } from './challenge-time-date.component';
 })
 export class ChallengeCom {
 
+	private GAME_TYPES = GAME_TYPES;
 	private challenger: UserModel;
   private challengee: UserModel;
   private challengeForm:FormGroup;
 	private formModel = {
 		date: ['', [<any>Validators.required]],
-    venue: ['', [<any>Validators.required]]
+    venue: ['', [<any>Validators.required]],
+		gameType: [GAME_TYPES[0]]
 	};
 
 	constructor(
