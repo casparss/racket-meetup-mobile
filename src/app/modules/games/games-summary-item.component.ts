@@ -5,11 +5,12 @@ import { UserSvc } from '../user-service';
 import { GameModel } from './game.model';
 import { ChallengeCom } from '../challenge/challenge.component';
 import { UserUtils } from '../user-service/user.utils';
+import { GameDetailsCom } from './game-details.component';
 
 @Component({
   selector: 'games-summary-item',
   template: `
-    <button (click)="openGame()" type="button" ion-item>
+    <button (click)="viewGameDetails()" type="button" ion-item>
 
       <ion-row align-items-center >
         <ion-col col-6>
@@ -49,9 +50,8 @@ export class GamesSummaryItemCom {
     });
   }
 
-  openGame(){
-    let { _id } = this.game;
-    this.nav.push(ChallengeCom, { _id });
+  viewGameDetails(){
+    this.nav.push(GameDetailsCom, this.game);
   }
 
   generateProfileImages(){

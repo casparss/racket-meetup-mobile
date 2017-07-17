@@ -6,6 +6,7 @@ import { GamesSummaryCom } from './games-summary.component';
 import { GamesSummaryItemCom } from './games-summary-item.component';
 import { GamesCom } from './games.component';
 import { GameCardCom } from './game-card.component';
+import { GameDetailsCom } from './game-details.component';
 
 
 @NgModule({
@@ -13,10 +14,12 @@ import { GameCardCom } from './game-card.component';
     GamesCom,
     GameCardCom,
     GamesSummaryCom,
-    GamesSummaryItemCom
+    GamesSummaryItemCom,
+    GameDetailsCom
   ],
   imports: [IonicModule, LoadingImgModule],
   exports:[GamesCom, GamesSummaryCom],
-  entryComponents: [GamesCom, GamesSummaryCom]
+  entryComponents: [GamesCom, GamesSummaryCom, GameDetailsCom],
+
 })
 export class GamesModule {}

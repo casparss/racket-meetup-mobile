@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { GameInt } from './games.interfaces';
 import { GamesSvc } from './games.service';
 import { UserSvc } from '../user-service';
+import { GameDetailsCom } from './game-details.component';
 
 const findUser = (side, currentUserId) =>
 	side.find(({ user }) => user._id === currentUserId);
@@ -69,7 +71,7 @@ let TEXT_STATE_COLOR_HASH = {
 					icon-left
 					item-right
 					outline
-					(click)="acceptChallenge(game)"
+					(click)="viewGameDetails(game)"
 					*ngIf="status(game, ['accepted', 'played'])">
 	        <ion-icon name="more"></ion-icon>
 	        View game
@@ -130,7 +132,8 @@ export class GameCardCom {
 	constructor(
 		private gamesSvc: GamesSvc,
 		private userSvc: UserSvc,
-		private actionSheet: ActionSheet
+		private actionSheet: ActionSheet,
+		private nav: NavController
 	){}
 
 	ngOnInit(){
@@ -152,6 +155,10 @@ export class GameCardCom {
 
 	status({ status }, list){
 		return !!list.find(state => state === status);
+	}
+
+	viewGameDetails(){
+		this.nav.push(GameDetailsCom, this.game);
 	}
 
 	acceptChallenge({ _id }){
