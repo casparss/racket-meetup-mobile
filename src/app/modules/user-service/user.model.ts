@@ -1,10 +1,10 @@
 import { Injectable, Injector, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { UserUtils } from './user.utils';
-import { UserModelSvc } from './user.model.service';
 import { DataModel } from '../../utils/data-model';
 import { UserInt } from './user.interface';
 import { remove } from 'lodash';
+import { UserUtils } from '../user-service/user.utils';
+import { UserModelSvc } from '../user-service/user.model.service';
 
 export class UserModel extends DataModel {
   public statusLengths$: BehaviorSubject<any> = new BehaviorSubject({});
@@ -13,8 +13,8 @@ export class UserModel extends DataModel {
   private utils;
   private userModelSvc;
 
-  constructor(userModel, injector){
-    super(userModel);
+  constructor(injector, userModel){
+    super(injector, userModel);
     this.utils = injector.get(UserUtils);
     this.userModelSvc = injector.get(UserModelSvc);
     this.userModelSvc.onLengthsRetrieval

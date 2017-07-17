@@ -1,5 +1,8 @@
 import { Injectable, Injector, EventEmitter } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { WsSvc } from '../web-sockets-service/web-sockets.service';
+import { UserUtils } from '../user-service/user.utils';
+import { UserModelSvc } from '../user-service/user.model.service';
 import { DataModel } from '../../utils/data-model'
 import { UserModel } from '../user-service/user.model';
 import { GameModel } from '../games/game.model';
@@ -18,13 +21,14 @@ const collectionRegistry = mapValues(MODEL_TYPES, () => []);
 
 @Injectable()
 export class ModelSvc {
+  private deps: any;
   constructor(private injector: Injector){}
 
   create(model: any){
     try {
       let ModelType = MODEL_TYPES[model.modelType];
       if(!ModelType) throw new Error("No model type provided for model creation!");
-      var modelInstance = new ModelType(model, this.injector);
+      var modelInstance = new ModelType(this.injector, model);
     }
     catch(err){
       console.error(err);
@@ -63,10 +67,10 @@ export class ModelSvc {
   cleanUpRedundentModels(type){
     //@TODO: needs to be a check for permanent models so the logged-in user doesn't get removed
     let componentCollections = collectionRegistry[type];
-    remove(modelRegistry[type], ({ _id }) => {
-      return !componentCollections.find(collection => {
-        return collection.findById(_id)
-      });
+    remove(modelRegistry[type], model => {
+      let isScheduled = !componentCollections.find(collection => collection.findById(model._id));
+      if(isScheduled) model.destroy();
+      return isScheduled;
     });
   }
 }
@@ -106,7 +110,7 @@ class Collection {
   transformToModel(objectArray){
     let ModelType = MODEL_TYPES[this.type];
     return !(objectArray[0] instanceof MODEL_TYPES[this.type]) ?
-      objectArray.map(object => new ModelType(object, this.injector)):
+      objectArray.map(object => new ModelType(this.injector, object)):
       objectArray;
   }
 }

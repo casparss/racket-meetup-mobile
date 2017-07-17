@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { WelcomeCom } from './modules/welcome/welcome.component'
 
 @Component({
-  template: `<ion-nav [root]="rootPage"></ion-nav><toast></toast>`
+  template: `<ion-nav [root]="rootPage"></ion-nav>`
 })
 export class RacketMeetupApp {
   public rootPage = WelcomeCom;

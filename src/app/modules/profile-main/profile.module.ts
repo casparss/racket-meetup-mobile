@@ -15,8 +15,6 @@ import { ProfileHeaderCom } from './profile-header.component';
 import { ProfileMainCom } from './profile-main.component';
 import { MydetailsCom } from '../my-details/my-details.component';
 
-import { UserSvc } from '../user-service/user.service';
-
 @NgModule({
   declarations: [
     ProfileMainCom,

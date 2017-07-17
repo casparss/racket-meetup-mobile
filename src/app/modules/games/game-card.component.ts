@@ -156,12 +156,12 @@ export class GameCardCom {
 
 	acceptChallenge({ _id }){
 		this.gamesSvc.acceptChallenge(_id)
-			.subscribe(game => this.gameResponse(game));
+			.subscribe();
 	}
 
 	rejectChallenge({ _id }){
 		this.gamesSvc.rejectChallenge(_id)
-			.subscribe(game => this.gameResponse(game));
+			.subscribe();
 	}
 
 	showActionSheet(game){

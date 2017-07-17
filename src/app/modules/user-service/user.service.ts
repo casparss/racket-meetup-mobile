@@ -12,6 +12,7 @@ import { UserModelSvc } from './user.model.service';
 import { UserModel } from './user.model';
 import { UserUtils } from './user.utils';
 import { ModelSvc, USER } from '../model-service/model.service';
+import { WsSvc } from '../web-sockets-service/web-sockets.service';
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -30,7 +31,8 @@ export class UserSvc extends BaseService {
 		private configSvc: ConfigSvc,
 		private transfer: Transfer,
 		private file: File,
-		private modelSvc: ModelSvc
+		private modelSvc: ModelSvc,
+		private ws: WsSvc
 	){
 		super(http, configSvc);
 		this.defineObservables()
@@ -61,6 +63,7 @@ export class UserSvc extends BaseService {
 	}
 
 	public userSuccess = user => {
+		this.ws.init(user.token);
 		this.current = this.modelSvc.create(user);
 		this.updateProfileImage();
 		this.http.token = user.token;
