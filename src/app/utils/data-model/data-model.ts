@@ -23,7 +23,7 @@ export class DataModel {
   update(model: any){
     let modelValue = model.getValue ? model.getValue() : model;
     let isOlder = moment(this.value.updatedAt).isBefore(moment(modelValue.updatedAt));
-    if(isOlder) this.next(model);
+    if(isOlder) this.next(modelValue);
   }
 
   next(value){
