@@ -15,7 +15,7 @@ import { GameDetailsCom } from './game-details.component';
       <ion-row align-items-center >
         <ion-col col-6>
           <ion-list class="custom-list">
-            <ion-item><ion-icon item-start color="primary" name="tennisball"></ion-icon> <span>Match</span></ion-item>
+            <ion-item><ion-icon item-start color="primary" name="tennisball"></ion-icon> <span>{{game.gameType}}</span></ion-item>
             <ion-item><ion-icon item-start name="pin"></ion-icon> <span>{{game.venue}}</span></ion-item>
           </ion-list>
         </ion-col>

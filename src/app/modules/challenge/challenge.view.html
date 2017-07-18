@@ -4,18 +4,18 @@
 			Challenge
 		</ion-title>
 		<ion-buttons end>
-			<button small icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+			<button icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 
 <ion-content>
 
-  <form [formGroup]="challengeForm" (ngSubmit)="challenge(challengeForm.value, challengeForm.valid, $event)">
+  <form [formGroup]="challengeForm" (ngSubmit)="action(challengeForm.value, challengeForm.valid, $event)">
 
-  		<opponents
-				[challenger]='challenger.$ | async'
-				[challengee]='challengee.$ | async'>
+  		<opponents *ngIf="!game"
+				[challenger]='game ? game.opponents.side1[0].user : (challenger?.$ | async)'
+				[challengee]='game ? game.opponents.side2[0].user : (challengee?.$ | async)'>
 			</opponents>
 
   		<ion-row class="top">
@@ -64,7 +64,7 @@
 					<ion-item>
 						<button [disabled]="!challengeForm.valid" ion-button icon-left large block type="submit">
 							<ion-icon name="tennisball" ></ion-icon>
-							Challenge
+							{{game ? 'Amend game details' : 'Challenge'}}
 						</button>
 					</ion-item>
 

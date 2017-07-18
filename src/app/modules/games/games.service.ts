@@ -70,6 +70,11 @@ export class GamesSvc extends BaseService {
 			.do(() => this.getLengthsForCurrentUser());
 	}
 
+	updateDetails(challengeDetails: Object, _id){
+		return this._update(challengeDetails, {}, 'game', `/${_id}`)
+			.map(game => this.modelSvc.create(game));
+	}
+
 	pushToCurrent(game){
 		this.onPushToCurrent.emit(game);
 	}

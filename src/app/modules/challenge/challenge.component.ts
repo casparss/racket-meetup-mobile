@@ -19,32 +19,50 @@ export class ChallengeCom {
 	private challenger: UserModel;
   private challengee: UserModel;
   private challengeForm:FormGroup;
-	private formModel = {
-		date: ['', [<any>Validators.required]],
-    venue: ['', [<any>Validators.required]],
-		gameType: [GAME_TYPES[0]]
-	};
+	private gameModel: any;
+	private game: any;
 
 	constructor(
     private viewCtrl: ViewController,
-    formBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private userSvc: UserSvc,
 		private gamesSvc: GamesSvc
   ){
-    this.challengeForm = formBuilder.group(this.formModel);
 		this.challenger = userSvc.current;
 		this.challengee = viewCtrl.data.user;
+		this.gameModel = viewCtrl.data.gameModel;
+		this.game = this.gameModel ? this.gameModel.getValue() : undefined;
+		this.setForm(this.game);
 	}
 
-	challenge(challengeDetails, isValid:boolean, $event: Event){
-		$event.preventDefault();
-		this.challengee.$.subscribe(({ _id }) => {
-			if(isValid){
-	      this.gamesSvc.challenge(challengeDetails, _id)
-	        .subscribe(game => this.viewCtrl.dismiss());
-	    }
+	setForm(game:any = {}){
+		this.challengeForm = this.formBuilder.group({
+			date: [game.date || '', [<any>Validators.required]],
+	    venue: [game.venue || '', [<any>Validators.required]],
+			gameType: [game.gameType || GAME_TYPES[0]]
 		});
+	}
 
+	action(challengeDetails, isValid:boolean, $event: Event){
+		$event.preventDefault();
+		if(!isValid) return;
+
+		if(this.game)
+			this.amend(challengeDetails);
+		else
+			this.challenge(challengeDetails);
+	}
+
+	challenge(challengeDetails){
+		this.challengee.$.subscribe(({ _id }) => {
+      this.gamesSvc.challenge(challengeDetails, _id)
+        .subscribe(game => this.viewCtrl.dismiss());
+		});
   }
+
+	amend(challengeDetails){
+		this.gamesSvc.updateDetails(challengeDetails, this.game._id)
+			.subscribe(game => this.viewCtrl.dismiss());
+	}
 
 }

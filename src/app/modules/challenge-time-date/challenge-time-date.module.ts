@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
-import { LoadingImgModule } from '../../utils/loading-img';
-import { ChallengeCom } from './challenge.component';
-import { OpponentsCom } from './opponents.component';
 import { AvailabilityModule } from '../availability/availability.module';
 import { ChallengeTimeDateCom } from './challenge-time-date.component';
 import { ChallengeTimeDateInputCom } from './challenge-time-date-input.component';

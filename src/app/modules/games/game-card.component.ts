@@ -9,14 +9,6 @@ import { GameDetailsCom } from './game-details.component';
 const findUser = (side, currentUserId) =>
 	side.find(({ user }) => user._id === currentUserId);
 
-const TITLES = {
-	pending: 'Challenge',
-	accepted: 'Match',
-	rejected: 'Match',
-	forfeit: 'Match',
-	played: 'Match'
-};
-
 const STATUS_TEXT = {
 	pending: '',
 	accepted: '',
@@ -197,8 +189,8 @@ export class GameCardCom {
 		return BALL_STATE_COLOR_HASH[status];
 	}
 
-	getTitle({ status }){
-		return TITLES[status];
+	getTitle({ status, gameType }){
+		return `${gameType} ${status === 'pending' ? 'challenge' : ''}`;
 	}
 
 	getStatus({ status }){
