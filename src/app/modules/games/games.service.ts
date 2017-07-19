@@ -35,8 +35,7 @@ export class GamesSvc extends BaseService {
 		let search = HttpUtils.urlParams({ status, type });
 		return this._get(null, { search }, null, `/${_id}`)
 			.do(({ lengths = {} }) => this.lengthsSubject.next(lengths))
-			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
-			.map(({ games = [] }) => games.map(game => this.modelSvc.create(game)));
+			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}));
 	}
 
 	getSummary(_id: string){
@@ -55,8 +54,6 @@ export class GamesSvc extends BaseService {
 
 	challenge(challengeDetails: Object, _id){
     return this._sync(challengeDetails, {}, null, `/${_id}`)
-			.map(game => this.modelSvc.create(game))
-			.do(game => this.pushToCurrent(game))
 			.do(() => this.getLengthsForCurrentUser());
   }
 
@@ -71,8 +68,7 @@ export class GamesSvc extends BaseService {
 	}
 
 	updateDetails(challengeDetails: Object, _id){
-		return this._update(challengeDetails, {}, 'game', `/${_id}`)
-			.map(game => this.modelSvc.create(game));
+		return this._update(challengeDetails, {}, 'game', `/${_id}`);
 	}
 
 	pushToCurrent(game){

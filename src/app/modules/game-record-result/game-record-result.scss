@@ -1,0 +1,94 @@
+@mixin purple-gradient{
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#213f37+3,1e1b2d+12,655693+35,655693+35,655693+65,1e1b2d+88,213f37+97 */
+  background: #213f37; /* Old browsers */
+  background: -moz-linear-gradient(top, #213f37 3%, #1e1b2d 12%, #655693 35%, #655693 35%, #655693 65%, #1e1b2d 88%, #213f37 97%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #213f37 3%,#1e1b2d 12%,#655693 35%,#655693 35%,#655693 65%,#1e1b2d 88%,#213f37 97%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #213f37 3%,#1e1b2d 12%,#655693 35%,#655693 35%,#655693 65%,#1e1b2d 88%,#213f37 97%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#213f37', endColorstr='#213f37',GradientType=0 ); /* IE6-9 */
+}
+
+@mixin score-segment-box-shadow {
+  box-shadow: inset 0px 0px 60px 0px #1f1f1f;
+}
+@font-face {
+    font-family: scoreboard;
+    src: url(../assets/fonts/DJB_Friday_Night_Lights.ttf);
+}
+
+
+
+wimbledon-style-scoreboard {
+
+  //Colours
+  $yellow: #e6e4ac;
+  $green: #213f37;
+  $white: #d8d8d8;
+  $black: #272727;
+
+  //Fonts sizing
+  $title: 12px;
+
+  h2 {
+    color: $yellow;
+    text-align: center;
+    font-size: $title;
+    font-weight: normal;
+    text-transform: uppercase;
+  }
+
+  .content-ios hr {
+    @include purple-gradient;
+    opacity: 0.7;
+    height: 9px;
+    margin: 10px 0;
+  }
+
+  .wrapper {
+    background-color: $green;
+    padding: 20px 0;
+  }
+
+  $cell-padding: 5px;
+
+  .vs{
+    text-align:center;
+    color: $yellow;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  tbody{
+    td {
+      div {
+        font-size: 18px;
+        text-align: center;
+        text-transform: uppercase;
+        font-family: scoreboard;
+        margin: 2px 1px;
+        padding: $cell-padding;
+        @include score-segment-box-shadow;
+        color: $yellow;
+        background: #4c4c4c;
+      }
+    }
+    tr {
+      margin: 10px;
+    }
+  }
+
+  thead {
+    td {
+      font-size: $title;
+      font-weight: 500;
+      text-align: center;
+      color: $white;
+      text-transform: uppercase;
+    }
+    tr {
+      background: transparent;
+    }
+  }
+
+}

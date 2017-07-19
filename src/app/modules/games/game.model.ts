@@ -7,9 +7,10 @@ export class GameModel extends DataModel {
   }
 
   get $(){
-    return super.get$().map(game => {
-      game.date = moment(game.date);
-      return game;
-    });
+    return super.get$()
+      .map(game => {
+        game.date = moment(game.date);
+        return game;
+      });
   }
 }

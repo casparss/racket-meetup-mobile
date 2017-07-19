@@ -43,8 +43,7 @@ export class UserSvc extends BaseService {
 		//@TODO: Not entirley sure searchedPlayers whyxw needs to be on the user
 		//exactly, needs investigating
 		//searchedPlayers
-		this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers')
-			.map((users: any) => users.map(user => this.modelSvc.create(user)));
+		this.searchedPlayers$ = <Observable<any>>this.create$('searchedPlayers');
 
 		//Profile image
 		this.subjects['profileImage'] = new BehaviorSubject('default');

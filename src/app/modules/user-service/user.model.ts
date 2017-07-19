@@ -26,6 +26,8 @@ export class UserModel extends DataModel {
       .map(user => this.utils.populateExtraFields(user));
   }
 
+
+
   get user(): UserInt{
     return this.getValue();
   }
@@ -45,6 +47,10 @@ export class UserModel extends DataModel {
       remove(followingThem, followerId => userId === followerId);
     }
     this.next(user);
+  }
+
+  get avatar$(){
+    return this.get$().map(user => this.utils.generateProfileImage(user));
   }
 
   generateProfileImage(){

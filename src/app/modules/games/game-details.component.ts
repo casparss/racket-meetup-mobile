@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { NavParams, ModalController } from 'ionic-angular';
 import { GameModel } from './game.model';
 import { ChallengeCom } from '../challenge/challenge.component';
+import { GameRecordResultCom } from '../game-record-result/game-record-result.component';
 
 @Component({
   selector: "game-details",
@@ -32,7 +33,7 @@ import { ChallengeCom } from '../challenge/challenge.component';
           <ion-icon name="settings" item-left></ion-icon>
           Amend details
         </button>
-        <button type="button" ion-item>
+        <button (click)="recordResult()" type="button" ion-item>
           <ion-icon name="clipboard" item-left></ion-icon>
           Record score
         </button>
@@ -99,7 +100,17 @@ export class GameDetailsCom {
 			gameModel: this.gameModel
 		});
 
-		challengeModal.present(challengeModal);
+		challengeModal.present();
 	}
+
+  recordResult(){
+		let recordScoreModal = this.modalController.create(GameRecordResultCom, {
+			gameModel: this.gameModel
+		});
+
+		recordScoreModal.present();
+	}
+
+
 
 }

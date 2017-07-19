@@ -52,7 +52,7 @@ export class GamesSummaryCom {
 	getGames(){
 		toPromise(this.user.$)
 			.then(({ _id }) => toPromise(this.gamesSvc.getSummary(_id)))
-			.then(games => this.gamesCollection.update(games));
+			.then(({games}) => this.gamesCollection.update(games));
 	}
 
 	openGames(): void {

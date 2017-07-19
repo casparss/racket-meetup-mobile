@@ -103,7 +103,7 @@ export class GamesCom {
     loading.present();
 
     this.gamesSvc.getByStatus(this.user.user._id, this.selectedSegment)
-      .subscribe(games => {
+      .subscribe(({games}) => {
         this.gamesListCollection.update(games);
         loading.dismiss();
       });
