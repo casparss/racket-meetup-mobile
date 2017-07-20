@@ -1,0 +1,38 @@
+game-record-result{
+
+  .avatar{
+    border-radius: 50%;
+    width: 50px;
+    margin:auto;
+    display: block;
+  }
+
+  ion-row{
+    align-items: center;
+  }
+
+  ion-col {
+    align-items: center;
+    justify-content: center;
+    display:flex;
+
+    div{
+      align-self: center;
+      display: block;
+      font-size: 30px;
+    }
+
+    .score {
+      padding: 0px 10px;
+    }
+  }
+
+  ion-col:first-child {
+    justify-content: left;
+    div {
+      font-size: 22px;
+    }
+  }
+
+
+}
