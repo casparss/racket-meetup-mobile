@@ -32,7 +32,11 @@ import { GameInt } from '../games/games.interfaces';
           </ion-row>
         </ion-grid>
       </ion-item>
-      <score-item *ngFor="let score of scores; let i = index" [score]="score"></score-item>
+      <score-item
+        *ngFor="let score of scores; let i = index"
+        [score]="score"
+        [index]="i"
+        (scoreChecked)="scoreItemChecked($event)"></score-item>
 
       <ion-item>
         <button
@@ -65,6 +69,10 @@ export class GameRecordResultCom {
       side1: 0,
       side2: 0
     });
+  }
+
+  scoreItemChecked(index){
+    debugger;
   }
 
 

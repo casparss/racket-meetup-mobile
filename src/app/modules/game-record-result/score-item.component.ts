@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ScoreInt } from './game-record-result.interfaces';
 
 @Component({
@@ -29,7 +29,7 @@ import { ScoreInt } from './game-record-result.interfaces';
             </button>
           </ion-col>
           <ion-col col-2>
-            <button *ngSwitchCase="true" icon-only ion-button small (click)="checked()">
+            <button *ngSwitchCase="true" icon-only ion-button small (click)="checked()" [disabled]="!isValidScore()">
               <ion-icon name="checkmark"></ion-icon>
             </button>
             <button *ngSwitchCase="false" icon-only ion-button small outline (click)="toggleState()">
@@ -42,9 +42,9 @@ import { ScoreInt } from './game-record-result.interfaces';
   `
 })
 export class ScoreItemCom {
-  private scoreChecked: EventEmitter<any> = new EventEmitter();
   @Input() score: ScoreInt;
   @Input() index: number;
+  @Output() scoreChecked: EventEmitter<any> = new EventEmitter();
   private active: boolean = true;
 
   toggleState(){
@@ -61,7 +61,21 @@ export class ScoreItemCom {
   }
 
   deincrement(side){
-    this.score[side] === 0 ? null : this.score[side]--
+    this.score[side] === 0 ? null : this.score[side]--;
+  }
+
+  isClearingbytwogames(){
+    let { side1, side2 } = this.score;
+    return Math.abs(side1 - side2) === 2;
+  }
+
+  isSixorover(){
+    let { side1, side2 } = this.score;
+    return side1 >= 6 || side2 >= 6;
+  }
+
+  isValidScore(){
+    return this.isSixorover() && this.isClearingbytwogames();
   }
 
 }
