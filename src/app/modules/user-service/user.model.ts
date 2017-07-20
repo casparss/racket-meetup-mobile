@@ -13,8 +13,8 @@ export class UserModel extends DataModel {
   private utils;
   private userModelSvc;
 
-  constructor(injector, userModel){
-    super(injector, userModel);
+  constructor(injector, userModel, ownerInstance){
+    super(injector, userModel, ownerInstance);
     this.utils = injector.get(UserUtils);
     this.userModelSvc = injector.get(UserModelSvc);
     this.userModelSvc.onLengthsRetrieval

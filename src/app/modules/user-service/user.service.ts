@@ -63,7 +63,7 @@ export class UserSvc extends BaseService {
 
 	public userSuccess = user => {
 		this.ws.init(user.token);
-		this.current = this.modelSvc.create(user);
+		this.current = this.modelSvc.create(user, this);
 		this.updateProfileImage();
 		this.http.token = user.token;
 	}

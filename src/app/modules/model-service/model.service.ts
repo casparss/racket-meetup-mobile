@@ -17,61 +17,44 @@ const MODEL_TYPES = {
 };
 
 const modelRegistry = mapValues(MODEL_TYPES, () => []);
-const collectionRegistry = mapValues(MODEL_TYPES, () => []);
+
+const create = (injector, rawData: any, ownerInstance: any) => {
+  let { modelType } = rawData;
+
+  if(!modelType) throw new Error("No model type property on object");
+  let ModelType = MODEL_TYPES[modelType];
+  if(!ModelType) throw new Error("No model type provided for model creation!");
+
+  let collection = modelRegistry[modelType];
+  let preExistingModel = collection.find(model => model._id === rawData._id);
+
+  if(preExistingModel){
+    preExistingModel.update(rawData, ownerInstance);
+    return preExistingModel;
+  } else {
+    let newModel =  new ModelType(injector, rawData, ownerInstance);
+    collection.push(newModel);
+    return newModel;
+  }
+}
 
 @Injectable()
 export class ModelSvc {
   private deps: any;
   constructor(private injector: Injector){}
 
-  create(model: any){
-    try {
-      let ModelType = MODEL_TYPES[model.modelType];
-      if(!ModelType) throw new Error("No model type provided for model creation!");
-      var modelInstance = new ModelType(this.injector, model);
-    }
-    catch(err){
-      console.error(err);
-    }
-    return this.brokerModel(modelInstance);
-  }
-
-  private brokerModel(modelInstance){
-    let collection = modelRegistry[modelInstance.type];
-    let incumbentModel = collection.find(model => model._id === modelInstance._id);
-
-    if(incumbentModel){
-      incumbentModel.update(modelInstance);
-      return incumbentModel;
-    } else {
-      collection.push(modelInstance);
-      return modelInstance;
-    }
+  create(rawData: any, ownerInstance?: any){
+    return create(this.injector, rawData, ownerInstance)
   }
 
   createCollection(type: string, objectArray: Array<any> = []){
     let collection = new Collection(type, this.injector, objectArray);
-    collection.onDestroy.subscribe(id => this.destroyCollection(type, collection));
-    collectionRegistry[type].push(collection);
+    collection.onDestroy.subscribe(type => this.cleanUpRedundentModels(type));
     return collection;
   }
 
-  private destroyCollection(type, collection){
-    collection.onDestroy.unsubscribe();
-    let componentCollectionsByType = collectionRegistry[type];
-    let i = findIndex(componentCollectionsByType, ({ id }) => id === collection.id);
-    componentCollectionsByType.splice(i, 1);
-    this.cleanUpRedundentModels(type);
-  }
-
   cleanUpRedundentModels(type){
-    //@TODO: needs to be a check for permanent models so the logged-in user doesn't get removed
-    let componentCollections = collectionRegistry[type];
-    remove(modelRegistry[type], model => {
-      let isScheduled = !componentCollections.find(collection => collection.findById(model._id));
-      if(isScheduled) model.destroy();
-      return isScheduled;
-    });
+    remove(modelRegistry[type], model => model.isOwnerlessDestroy());
   }
 }
 
@@ -104,13 +87,16 @@ class Collection {
   }
 
   destroy(){
-    this.onDestroy.emit(this.id);
+    let games = this.collectionSubject.getValue();
+    games.forEach(gameModel => gameModel.disown(this));
+    this.onDestroy.emit(this.type);
+    this.onDestroy.unsubscribe();
   }
 
-  transformToModel(objectArray){
+  transformToModel(objectArray = []){
     let ModelType = MODEL_TYPES[this.type];
     return !(objectArray[0] instanceof MODEL_TYPES[this.type]) ?
-      objectArray.map(object => new ModelType(this.injector, object)):
+      objectArray.map(object => create(this.injector, object, this)):
       objectArray;
   }
 }
