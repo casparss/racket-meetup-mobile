@@ -17,8 +17,6 @@ export class GamesSvc extends BaseService {
 
 	url = "games";
 	public onPushToCurrent: EventEmitter<any> = new EventEmitter();
-	private lengthsSubject: Subject<any> = new Subject();
-	public lengths$: Observable<any> = this.lengthsSubject.asObservable();
 
 	constructor(
 		protected nav: NavController,
@@ -34,7 +32,6 @@ export class GamesSvc extends BaseService {
 	getByStatus(_id: string, status: string, type?){
 		let search = HttpUtils.urlParams({ status, type });
 		return this._get(null, { search }, null, `/${_id}`)
-			.do(({ lengths = {} }) => this.lengthsSubject.next(lengths))
 			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}));
 	}
 
@@ -69,6 +66,10 @@ export class GamesSvc extends BaseService {
 
 	updateDetails(challengeDetails: Object, _id){
 		return this._update(challengeDetails, {}, 'game', `/${_id}`);
+	}
+
+	recordResult(result, _id){
+		return this._update(result, {}, 'game/score', `/${_id}`);
 	}
 
 	pushToCurrent(game){

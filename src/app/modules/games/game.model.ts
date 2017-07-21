@@ -5,8 +5,8 @@ import { forEach } from 'lodash';
 
 export class GameModel extends DataModel {
   private modelSvc: ModelSvc;
-  private side1: any;
-  private side2: any;
+  public side1: any;
+  public side2: any;
 
   constructor(injector, userModel, ownerInstance){
     super(injector, userModel, ownerInstance);

@@ -8,7 +8,7 @@ import { ScoreInt } from './game-record-result.interfaces';
       <ion-grid>
         <ion-row [ngSwitch]="active">
           <ion-col col-2>
-            <div>Set 1</div>
+            <div>Set {{index + 1}}</div>
           </ion-col>
           <ion-col col-4>
             <button *ngSwitchCase="true" icon-only ion-button small clear (click)="deincrement('side1')" [disabled]="score['side1'] === 0">
@@ -64,9 +64,10 @@ export class ScoreItemCom {
     this.score[side] === 0 ? null : this.score[side]--;
   }
 
-  isClearingbytwogames(){
+  isValidgameclearance(){
     let { side1, side2 } = this.score;
-    return Math.abs(side1 - side2) === 2;
+    let diff = Math.abs(side1 - side2);
+    return (side1 > 6 || side2 > 6) ? diff === 2 : diff >= 2;
   }
 
   isSixorover(){
@@ -75,7 +76,7 @@ export class ScoreItemCom {
   }
 
   isValidScore(){
-    return this.isSixorover() && this.isClearingbytwogames();
+    return this.isSixorover() && this.isValidgameclearance();
   }
 
 }

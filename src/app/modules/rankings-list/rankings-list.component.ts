@@ -6,7 +6,7 @@ import {RankingsSvc} from './rankings.service';
 	templateUrl: './rankings-list.view.html',
 	selector:'rankings-list'
 })
-export class RankingsListCom{
+export class RankingsListCom {
 
 	private selectedSegment: string = 'top';
 	private rankingsList$: any;

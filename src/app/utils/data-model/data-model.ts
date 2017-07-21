@@ -31,7 +31,7 @@ export class DataModel {
     this.owners.add(ownerInstance);
     let modelValue = model.getValue ? model.getValue() : model;
     let isOlder = moment(this.value.updatedAt).isBefore(moment(modelValue.updatedAt));
-    if(isOlder) this.next(modelValue);
+    if(isOlder) this.next(Object.assign({}, this.subject.getValue(), modelValue));
   }
 
   next(value){
@@ -59,7 +59,7 @@ export class DataModel {
   }
 
   get isPermanent(){
-    return this._isPermanent
+    return this._isPermanent;
   }
 
   destroy(){
