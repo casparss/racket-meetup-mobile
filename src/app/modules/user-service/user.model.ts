@@ -19,47 +19,42 @@ export class UserModel extends DataModel {
     this.userModelSvc = injector.get(UserModelSvc);
     this.userModelSvc.onLengthsRetrieval
       .subscribe(lengthsData => this.lengthsRetrieval(lengthsData));
+    this.subscribe();
+  }
+
+  updateDetails(details){
+    this.update({ details });
+  }
+
+  toggleFollow(userId, isFriend){
+    let user = this.getRawValue();
+    let { followingThem } = user.followers;
+
+    if(isFriend)
+      followingThem.push(userId);
+    else
+      remove(followingThem, followerId => userId === followerId);
+
+    this.update(user);
   }
 
   get $(){
-    return this.get$()
-      .map(user => this.utils.populateExtraFields(user));
+    return this.get$().map(user => this.utils.populateExtraFields(user));
   }
-
-
 
   get user(): UserInt{
     return this.getValue();
   }
 
-  updateDetails(details){
-    let user = this.getValue();
-    Object.assign(user.details, details);
-    this.next(user);
-  }
-
-  toggleFollow(userId, isFriend){
-    let user = this.getValue();
-    let { followingThem } = user.followers;
-    if(isFriend) {
-      followingThem.push(userId);
-    } else {
-      remove(followingThem, followerId => userId === followerId);
-    }
-    this.next(user);
-  }
-
   get avatar$(){
-    return this.get$().map(user => this.utils.generateProfileImage(user));
+    return this.get$().map(user => this.utils.generateProfileImage(this.getValue()));
   }
 
   generateProfileImage(){
-    let user = this.getValue();
-    return this.utils.generateProfileImage(user);
+    return this.utils.generateProfileImage(this.getValue());
   }
 
   lengthsRetrieval({ _id, lengths }){
-    let user = this.getValue();
-    if(user._id === _id) this.statusLengths$.next(lengths);
+    if(this._id === _id) this.statusLengths$.next(lengths);
   }
 }

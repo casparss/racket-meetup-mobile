@@ -57,7 +57,7 @@ export class GamesSummaryCom {
 
 	openGames(): void {
 		let requestedTab = 'accepted';
-		this.user.$.subscribe(({ _id }) => this.nav.push(GamesCom, { _id, requestedTab }));
+		this.nav.push(GamesCom, { _id: this.user._id, requestedTab })
 	}
 
 	ngOnDestroy(){

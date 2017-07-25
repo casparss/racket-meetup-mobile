@@ -8,6 +8,7 @@ import { GamesSummaryItemCom } from './games-summary-item.component';
 import { GamesCom } from './games.component';
 import { GameCardCom } from './game-card.component';
 import { GameDetailsCom } from './game-details.component';
+import { BannerPlayerScoreCom } from './banner-player-score.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { GameDetailsCom } from './game-details.component';
     GameCardCom,
     GamesSummaryCom,
     GamesSummaryItemCom,
-    GameDetailsCom
+    GameDetailsCom,
+    BannerPlayerScoreCom
   ],
   imports: [IonicModule, LoadingImgModule, GameRecordResultModule],
   exports:[GamesCom, GamesSummaryCom],

@@ -36,6 +36,13 @@ ion-list-header.component-header ion-label.label-ios{
 
 //mixins
 
+@mixin no-borders{
+  ion-list .item .item-inner,
+  .item-inner, .item-block, .item-block:first-child{
+    border: none!important;
+  }
+}
+
 @mixin flexVerticalCenter{
 	align-items: center;
 	justify-content: center;

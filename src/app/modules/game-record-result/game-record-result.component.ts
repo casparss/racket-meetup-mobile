@@ -80,10 +80,11 @@ export class GameRecordResultCom {
 
   scoreItemChecked(index){
     if(!this.isEverySetAcountedFor()) this.pushNewScore();
-    setTimeout(() => {
-      this.setValidScore();
-      this.decipherWinner();
-    });
+    setTimeout(() => this.setValidScore());
+  }
+
+  setValidScore(){
+    return this.validScore = this.isValidScoring() && this.isEverySetAcountedFor();
   }
 
   isValidScoring(){
@@ -100,10 +101,6 @@ export class GameRecordResultCom {
     return this.scores.length === this.matchSetRange;
   }
 
-  setValidScore(){
-    return this.validScore = this.isValidScoring() && this.isEverySetAcountedFor();
-  }
-
   recordResult(){
     this.gamesSvc.recordResult(this.generateScoresObject(), this.gameModel._id)
       .subscribe(game => {
@@ -115,23 +112,18 @@ export class GameRecordResultCom {
   generateScoresObject(){
     return {
       scores: this.transformScoresObject(),
-      winner: this.decipherWinner()
+      winner: this.getWinnerId()
     }
   }
 
   transformScoresObject(){
-    let newObjectForm = {
-      side1: [],
-      side2: []
-    };
-    this.scores.forEach(({side1, side2}) => {
-      newObjectForm.side1.push(side1);
-      newObjectForm.side2.push(side2);
-    });
-    return newObjectForm;
+    return {
+      side1: this.scores.map(({side1}) => side1),
+      side2: this.scores.map(({side2}) => side2)
+    }
   }
 
-  decipherWinner(){
+  getWinnerId(){
     let { side1, side2 } = this.transformScoresObject();
     let accumulate = side => side.reduce((acumulator, current) => acumulator + current);
 

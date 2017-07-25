@@ -11,6 +11,7 @@ export class GameModel extends DataModel {
   constructor(injector, userModel, ownerInstance){
     super(injector, userModel, ownerInstance);
     this.modelSvc = injector.get(ModelSvc);
+    this.subscribe();
   }
 
   get $(){
@@ -19,10 +20,9 @@ export class GameModel extends DataModel {
         game.date = moment(game.date);
         return game;
       })
-      .map(game => {
+      .do(game => {
         this.side1 = this.modelSvc.create(game.opponents.side1[0].user, this);
         this.side2 = this.modelSvc.create(game.opponents.side2[0].user, this);
-        return game;
       });
   }
 

@@ -1,4 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
+import { once } from 'lodash';
 import { WsSvc } from '../../modules/web-sockets-service/web-sockets.service';
 import * as moment from 'moment';
 
@@ -17,10 +18,13 @@ export class DataModel {
       this._isPermanent = true;
 
     this.subject = new BehaviorSubject(model);
-    this.subject.subscribe(value => this.value = value);
     this.ws = injector.get(WsSvc);
-    this.setEvents();
   }
+
+  protected subscribe = once((doFunc?) => {
+    this.$.do(doFunc).subscribe(value => this.value = value);
+    this.setEvents();
+  });
 
   setEvents(){
     let { _id, modelType } = this.value;
@@ -38,6 +42,10 @@ export class DataModel {
     this.subject.next(value);
   }
 
+  getRawValue(){
+    return this.subject.getValue();
+  }
+
   getValue(){
     return this.value;
   }
@@ -46,16 +54,16 @@ export class DataModel {
     return this.subject.asObservable();
   }
 
+  get $(){
+    return this.get$();
+  }
+
   get _id(){
     return this.value._id;
   }
 
   get type(){
     return this.value.modelType;
-  }
-
-  get $(){
-    return this.get$();
   }
 
   get isPermanent(){

@@ -71,7 +71,7 @@ let TEXT_STATE_COLOR_HASH = {
 
 			</ion-item>
 		</ion-list>
-		  <img src="assets/images/tennis-court.jpg">
+		  <banner-player-score [gameModel]="gameModel"></banner-player-score>
 
 			<ion-item-group>
 				<ion-item>

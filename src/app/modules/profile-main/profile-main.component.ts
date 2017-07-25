@@ -36,7 +36,7 @@ import { MydetailsCom } from '../my-details/my-details.component';
 				></profile-header>
 
 				<profile-actions
-					[user]="user"
+					[userModel]="user"
 				></profile-actions>
 
 				<main [ngSwitch]="isCurrentUser">

@@ -42,4 +42,8 @@ export class MydetailsCom {
 			.present();
 	}
 
+	updateDetails(details, isValid){
+		if(isValid) this.userSvc.updateDetails(details, "details").subscribe();
+	}
+
 }

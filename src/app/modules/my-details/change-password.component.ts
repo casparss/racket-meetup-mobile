@@ -91,11 +91,10 @@ export class ChangePasswordCom {
 		this.newestField = this.changePasswordForm.controls.newest;
 	}
 
-	changePassword(formValue, valid){
-		let request = this.userSvc.updateDetails(formValue, valid, "password");
-
-		if(request){
-			request.subscribe(() => this.viewCtrl.dismiss())
+	changePassword(formValue, isValid){
+		if(isValid){
+			this.userSvc.updateDetails(formValue, "password")
+				.subscribe(() => this.viewCtrl.dismiss())
 		}
 	}
 

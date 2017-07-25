@@ -6,14 +6,17 @@ import { UserModelSvc } from '../user-service/user.model.service';
 import { DataModel } from '../../utils/data-model'
 import { UserModel } from '../user-service/user.model';
 import { GameModel } from '../games/game.model';
+import { RankingModel } from '../rankings-list/ranking.model';
 import { mapValues, findIndex, remove } from 'lodash';
 
 export const USER = 'User';
 export const GAME = 'Game';
+export const RANKING = 'Ranking';
 
 const MODEL_TYPES = {
   [USER]: UserModel,
-  [GAME]: GameModel
+  [GAME]: GameModel,
+  [RANKING]: RankingModel
 };
 
 const modelRegistry = mapValues(MODEL_TYPES, () => []);
@@ -83,7 +86,7 @@ class Collection {
   }
 
   findById(_idArg){
-    this.collectionSubject.getValue().find(({ _id }) => _id === _idArg);
+    return this.collectionSubject.getValue().find(({ _id }) => _id === _idArg);
   }
 
   destroy(){

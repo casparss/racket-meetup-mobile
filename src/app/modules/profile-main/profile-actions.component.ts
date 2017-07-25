@@ -17,7 +17,7 @@ import { GamesCom } from '../games/games.component';
 @Component({
 	selector:'profile-actions',
 	template:`
-		<ion-list [ngSwitch]="(user.$ | async)?._id === userSvc.current.user._id">
+		<ion-list [ngSwitch]="userModel._id === userSvc.current.user._id">
 			<ion-list-header class="component-header">
 				Actions
 			</ion-list-header>
@@ -54,7 +54,7 @@ import { GamesCom } from '../games/games.component';
 })
 export class ProfileActionsCom {
 
-	@Input() user: UserModel;
+	@Input() userModel: UserModel;
 	private isFriend: boolean = false;
 	private pending: number;
 	private accepted: number;
@@ -70,36 +70,32 @@ export class ProfileActionsCom {
 	}
 
 	ngOnInit(){
-		this.user.statusLengths$.subscribe(({pending, accepted}) => {
+		this.userModel.statusLengths$.subscribe(({pending, accepted}) => {
 			this.pending = pending;
 			this.accepted = accepted;
 		});
 	}
 
   setIsFriend(){
-		if(this.user){
-			this.user.$.subscribe(({ _id }) => this.isFriend = this.userSvc.doesFollow(_id));
-		}
+		if(this.userModel) this.isFriend = this.userSvc.doesFollow(this.userModel._id);
   }
 
 	challengePlayer(){
 		let challengeModal = this.modalController.create(ChallengeCom, {
-			user: this.user
+			user: this.userModel
 		});
 
 		challengeModal.present(challengeModal);
 	}
 
 	messagePlayer(){
-		toPromise(this.user.$)
-			.then(({ _id }) => this.messagesSvc.getChat([_id]).toPromise())
-      .then(({ _id }) => this.nav.push(ChatCom, { _id }));
+		this.messagesSvc.getChat([this.userModel._id])
+      .subscribe(({ _id }) => this.nav.push(ChatCom, { _id }));
 	}
 
 	toggleFollow(){
-		toPromise(this.user.$)
-			.then(({ _id }) => this.userSvc.toggleFollow(_id).toPromise())
-			.then(isFriend => this.isFriend = isFriend);
+		this.userSvc.toggleFollow(this.userModel._id)
+			.subscribe(isFriend => this.isFriend = isFriend);
 	}
 
 	openFollowers(): void {
@@ -107,7 +103,7 @@ export class ProfileActionsCom {
 	}
 
 	openGames(): void {
-		this.nav.push(GamesCom, { user: this.user })
+		this.nav.push(GamesCom, { user: this.userModel })
 	}
 
   ngOnChanges(){

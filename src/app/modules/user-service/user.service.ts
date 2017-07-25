@@ -90,12 +90,10 @@ export class UserSvc extends BaseService {
 		.map(({ isFriend }) => isFriend);
 	}
 
-	updateDetails(details, isValid: boolean, requestType: string){
-		if(isValid){
-			let search = HttpUtils.urlParams({ requestType });
-			return this._update(details, { search })
-				.do(({ details }) => this.current.updateDetails(details));
-		}
+	updateDetails(details, requestType: string){
+		let search = HttpUtils.urlParams({ requestType });
+		return this._update(details, { search })
+			.do(({ details }) => this.current.updateDetails(details));
 	}
 
 	uploadPhoto(imageUri: string){

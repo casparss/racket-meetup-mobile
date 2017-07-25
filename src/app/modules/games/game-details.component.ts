@@ -20,11 +20,9 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
 
     <ion-content no-bounce>
 
-      <div>
-        <img src="assets/images/tennis-court.jpg">
-      </div>
+      <banner-player-score [gameModel]="gameModel"></banner-player-score>
 
-      <ion-list>
+      <ion-list *ngIf="status(game, ['accepted'])">
         <ion-list-header class="component-header">
           Actions
         </ion-list-header>
@@ -111,6 +109,8 @@ export class GameDetailsCom {
 		recordScoreModal.present();
 	}
 
-
+  status({ status }, list){
+		return !!list.find(state => state === status);
+	}
 
 }
