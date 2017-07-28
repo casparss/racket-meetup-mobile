@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
-import { UserDetailsInt, ActionSheetActionsInt } from './my-details.interface';
+import { UserDetailsInt } from '../user-service/user.interface';
+import { ActionSheetActionsInt } from './my-details.interface';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.validator';
 
@@ -81,7 +82,7 @@ export class ChangePasswordCom {
 		private formBuilder: FormBuilder,
 		private viewCtrl: ViewController,
 	){
-		let { validator } = new EqualFieldsFactory;
+		let { validator } = new EqualFieldsFactory();
     this.changePasswordForm = this.formBuilder.group({
 			current: ["", [<any>Validators.required]],
       newest: ["", [<any>Validators.required, validator('confirm')]],
@@ -90,11 +91,10 @@ export class ChangePasswordCom {
 		this.newestField = this.changePasswordForm.controls.newest;
 	}
 
-	changePassword(formValue, valid){
-		let request = this.userSvc.updateDetails(formValue, valid, "password");
-
-		if(request){
-			request.subscribe(() => this.viewCtrl.dismiss())
+	changePassword(formValue, isValid){
+		if(isValid){
+			this.userSvc.updateDetails(formValue, "password")
+				.subscribe(() => this.viewCtrl.dismiss())
 		}
 	}
 

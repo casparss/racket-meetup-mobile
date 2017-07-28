@@ -1,46 +1,116 @@
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { UserInt } from '../user-service/user.interface';
+import { NavParams, LoadingController } from 'ionic-angular';
+import { Observable, Subject } from 'rxjs';
+import { GameModel } from './game.model';
+import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from './games.service';
-import { GameInt } from './games.interfaces';
-import { toPromise } from '../../utils/util-helpers';
+import { findKey, once } from 'lodash';
+import { ModelSvc, GAME } from '../model-service/model.service';
 
 @Component({
-	template:`
-	<ion-list class="games">
-		<ion-list-header class="component-header">
-			Upcoming games
-		</ion-list-header>
-		<games-list [games]="games$"></games-list>
-	</ion-list>
-	`,
-	selector: 'games'
+  selector: 'games',
+  template: `
+  <ion-header>
+    <ion-navbar>
+      <ion-title>Games</ion-title>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content>
+
+    <ion-segment (ionChange)="getByStatus()" [(ngModel)]="selectedSegment">
+      <ion-segment-button [disabled]="lengths.pending === 0" value="pending">
+        Pending ({{lengths.pending}})
+      </ion-segment-button>
+      <ion-segment-button [disabled]="lengths.accepted === 0" value="accepted">
+        Upcoming ({{lengths.accepted}})
+      </ion-segment-button>
+      <ion-segment-button [disabled]="(lengths.played + lengths.rejected + lengths.forfeit) === 0" value="played,rejected,forfeit">
+        Previous ({{(lengths.played + lengths.rejected + lengths.forfeit)}})
+      </ion-segment-button>
+    </ion-segment>
+
+    <div *ngIf="isEmptyState()">No games yet</div>
+
+    <ion-list *ngIf="!isEmptyState()">
+      <game-card
+        *ngFor="let gameModel of gamesListCollection.$ | async"
+        [gameModel]="gameModel"
+      ></game-card>
+    </ion-list>
+
+  </ion-content>
+  `
 })
 export class GamesCom {
 
-	@Input() user$: any;
-	gamesSubject$: BehaviorSubject<any> = new BehaviorSubject([]);
-	games$: Observable<any> = this.gamesSubject$.asObservable();
+  private user: any;
+  private requestedTab: any;
+  private gamesListSubject: Subject<Array<GameModel>> = new Subject();
+  private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
+  private gamesListCollection: any;
+  private selectedSegment = "pending";
+  private lengths: any = {};
 
-	constructor(private gamesSvc: GamesSvc){
-		this.gamesSvc.onPushToCurrent
-			.subscribe(game => this.pushToGames(game));
-	}
+  constructor(
+    private gamesSvc: GamesSvc,
+    private navParams: NavParams,
+    private loadingCtrl: LoadingController,
+    private userSvc: UserSvc,
+    private modelSvc: ModelSvc
+  ){
+    this.user = this.navParams.get("user") || this.userSvc.current;
+    this.requestedTab = this.navParams.get("requestedTab");
+    this.gamesListCollection = this.modelSvc.createCollection(GAME);
+  }
 
-	ngOnInit(){
-		this.getGames();
-	}
+  ngOnInit(){
+    this.user.statusLengths$.subscribe(lengths => {
+      this.lengths = lengths;
+      this.tabSelection();
+    });
+  }
 
-	pushToGames(game){
-		let games = this.gamesSubject$.getValue();
-		games.push(game);
-		this.gamesSubject$.next(games);
-	}
+  private tabSelection = once(() => {
+    let { pending, accepted, played, rejected, forfeit } = this.lengths;
+    let areLengthsEmpty = () => !findKey(this.lengths, length => length > 0);
 
-	getGames(){
-		toPromise(this.user$)
-			.then(({ _id }) => toPromise(this.gamesSvc.get(_id)))
-			.then(games => this.gamesSubject$.next(games));
-	}
+    if(areLengthsEmpty()){
+      this.selectedSegment = "";
+    } else if(this.requestedTab){
+      this.selectedSegment = this.requestedTab;
+    } else if(pending > 0){
+      this.selectedSegment = 'pending';
+    } else if(accepted > 0){
+      this.selectedSegment = 'accepted';
+    } else {
+      this.selectedSegment = 'played,rejected,forfeit';
+    }
+
+    this.getByStatus();
+  });
+
+  isEmptyState(){
+    return this.selectedSegment === "";
+  }
+
+  getByStatus(){
+    let loading = this.loadingCtrl.create({
+      content: 'Loading games...',
+      showBackdrop: false
+    });
+
+    loading.present();
+
+    this.gamesSvc.getByStatus(this.user.user._id, this.selectedSegment)
+      .subscribe(({games}) => {
+        this.gamesListCollection.update(games);
+        loading.dismiss();
+      });
+  }
+
+  ngOnDestroy(){
+    this.gamesListCollection.destroy();
+  }
 
 }

@@ -1,11 +1,13 @@
-import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
-import {ProfileMainCom} from '../profile-main/profile-main.component';
-import {UserInt} from '../user-service/user.interface';
-import {debounce} from 'lodash';
-import {UserSvc} from '../user-service/user.service';
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
+import { ProfileMainCom } from '../profile-main/profile-main.component';
+import { UserInt } from '../user-service/user.interface';
+import { debounce } from 'lodash';
+import { UserSvc } from '../user-service/user.service';
+import { ModelSvc, USER } from '../model-service/model.service';
 
 @Component({
+	selector: 'search',
 	template:
   `
   <ion-header>
@@ -23,30 +25,43 @@ import {UserSvc} from '../user-service/user.service';
   	</ion-toolbar>
 
   	<ion-list>
-  		<ion-item
-  			*ngFor="let user$ of userSvc.searchedPlayers$ | async"
-  			(click)="openProfile(user$)"
+  		<button ion-item
+  			*ngFor="let user of playersCollection.$ | async"
+  			(click)="openProfile(user)"
   		>
-  			{{ (user$ | async)?.details.fullName }}
-  		</ion-item>
+				<ion-avatar item-left>
+					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
+				</ion-avatar>
+  			{{ (user.$ | async)?.details.fullName }}
+  		</button>
   	</ion-list>
   </ion-content>
 
   `
 })
-export class SearchPlayersCom{
+export class SearchPlayersCom {
+
+	private playersCollection: any;
 
 	constructor(
 		private nav: NavController,
-		private userSvc: UserSvc
-	){}
+		private userSvc: UserSvc,
+		private modelSvc: ModelSvc
+	){
+		this.playersCollection = this.modelSvc.createCollection(USER);
+	}
 
-	openProfile(user$){
-		this.nav.push(ProfileMainCom, { user$ });
+	openProfile(user){
+		this.nav.push(ProfileMainCom, { user });
 	}
 
   searchPlayers({target: { value }}){
-    this.userSvc.search(value).subscribe();
+    this.userSvc.search(value)
+			.subscribe(users => this.playersCollection.update(users));
   }
+
+	ngOnDestroy(){
+		this.playersCollection.destroy();
+	}
 
 }

@@ -58,10 +58,10 @@ describe("User service", () => {
       expect(user).toEqual(userModel1Mock);
 
     userSvc.userSuccess(userModel1Mock);
-    userSvc.current$.subscribe(runExpectation, failTest);
+    userSvc.current.$.subscribe(runExpectation, failTest);
 
     expect(userSvc.http.token).toBe(userModel1Mock.token);
-    runExpectation(userSvc.current);
+    runExpectation(userSvc.current.user);
   }));
 
   it("isFollowedBy()", inject([UserSvc], userSvc => {
@@ -96,7 +96,7 @@ describe("User service", () => {
     userSvc.toggleFollow(userModel2Mock._id)
       .subscribe(isFriend => {
         expect(isFriend).toEqual(mockResponse.data.isFriend);
-        expect(userSvc.current.followers.followingThem.length).toBe(0);
+        expect(userSvc.current.user.followers.followingThem.length).toBe(0);
       }, failTest);
   }));
 
@@ -120,7 +120,7 @@ describe("User service", () => {
     userSvc.toggleFollow(userModel3Mock._id)
       .subscribe(isFriend => {
         expect(isFriend).toEqual(mockResponse.data.isFriend);
-        expect(userSvc.current.followers.followingThem.length).toBe(2);
+        expect(userSvc.current.user.followers.followingThem.length).toBe(2);
       }, failTest);
   }));
 

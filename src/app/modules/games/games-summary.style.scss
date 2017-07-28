@@ -1,0 +1,45 @@
+@mixin no-borders{
+  ion-list .item .item-inner,
+  .item-inner, .item-block, .item-block:first-child{
+    border: none!important;
+  }
+}
+
+games-summary-item {
+
+  .item {
+    ion-icon {
+      font-size: 2.5em;
+    }
+  }
+
+  .custom-list {
+
+    margin-bottom: 0;
+    @include no-borders;
+
+    ion-item {
+      font-size: 14px;
+      padding-left:0;
+    }
+
+    ion-icon {
+      font-size: 1.5em;
+    }
+
+    ion-label {
+      margin: 0;
+    }
+
+    .item-inner{
+      background-image: none!important;
+    }
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+      padding: 0 0 7px 12px;
+    }
+  }
+
+}

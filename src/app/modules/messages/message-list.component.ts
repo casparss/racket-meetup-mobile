@@ -1,9 +1,10 @@
-import {Component} from '@angular/core';
-import {messagesModel} from './messages.fixture';
-import {NavController} from 'ionic-angular';
-import {MessageItemInt} from './messages.interface';
-import {MessagesSvc} from './messages.service';
-import {ChatCom} from './chat.component';
+import { Component } from '@angular/core';
+import { messagesModel } from './messages.fixture';
+import { NavController, App } from 'ionic-angular';
+import { MessageItemInt } from './messages.interface';
+import { MessagesSvc } from './messages.service';
+import { ChatCom } from './chat.component';
+import { WsSvc } from '../web-sockets-service';
 
 @Component({
 	templateUrl: './message-list.view.html',
@@ -13,18 +14,21 @@ export class MessageListCom{
 
 	private chats$: any;
 
-	constructor(private nav: NavController, private svc: MessagesSvc){
+	constructor(
+		private nav: NavController,
+		private svc: MessagesSvc,
+		public appCtrl: App,
+		private ws: WsSvc
+	){
 		this.chats$ = this.svc.chats$;
 	}
 
 	ngOnInit(){
-		this.svc.getChats();
+		this.svc.getChats().subscribe();
 	}
 
-	openMessage(id:number): void{
-		this.nav.push(ChatCom, {
-			id: id
-		});
+	openMessage(chat:any): void{
+		this.nav.push(ChatCom, { chat });
 	}
 
 }

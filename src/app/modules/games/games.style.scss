@@ -1,66 +1,20 @@
-games{
+games {
 
-	//@TODO:60 make sure using variables for colours
 	.no-games-message{
 		text-align:center;
 		margin:20px;
 	}
 
-	img{
-		width:6rem;
-		height:6rem;
-		display:block;
-		margin:auto;
+	span.status-text {
+		font-weight: bold;
 
-		border-radius: 3rem;
-	}
-
-	.playerName{
-		text-align:center;
-		margin-top:10px;
-	}
-
-	.vs{
-		text-align:center;
-	}
-
-	.item-header{
-		background:#fcfcfc;
-		ion-label{
-			font-size:1rem;
-			margin:0;
-		}
-	}
-
-	ion-row{
-		align-items: center;
-  		justify-content: center;
-	}
-
-	ion-item.item{
-		border-bottom: 1px solid #c8c7cc;
-	}
-
-	ion-list .item .item-inner,
-	.list-ios .item-block .item-inner{
-		border:none;
-	}
-
-	.upcoming{
-		border-left: 3px solid $darkcyan;
-	}
-
-	.previous{
-		border-left: 3px solid $lightgreen;
-
-		table{
-			width:100%;
+		&[status=played]{
+			color: color($colors, primary, base);
 		}
 
-		td{
-			text-align:center;
-			border:1px solid #c8c7cc;
-			padding:8px 0;
+		&[status=rejected],
+		&[status=forfeit]{
+			color: color($colors, danger, base);
 		}
 
 	}

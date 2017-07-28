@@ -2,14 +2,14 @@
 
 	color:#fff;
 
-	.container{
+	loading-img {
+    width:30px;
+  }
+
+	.container {
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-
-		form{
-			width:100%;
-		}
 
 		.msg,.toolbar,footer {
 			display: flex;
@@ -29,12 +29,13 @@
 		    font-size: .875em;
 		}
 
-		footer{
+		footer {
 			background: $toolbar-grey;
 		}
 
 		textarea {
-			width:82%;
+				border-radius: 5px;
+				width: 78.9%;
 		    padding: .325em;
 		    border: none;
 		    flex: 1;
@@ -45,6 +46,15 @@
 		.msg {
 		    position: relative;
 		    margin-bottom: 2em;
+				img {
+					width: 40px;
+					height: 40px;
+					border-radius: 50%;
+				}
+		}
+
+		.msg--date-wrapper{
+			text-align: center;
 		}
 
 		.msg--date {
@@ -52,8 +62,11 @@
 		    font-size: 1em;
 		    font-weight: normal;
 		    text-align: center;
-		    background: $quiet-grey;
+		    background: $not-as-quiet-grey;
 		    color: #727b80;
+				padding:10px;
+				display:inline-block;
+				border-radius:5px;
 		}
 
 		blockquote {
@@ -112,9 +125,12 @@
 		}
 
 		.msg-send {
-			width:17%;
+			width: 20%;
 			float:right;
 			padding: 0 5px 0 5px;
+			button{
+				margin:0;
+			}
 		}
 
 	}

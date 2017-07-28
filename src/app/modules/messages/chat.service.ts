@@ -1,10 +1,12 @@
-import {Injectable} from '@angular/core';
-import {map} from 'lodash';
-import {BaseService} from '../../utils/base/base.service';
-import {DecHttp} from '../../utils/http';
-import {UserSvc} from '../user-service/user.service';
-import {WsSvc} from '../web-sockets-service/';
+import { Injectable } from '@angular/core';
+import { map, reduce, last } from 'lodash';
+import { BaseService } from '../../utils/base/base.service';
+import { DecHttp } from '../../utils/http';
+import { UserSvc } from '../user-service/user.service';
+import { WsSvc } from '../web-sockets-service/';
 import { ConfigSvc } from '../config/config.service';
+import { UserUtils } from '../user-service/user.utils';
+import * as moment from 'moment';
 
 @Injectable()
 export class ChatSvc extends BaseService{
@@ -17,7 +19,8 @@ export class ChatSvc extends BaseService{
 		http:DecHttp,
 		private userSvc: UserSvc,
 		private ws: WsSvc,
-		configSvc: ConfigSvc
+		configSvc: ConfigSvc,
+		private userUtils: UserUtils
 	){
 		super(http, configSvc);
 		this._chatMessages$ = this.create$('chatMessages');
@@ -31,11 +34,10 @@ export class ChatSvc extends BaseService{
 	}
 
 	getMessageHistory(){
-		this.ws.socket.emit("request:messagehistory", this._chatId);
+		this.ws.socket.emit("request:messagehistory", this._chatId, messages => this.updateMessageHistory(messages));
 	}
 
 	setEvents(){
-		this.ws.socket.on("messagehistory", messages => this.updateMessageHistory(messages));
 		this.ws.socket.on("message", msgPackage => this.newMessageRecieved(msgPackage));
 	}
 
@@ -54,39 +56,100 @@ export class ChatSvc extends BaseService{
 	}
 
 	get chatMessages$(){
-		return this._chatMessages$.map(chat => map(chat, message => new Message(message, this.userSvc)));
+		return this._chatMessages$
+			.map(chatMessages => map(chatMessages, message => new Message(message, this.userSvc, this.userUtils)))
+			.map(chatMessages => this.transformChatObject(chatMessages));
+	}
+
+	transformChatObject(chatMessages){
+		let { length } = chatMessages;
+
+		if(length === 0) {
+			return [];
+		} else if(length === 1){
+			return this.insertDate(chatMessages);
+		} else {
+			return this.insertDates(chatMessages);
+		}
+	}
+
+	insertDate(chatMessages){
+		let chat = chatMessages[0]
+		return [new DateLabel(chat.createdAt), chat].reverse();
+	}
+
+	insertDates(chatMessages){
+		return chatMessages.reduce((accumulator, currentValue, index) => {
+			let list = (index === 1 ? [accumulator] : accumulator);
+			let lastElement = last(list);
+			let isDifferentDay = !lastElement.createdAt.isSame(currentValue.createdAt, 'day');
+
+			if(list.length === 1){
+				list.unshift(new DateLabel(accumulator.createdAt));
+			}
+
+			if(isDifferentDay){
+				list.push(new DateLabel(currentValue.createdAt));
+			}
+
+			list.push(currentValue);
+			return list;
+		}).reverse();
 	}
 
 	sendMessage(message:string){
-		let msgPackage = {chatId: this._chatId, message: message};
+		let msgPackage = { chatId: this._chatId, message };
 		this.ws.socket.emit("send:message", msgPackage);
 	}
 
 	destroy(){
 		this.ws.socket.off("message");
-		this.ws.socket.emit("leaving:chat");
+		this.ws.socket.emit("leaving:chat", this._chatId);
 	}
 
 }
 
-class Message {
+class DateLabel {
+	type: string = "date";
+	date: any;
 
+	constructor(date){
+		this.date = date;
+	}
+
+	calendarDate(){
+		return this.date.calendar(null, {
+		    sameDay: '[Today]',
+		    nextDay: '[Tomorrow]',
+		    nextWeek: 'dddd',
+		    lastDay: '[Yesterday]',
+		    lastWeek: '[Last] dddd',
+		    sameElse: 'DD/MM/YYYY'
+		});
+	}
+}
+
+class Message {
 	_id: string;
 	name: string;
 	message: string;
-	img: string;
-	createdAt: string;
+	createdAt: any;
+	type: string = "message";
 
-	constructor(chat:any, private userSvc: UserSvc){
-		this._id = chat._id;
-		this.name = chat.name; //logic to populate name
-		this.message = chat.message;
-		this.img = chat.img; //logic to populate img
-		this.createdAt = chat.createdAt || new Date();
+	constructor(
+		chat:any,
+		private userSvc: UserSvc,
+		private userUtils: UserUtils
+	){
+		Object.assign(this, chat);
+		this.createdAt = moment(this.createdAt);
 	}
 
 	isMe(){
-		return this._id === this.userSvc.current._id;
+		return this._id === this.userSvc.current.user._id;
 	}
 
+	get avatar(){
+		return this.userUtils.generateProfileImage(this)
+	}
 }

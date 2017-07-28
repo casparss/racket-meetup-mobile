@@ -1,6 +1,7 @@
 <div class="availability">
 	<ion-list-header class="component-header">
-		Weekly availability
+		<span *ngIf="isMesh()">Players' meshed availability</span>
+		<span *ngIf="!isMesh()">Weekly availability</span>
 	</ion-list-header>
 
 	<div class="item-wrapper">
@@ -21,34 +22,39 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr [@periodSelected]="isPeriodSelected('Morning')">
 					<td class="day-period-title">
 					   Morning
 					</td>
 
-					<td *ngFor="let day of model?.morning">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
+					<td *ngFor="let day of model?.morning" [@daySelected]="day.class">
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
 				</tr>
 
-				<tr>
+				<tr [@periodSelected]="isPeriodSelected('Afternoon')">
 					<td class="day-period-title">
 					   Afternoon
 					</td>
 
-					<td *ngFor="let day of model?.afternoon">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
+					<td *ngFor="let day of model?.afternoon" [@daySelected]="day.class">
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
 				</tr>
 
-				<tr>
+				<tr [@periodSelected]="isPeriodSelected('Evening')">
 					<td class="day-period-title">
 					   Evening
 					</td>
 
-					<td *ngFor="let day of model?.evening">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v"></ion-checkbox>
+					<td *ngFor="let day of model?.evening" [@daySelected]="day.class">
+						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" disabled="{{isMesh()}}"></ion-checkbox>
 					</td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td ng></td>
 				</tr>
 			</tbody>
 		</table>

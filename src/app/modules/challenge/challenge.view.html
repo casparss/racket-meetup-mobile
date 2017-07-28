@@ -4,42 +4,54 @@
 			Challenge
 		</ion-title>
 		<ion-buttons end>
-			<button small icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close" ></ion-icon></button>
+			<button icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 
 <ion-content>
 
-  <form [formGroup]="challengeForm" (ngSubmit)="challenge(challengeForm.value, challengeForm.valid)">
+  <form [formGroup]="challengeForm" (ngSubmit)="action(challengeForm.value, challengeForm.valid, $event)">
 
-  		<opponents
-				[challenger]='challenger'
-				[challengee]='challengee'>
+  		<opponents *ngIf="!game"
+				[challenger]='game ? game.opponents.side1[0].user : (challenger?.$ | async)'
+				[challengee]='game ? game.opponents.side2[0].user : (challengee?.$ | async)'>
 			</opponents>
 
   		<ion-row class="top">
   			<ion-col width-100>
+					<ion-list radio-group formControlName="gameType">
+					  <ion-list-header>
+					    Type of play
+					  </ion-list-header>
+
+						<ion-item>
+					    <ion-label>Match</ion-label>
+					    <ion-radio [value]="GAME_TYPES[0]"></ion-radio>
+					  </ion-item>
+
+						<ion-item>
+					    <ion-label>A hit</ion-label>
+					    <ion-radio checked="true" [value]="GAME_TYPES[1]"></ion-radio>
+					  </ion-item>
+
+						<ion-item>
+					    <ion-label>Tournament game</ion-label>
+					    <ion-radio [value]="GAME_TYPES[2]"></ion-radio>
+					  </ion-item>
+					</ion-list>
+
+					<ion-list-header class="component-header">
+						Details
+					</ion-list-header>
 
   				<ion-list>
 
-
-  					<ion-item>
-							<ion-label primary>Date:</ion-label>
-							<ion-icon name="calendar" item-left></ion-icon>
-  						<ion-datetime formControlName="date"
-  							displayFormat="D MMM YYYY"
-  						></ion-datetime>
-  					</ion-item>
-
-  					<ion-item>
-							<ion-label primary>Time:</ion-label>
-							<ion-icon name="time" item-left></ion-icon>
-  						<ion-datetime formControlName="time"
-  							displayFormat="hh:mm A"
-  							pickerFormat="hh:mm A"
-  						></ion-datetime>
-  					</ion-item>
+  					<challenge-time-date-input
+							formControlName="date"
+  						[challenger]="challenger"
+							[challengee]="challengee"
+  					></challenge-time-date-input>
 
   					<ion-item>
 							<ion-label primary>Location:</ion-label>
@@ -52,7 +64,7 @@
 					<ion-item>
 						<button [disabled]="!challengeForm.valid" ion-button icon-left large block type="submit">
 							<ion-icon name="tennisball" ></ion-icon>
-							Challenge
+							{{game ? 'Amend game details' : 'Challenge'}}
 						</button>
 					</ion-item>
 

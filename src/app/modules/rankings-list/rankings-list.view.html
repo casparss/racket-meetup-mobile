@@ -1,73 +1,57 @@
 <ion-header>
-	<ion-navbar>
-		<ion-title>Rankings list</ion-title>
-	</ion-navbar>
+  <ion-navbar>
+    <ion-title>Rankings</ion-title>
+  </ion-navbar>
 </ion-header>
+
 <ion-content no-bounce>
 	<header>
 		<ion-grid>
 			<ion-row>
 				<ion-col width-33>
-					<dd>20th</dd>
+					<dd>{{currentUserRanking?.position}}</dd>
 					<dt>Position</dt>
 				</ion-col>
 				<ion-col width-33>
-					<img src="build/modules/messages/img/profile.jpg" alt="">
+					<img [src]="userSvc.current.avatar$ | async" alt="">
 				</ion-col>
 				<ion-col width-33>
-					<dd>9.9</dd>
-					<dt>Ranking</dt>
+					<dd>{{(currentUserRanking?.user.$ | async)?.stats.wins}}</dd>
+					<dt>Wins</dt>
 				</ion-col>
 			</ion-row>
 		</ion-grid>
 	</header>
 
-	<div class="ios-padding">
-		<ion-segment
-				[(ngModel)]="selectedSegment"
-				(ionChange)="segmentChanged($event)">
-			<ion-segment-button value="top">
-				Top
-			</ion-segment-button>
-			<ion-segment-button value="mylevel">
-				My level
-			</ion-segment-button>
-		</ion-segment>
-	</div>
-
 	<ion-list class="ranking-board">
+	  <ion-item-sliding *ngFor="let rankingModel of (rankingsList.$ | async); let index = i;">
+			<ion-item [class.active]="rankingModel.user._id === userSvc.current._id">
+				<ion-grid>
+					<ion-row>
+						<ion-col class="position" col-1>{{rankingModel.position}}
+						</ion-col>
+						<ion-col class="img" col-2>
+							<loading-img [src]="rankingModel.user.avatar$ | async"></loading-img>
+						</ion-col>
+						<ion-col class="name" col-7>{{rankingModel.user.getValue().details.fullName}}
+						</ion-col>
+						<ion-col class="ranking" col-2>{{rankingModel.user.getValue().stats.wins}}<br />
+              <span>Wins</span>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-item>
 
-	  <ion-item-sliding *ngFor="let playerRanking of rankingsList$ | async">
-		<ion-item [class.active]="playerRanking?.id == 2" >
-
-			<ion-grid>
-				<ion-row>
-					<ion-col class="position" width-10>
-						{{playerRanking?.position}}
-					</ion-col>
-					<ion-col class="img" width-20>
-						<img src="{{playerRanking?.img}}" alt="">
-					</ion-col>
-					<ion-col class="name" width-60>
-						{{playerRanking?.name}}
-					</ion-col>
-					<ion-col class="ranking" width-10>
-						{{playerRanking?.ranking}}
-					</ion-col>
-				</ion-row>
-			</ion-grid>
-
-		</ion-item>
-		<ion-item-options>
-		  <button primary>
-			<ion-icon name="text"></ion-icon>
-			Text
-		  </button>
-		  <button secondary>
-			<ion-icon name="call"></ion-icon>
-			Call
-		  </button>
-		</ion-item-options>
+			<ion-item-options>
+			  <button primary>
+				<ion-icon name="text"></ion-icon>
+					Text
+			  </button>
+			  <button secondary>
+				<ion-icon name="call"></ion-icon>
+					Call
+			  </button>
+			</ion-item-options>
 	  </ion-item-sliding>
 	</ion-list>
 

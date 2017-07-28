@@ -1,11 +1,7 @@
-rankings-list,
-rankings-list-com{
+rankings-list {
 
 	background: $white;
 
-	.ios-padding{
-		padding: 16px;
-	}
 
 	header{
 
@@ -24,8 +20,18 @@ rankings-list-com{
 
 	.ranking-board{
 
+		@include no-borders;
+
 		ion-row{
 			@include flexVerticalCenter;
+		}
+
+		.position, .ranking{
+			text-align: center;
+			span{
+				font-size: 0.5em;
+				opacity:0.2;
+			}
 		}
 
 		.position{
@@ -41,7 +47,6 @@ rankings-list-com{
 		.ranking{
 			font-size:2.3rem;
 			font-weight:bold;
-			text-align:right
 		}
 
 		.name{
@@ -51,6 +56,10 @@ rankings-list-com{
 
 		.item.active{
 			border:1px dashed $primaryColor;
+		}
+
+		ion-item-sliding.item-wrapper {
+			margin:0;
 		}
 
 		ion-item-sliding:nth-child(even) .item{

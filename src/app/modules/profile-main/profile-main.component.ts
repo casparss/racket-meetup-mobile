@@ -1,37 +1,52 @@
 import { Component, EventEmitter } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { NavParams } from 'ionic-angular';
-import { ProfileMainSvc } from './profile-main.service';
 import { UserSvc, UserInt } from '../user-service/user.service';
+import { UserModel } from '../user-service/user.model';
+import { SearchPlayersCom } from '../followers/search-players.component';
+import { MydetailsCom } from '../my-details/my-details.component';
 
 @Component({
 	template:
 	`
 		<ion-header>
-			<ion-navbar>
+		  <ion-navbar>
+		    <ion-buttons start *ngIf="(user.$ | async)?._id === userSvc.current.user._id">
+		      <button (click)="myDetails()" ion-button icon-only>
+		        <ion-icon name="contact"></ion-icon>
+		      </button>
+		    </ion-buttons>
+
 				<ion-title>Profile</ion-title>
-			</ion-navbar>
+
+		    <ion-buttons end *ngIf="(user.$ | async)?._id === userSvc.current.user._id">
+		      <button (click)="searchPlayers()" ion-button icon-only>
+		        <ion-icon name="search"></ion-icon>
+		      </button>
+		    </ion-buttons>
+		  </ion-navbar>
 		</ion-header>
 
 		<ion-content no-bounce>
 			<div class="content-background">
 				<profile-header
-					[user$]="user$"
+					[user]="user"
 					[isCurrentUser]="isCurrentUser"
 				></profile-header>
 
 				<profile-actions
-					[user$]="user$"
+					[userModel]="user"
 				></profile-actions>
 
 				<main [ngSwitch]="isCurrentUser">
 
 					<availability
 						*ngSwitchCase="true"
-						[user$]="user$"
+						[user]="user"
 					></availability>
 
-					<games [user$]="user$"></games>
+					<games-summary [user]="user"></games-summary>
 				</main>
 			</div>
 		</ion-content>
@@ -40,33 +55,42 @@ import { UserSvc, UserInt } from '../user-service/user.service';
 })
 export class ProfileMainCom{
 
-	private user$: Observable<UserInt>;
+	private user: UserModel;
 	private isCurrentUser: boolean;
 
 	constructor(
-		private profileSvc: ProfileMainSvc,
 		private userSvc: UserSvc,
-		private params: NavParams
+		private params: NavParams,
+		private nav: NavController
 	){}
 
 	ngOnInit(){
-		this.loadUser();
+		this.setUser();
 	}
 
-	loadUser(){
+	setUser(){
 		let id: string = this.params.get("id");
-		let user$: Observable<UserInt> = this.params.get("user$");
+		let user: UserModel = this.params.get("user");
 
 		if(id){
-			this.user$ = this.profileSvc.get(id);
+			this.userSvc.fetchUserById(id)
+				.subscribe(user => this.user = user);
 		}
-		else if(user$){
-			this.user$ = user$;
+		else if(user){
+			this.user = user;
 		}
 		else {
 			this.isCurrentUser = true;
-			this.user$ = this.userSvc.current$;
+			this.user = this.userSvc.current;
 		}
+	}
+
+	myDetails(){
+		this.nav.push(MydetailsCom);
+	}
+
+	searchPlayers(){
+		this.nav.push(SearchPlayersCom);
 	}
 
 }

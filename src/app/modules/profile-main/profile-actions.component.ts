@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
-import { Observable } from 'rxjs';
+import { UserModel } from '../user-service/user.model';
 import { toPromise } from '../../utils/util-helpers';
 
+import { GamesSvc } from '../games/games.service';
 import { ChallengeCom } from '../challenge/challenge.component';
 import { ProfileMainSvc } from './profile-main.service';
 import { UserSvc, UserInt } from '../user-service/user.service';
@@ -11,23 +12,18 @@ import { MydetailsCom } from '../my-details/my-details.component';
 import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
 import { ChatCom } from '../messages/chat.component';
-
-const pages: any = {
-	myDetails: MydetailsCom,
-	followers: FollowersCom,
-  searchPlayers: SearchPlayersCom
-};
+import { GamesCom } from '../games/games.component';
 
 @Component({
 	selector:'profile-actions',
 	template:`
-		<ion-list [ngSwitch]="(user$ | async)?._id === userSvc.current._id">
+		<ion-list [ngSwitch]="userModel._id === userSvc.current.user._id">
 			<ion-list-header class="component-header">
 				Actions
 			</ion-list-header>
 
 			<button *ngSwitchCase="false" type="button" ion-item (click)="challengePlayer()">
-				<ion-icon name="tennisball" item-left></ion-icon>
+				<ion-icon name="medal" item-left></ion-icon>
 				Challenge player
 			</button>
 
@@ -36,74 +32,78 @@ const pages: any = {
 				Message player
 			</button>
 
+			<button (click)='openGames()' ion-item>
+				<ion-icon name="tennisball" item-left></ion-icon>
+				Games
+				<ion-badge *ngIf="pending > 0" item-end color="danger">{{pending}}</ion-badge>
+				<ion-badge *ngIf="accepted > 0" item-end>{{accepted}}</ion-badge>
+			</button>
+
 			<button *ngSwitchCase="false" ion-item (click)="toggleFollow()" [ngSwitch]="isFriend">
 				<ion-icon *ngSwitchCase="false" name="add" item-left></ion-icon>
 				<ion-icon *ngSwitchCase="true" name="remove" item-left></ion-icon>
 				{{isFriend ? "Remove" : "Add"}} player as friend
 			</button>
 
-			<button *ngSwitchCase="true" (click)="openPage('followers')" ion-item>
+			<button *ngSwitchCase="true" (click)="openFollowers()" ion-item>
 				<ion-icon name="people" item-left></ion-icon>
 				Followers
-			</button>
-
-      <button *ngSwitchCase="true" (click)="openPage('searchPlayers')" ion-item>
-				<ion-icon name="search" item-left></ion-icon>
-				Search players
-			</button>
-
-			<button *ngSwitchCase="true" (click)="openPage('myDetails')" ion-item>
-				<ion-icon name="trophy" item-left></ion-icon>
-				My details
 			</button>
 		</ion-list>
 	`
 })
 export class ProfileActionsCom {
 
-	@Input() user$: Observable<UserInt>;
+	@Input() userModel: UserModel;
 	private isFriend: boolean = false;
+	private pending: number;
+	private accepted: number;
 
 	constructor(
 		private nav: NavController,
-		private profileSvc: ProfileMainSvc,
 		private modalController : ModalController,
 		private userSvc: UserSvc,
-    private messagesSvc: MessagesSvc
-	){ this.setIsFriend(); }
+    private messagesSvc: MessagesSvc,
+		private gamesSvc: GamesSvc
+	){
+		this.setIsFriend();
+	}
+
+	ngOnInit(){
+		this.userModel.statusLengths$.subscribe(({pending, accepted}) => {
+			this.pending = pending;
+			this.accepted = accepted;
+		});
+	}
 
   setIsFriend(){
-		if(this.user$){
-			this.user$.subscribe(({ _id }) => this.isFriend = this.userSvc.doesFollow(_id));
-		}
+		if(this.userModel) this.isFriend = this.userSvc.doesFollow(this.userModel._id);
   }
 
 	challengePlayer(){
 		let challengeModal = this.modalController.create(ChallengeCom, {
-			user$: this.user$
+			user: this.userModel
 		});
 
 		challengeModal.present(challengeModal);
 	}
 
-  searchPlayers(){
-
-  }
-
 	messagePlayer(){
-		toPromise(this.user$)
-			.then(({ _id }) => this.messagesSvc.getChat([_id]).toPromise())
-      .then(({ _id }) => this.nav.push(ChatCom, { _id }));
+		this.messagesSvc.getChat([this.userModel._id])
+      .subscribe(chat => this.nav.push(ChatCom, { chat }));
 	}
 
 	toggleFollow(){
-		toPromise(this.user$)
-			.then(({ _id }) => this.userSvc.toggleFollow(_id).toPromise())
-			.then(isFriend => this.isFriend = isFriend);
+		this.userSvc.toggleFollow(this.userModel._id)
+			.subscribe(isFriend => this.isFriend = isFriend);
 	}
 
-	openPage(pageName: string): void{
-		this.nav.push(pages[pageName]);
+	openFollowers(): void {
+		this.nav.push(FollowersCom);
+	}
+
+	openGames(): void {
+		this.nav.push(GamesCom, { user: this.userModel })
 	}
 
   ngOnChanges(){

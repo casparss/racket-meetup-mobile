@@ -26,8 +26,22 @@ ion-navbar{
 
 }
 
+.segment-ios {
+	padding: 8px;
+}
+
+ion-list-header.component-header ion-label.label-ios{
+	margin-top:30px;
+}
 
 //mixins
+
+@mixin no-borders{
+  ion-list .item .item-inner,
+  .item-inner, .item-block, .item-block:first-child{
+    border: none!important;
+  }
+}
 
 @mixin flexVerticalCenter{
 	align-items: center;

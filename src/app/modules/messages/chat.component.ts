@@ -1,38 +1,38 @@
-import {Component, Input} from '@angular/core';
-import {NavParams} from 'ionic-angular';
-import {ChatSvc} from './chat.service';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { NavParams } from 'ionic-angular';
+import { ChatSvc } from './chat.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { WsSvc } from '../web-sockets-service';
 
 @Component({
 	templateUrl: './chat.view.html'
 })
-export class ChatCom{
+export class ChatCom {
 
 	private chatMessages$:any;
 	private sendMessageForm: FormGroup;
+	private chat: any;
+	private messageInput: string;
 
 	constructor(
-		private svc:ChatSvc,
+		private svc: ChatSvc,
 		private formBuilder: FormBuilder,
-		private params: NavParams
+		private params: NavParams,
+		private ws: WsSvc
 	){
 		this.chatMessages$ = svc.chatMessages$;
-		this.svc.init(this.params.get("_id"));
-		this.sendMessageForm = this.formBuilder.group({
-			messageInput: ['', [<any>Validators.required]]
-		});
+		this.chat = this.params.get("chat");
+		this.svc.init(this.chat._id);
 	}
 
-	sendMessage(messageForm){
-		let message = <string>messageForm.value.messageInput;
-		if(message !== ""){
-			this.svc.sendMessage(messageForm.value.messageInput);
-			this.clearInput();
+	sendMessage($event){
+		$event.preventDefault();
+		$event.stopPropagation();
+
+		if(this.messageInput !== ""){
+			this.svc.sendMessage(this.messageInput);
+			this.messageInput  = "";
 		}
-	}
-
-	clearInput(){
-    this.sendMessageForm.patchValue({messageInput: ""});
 	}
 
 	ngOnDestroy(){

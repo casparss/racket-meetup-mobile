@@ -1,1 +1,1 @@
-export * from './followers.component';
+export * from './followers.module';

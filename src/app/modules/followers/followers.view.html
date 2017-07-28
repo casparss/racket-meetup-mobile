@@ -6,38 +6,42 @@
 
 <ion-content>
 
-	<div [attr.text-center]="isIOS ? 'padding' : null">
-		<ion-segment [(ngModel)]="selectedSegment">
-      <ion-segment-button value="following">
-				Following ({{(followers.following$ | async)?.length}})
-			</ion-segment-button>
-			<ion-segment-button value="followers">
-				Followers ({{(followers.followers$ | async)?.length}})
-			</ion-segment-button>
-		</ion-segment>
-	</div>
+	<ion-segment [(ngModel)]="selectedSegment">
+    <ion-segment-button value="following">
+			Following ({{(followingCollection.$ | async)?.length}})
+		</ion-segment-button>
+		<ion-segment-button value="followers">
+			Followers ({{(followersCollection.$ | async)?.length}})
+		</ion-segment-button>
+	</ion-segment>
 
 	<ion-list>
 
     <div [hidden]="selectedSegment !== 'followers'">
 
-      <ion-item
-  			*ngFor="let user of followers.followers$ | async"
+      <button ion-item
+  			*ngFor="let user of followersCollection.$ | async"
   			(click)="openProfile(user)"
   		>
-  			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
-  		</ion-item>
+				<ion-avatar item-left>
+					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
+				</ion-avatar>
+  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
+  		</button>
 
     </div>
 
     <div [hidden]="selectedSegment !== 'following'">
 
-      <ion-item
-  			*ngFor="let user of followers.following$ | async"
+      <button ion-item
+  			*ngFor="let user of followingCollection.$ | async"
   			(click)="openProfile(user)"
   		>
-  			{{ (user | async)?.details.firstName + " " + (user | async)?.details.lastName }}
-  		</ion-item>
+				<ion-avatar item-left>
+					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
+				</ion-avatar>
+  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
+  		</button>
 
     </div>
 

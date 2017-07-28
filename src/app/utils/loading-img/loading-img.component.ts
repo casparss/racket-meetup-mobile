@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'loading-img',
   template: `
     <ion-spinner *ngIf="isLoading" icon="spiral" class="spinner-stable"></ion-spinner>
-    <img [hidden]="isLoading" (load)="onLoad()" src="{{src}}" />
+    <img [hidden]="isLoading" (load)="onLoad()" [src]="src" />
   `,
   styles: [`
     :host {

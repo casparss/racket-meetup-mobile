@@ -1,12 +1,7 @@
-profile-main,
-.profile-main-com{
+profile-main {
 
 	$text-colour: #fff;
 	$background-colour:#16a086;
-
-	ion-list-header.component-header ion-label.label-ios{
-		margin-top:30px;
-	}
 
 	.content-background{
 		background: $white;
@@ -17,7 +12,10 @@ profile-main,
 		color:$text-colour;
 		background: $primary-gradient;
 
-		loading-img{
+		loading-img {
+			&.no-photo-avatar{
+				opacity: 0.5;
+			}
 			width:14rem;
 			height:14rem;
 			display:block;

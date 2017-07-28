@@ -8,7 +8,7 @@
 
 	<form
 		[formGroup]='mydetailsForm'
-		(ngSubmit)='userSvc.updateDetails(mydetailsForm.value, mydetailsForm.valid, "details").subscribe()'
+		(ngSubmit)='updateDetails(mydetailsForm.value, mydetailsForm.valid)'
 		novalidate ion-list
 	>
 		<ion-list>
@@ -23,7 +23,7 @@
 					<loading-img [src]="userSvc.profileImage | async"></loading-img>
 	    	</ion-avatar>
 
-				<button image-uploader ion-button item-right>Change</button>
+				<button type="button" image-uploader ion-button item-right>Change</button>
 			</ion-item>
 
 			<ion-item-divider color="light">
@@ -37,7 +37,7 @@
 					type="password"
 					value="xxxxxxxxx"
 				></ion-input>
-				<button ion-button item-right (click)="changePassword()">Change</button>
+				<button type="button" ion-button item-right (click)="changePassword()">Change</button>
 			</ion-item>
 
 			<ion-item-divider color="light">

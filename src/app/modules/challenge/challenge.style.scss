@@ -1,44 +1,20 @@
-.challenge-com{
-
-	ion-grid{
-		height: 100%;
-	}
-
-	ion-row{
-		height:50%;
-	}
-
-	.top{
-
-	}
-
-	.opponents{
-
-	}
-
-
-
-
-	//this code is cut and pasted from games
-	//@#Test:0 Code should be shared.
-
+challenge {
 
 	.playerName{
 		text-align:center;
 		margin-top:10px;
 	}
 
-
-
-
-
-
 }
 
-opponents{
+opponents {
 	display: block;
 	background:$primary-gradient;
 	color: $white;
+
+	ion-grid.grid {
+		padding:0;
+	}
 
 	ion-grid ion-row{
 		@include flexVerticalCenter;

@@ -39,15 +39,17 @@ export class WelcomeCom{
 		let { onKeyboardShow, onKeyboardHide } = this.keyboard;
 
 		onKeyboardShow()
-			.subscribe(e => this._ngZone.run(() => this.isKeyboardShowing = true));
+			.subscribe(e => this._ngZone.run(() => this.isKeyboardShowing = true) );
 
 		onKeyboardHide()
 			.subscribe(e => {
-					this._ngZone.run(() => {
-						setTimeout(() => this.isKeyboardShowing = false, 1000);
-					});
+				let type = document.activeElement['type'];
+				if(type === "password" || type === "email") return;
 
+				this._ngZone.run(() => {
+					setTimeout(() => this.isKeyboardShowing = false, 1000);
 				});
+			});
 	}
 
 	toggle(){

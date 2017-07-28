@@ -29,7 +29,7 @@ export class AuthHttp {
 		return this.http.delete(url, opts);
 	}
 
-	private appendAuthHeader(opts: any) {
+	private appendAuthHeader(opts: any = {}) {
 		if(this.isSet()){
 			if( !(opts.headers instanceof Headers) ){
 				opts.headers = new Headers();

@@ -1,6 +1,7 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { AuthHttp } from './auth-http';
+import { ToastSvc } from '../../modules/toast/toast.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -13,9 +14,10 @@ export const extractValue = (res, key) =>
 @Injectable()
 export class DecHttp extends AuthHttp{
 
-	onMessage = new EventEmitter();
-
-	constructor(http: Http){ super(http); }
+	constructor(
+		http: Http,
+		private toastSvc: ToastSvc
+	){ super(http); }
 
 	get(httpArgs:HttpInt) {
 		return this._get(httpArgs)
@@ -57,7 +59,7 @@ export class DecHttp extends AuthHttp{
 	private checkMessage = (res) => {
 		let message = extractValue(res, "message");
 		if(message && message.length > 0){
-			this.onMessage.emit(message);
+			this.toastSvc.showMessage(message);
 		}
  	}
 
