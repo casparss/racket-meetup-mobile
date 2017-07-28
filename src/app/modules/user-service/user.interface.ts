@@ -10,18 +10,21 @@ export interface UserSignupInt {
 	lastName: string
 }
 
+export interface UserDetailsInt {
+	email: string,
+	firstName: string,
+	lastName: string,
+	password: string,
+	dob: Date,
+	image: string,
+	location: string
+}
+
 export interface UserInt{
+	token: string,
   _id:string,
 	id:string,
-	details:{
-		email: string,
-		password: string,
-		firstName: string,
-		lastName: string,
-		dob: Date,
-		image: string,
-		location: string,
-	},
+	details:UserDetailsInt,
 	stats: {
 		ranking: number,
 		matchesPlayed: number

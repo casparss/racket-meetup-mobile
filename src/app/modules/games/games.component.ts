@@ -1,8 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavParams, LoadingController } from 'ionic-angular';
 import { Observable, Subject } from 'rxjs';
 import { GameModel } from './game.model';
+import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from './games.service';
+import { findKey, once } from 'lodash';
+import { ModelSvc, GAME } from '../model-service/model.service';
 
 @Component({
   selector: 'games',
@@ -15,24 +18,23 @@ import { GamesSvc } from './games.service';
 
   <ion-content>
 
-    <ion-segment [(ngModel)]="selectedSegment">
-      <ion-segment-button value="pending">
-        Pending
+    <ion-segment (ionChange)="getByStatus()" [(ngModel)]="selectedSegment">
+      <ion-segment-button [disabled]="lengths.pending === 0" value="pending">
+        Pending ({{lengths.pending}})
       </ion-segment-button>
-      <ion-segment-button value="upcoming">
-        Upcoming
+      <ion-segment-button [disabled]="lengths.accepted === 0" value="accepted">
+        Upcoming ({{lengths.accepted}})
       </ion-segment-button>
-      <ion-segment-button value="previous">
-        Previous
-      </ion-segment-button>
-      <ion-segment-button value="cancelled">
-        Cancelled
+      <ion-segment-button [disabled]="(lengths.played + lengths.rejected + lengths.forfeit) === 0" value="played,rejected,forfeit">
+        Previous ({{(lengths.played + lengths.rejected + lengths.forfeit)}})
       </ion-segment-button>
     </ion-segment>
 
-    <ion-list>
+    <div *ngIf="isEmptyState()">No games yet</div>
+
+    <ion-list *ngIf="!isEmptyState()">
       <game-card
-        *ngFor="let gameModel of gamesList$ | async"
+        *ngFor="let gameModel of gamesListCollection.$ | async"
         [gameModel]="gameModel"
       ></game-card>
     </ion-list>
@@ -42,22 +44,73 @@ import { GamesSvc } from './games.service';
 })
 export class GamesCom {
 
-  private userId: string;
+  private user: any;
+  private requestedTab: any;
   private gamesListSubject: Subject<Array<GameModel>> = new Subject();
   private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
-  private selectedSegment = "upcoming";
+  private gamesListCollection: any;
+  private selectedSegment = "pending";
+  private lengths: any = {};
 
   constructor(
     private gamesSvc: GamesSvc,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private loadingCtrl: LoadingController,
+    private userSvc: UserSvc,
+    private modelSvc: ModelSvc
   ){
-    this.userId = this.navParams.get("_id");
-    this.getBySegment();
+    this.user = this.navParams.get("user") || this.userSvc.current;
+    this.requestedTab = this.navParams.get("requestedTab");
+    this.gamesListCollection = this.modelSvc.createCollection(GAME);
   }
 
-  getBySegment(){
-    this.gamesSvc.get(this.userId)
-      .subscribe((games: any) => this.gamesListSubject.next(games));
+  ngOnInit(){
+    this.user.statusLengths$.subscribe(lengths => {
+      this.lengths = lengths;
+      this.tabSelection();
+    });
+  }
+
+  private tabSelection = once(() => {
+    let { pending, accepted, played, rejected, forfeit } = this.lengths;
+    let areLengthsEmpty = () => !findKey(this.lengths, length => length > 0);
+
+    if(areLengthsEmpty()){
+      this.selectedSegment = "";
+    } else if(this.requestedTab){
+      this.selectedSegment = this.requestedTab;
+    } else if(pending > 0){
+      this.selectedSegment = 'pending';
+    } else if(accepted > 0){
+      this.selectedSegment = 'accepted';
+    } else {
+      this.selectedSegment = 'played,rejected,forfeit';
+    }
+
+    this.getByStatus();
+  });
+
+  isEmptyState(){
+    return this.selectedSegment === "";
+  }
+
+  getByStatus(){
+    let loading = this.loadingCtrl.create({
+      content: 'Loading games...',
+      showBackdrop: false
+    });
+
+    loading.present();
+
+    this.gamesSvc.getByStatus(this.user.user._id, this.selectedSegment)
+      .subscribe(({games}) => {
+        this.gamesListCollection.update(games);
+        loading.dismiss();
+      });
+  }
+
+  ngOnDestroy(){
+    this.gamesListCollection.destroy();
   }
 
 }

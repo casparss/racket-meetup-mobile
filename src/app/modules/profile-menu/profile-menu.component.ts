@@ -28,7 +28,7 @@ export class ProfileMenuCom{
 		private nav: NavController,
 		private userSvc: UserSvc
 	){
-		this.user = this.userSvc.current;
+		this.user = this.userSvc.current.user;
 	}
 
 	openPage(pageName: string): void{

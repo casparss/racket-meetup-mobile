@@ -6,26 +6,25 @@ import { UserSvc } from '../user-service/user.service';
 	template:`
 		<header>
 			<loading-img
-				[class.no-photo-avatar]="!(user$ | async)?.details.hasPhoto"
-				[src]="isCurrentUser ? (userSvc.profileImage | async) : userSvc.generateProfileImage(user$ | async)"
+				[src]="isCurrentUser ? (userSvc.profileImage | async) : user.generateProfileImage()"
 				alt=""></loading-img>
 
 			<h1 class="playerName">
-				{{(user$ | async)?.details.fullName}}
+				{{(user.$ | async)?.details.fullName}}
 			</h1>
 
 			<ion-grid class="playerInfo">
 				<ion-row>
 					<ion-col width-33>
-						<dd>{{(user$ | async)?.stats.ranking}}</dd>
+						<dd>{{(user.$ | async)?.stats.ranking}}</dd>
 						<dt>Ranking</dt>
 					</ion-col>
 					<ion-col width-33>
-						<dd>{{(user$ | async)?.stats.matchesPlayed}}</dd>
+						<dd>{{(user.$ | async)?.stats.matchesPlayed}}</dd>
 						<dt>Matches</dt>
 					</ion-col>
 					<ion-col width-33>
-						<dd>{{(user$ | async)?.details.location}}</dd>
+						<dd>{{(user.$ | async)?.details.location}}</dd>
 						<dt>
 							Location
 						</dt>
@@ -36,7 +35,7 @@ import { UserSvc } from '../user-service/user.service';
 	`
 })
 export class ProfileHeaderCom {
-	@Input() user$: any;
+	@Input() user: any;
 	@Input() isCurrentUser: boolean;
 	constructor(private userSvc: UserSvc){}
 }

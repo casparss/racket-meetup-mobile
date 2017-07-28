@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
+import { UserModel } from '../user-service/user.model';
 import { ViewController, ModalController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators, ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { UserInt } from '../user-service/user.interface';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from '../games/games.service';
 import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
+import { AvailabilityCom } from '../availability/availability.component';
 
 @Component({
   selector: 'challenge-time-date',
@@ -25,7 +26,12 @@ import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
 
     <form [formGroup]="selectDateAndTime" (ngSubmit)="select(selectDateAndTime.value, selectDateAndTime.valid)">
 
-      <availability [user$]="challenger$" [user2$]="challengee$"></availability>
+      <availability
+        [user]="challenger"
+        [user2]="challengee"
+        [selectedDay]="selectDateAndTime.controls.day.value"
+        [selectedPeriod]="selectDateAndTime.controls.period.value"
+      ></availability>
 
       <ion-row class="top">
         <ion-col width-100>
@@ -51,7 +57,7 @@ import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
             <ion-item>
               <ion-label primary>Day:</ion-label>
               <ion-icon name="calendar" item-left></ion-icon>
-              <ion-select formControlName="day">
+              <ion-select interface="popover" formControlName="day" (click)="availabilityCom.clearAnimationState()">
                 <ion-option
                   *ngFor="let day of days"
                   [value]="day.date"
@@ -104,18 +110,19 @@ export class ChallengeTimeDateCom {
   private timeMin: any;
   private timeMax: any;
   private selectDateAndTime: FormGroup;
-  private challenger$: Observable<UserInt>;
-  private challengee$: Observable<UserInt>;
+  private challenger: UserModel;
+  private challengee: UserModel;
   private periods: any;
+  @ViewChild(AvailabilityCom) availabilityCom: AvailabilityCom
 
 	constructor(
     private viewCtrl: ViewController,
     private formBuilder: FormBuilder,
     private utils: ChallengeTimeDateUtils
   ){
-    let { challenger$, challengee$ } = viewCtrl.data;
-    this.challenger$ = challenger$;
-		this.challengee$ = challengee$;
+    let { challenger, challengee } = viewCtrl.data;
+    this.challenger = challenger;
+		this.challengee = challengee;
     this.weeks = utils.weeks;
     this.periods = utils.periods;
     this.buildForm();

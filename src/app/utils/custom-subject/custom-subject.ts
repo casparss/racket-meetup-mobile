@@ -4,13 +4,18 @@ export class CustomSubject {
   public subject: Subject<any>;
   private value: any;
 
-  constructor(){
+  constructor(model?:any){
     this.subject = new Subject();
     this.subject.subscribe(value => this.value = value);
+    if(model) this.next(model);
+  }
+
+  protected get$(){
+    return this.subject.asObservable();
   }
 
   get $(){
-    return this.subject.asObservable();
+    return this.get$();
   }
 
   next(value){

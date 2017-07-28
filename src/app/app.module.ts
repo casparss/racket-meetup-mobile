@@ -21,14 +21,13 @@ import {TabsModule} from './modules/tabs/tabs.module';
 //Tabs controller
 import {TabsController} from './modules/tabs/tabs-controller.component';
 
-//Welcome module
+//I
 import { WelcomeModule } from './modules/welcome/welcome.module';
 import { RankingsListCom } from './modules/rankings-list/rankings-list.component';
 import { MessageListCom } from './modules/messages/message-list.component';
 
 //Welcome
 import { WelcomeCom } from './modules/welcome/welcome.component';
-import { ToastCom } from './modules/toast/toast.component';
 
 //Angular2 services
 import { FormsModule } from '@angular/forms';
@@ -37,6 +36,8 @@ import { HttpModule } from '@angular/http';
 //Services
 import { ColObjDifferFactory } from './utils/differs/collection-object-diff.ts';
 import { UserSvc } from './modules/user-service/user.service';
+import { UserUtils } from './modules/user-service/user.utils';
+import { UserModelSvc } from './modules/user-service/user.model.service';
 import { GamesSvc } from './modules/games/games.service';
 import { DecHttp } from './utils/http/';
 import { ToastSvc } from './modules/toast/toast.service';
@@ -44,9 +45,13 @@ import { WsSvc } from './modules/web-sockets-service/web-sockets.service';
 import { MessagesSvc } from './modules/messages/messages.service';
 import { ConfigSvc } from './modules/config/config.service';
 
+//imports
+import { ModelSvcModule } from './modules/model-service/model-service.module'
+
 @NgModule({
-  declarations: [RacketMeetupApp, ToastCom],
+  declarations: [RacketMeetupApp],
   imports: [
+    ModelSvcModule,
     FormsModule,
     HttpModule,
     BrowserModule,
@@ -59,7 +64,6 @@ import { ConfigSvc } from './modules/config/config.service';
     RacketMeetupApp,
     TabsController,
     WelcomeCom,
-    ToastCom,
     RankingsListCom,
     MessageListCom
   ],
@@ -72,6 +76,8 @@ import { ConfigSvc } from './modules/config/config.service';
   	WsSvc,
   	DecHttp,
   	UserSvc,
+    UserUtils,
+    UserModelSvc,
     GamesSvc,
     ConfigSvc,
   	WsSvc,

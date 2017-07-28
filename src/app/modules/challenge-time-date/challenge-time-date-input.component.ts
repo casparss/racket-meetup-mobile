@@ -3,6 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { UserInt } from '../user-service/user.interface';
+import { UserModel } from '../user-service/user.model';
 import { ChallengeTimeDateCom } from './challenge-time-date.component';
 
 @Component({
@@ -30,8 +31,8 @@ export class ChallengeTimeDateInputCom implements ControlValueAccessor {
   private value: any;
   private propagateChange = (_: any) => {};
 
-  @Input() challenger$: Observable<UserInt>;
-  @Input() challengee$: Observable<UserInt>;
+  @Input() challenger: UserModel;
+  @Input() challengee: UserModel;
 
   constructor(private modalController: ModalController){}
 
@@ -47,8 +48,8 @@ export class ChallengeTimeDateInputCom implements ControlValueAccessor {
 
   openDateTime(){
 		let dateTimeModal = this.modalController.create(ChallengeTimeDateCom, {
-			challenger$: this.challenger$,
-			challengee$: this.challengee$
+			challenger: this.challenger,
+			challengee: this.challengee
 		});
 
 		dateTimeModal.onDidDismiss(data => {

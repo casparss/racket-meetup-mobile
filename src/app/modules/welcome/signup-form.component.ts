@@ -72,6 +72,7 @@ export class SignupFormCom{
 
 	signup(user, isValid:boolean){
 		if(isValid){
+			this.spinnerDialog.show("Signing up...", "Signing up...", true);
 			this.svc.signup(user)
 				.subscribe(
 					() => this.nav.push(TabsController),

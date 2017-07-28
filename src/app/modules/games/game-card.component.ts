@@ -1,95 +1,113 @@
 import { Component, Input } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { GameInt } from './games.interfaces';
 import { GamesSvc } from './games.service';
 import { UserSvc } from '../user-service';
+import { GameDetailsCom } from './game-details.component';
 
 const findUser = (side, currentUserId) =>
 	side.find(({ user }) => user._id === currentUserId);
 
-const TITLES = {
-	pending: 'Challenge',
-	accepted: 'Match',
-	rejected: 'Match (rejected)',
-	forfeit: 'Match (forfeit)',
-	played: 'Match (played)'
+const STATUS_TEXT = {
+	pending: '',
+	accepted: '',
+	rejected: '(rejected)',
+	forfeit: '(forfeit)',
+	played: '(played)'
+};
+
+const STATUS_COLOUR = {
+	pending: '',
+	accepted: '',
+	rejected: '(rejected)',
+	forfeit: '(forfeit)',
+	played: '(played)'
+};
+
+let BALL_STATE_COLOR_HASH = {
+	pending: "yellow",
+	accepted: "primary",
+	rejected: "grey",
+	forfeit: "grey",
+	played: "grey"
+};
+
+let TEXT_STATE_COLOR_HASH = {
+	pending: "primary",
+	accepted: "primary",
+	rejected: "danger",
+	forfeit: "danger",
+	played: "primary"
 };
 
 @Component({
 	template:`
 		<ion-card [attr.status]="game.status">
+		<ion-list>
+			<ion-item>
+				<ion-icon
+					name="tennisball" [color]="ballState(game)" item-left large></ion-icon>
+				<h2 item-left>
+					{{getTitle(game)}}
+					<span
+						class="status-text"
+						[attr.status]="game.status"
+						*ngIf="status(game, ['rejected', 'forfeit', 'played'])"
+					>
+						{{getStatus(game)}}
+					</span>
+				</h2>
+				<button
+					ion-button
+					icon-left
+					item-right
+					outline
+					(click)="viewGameDetails(game)"
+					*ngIf="status(game, ['accepted', 'played'])">
+	        <ion-icon name="more"></ion-icon>
+	        View game
+	      </button>
 
-		  <ion-item>
-				<ion-row>
-					<ion-col col-9>
-						<h2>{{getTitle(game)}}</h2>
-						<p>{{game.date | date : 'EEEE, d/M/y'}}</p>
-					</ion-col>
-					<ion-col col-3 class="menu-col">
-						<button
-							*ngIf="status(game, ['accepted', 'played'])"
-							class="menu"
-							(click)="showActionSheet(game)"
-							icon-only
-						>
-							<ion-icon name="more"></ion-icon>
-						</button>
-					</ion-col>
-				</ion-row>
+			</ion-item>
+		</ion-list>
+		  <banner-player-score [gameModel]="gameModel"></banner-player-score>
+
+			<ion-item-group>
+				<ion-item>
+					<ion-icon name="pin" item-left large ></ion-icon>
+					<h2>{{game.venue}}</h2>
+				</ion-item>
+				<ion-item>
+					<ion-icon item-left large name="clock"></ion-icon>
+			    <h2>{{game.date | date :'shortTime'}}</h2>
+					<p>{{game.date | date : 'EEEE, d/M/y'}}</p>
+			  </ion-item>
+		  </ion-item-group>
+
+			<ion-item *ngIf="status(game, ['pending']) && !isAccepted()">
+	      <button ion-button icon-left item-left (click)="acceptChallenge(game)">
+	        <ion-icon name="thumbs-up"></ion-icon>
+	        Accept
+	      </button>
+
+				<button ion-button danger icon-left item-right outline color="primary">
+	        <ion-icon name="text"></ion-icon>
+	        Suggest changes
+	      </button>
+
+	      <button ion-button danger icon-left item-right color="danger" (click)="rejectChallenge(game)">
+	        <ion-icon name="text"></ion-icon>
+	        Reject
+	      </button>
 		  </ion-item>
 
-		  <ion-card-content>
-
-				<ion-grid class="details">
-					<ion-row>
-						<ion-col width-50>
-							<ion-icon name="clock"></ion-icon>
-						</ion-col>
-						<ion-col width-50>
-							<ion-icon name="pin"></ion-icon>
-						</ion-col>
-					</ion-row>
-					<ion-row>
-						<ion-col width-50>
-							{{game.date | date :'shortTime'}}
-						</ion-col>
-						<ion-col width-50>
-							{{game.venue}}
-						</ion-col>
-					</ion-row>
-				</ion-grid>
-
-				<ion-list class="players">
-					<ion-item>
-						<ion-thumbnail item-left>
-							<img [src]="userSvc.generateProfileImage(game.opponents.side1[0].user)">
-						</ion-thumbnail>
-						{{game.opponents.side1[0].user.details.fullName}}
-					</ion-item>
-					<ion-item>
-						<ion-thumbnail item-left>
-							<img [src]="userSvc.generateProfileImage(game.opponents.side2[0].user)">
-						</ion-thumbnail>
-						{{game.opponents.side2[0].user.details.fullName}}
-					</ion-item>
-				</ion-list>
-
-		  </ion-card-content>
-
-		  <ion-row *ngIf="!isGameAccepted">
-		    <ion-col>
-		      <button ion-button icon-left clear small (click)="acceptChallenge(game)">
-		        <ion-icon name="thumbs-up"></ion-icon>
-		        <div>Accept</div>
-		      </button>
-		    </ion-col>
-		    <ion-col>
-		      <button ion-button icon-left clear small (click)="rejectChallenge(game)">
-		        <ion-icon name="text"></ion-icon>
-		        <div>Reject</div>
-		      </button>
-		    </ion-col>
-		  </ion-row>
+			<ion-item *ngIf="status(game, ['pending']) && isAccepted()">
+	      <button ion-button danger icon-left item-right color="danger" (click)="rejectChallenge(game)">
+	        <ion-icon name="text"></ion-icon>
+	        Cancel match challenge
+	      </button>
+		  </ion-item>
 
 		</ion-card>
   `,
@@ -106,7 +124,8 @@ export class GameCardCom {
 	constructor(
 		private gamesSvc: GamesSvc,
 		private userSvc: UserSvc,
-		private actionSheet: ActionSheet
+		private actionSheet: ActionSheet,
+		private nav: NavController
 	){}
 
 	ngOnInit(){
@@ -119,12 +138,8 @@ export class GameCardCom {
 		this.isGameAccepted = this.isAccepted();
 	}
 
-	getTitle({ status }){
-		return TITLES[status];
-	}
-
 	isAccepted(){
-		let currentUserId = this.userSvc.current._id;
+		let currentUserId = this.userSvc.current.user._id;
 		let { side1, side2 } = this.game.opponents;
 		let user = findUser(side1, currentUserId) || findUser(side2, currentUserId);
 		return user ? user.accepted : null;
@@ -132,6 +147,10 @@ export class GameCardCom {
 
 	status({ status }, list){
 		return !!list.find(state => state === status);
+	}
+
+	viewGameDetails(){
+		this.nav.push(GameDetailsCom, { gameModel: this.gameModel });
 	}
 
 	acceptChallenge({ _id }){
@@ -164,6 +183,22 @@ export class GameCardCom {
 		  buttonLabels: this.actionSheetActions.map(action => action.label),
 			addCancelButtonWithLabel: 'Cancel',
 		};
+	}
+
+	ballState({ status }){
+		return BALL_STATE_COLOR_HASH[status];
+	}
+
+	getTitle({ status, gameType }){
+		return `${gameType} ${status === 'pending' ? 'challenge' : ''}`;
+	}
+
+	getStatus({ status }){
+		return STATUS_TEXT[status];
+	}
+
+	statusColorState({ status }){
+		return TEXT_STATE_COLOR_HASH[status];
 	}
 
 }

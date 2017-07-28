@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-navbar>
-		<ion-title>Chat with other</ion-title>
+		<ion-title>Chat with {{chat.otherUser.details.firstName}}</ion-title>
 	</ion-navbar>
 </ion-header>
 
@@ -10,28 +10,33 @@
 
 		<section class="messages">
 
-			<section>
-				<div *ngFor="let message of chatMessages$ | async">
-					<h3 class="msg--date">{{message.createdAt | date:"dd/MM/yy"}}</h3>
-
-					<div class="msg msg--{{message.isMe() ? 'them' : 'me'}}">
-						<blockquote>{{message.message}}</blockquote>
-					</div>
+			<div *ngFor="let message of chatMessages$ | async" [ngSwitch]="message.type">
+				<div class="msg--date-wrapper" *ngSwitchCase="'date'">
+					<h3 class="msg--date">{{message.calendarDate()}}</h3>
 				</div>
-			</section>
+
+				<div *ngSwitchCase="'message'" class="msg msg--{{message.isMe() ? 'them' : 'me'}}">
+					<loading-img [src]="message.avatar"></loading-img>
+					<blockquote>{{message.message}}</blockquote>
+				</div>
+			</div>
 
 		</section>
 
 		<footer>
 
-			<form
-				[formGroup]="sendMessageForm"
-				(ngSubmit)="sendMessage(sendMessageForm)"
-				novalidate
-			>
-				<textarea formControlName="messageInput" type="text" placeholder="Your message"></textarea>
-				<div class="msg-send"><button ion-button>Send</button></div>
-			</form>
+			<textarea
+				[(ngModel)]="messageInput"
+				[disabled]="!(ws.connected$ | async)"
+				type="text"
+				placeholder="Your message"
+				name="sendMessage"></textarea>
+			<div class="msg-send">
+			<button
+				ion-button
+				[disabled]="!(ws.connected$ | async)"
+				(mousedown)="sendMessage($event)">Send</button>
+			</div>
 
 		</footer>
 
