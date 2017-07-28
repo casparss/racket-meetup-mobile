@@ -25,7 +25,7 @@ import { ModelSvc, USER } from '../model-service/model.service';
   	</ion-toolbar>
 
   	<ion-list>
-  		<ion-item
+  		<button ion-item
   			*ngFor="let user of playersCollection.$ | async"
   			(click)="openProfile(user)"
   		>
@@ -33,7 +33,7 @@ import { ModelSvc, USER } from '../model-service/model.service';
 					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
 				</ion-avatar>
   			{{ (user.$ | async)?.details.fullName }}
-  		</ion-item>
+  		</button>
   	</ion-list>
   </ion-content>
 

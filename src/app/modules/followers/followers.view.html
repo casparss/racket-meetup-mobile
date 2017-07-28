@@ -19,7 +19,7 @@
 
     <div [hidden]="selectedSegment !== 'followers'">
 
-      <ion-item
+      <button ion-item
   			*ngFor="let user of followersCollection.$ | async"
   			(click)="openProfile(user)"
   		>
@@ -27,13 +27,13 @@
 					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
 				</ion-avatar>
   			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-  		</ion-item>
+  		</button>
 
     </div>
 
     <div [hidden]="selectedSegment !== 'following'">
 
-      <ion-item
+      <button ion-item
   			*ngFor="let user of followingCollection.$ | async"
   			(click)="openProfile(user)"
   		>
@@ -41,7 +41,7 @@
 					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
 				</ion-avatar>
   			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-  		</ion-item>
+  		</button>
 
     </div>
 

@@ -90,7 +90,7 @@ export class ProfileActionsCom {
 
 	messagePlayer(){
 		this.messagesSvc.getChat([this.userModel._id])
-      .subscribe(({ _id }) => this.nav.push(ChatCom, { _id }));
+      .subscribe(chat => this.nav.push(ChatCom, { chat }));
 	}
 
 	toggleFollow(){

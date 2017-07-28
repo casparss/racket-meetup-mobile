@@ -5,7 +5,11 @@ import { ToastController } from 'ionic-angular';
 export class ToastSvc {
 	constructor(private toastController: ToastController){}
 
-	showMessage(message:string, duration:number = 3000){
-		this.toastController.create({ message, duration	}).present();
+	showMessage(message:string, duration:number = 3000, position: string = "bottom"){
+		this.toastController.create({
+			position: position,
+			message,
+			duration
+		}).present();
 	}
 }
