@@ -26,6 +26,12 @@ export class WsSvc{
 	}
 
 	private setEvents(){
+		this.socket.on("connect", () => this.connected$.next(true));
+		this.socket.on("reconnect", () => this.connected$.next(true));
+		this.socket.on("disconnect", () => this.connected$.next(false));
+		this.connected$.subscribe(console.log);
+
+		//@TODO: for debugging purposes - remove when finished with chat feature
 		this.socket.on("connect_error", () => console.log("connect_error") );
 		this.socket.on("connect_timeout", () => console.log("connect_timeout") );
 		this.socket.on("reconnect", () => console.log("reconnect") );
@@ -35,15 +41,6 @@ export class WsSvc{
 		this.socket.on("reconnect_failed", () => console.log("reconnect_failed") );
 		this.socket.on("connect", () => console.log("connect") );
 		this.socket.on("disconnect", () => console.log("disconnect") );
-
-
-
-
-		this.socket.on("connect", () => this.connected$.next(true));
-		this.socket.on("reconnect", () => this.connected$.next(true));
-		this.socket.on("disconnect", () => this.connected$.next(false));
-		this.connected$.subscribe(console.log);
-
 	}
 
 	on(eventName: string, cb){

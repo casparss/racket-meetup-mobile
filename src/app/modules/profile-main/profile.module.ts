@@ -9,7 +9,7 @@ import { LoadingImgModule } from '../../utils/loading-img';
 import { ChallengeModule } from '../challenge';
 import { FollowersModule } from '../followers'
 
-import { ChatCom } from '../messages/chat.component';
+import { ChatModule } from '../chat/chat.module';
 import { ProfileActionsCom } from './profile-actions.component'
 import { ProfileHeaderCom } from './profile-header.component';
 import { ProfileMainCom } from './profile-main.component';
@@ -29,12 +29,12 @@ import { MydetailsCom } from '../my-details/my-details.component';
     MydetailsModule,
     LoadingImgModule,
     ChallengeModule,
-    FollowersModule
+    FollowersModule,
+    ChatModule
   ],
   entryComponents: [
     MydetailsCom,
-    ProfileMainCom,
-    ChatCom
+    ProfileMainCom
   ],
   exports: [
     ProfileMainCom

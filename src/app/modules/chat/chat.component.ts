@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { WsSvc } from '../web-sockets-service';
 
 @Component({
+	selector: 'chat',
 	templateUrl: './chat.view.html'
 })
 export class ChatCom {

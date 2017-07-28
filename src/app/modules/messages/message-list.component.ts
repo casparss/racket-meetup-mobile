@@ -3,7 +3,7 @@ import { messagesModel } from './messages.fixture';
 import { NavController, App } from 'ionic-angular';
 import { MessageItemInt } from './messages.interface';
 import { MessagesSvc } from './messages.service';
-import { ChatCom } from './chat.component';
+import { ChatCom } from '../chat/chat.component';
 import { WsSvc } from '../web-sockets-service';
 
 @Component({
@@ -23,7 +23,7 @@ export class MessageListCom{
 		this.chats$ = this.svc.chats$;
 	}
 
-	ngOnInit(){
+	ionViewDidEnter() {
 		this.svc.getChats().subscribe();
 	}
 

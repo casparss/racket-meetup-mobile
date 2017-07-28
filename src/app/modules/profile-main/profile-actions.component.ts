@@ -11,7 +11,7 @@ import { MessagesSvc } from '../messages/messages.service';
 import { MydetailsCom } from '../my-details/my-details.component';
 import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
-import { ChatCom } from '../messages/chat.component';
+import { ChatCom } from '../chat/chat.component';
 import { GamesCom } from '../games/games.component';
 
 @Component({
