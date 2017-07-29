@@ -13,27 +13,23 @@ export class ChatCom {
 	private chatMessages$:any;
 	private sendMessageForm: FormGroup;
 	private chat: any;
-	private messageInput: string;
 
 	constructor(
 		private svc: ChatSvc,
 		private formBuilder: FormBuilder,
-		private params: NavParams,
-		private ws: WsSvc
+		private params: NavParams
 	){
 		this.chatMessages$ = svc.chatMessages$;
 		this.chat = this.params.get("chat");
 		this.svc.init(this.chat._id);
 	}
 
-	sendMessage($event){
-		$event.preventDefault();
-		$event.stopPropagation();
+	sendMessage(message){
+		this.svc.sendMessage(message);
+	}
 
-		if(this.messageInput !== ""){
-			this.svc.sendMessage(this.messageInput);
-			this.messageInput  = "";
-		}
+	trackById(index: number, message: any){
+		return message._id;
 	}
 
 	ngOnDestroy(){

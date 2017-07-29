@@ -4,11 +4,12 @@ import { ChatModule } from '../chat';
 import { MessageListCom } from './message-list.component';
 import { MessagesSvc } from './messages.service';
 import { LoadingImgModule } from '../../utils/loading-img';
+import { FollowersModule } from '../followers';
 
 
 @NgModule({
   declarations: [MessageListCom],
-  imports: [IonicModule, LoadingImgModule],
+  imports: [IonicModule, LoadingImgModule, FollowersModule],
   exports: [MessageListCom],
   providers: [MessagesSvc]
 })

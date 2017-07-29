@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { Platform } from 'ionic-angular';
 import { BehaviorSubject } from 'rxjs';
 import * as io from 'socket.io-client';
 import { ConfigSvc } from '../config/config.service';
@@ -15,7 +16,8 @@ export class WsSvc{
 
 	constructor(
 		private configSvc: ConfigSvc,
-		private toastSvc: ToastSvc
+		private toastSvc: ToastSvc,
+		private platform: Platform
 	){}
 
 	init(token){
@@ -29,18 +31,9 @@ export class WsSvc{
 		this.socket.on("connect", () => this.connected$.next(true));
 		this.socket.on("reconnect", () => this.connected$.next(true));
 		this.socket.on("disconnect", () => this.connected$.next(false));
+		this.platform.pause.subscribe(() => this.socket.disconnect());
+		this.platform.resume.subscribe(() => this.socket.open());
 		this.connected$.subscribe(console.log);
-
-		//@TODO: for debugging purposes - remove when finished with chat feature
-		this.socket.on("connect_error", () => console.log("connect_error") );
-		this.socket.on("connect_timeout", () => console.log("connect_timeout") );
-		this.socket.on("reconnect", () => console.log("reconnect") );
-		this.socket.on("reconnect_attempt", () => console.log("reconnect_attempt") );
-		this.socket.on("reconnecting", () => console.log("reconnecting") );
-		this.socket.on("reconnect_error", () => console.log("reconnect_error") );
-		this.socket.on("reconnect_failed", () => console.log("reconnect_failed") );
-		this.socket.on("connect", () => console.log("connect") );
-		this.socket.on("disconnect", () => console.log("disconnect") );
 	}
 
 	on(eventName: string, cb){

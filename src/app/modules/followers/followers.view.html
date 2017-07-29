@@ -1,47 +1,85 @@
 <ion-header>
-	<ion-navbar>
-		<ion-title>Followers</ion-title>
-	</ion-navbar>
+	<ion-toolbar>
+
+		<ion-segment [(ngModel)]="selectedSegment">
+	    <ion-segment-button value="following">
+				Following ({{(followingCollection.$ | async)?.length}})
+			</ion-segment-button>
+			<ion-segment-button value="followers">
+				Followers ({{(followersCollection.$ | async)?.length}})
+			</ion-segment-button>
+		</ion-segment>
+
+		<ion-buttons end>
+      <button small icon-only ion-button (click)="viewCtrl.dismiss()">
+				<ion-icon name="close"></ion-icon>
+			</button>
+    </ion-buttons>
+
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-	<ion-segment [(ngModel)]="selectedSegment">
-    <ion-segment-button value="following">
-			Following ({{(followingCollection.$ | async)?.length}})
-		</ion-segment-button>
-		<ion-segment-button value="followers">
-			Followers ({{(followersCollection.$ | async)?.length}})
-		</ion-segment-button>
-	</ion-segment>
-
-	<ion-list>
+	<ion-list [ngSwitch]="isAddressBook">
 
     <div [hidden]="selectedSegment !== 'followers'">
 
-      <button ion-item
-  			*ngFor="let user of followersCollection.$ | async"
-  			(click)="openProfile(user)"
-  		>
-				<ion-avatar item-left>
-					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
-				</ion-avatar>
-  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-  		</button>
+			<div *ngSwitchCase="false">
+				<button
+					ion-item
+	  			*ngFor="let user of followersCollection.$ | async"
+	  			(click)="openProfile(user)"
+	  		>
+					<ion-avatar item-left>
+						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
+					</ion-avatar>
+	  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
+	  		</button>
+			</div>
+
+			<div *ngSwitchCase="true">
+				<ion-item
+	  			*ngFor="let user of followersCollection.$ | async"
+	  		>
+					<ion-avatar item-left>
+						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
+					</ion-avatar>
+	  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
+					<button ion-button item-end (click)="openChat(user)">Chat</button>
+	  		</ion-item>
+			</div>
 
     </div>
 
     <div [hidden]="selectedSegment !== 'following'">
 
-      <button ion-item
-  			*ngFor="let user of followingCollection.$ | async"
-  			(click)="openProfile(user)"
-  		>
-				<ion-avatar item-left>
-					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
-				</ion-avatar>
-  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-  		</button>
+			<div *ngSwitchCase="false">
+				<button
+					ion-item
+	  			*ngFor="let user of followingCollection.$ | async"
+	  			(click)="openProfile(user)"
+	  		>
+					<ion-avatar item-left>
+						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
+					</ion-avatar>
+	  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
+	  		</button>
+			</div>
+
+			<div *ngSwitchCase="true">
+
+				<ion-item
+					*ngFor="let user of followingCollection.$ | async"
+
+					>
+					<ion-avatar item-left>
+						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
+					</ion-avatar>
+					{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
+					<button ion-button item-end (click)="openChat(user)">Chat</button>
+				</ion-item>
+			</div>
 
     </div>
 

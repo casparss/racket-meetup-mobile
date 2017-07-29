@@ -10,7 +10,7 @@
 
 		<section class="messages">
 
-			<div *ngFor="let message of chatMessages$ | async" [ngSwitch]="message.type">
+			<div *ngFor="let message of (chatMessages$ | async); trackBy: trackById" [ngSwitch]="message.type">
 				<div class="msg--date-wrapper" *ngSwitchCase="'date'">
 					<h3 class="msg--date">{{message.calendarDate()}}</h3>
 				</div>
@@ -24,20 +24,7 @@
 		</section>
 
 		<footer>
-
-			<textarea
-				[(ngModel)]="messageInput"
-				[disabled]="!(ws.connected$ | async)"
-				type="text"
-				placeholder="Your message"
-				name="sendMessage"></textarea>
-			<div class="msg-send">
-			<button
-				ion-button
-				[disabled]="!(ws.connected$ | async)"
-				(mousedown)="sendMessage($event)">Send</button>
-			</div>
-
+			<text-dialogue (sendMessage)="sendMessage($event)"></text-dialogue>
 		</footer>
 
 	</div>

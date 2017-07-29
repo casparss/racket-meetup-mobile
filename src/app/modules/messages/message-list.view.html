@@ -1,18 +1,17 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-navbar>
     <ion-buttons start>
-      <button ion-button icon-only>
+      <button (click)="openAddressBook()" ion-button icon-only>
         <ion-icon name="create"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>Messages</ion-title>
-
-  </ion-toolbar>
+  </ion-navbar>
 </ion-header>
 
 <ion-content>
 	<ion-list>
-		<ion-item-sliding *ngFor="let chat of chats$ | async">
+		<ion-item-sliding *ngFor="let chat of (chats$ | async); trackBy: trackById">
 			<button [disabled]="!(ws.connected$ | async)" ion-item (click)="openMessage(chat)">
 				<ion-avatar item-left>
 					<loading-img src="{{chat.img}}"></loading-img>

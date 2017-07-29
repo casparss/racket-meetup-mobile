@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ViewController } from 'ionic-angular';
 import { ProfileMainCom } from '../profile-main/profile-main.component';
 import { UserInt } from '../user-service/user.interface';
 import { debounce } from 'lodash';
@@ -17,12 +17,15 @@ export class FollowersCom {
 	private followers: any;
 	private followersCollection: any;
 	private followingCollection: any;
+	private isAddressBook: boolean;
 
 	constructor(
 		private nav: NavController,
 		private followersSvc: FollowersSvc,
-		private modelSvc: ModelSvc
+		private modelSvc: ModelSvc,
+		private viewCtrl: ViewController
 	){
+		this.isAddressBook = viewCtrl.data.isAddressBook || false;
     this.followersCollection = this.modelSvc.createCollection(USER);
 		this.followingCollection = this.modelSvc.createCollection(USER);
 
@@ -32,6 +35,10 @@ export class FollowersCom {
 				this.followingCollection.update(followingThem);
 			});
   }
+
+	openChat(user){
+		this.viewCtrl.dismiss(user);
+	}
 
 	openProfile(user){
 		this.nav.push(ProfileMainCom, { user });

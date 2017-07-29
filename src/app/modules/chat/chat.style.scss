@@ -33,6 +33,11 @@ chat {
 			background: $toolbar-grey;
 		}
 
+		text-dialogue{
+			width: 100%;
+			display:block;
+		}
+
 		textarea {
 				border-radius: 5px;
 				width: 78.9%;
