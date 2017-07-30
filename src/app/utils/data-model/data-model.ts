@@ -11,7 +11,7 @@ export class DataModel {
   protected owners: Set<any> = new Set();
   protected _isPermanent: boolean = false;
 
-  constructor(injector, model, ownerInstance){
+  constructor(injector, model, ownerInstance, opts?){
     if(ownerInstance)
       this.owners.add(ownerInstance);
     else

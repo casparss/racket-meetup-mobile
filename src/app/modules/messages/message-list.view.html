@@ -11,13 +11,13 @@
 
 <ion-content>
 	<ion-list>
-		<ion-item-sliding *ngFor="let chat of (chats$ | async); trackBy: trackById">
+		<ion-item-sliding *ngFor="let chat of (chatCollection.$ | async); trackBy: trackById">
 			<button [disabled]="!(ws.connected$ | async)" ion-item (click)="openMessage(chat)">
 				<ion-avatar item-left>
-					<loading-img src="{{chat.img}}"></loading-img>
+					<loading-img [src]="(chat.$ | async)?.img"></loading-img>
 				</ion-avatar>
-				<h2>{{chat.otherUser.details.fullName}}</h2>
-				<p>{{(chat.preview[0] || {}).message}}</p>
+				<h2>{{(chat.$ | async)?.otherUser.details.fullName}}</h2>
+				<p>{{((chat.$ | async)?.preview[0] || {}).message}}</p>
 			</button>
 			<ion-item-options>
 				<button primary>

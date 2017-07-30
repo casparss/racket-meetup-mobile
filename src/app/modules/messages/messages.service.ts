@@ -22,19 +22,6 @@ export class MessagesSvc extends BaseService{
 		this._chats$ = this.create$('chats');
 	}
 
-	get chats$(){
-		return this._chats$.map(data => data.map(chat => this.addChatMetaData(chat)));
-	}
-
-	addChatMetaData(chat){
-		let user = reject(chat.participants,
-			(user:any) =>  user._id === this.userSvc.current.user._id
-		);
-		chat.otherUser = user[0];
-		chat.img = this.userUtils.generateProfileImage(chat.otherUser);
-		return chat;
-	}
-
 	getChats(){
 		return this._get('chats');
 	}
@@ -44,8 +31,7 @@ export class MessagesSvc extends BaseService{
       search: HttpUtils.urlParams({
         userIds: patricipants.join(',')
       })
-    }, "chat")
-			.map(chat => this.addChatMetaData(chat))
+    }, "chat");
   }
 
 }

@@ -13,6 +13,7 @@ import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
 import { ChatCom } from '../chat/chat.component';
 import { GamesCom } from '../games/games.component';
+import { ModelSvc } from '../model-service/model.service';
 
 @Component({
 	selector:'profile-actions',
@@ -64,7 +65,8 @@ export class ProfileActionsCom {
 		private modalController : ModalController,
 		private userSvc: UserSvc,
     private messagesSvc: MessagesSvc,
-		private gamesSvc: GamesSvc
+		private gamesSvc: GamesSvc,
+		private modelSvc: ModelSvc
 	){
 		this.setIsFriend();
 	}
@@ -90,7 +92,9 @@ export class ProfileActionsCom {
 
 	messagePlayer(){
 		this.messagesSvc.getChat([this.userModel._id])
-      .subscribe(chat => this.nav.push(ChatCom, { chat }));
+			.subscribe(chat => this.nav.push(ChatCom, {
+				chatModel: this.modelSvc.create(chat, null)
+			}));
 	}
 
 	toggleFollow(){

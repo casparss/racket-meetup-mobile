@@ -8,7 +8,7 @@ export class GameModel extends DataModel {
   public side1: any;
   public side2: any;
 
-  constructor(injector, userModel, ownerInstance){
+  constructor(injector, userModel, ownerInstance, opts?){
     super(injector, userModel, ownerInstance);
     this.modelSvc = injector.get(ModelSvc);
     this.subscribe();

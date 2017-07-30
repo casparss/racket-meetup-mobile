@@ -1,4 +1,5 @@
 import { Injectable, Injector, EventEmitter } from '@angular/core';
+import { mapValues, remove } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
 import { UserUtils } from '../user-service/user.utils';
@@ -7,21 +8,23 @@ import { DataModel } from '../../utils/data-model'
 import { UserModel } from '../user-service/user.model';
 import { GameModel } from '../games/game.model';
 import { RankingModel } from '../rankings-list/ranking.model';
-import { mapValues, findIndex, remove } from 'lodash';
+import { ChatModel } from '../chat/chat.model';
 
 export const USER = 'User';
 export const GAME = 'Game';
 export const RANKING = 'Ranking';
+export const CHAT = 'Chat';
 
-const MODEL_TYPES = {
+export const MODEL_TYPES = {
   [USER]: UserModel,
   [GAME]: GameModel,
-  [RANKING]: RankingModel
+  [RANKING]: RankingModel,
+  [CHAT]: ChatModel
 };
 
 const modelRegistry = mapValues(MODEL_TYPES, () => []);
 
-const create = (injector, rawData: any, ownerInstance: any) => {
+const create = (injector, rawData: any, ownerInstance: any, opts) => {
   let { modelType } = rawData;
 
   if(!modelType) throw new Error("No model type property on object");
@@ -35,7 +38,7 @@ const create = (injector, rawData: any, ownerInstance: any) => {
     preExistingModel.update(rawData, ownerInstance);
     return preExistingModel;
   } else {
-    let newModel =  new ModelType(injector, rawData, ownerInstance);
+    let newModel =  new ModelType(injector, rawData, ownerInstance, opts);
     collection.push(newModel);
     return newModel;
   }
@@ -46,12 +49,12 @@ export class ModelSvc {
   private deps: any;
   constructor(private injector: Injector){}
 
-  create(rawData: any, ownerInstance?: any){
-    return create(this.injector, rawData, ownerInstance)
+  create(rawData: any, ownerInstance: any, opts = {}){
+    return create(this.injector, rawData, ownerInstance, opts)
   }
 
-  createCollection(type: string, objectArray: Array<any> = []){
-    let collection = new Collection(type, this.injector, objectArray);
+  createCollection(type: string, opts = {}){
+    let collection = new Collection(type, this.injector, opts);
     collection.onDestroy.subscribe(type => this.cleanUpRedundentModels(type));
     return collection;
   }
@@ -63,15 +66,17 @@ export class ModelSvc {
 
 let id = 0;
 
-class Collection {
+export class Collection {
   public id: number;
   public onDestroy = new EventEmitter();
   private collectionSubject: BehaviorSubject<any>;
   private $: Observable<any>;
+  private opts: any;
 
-  constructor(public type: string, private injector, objectArray = []){
+  constructor(public type: string, private injector, opts){
     this.id = id++;
-    this.collectionSubject = new BehaviorSubject(this.transformToModel(objectArray));
+    this.opts = opts;
+    this.collectionSubject = new BehaviorSubject(this.transformToModel(opts.data ? opts.data : []));
     this.$ = this.collectionSubject.asObservable();
   }
 
@@ -99,7 +104,7 @@ class Collection {
   transformToModel(objectArray = []){
     let ModelType = MODEL_TYPES[this.type];
     return !(objectArray[0] instanceof MODEL_TYPES[this.type]) ?
-      objectArray.map(object => create(this.injector, object, this)):
+      objectArray.map(object => create(this.injector, object, this, this.opts)):
       objectArray;
   }
 }

@@ -1,39 +1,32 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import { ChatSvc } from './chat.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { WsSvc } from '../web-sockets-service';
+import { ChatModel } from '../chat/chat.model';
 
 @Component({
 	selector: 'chat',
-	templateUrl: './chat.view.html'
+	templateUrl: './chat.view.html',
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatCom {
+	private chatModel: ChatModel;
 
-	private chatMessages$:any;
-	private sendMessageForm: FormGroup;
-	private chat: any;
-
-	constructor(
-		private svc: ChatSvc,
-		private formBuilder: FormBuilder,
-		private params: NavParams
-	){
-		this.chatMessages$ = svc.chatMessages$;
-		this.chat = this.params.get("chat");
-		this.svc.init(this.chat._id);
+	constructor(private params: NavParams){
+		this.chatModel = this.params.get("chatModel");
+		this.chatModel.getMessageHistory();
 	}
 
 	sendMessage(message){
-		this.svc.sendMessage(message);
+		this.chatModel.sendMessage(message);
 	}
 
 	trackById(index: number, message: any){
 		return message._id;
 	}
 
-	ngOnDestroy(){
-		this.svc.destroy();
+	ionViewDidEnter(){
+
 	}
 
 }

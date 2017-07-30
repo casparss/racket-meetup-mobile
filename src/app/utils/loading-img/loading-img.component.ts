@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'loading-img',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-spinner *ngIf="isLoading" icon="spiral" class="spinner-stable"></ion-spinner>
     <img [hidden]="isLoading" (load)="onLoad()" [src]="src" />

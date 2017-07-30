@@ -7,7 +7,7 @@ export class RankingModel extends DataModel {
   public position: number;
   private faux_id: number;
 
-  constructor(injector, userModel, ownerInstance){
+  constructor(injector, userModel, ownerInstance, opts?){
     super(injector, userModel, ownerInstance);
     this.modelSvc = injector.get(ModelSvc);
     this.faux_id = Math.floor(Math.random() * 10000000000);

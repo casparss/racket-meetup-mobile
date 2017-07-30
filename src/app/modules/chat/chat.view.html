@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-navbar>
-		<ion-title>Chat with {{chat.otherUser.details.firstName}}</ion-title>
+		<ion-title>Chat with {{(chatModel.$ | async)?.otherUser.details.firstName}}</ion-title>
 	</ion-navbar>
 </ion-header>
 
@@ -10,13 +10,13 @@
 
 		<section class="messages">
 
-			<div *ngFor="let message of (chatMessages$ | async); trackBy: trackById" [ngSwitch]="message.type">
+			<div *ngFor="let message of chatModel.conversation$ | async; trackBy: trackById" [ngSwitch]="message.type">
 				<div class="msg--date-wrapper" *ngSwitchCase="'date'">
 					<h3 class="msg--date">{{message.calendarDate()}}</h3>
 				</div>
 
 				<div *ngSwitchCase="'message'" class="msg msg--{{message.isMe() ? 'them' : 'me'}}">
-					<loading-img [src]="message.avatar"></loading-img>
+					<img [src]="message.avatar" />
 					<blockquote>{{message.message}}</blockquote>
 				</div>
 			</div>
