@@ -11,10 +11,12 @@ import { ChatModel } from '../chat/chat.model';
 })
 export class ChatCom {
 	private chatModel: ChatModel;
+	private conversation: any = [];
 
 	constructor(private params: NavParams){
 		this.chatModel = this.params.get("chatModel");
 		this.chatModel.getMessageHistory();
+		this.chatModel.conversation$.subscribe(conversation => this.conversation = conversation);
 	}
 
 	sendMessage(message){
@@ -26,7 +28,7 @@ export class ChatCom {
 	}
 
 	ionViewDidEnter(){
-
+		this.chatModel.setUpToDate();
 	}
 
 }

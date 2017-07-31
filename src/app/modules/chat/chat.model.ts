@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { DataModel } from '../../utils/data-model';
 import { ModelSvc } from '../model-service/model.service';
 import { UserUtils } from '../user-service/user.utils';
@@ -8,6 +9,7 @@ export class ChatModel extends DataModel {
   private modelSvc: ModelSvc;
   private userUtils: UserUtils;
   private currentUser_id: string;
+  public upToDateStatus$: Subject<boolean> = new Subject();
 
   constructor(injector, chatModel, ownerInstance, opts?){
     super(injector, chatModel, ownerInstance);
@@ -34,12 +36,10 @@ export class ChatModel extends DataModel {
 	}
 
   getMessageHistory(){
-    console.time("getMessageHistory()");
 		this.ws.socket.emit("request:messagehistory", this._id, messages => this.updateMessageHistory(messages));
 	}
 
   updateMessageHistory(messageHistory = []){
-    console.timeEnd("getMessageHistory()");
     let chat = this.getRawValue();
     chat.conversation = messageHistory;
     this.next(chat);
@@ -52,6 +52,18 @@ export class ChatModel extends DataModel {
       this.next(chat);
     }
 	}
+
+  setUpToDate(){
+    if(!this.isUpToDate()){
+        this.value.upToDate.push(this.currentUser_id);
+        this.next(this.value);
+    }
+		this.ws.socket.emit("uptodatewith:chat", this._id);
+	}
+
+  isUpToDate(){
+    return this.value.upToDate.indexOf(this.currentUser_id) !== -1;
+  }
 
 	destroy(){
     super.destroy();
@@ -72,13 +84,8 @@ export class ChatModel extends DataModel {
 
   get conversation$(){
 		return this.get$()
-      .do(() => {
-        console.log("Running conversation$")
-        console.time("conversation$")
-      })
 			.map(({ conversation = [] }) => conversation.map(message => new Message(message, this.currentUser_id, this.userUtils)))
 			.map(chatMessages => this.transformChatObject(chatMessages))
-      .do(() => console.timeEnd("conversation$"))
       .share();
 	}
 
@@ -113,7 +120,6 @@ export class ChatModel extends DataModel {
 	}
 
 	insertDates(chatMessages){
-    console.log("insertDates!")
 		return chatMessages.reduce((accumulator, currentValue, index) => {
 			let list = (index === 1 ? [accumulator] : accumulator);
 			let lastElement = last(list);

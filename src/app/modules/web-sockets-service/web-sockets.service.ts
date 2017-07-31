@@ -22,9 +22,13 @@ export class WsSvc{
 
 	init(token){
 		this.token = token;
-		this.socket = io(this.configSvc.get('wsUrl'), { reconnection: true, reconnectionAttempts: 10000, autoConnect: true });
-		this.authenticate();
+		this.connect();
+	}
+
+	connect(){
+		this.socket = io(this.configSvc.get('wsUrl'));
 		this.setEvents();
+		this.authenticate();
 	}
 
 	private setEvents(){
@@ -32,7 +36,7 @@ export class WsSvc{
 		this.socket.on("reconnect", () => this.connected$.next(true));
 		this.socket.on("disconnect", () => this.connected$.next(false));
 		this.platform.pause.subscribe(() => this.socket.disconnect());
-		this.platform.resume.subscribe(() => this.socket.open());
+		this.platform.resume.subscribe(() => this.connect());
 		this.connected$.subscribe(console.log);
 	}
 
