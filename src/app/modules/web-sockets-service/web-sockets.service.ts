@@ -9,10 +9,11 @@ import { ToastSvc } from '../toast/toast.service';
 export class WsSvc{
 
 	public socket;
-	private _authenticated = false;
-	public onAuthenticted = new EventEmitter();
+	private _authenticated = null;
+	public onAuthenticted = new BehaviorSubject(this._authenticated);
 	private token: string;
 	private connected$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+	private reconnectCheck: any;
 
 	constructor(
 		private configSvc: ConfigSvc,
@@ -22,10 +23,34 @@ export class WsSvc{
 
 	init(token){
 		this.token = token;
+		this.startReconnectInterval();
+	}
+
+	startReconnectInterval(){
+		this.reconnectCheck = this.reconnectTimer();
+	}
+
+	clearReconnectInterval(){
+		clearInterval(this.reconnectCheck);
+	}
+
+	reconnectTimer(){
 		this.connect();
+		return setInterval(() => {
+			if(!this.socket.connected) {
+				this.connected$.next(false);
+				this.connect();
+			}
+		}, 4000);
 	}
 
 	connect(){
+		console.log("connect()");
+		if(this.socket){
+			this.socket.destroy();
+	    delete this.socket;
+	    this.socket = null;
+		}
 		this.socket = io(this.configSvc.get('wsUrl'));
 		this.setEvents();
 		this.authenticate();
@@ -35,8 +60,8 @@ export class WsSvc{
 		this.socket.on("connect", () => this.connected$.next(true));
 		this.socket.on("reconnect", () => this.connected$.next(true));
 		this.socket.on("disconnect", () => this.connected$.next(false));
-		this.platform.pause.subscribe(() => this.socket.disconnect());
-		this.platform.resume.subscribe(() => this.connect());
+		this.platform.pause.subscribe(() => this.clearReconnectInterval());
+		this.platform.resume.subscribe(() => this.startReconnectInterval());
 		this.connected$.subscribe(console.log);
 	}
 
@@ -52,12 +77,13 @@ export class WsSvc{
 		this.socket.emit(eventName, data);
 	}
 
-	private authenticate(){
+	private authenticate(callback?){
 		this.socket.on('connect', () => {
 			this.socket.emit('authentication', this.token);
 			this.socket.on('authenticated', () => {
 				this._authenticated = true;
-				this.onAuthenticted.emit(this._authenticated);
+				this.onAuthenticted.next(this._authenticated);
+				if(callback) callback();
 			} );
 		});
 	}

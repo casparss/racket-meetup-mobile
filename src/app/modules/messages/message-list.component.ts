@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { messagesModel } from './messages.fixture';
 import { NavController, App, ModalController } from 'ionic-angular';
 import { MessageItemInt } from './messages.interface';
-import { MessagesSvc } from './messages.service';
+import { ChatSvc } from '../chat/chat.service';
 import { UserSvc } from '../user-service';
 import { ChatCom } from '../chat/chat.component';
 import { WsSvc } from '../web-sockets-service';
@@ -20,7 +20,7 @@ export class MessageListCom {
 
 	constructor(
 		private nav: NavController,
-		private svc: MessagesSvc,
+		private chatSvc: ChatSvc,
 		public appCtrl: App,
 		private ws: WsSvc,
 		private modalController : ModalController,
@@ -29,14 +29,7 @@ export class MessageListCom {
 	){
 		let currentUser_id = userSvc.current.user._id;
 		this.chatCollection = this.modelSvc.createCollection(CHAT, { currentUser_id });
-	}
-
-	ionViewDidEnter() {
-		this.getChats();
-	}
-
-	getChats() {
-		this.svc.getChats().subscribe(chats => this.chatCollection.update(chats));
+		this.chatSvc.$.subscribe(chats => this.chatCollection.update(chats));
 	}
 
 	openMessage(chatModel:ChatModel): void {
@@ -54,7 +47,7 @@ export class MessageListCom {
 
 		addressBookModal.onDidDismiss(({_id} = {}) => {
 			if(_id) {
-				this.svc.getChat([_id])
+				this.chatSvc.getChat([_id])
 					.subscribe(chat => this.nav.push(ChatCom, {
 						chatModel: this.modelSvc.create(chat, null)
 					}));

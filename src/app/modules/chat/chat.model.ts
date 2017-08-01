@@ -13,11 +13,18 @@ export class ChatModel extends DataModel {
 
   constructor(injector, chatModel, ownerInstance, opts?){
     super(injector, chatModel, ownerInstance);
+    if(!opts.currentUser_id) throw new Error("Must provide current user ID!");
     this.currentUser_id = opts.currentUser_id;
     this.modelSvc = injector.get(ModelSvc);
     this.userUtils = injector.get(UserUtils);
     this.subscribe();
-    this.ws.socket.emit("joining:chat", this._id);
+
+    this.ws.onAuthenticted.subscribe(isAuth => {
+      if(isAuth){
+        this.ws.socket.emit("joining:chat", this._id);
+        this.setWsEvents();
+      }
+    });
   }
 
 
@@ -26,7 +33,7 @@ export class ChatModel extends DataModel {
   //////////////////////
 
 
-  setEvents(){
+  setWsEvents(){
 		this.ws.socket.on("message", msgPackage => this.newMessageRecieved(msgPackage));
 	}
 
@@ -63,6 +70,10 @@ export class ChatModel extends DataModel {
 
   isUpToDate(){
     return this.value.upToDate.indexOf(this.currentUser_id) !== -1;
+  }
+
+  numUnread(){
+    return this.isUpToDate() ? 0 : 1;
   }
 
 	destroy(){

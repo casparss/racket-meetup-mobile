@@ -3,6 +3,7 @@ import { ProfileMainCom } from '../profile-main/profile-main.component';
 import { RankingsListCom } from '../rankings-list/rankings-list.component';
 import { MessageListCom } from '../messages/message-list.component';
 import { UserSvc } from '../user-service';
+import { ChatSvc } from '../chat/chat.service';
 
 @Component({
 	template:
@@ -15,7 +16,12 @@ import { UserSvc } from '../user-service';
 			[tabBadge]="pendingLength"
 			tabBadgeStyle="danger"></ion-tab>
 		<ion-tab [root]="rankingsTabRoot" tabTitle="Rankings" tabIcon="trophy"></ion-tab>
-		<ion-tab [root]="messagesTabRoot" tabTitle="Messages" tabIcon="filing"></ion-tab>
+		<ion-tab
+			[root]="messagesTabRoot"
+			tabTitle="Messages"
+			tabIcon="filing"
+			[tabBadge]="chatSvc.unreadChatsLength$ | async"
+			tabBadgeStyle="danger"></ion-tab>
 	</ion-tabs>
 	`
 })
@@ -25,7 +31,7 @@ export class TabsController {
 	private messagesTabRoot: any;
 	private pendingLength: number;
 
-	constructor(private userSvc: UserSvc) {
+	constructor(private userSvc: UserSvc, private chatSvc: ChatSvc) {
 		this.profileTabRoot = ProfileMainCom;
 		this.rankingsTabRoot = RankingsListCom;
 		this.messagesTabRoot = MessageListCom;
