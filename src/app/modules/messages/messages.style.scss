@@ -1,5 +1,28 @@
 message-list {
-  loading-img{
+  loading-img {
     width:40px;
+  }
+  .unread {
+    h2 {
+      font-weight: bold;
+    }
+
+    ion-label{
+      position: relative;
+      padding-right: 30px;
+    }
+
+    ion-label:after{
+      content:"";
+      position:absolute;
+      display:block;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-top: -7.5px;
+      background: $lightseagreen;
+      right: 0;
+      top:50%;
+    }
   }
 }

@@ -11,24 +11,18 @@
 
 <ion-content>
 	<ion-list>
-		<ion-item-sliding *ngFor="let chat of (chatCollection.$ | async); trackBy: trackById">
-			<button [disabled]="!(ws.connected$ | async)" ion-item (click)="openMessage(chat)">
-				<ion-avatar item-left>
-					<loading-img [src]="(chat.$ | async)?.img"></loading-img>
-				</ion-avatar>
-				<h2>{{(chat.$ | async)?.otherUser.details.fullName}}</h2>
-				<p>{{((chat.$ | async)?.preview[0] || {}).message}}</p>
-			</button>
-			<ion-item-options>
-				<button primary>
-					<ion-icon name="text"></ion-icon>
-						Text
-					</button>
-				<button secondary>
-					<ion-icon name="call"></ion-icon>
-						Call
-				</button>
-			</ion-item-options>
-		</ion-item-sliding>
-	</ion-list>
+    <button
+      ion-item
+      *ngFor="let chatModel of (chatCollection.$ | async); trackBy: trackById"
+      [disabled]="!(ws.connected$ | async)"
+      (click)="openMessage(chatModel)"
+      [class.unread]="!chatModel.isUpToDate()"
+    >
+      <ion-avatar item-left>
+        <loading-img [src]="(chatModel.$ | async)?.img"></loading-img>
+      </ion-avatar>
+      <h2>{{(chatModel.$ | async)?.otherUser.details.fullName}}</h2>
+      <p>{{chatModel.previewMessage}}</p>
+    </button>
+  </ion-list>
 </ion-content>

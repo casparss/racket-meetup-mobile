@@ -62,6 +62,10 @@ export class DataModel {
     return this.value._id;
   }
 
+  get updatedAt(){
+    return moment(this.value.updatedAt);
+  }
+
   get type(){
     return this.value.modelType;
   }

@@ -1,3 +1,4 @@
+import { EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DataModel } from '../../utils/data-model';
 import { ModelSvc } from '../model-service/model.service';
@@ -9,6 +10,7 @@ export class ChatModel extends DataModel {
   private modelSvc: ModelSvc;
   private userUtils: UserUtils;
   private currentUser_id: string;
+  public onChange: EventEmitter<any> = new EventEmitter();
   public upToDateStatus$: Subject<boolean> = new Subject();
 
   constructor(injector, chatModel, ownerInstance, opts?){
@@ -55,8 +57,11 @@ export class ChatModel extends DataModel {
 	newMessageRecieved(message){
     if(message.chatId === this._id){
       let chat = this.getRawValue();
+      chat.conversation = chat.conversation ? chat.conversation : [];
       chat.conversation.push(message);
+      chat.updatedAt = message.updatedAt;
       this.next(chat);
+      this.onChange.emit();
     }
 	}
 
@@ -99,6 +104,11 @@ export class ChatModel extends DataModel {
 			.map(chatMessages => this.transformChatObject(chatMessages))
       .share();
 	}
+
+  get previewMessage(){
+    let { conversation, preview } = this.value;
+    return (last(conversation ? conversation : preview) || {}).message
+  }
 
 
   ////////////////////////

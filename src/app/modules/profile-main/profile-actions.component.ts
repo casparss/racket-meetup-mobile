@@ -93,7 +93,9 @@ export class ProfileActionsCom {
 	messagePlayer(){
 		this.messagesSvc.getChat([this.userModel._id])
 			.subscribe(chat => this.nav.push(ChatCom, {
-				chatModel: this.modelSvc.create(chat, null)
+				chatModel: this.modelSvc.create(chat, null, {
+					currentUser_id: this.userSvc.current._id
+				})
 			}));
 	}
 
