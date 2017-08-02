@@ -24,9 +24,8 @@ import { ModelSvc, GAME } from '../model-service/model.service';
 
 			<button *ngIf="(gamesCollection.$ | async)?.length > 0" (click)="openGames()" type="button" ion-item>View more</button>
 	  </ion-list>
-		<div class="no-games-message" *ngIf="(gamesCollection.$ | async)?.length === 0">
-			<button ion-button color="light" round>No upcoming games at the moment</button>
-		</div>
+
+		<no-data-message *ngIf="(gamesCollection.$ | async)?.length === 0" message="No upcoming games at the moment."></no-data-message>
 	</ion-list>
 	`
 })

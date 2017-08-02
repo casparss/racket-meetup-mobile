@@ -7,8 +7,6 @@ const ENTER_KEY = 13;
   selector: 'text-dialogue',
   template: `
     <textarea
-      #textarea
-      (keyup)="returnKeySend($event)"
       [(ngModel)]="messageInput"
       [disabled]="!(ws.connected$ | async)"
       type="text"
@@ -19,23 +17,38 @@ const ENTER_KEY = 13;
       <button
         [disabled]="!(ws.connected$ | async)"
         ion-button
-        (mousedown)="send($event)">Send</button>
+        (mousedown)="stopDefaultBehaviour($event)"
+        (mouseup)="stopDefaultBehaviour($event)"
+        (touchup)="stopDefaultBehaviour($event)"
+        (touchmove)="stopDefaultBehaviour($event)"
+        (touchstart)="stopDefaultBehaviour($event)"
+        (touchend)="send($event)"
+        (touchdown)="stopDefaultBehaviour($event)"
+      >Send</button>
     </div>
   `
 })
 export class TextDialogueCom {
-  @ViewChild('textarea') textarea;
   @Output() sendMessage: EventEmitter<string> = new EventEmitter();
   private messageInput: string;
+
   constructor(private ws: WsSvc){}
 
-  returnKeySend($event){
-    if($event.which === ENTER_KEY) this.send();
-  }
-
-  send(){
+  send($event){
     this.sendMessage.emit(this.messageInput);
     this.messageInput  = "";
+    this.stopDefaultBehaviour($event);
+  }
+
+  /**
+   * This is a hack to stop the textarea losing focus and the keyboard closing
+   * when the user taps the send button. Tested on IOS and seems to work, needs
+   * to be called on practically every kind of touch event to actually work!
+   * @param  {Event} $event standard DOM event object
+   */
+  stopDefaultBehaviour($event){
+    $event.preventDefault();
+    $event.stopPropagation();
   }
 
 }
