@@ -62,7 +62,10 @@ export class ChallengeCom {
 
 	amend(challengeDetails){
 		this.gamesSvc.updateDetails(challengeDetails, this.game._id)
-			.subscribe(game => this.viewCtrl.dismiss());
+			.subscribe(game => {
+				this.gameModel.update(game);
+				this.viewCtrl.dismiss();
+			});
 	}
 
 }

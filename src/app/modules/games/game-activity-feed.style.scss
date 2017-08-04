@@ -1,7 +1,9 @@
 game-activity-feed {
 
-  $theme-bg-colour: $toolbar-grey;
+  $theme-bg-colour: #e4e4e4;
+  $icon-colour: $white;
   $font-size: 1.7rem;
+  $icon-dimensions: 45px;
   font-size: 1.7rem;
 
   ul {
@@ -11,21 +13,22 @@ game-activity-feed {
 
   li {
     display:flex;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
   }
 
   .vertical-line {
     position: absolute;
     top: 15px;
     bottom: 15px;
-    left: 29px;
+    left: 34px;
     width: 2px;
     background: $theme-bg-colour;
     z-index: -1;
   }
 
   ion-icon {
-    line-height: 37px;
+    line-height: $icon-dimensions;
+    //color: $icon-colour;
   }
 
   .icon-container {
@@ -37,19 +40,33 @@ game-activity-feed {
     border-radius: 50%;
     border: 2px $white solid;
     background: $theme-bg-colour;
-    width: 35px;
-    height:35px;
+    width: $icon-dimensions;
+    height: $icon-dimensions;
   }
 
   .details-container {
-    padding-top: 8px;
-    padding-left: 5px;
-
+    padding-top: 12px;
+    padding-left: 10px;
   }
 
   .description {
     display:inline;
     line-height: 23px;
+  }
+
+  .date {
+    font-style: italic;
+    font-size: 80%;
+    opacity: 0.7;
+  }
+
+  .emphasise {
+    display:inline-block;
+    background: $lightseagreen;
+    color: $white;
+    padding-left: 8px;
+    padding-right:8px;
+    border-radius: 3px;
   }
 
   ion-chip {
@@ -61,6 +78,7 @@ game-activity-feed {
 
     ion-label {
       margin-right: 0!important;
+      margin-left: 4px!important;
       color: $primaryColor;
       font-size: 1.7rem;
     }

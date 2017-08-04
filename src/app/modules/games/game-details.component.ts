@@ -49,8 +49,10 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
       </div>
 
       <div [ngSwitch]="tab">
-        <div *ngSwitchCase="'details'">.
+        <div *ngSwitchCase="'details'">
           <ion-list>
+            <ion-item-divider light>Details</ion-item-divider>
+
             <ion-item-group>
               <ion-item>
                 <ion-icon name="pin" item-left large ></ion-icon>
@@ -65,6 +67,18 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
                 <h2>{{game.date | date : 'EEEE, d/M/y'}}</h2>
               </ion-item>
             </ion-item-group>
+
+            <ion-item-divider light>Players</ion-item-divider>
+
+            <ion-item-group>
+              <ion-item *ngFor="let userModel of gameModel.participants">
+                <ion-avatar item-left>
+                  <loading-img [src]="userModel.avatar$ | async"></loading-img>
+                </ion-avatar>
+                <h2>{{(userModel.$ | async)?.details.fullName}}</h2>
+              </ion-item>
+            </ion-item-group>
+
           </ion-list>
         </div>
 
