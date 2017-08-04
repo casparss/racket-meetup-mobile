@@ -1,6 +1,8 @@
 game-activity-feed {
 
   $theme-bg-colour: $toolbar-grey;
+  $font-size: 1.7rem;
+  font-size: 1.7rem;
 
   ul {
     padding: 0 10px;
@@ -60,6 +62,7 @@ game-activity-feed {
     ion-label {
       margin-right: 0!important;
       color: $primaryColor;
+      font-size: 1.7rem;
     }
 
     ion-avatar {
