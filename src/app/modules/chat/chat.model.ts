@@ -5,6 +5,7 @@ import { ModelSvc } from '../model-service/model.service';
 import { UserUtils } from '../user-service/user.utils';
 import * as moment from 'moment';
 import { reject, map, last } from 'lodash';
+import calendarDateConfig from '../../utils/calendar-date-config.json';
 
 export class ChatModel extends DataModel {
   private modelSvc: ModelSvc;
@@ -176,14 +177,7 @@ class DateLabel {
 	}
 
 	calendarDate(){
-		return this.date.calendar(null, {
-		    sameDay: '[Today]',
-		    nextDay: '[Tomorrow]',
-		    nextWeek: 'dddd',
-		    lastDay: '[Yesterday]',
-		    lastWeek: '[Last] dddd',
-		    sameElse: 'DD/MM/YYYY'
-		});
+		return this.date.calendar(null, calendarDateConfig);
 	}
 }
 

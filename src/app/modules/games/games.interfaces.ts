@@ -1,4 +1,4 @@
-export interface GameInt{
+export interface GameInt {
 	venue: {
 		id: number,
 		name: string

@@ -17,9 +17,9 @@ import { ChatSvc } from '../chat/chat.service';
 			tabBadgeStyle="danger"></ion-tab>
 		<ion-tab [root]="rankingsTabRoot" tabTitle="Rankings" tabIcon="trophy"></ion-tab>
 		<ion-tab
-			[root]="messagesTabRoot"
-			tabTitle="Messages"
-			tabIcon="filing"
+			[root]="chatsTabRoot"
+			tabTitle="Chats"
+			tabIcon="chatbubbles"
 			[tabBadge]="chatSvc.unreadChatsLength$ | async"
 			tabBadgeStyle="danger"></ion-tab>
 	</ion-tabs>
@@ -28,13 +28,13 @@ import { ChatSvc } from '../chat/chat.service';
 export class TabsController {
 	private profileTabRoot: any;
 	private rankingsTabRoot: any
-	private messagesTabRoot: any;
+	private chatsTabRoot: any;
 	private pendingLength: number;
 
 	constructor(private userSvc: UserSvc, private chatSvc: ChatSvc) {
 		this.profileTabRoot = ProfileMainCom;
 		this.rankingsTabRoot = RankingsListCom;
-		this.messagesTabRoot = MessageListCom;
+		this.chatsTabRoot = MessageListCom;
 	}
 
 	ngOnInit(){

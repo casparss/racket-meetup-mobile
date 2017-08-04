@@ -49,12 +49,9 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
       </div>
 
       <div [ngSwitch]="tab">
-        <div *ngSwitchCase="'details'">
+        <div *ngSwitchCase="'details'">.
           <ion-list>
             <ion-item-group>
-              <ion-list-header class="component-header">
-                Details
-              </ion-list-header>
               <ion-item>
                 <ion-icon name="pin" item-left large ></ion-icon>
                 <h2>{{game.venue}}</h2>
@@ -71,9 +68,11 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
           </ion-list>
         </div>
 
-        <div *ngSwitchCase="'activity'">
-          <h2>Activity</h2>
-        </div>
+        <game-activity-feed
+          *ngSwitchCase="'activity'"
+          [gameModel]="gameModel"
+        ></game-activity-feed>
+
       </div>
 
     </ion-content>
@@ -94,19 +93,15 @@ export class GameDetailsCom {
   }
 
   amendGameDetails(){
-		let challengeModal = this.modalController.create(ChallengeCom, {
+		this.modalController.create(ChallengeCom, {
 			gameModel: this.gameModel
-		});
-
-		challengeModal.present();
+		}).present();
 	}
 
   recordResult(){
-		let recordScoreModal = this.modalController.create(GameRecordResultCom, {
+		this.modalController.create(GameRecordResultCom, {
 			gameModel: this.gameModel
-		});
-
-		recordScoreModal.present();
+		}).present();
 	}
 
   status({ status }, list){

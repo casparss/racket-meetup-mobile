@@ -10,6 +10,8 @@ import { GamesCom } from './games.component';
 import { GameCardCom } from './game-card.component';
 import { GameDetailsCom } from './game-details.component';
 import { BannerPlayerScoreCom } from './banner-player-score.component';
+import { ScoreLineCom } from './banner-player-score.component';
+import { GameActivityFeedCom } from './game-activity-feed.component';
 
 @NgModule({
   declarations: [
@@ -18,11 +20,24 @@ import { BannerPlayerScoreCom } from './banner-player-score.component';
     GamesSummaryCom,
     GamesSummaryItemCom,
     GameDetailsCom,
-    BannerPlayerScoreCom
+    BannerPlayerScoreCom,
+    ScoreLineCom,
+    GameActivityFeedCom
   ],
-  imports: [IonicModule, LoadingImgModule, GameRecordResultModule, NoDataMessageModule],
-  exports:[GamesCom, GamesSummaryCom],
-  entryComponents: [GamesCom, GamesSummaryCom, GameDetailsCom],
-
+  imports: [
+    IonicModule,
+    LoadingImgModule,
+    GameRecordResultModule,
+    NoDataMessageModule
+  ],
+  exports:[
+    GamesCom,
+    GamesSummaryCom
+  ],
+  entryComponents: [
+    GamesCom,
+    GamesSummaryCom,
+    GameDetailsCom
+  ]
 })
 export class GamesModule {}

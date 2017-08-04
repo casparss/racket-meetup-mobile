@@ -17,16 +17,16 @@ chat {
 		}
 
 		blockquote {
-		    padding: .5em;
+			padding: .5em;
 		}
 
 		.contact--details__name {
-		    font-weight: normal;
-		    font-size: 1.75em;
+	    font-weight: normal;
+	    font-size: 1.75em;
 		}
 
 		.contact--details__tel {
-		    font-size: .875em;
+	    font-size: .875em;
 		}
 
 		footer {
@@ -39,13 +39,13 @@ chat {
 		}
 
 		textarea {
-				border-radius: 5px;
-				width: 78.9%;
-		    padding: .325em;
-		    border: none;
-		    flex: 1;
-		    color:$text-colour-light-grey;
-		    border:1px solid $border-colour-grey;
+			border-radius: 5px;
+			width: 78.9%;
+	    padding: .325em;
+	    border: none;
+	    flex: 1;
+	    color:$text-colour-light-grey;
+	    border:1px solid $border-colour-grey;
 		}
 
 		.msg {

@@ -15,15 +15,15 @@ const ENTER_KEY = 13;
 
     <div class="msg-send">
       <button
-        [disabled]="!(ws.connected$ | async)"
         ion-button
+        [disabled]="!(ws.connected$ | async)"
         (mousedown)="stopDefaultBehaviour($event)"
         (mouseup)="stopDefaultBehaviour($event)"
         (touchup)="stopDefaultBehaviour($event)"
         (touchmove)="stopDefaultBehaviour($event)"
         (touchstart)="stopDefaultBehaviour($event)"
-        (touchend)="send($event)"
         (touchdown)="stopDefaultBehaviour($event)"
+        (touchend)="send($event)"
       >Send</button>
     </div>
   `
