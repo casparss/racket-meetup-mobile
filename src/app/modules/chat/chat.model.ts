@@ -1,10 +1,10 @@
 import { EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { DataModel } from '../../utils/data-model';
 import { ModelSvc } from '../model-service/model.service';
 import { UserUtils } from '../user-service/user.utils';
 import * as moment from 'moment';
-import { reject, map, last } from 'lodash';
+import { reject, map, last, pull } from 'lodash';
 import calendarDateConfig from '../../utils/calendar-date-config.json';
 
 export class ChatModel extends DataModel {
@@ -13,6 +13,7 @@ export class ChatModel extends DataModel {
   private currentUser_id: string;
   public onChange: EventEmitter<any> = new EventEmitter();
   public upToDateStatus$: Subject<boolean> = new Subject();
+  public isViewing$: BehaviorSubject<any> = new BehaviorSubject(false);
 
   constructor(injector, chatModel, ownerInstance, opts?){
     super(injector, chatModel, ownerInstance);
@@ -28,6 +29,15 @@ export class ChatModel extends DataModel {
         this.setWsEvents();
       }
     });
+  }
+
+  viewing(){
+    this.isViewing$.next(true);
+    this.setUpToDate();
+  }
+
+  stoppedViewing(){
+    this.isViewing$.next(false);
   }
 
 
@@ -61,6 +71,17 @@ export class ChatModel extends DataModel {
       chat.conversation = chat.conversation ? chat.conversation : [];
       chat.conversation.push(message);
       chat.updatedAt = message.updatedAt;
+
+      //@TODO: slightly repeated myself here, this if/else logic should be
+      //merged into the setUpToDate() logic below
+      if(!this.isViewing$.getValue()){
+        pull(chat.upToDate, this.currentUser_id)
+      } else {
+        if(chat.upToDate.indexOf(this.currentUser_id) === -1)
+          chat.upToDate.push(this.currentUser_id);
+        this.emitUpToDate();
+      }
+
       this.next(chat);
       this.onChange.emit();
     }
@@ -71,8 +92,12 @@ export class ChatModel extends DataModel {
         this.value.upToDate.push(this.currentUser_id);
         this.next(this.value);
     }
-		this.ws.socket.emit("uptodatewith:chat", this._id);
+    this.emitUpToDate();
 	}
+
+  emitUpToDate(){
+    this.ws.socket.emit("uptodatewith:chat", this._id);
+  }
 
   isUpToDate(){
     return this.value.upToDate.indexOf(this.currentUser_id) !== -1;

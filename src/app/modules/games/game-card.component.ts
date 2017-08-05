@@ -42,6 +42,7 @@ let TEXT_STATE_COLOR_HASH = {
 };
 
 @Component({
+	selector: 'game-card',
 	template:`
 		<ion-card [attr.status]="game.status">
 		<ion-list>
@@ -85,33 +86,32 @@ let TEXT_STATE_COLOR_HASH = {
 			  </ion-item>
 		  </ion-item-group>
 
-			<ion-item *ngIf="status(game, ['pending']) && !isAccepted()">
-	      <button ion-button icon-left item-left (click)="acceptChallenge(game)">
-	        <ion-icon name="thumbs-up"></ion-icon>
+			<div *ngIf="status(game, ['pending']) && !isAccepted()" class="button-group">
+	      <button ion-button icon-left clear small color="textGrey" (click)="acceptChallenge(game)">
+	        <ion-icon name="thumbs-up" color="primary"></ion-icon>
 	        Accept
 	      </button>
 
-				<button ion-button danger icon-left item-right outline color="primary">
-	        <ion-icon name="text"></ion-icon>
+				<button ion-button icon-left clear small color="textGrey">
+	        <ion-icon name="settings" color="primary"></ion-icon>
 	        Suggest changes
 	      </button>
 
-	      <button ion-button danger icon-left item-right color="danger" (click)="rejectChallenge(game)">
-	        <ion-icon name="text"></ion-icon>
+	      <button ion-button icon-left clear small color="textGrey" (click)="rejectChallenge(game)">
+	        <ion-icon name="close-circle" color="danger"></ion-icon>
 	        Reject
 	      </button>
-		  </ion-item>
+		  </div>
 
-			<ion-item *ngIf="status(game, ['pending']) && isAccepted()">
-	      <button ion-button danger icon-left item-right color="danger" (click)="rejectChallenge(game)">
-	        <ion-icon name="text"></ion-icon>
-	        Cancel match challenge
+			<div *ngIf="status(game, ['pending']) && isAccepted()" class="button-group single">
+	      <button ion-button icon-left clear small (click)="rejectChallenge(game)">
+	        <ion-icon name="close-circle" color="danger"></ion-icon>
+	        Cancel match request
 	      </button>
-		  </ion-item>
+		  </div>
 
 		</ion-card>
-  `,
-	selector: 'game-card'
+  `
 })
 export class GameCardCom {
 
@@ -130,12 +130,10 @@ export class GameCardCom {
 
 	ngOnInit(){
 		this.configureActionSheet();
-		this.gameModel.$.subscribe(game => this.gameResponse(game));
-	}
-
-	gameResponse(game) {
-		this.game = game;
-		this.isGameAccepted = this.isAccepted();
+		this.gameModel.$.subscribe(game => {
+			this.game = game;
+			this.isGameAccepted = this.isAccepted();
+		});
 	}
 
 	isAccepted(){
@@ -155,12 +153,12 @@ export class GameCardCom {
 
 	acceptChallenge({ _id }){
 		this.gamesSvc.acceptChallenge(_id)
-			.subscribe(game => this.gameResponse(game));
+			.subscribe(game => this.gameModel.update(game));
 	}
 
 	rejectChallenge({ _id }){
 		this.gamesSvc.rejectChallenge(_id)
-			.subscribe(game => this.gameResponse(game));
+			.subscribe(game => this.gameModel.update(game));
 	}
 
 	showActionSheet(game){

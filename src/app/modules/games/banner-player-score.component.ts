@@ -5,7 +5,11 @@ import { GameModel } from './game.model';
   selector: 'banner-player-score',
   template: `
     <div class="venue-image-container">
-      <img src="assets/images/tennis-court.jpg"/>
+      <img
+        class="banner-img"
+        [class.show-score]="(gameModel.$ | async)?.status === 'played'"
+        src="assets/images/tennis-court.jpg"
+      />
       <div *ngIf="status(game, ['played'])" class="players-scores-container">
       <score-line [gameModel]="gameModel" side="1"></score-line>
       <score-line [gameModel]="gameModel" side="2"></score-line>
@@ -27,7 +31,7 @@ export class BannerPlayerScoreCom {
 @Component({
   selector: 'score-line',
   template: `
-    <loading-img [src]="gameModel.side1.avatar$ | async"></loading-img>
+    <loading-img class="avatar" [src]="gameModel['side' + side].avatar$ | async"></loading-img>
     <div class="name">{{(gameModel['side' + side].$ | async)?.details.firstName}}</div>
     <div class="score-button" *ngFor="let setScore of (gameModel.$ | async)?.result['side' + side]">{{setScore}}
     </div>

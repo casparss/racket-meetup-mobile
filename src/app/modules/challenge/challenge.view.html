@@ -1,7 +1,7 @@
 <ion-header>
 	<ion-navbar>
 		<ion-title>
-			Challenge
+			{{game ? 'Amend game details' : 'Challenge'}}
 		</ion-title>
 		<ion-buttons end>
 			<button icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
@@ -50,9 +50,9 @@
 					<ion-input type="text" formControlName="venue"></ion-input>
 				</ion-item>
 
-				<ion-item-divider light>Reason for change</ion-item-divider>
+				<ion-item-divider *ngIf="game" light>Reason for change</ion-item-divider>
 
-				<ion-item>
+				<ion-item *ngIf="game">
 					<ion-icon name="chatboxes" item-left></ion-icon>
 					<ion-textarea formControlName="comment" placeholder="Enter a reason for changing details"></ion-textarea>
 				</ion-item>

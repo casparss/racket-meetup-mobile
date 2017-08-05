@@ -25,6 +25,8 @@ $lighter-grey: rgba(68, 68, 68, 0.8);
 $text-colour-light-grey:#333;
 $text-colour-grey: $text-color;
 $border-colour-grey:#c8c7cc;
+$activity-feed-grey: rgb(239, 239, 239);
+$border-colour-grey-lighter: #efefef;
 $quiet-grey: #fcfcfc;
 $not-as-quiet-grey: #e8e8e8;
 $toolbar-grey: #f8f8f8;
@@ -43,6 +45,7 @@ $colors: (
   ),
   dark:       #222,
   favorite:   #69BB7B,
+  textGrey: $text-color,
   navbarColor: (
     base: red,
     contrast: white

@@ -9,6 +9,13 @@ import { GamesSvc } from '../games/games.service';
 import { ChallengeTimeDate } from './challenge-time-date.component';
 import GAME_TYPES from './game-types';
 
+interface formInt {
+	date: Array<any>,
+	venue: Array<any>,
+	gameType: Array<any>,
+	comment?: Array<any>
+}
+
 @Component({
 	templateUrl: './challenge.view.html',
 	selector: 'challenge'
@@ -36,12 +43,17 @@ export class ChallengeCom {
 	}
 
 	setForm(game:any = {}){
-		this.challengeForm = this.formBuilder.group({
+		let form: formInt = {
 			date: [game.date || '', [<any>Validators.required]],
 	    venue: [game.venue || '', [<any>Validators.required]],
-			gameType: [game.gameType || GAME_TYPES[0]],
-			comment: ['', [<any>Validators.required]]
-		});
+			gameType: [game.gameType || GAME_TYPES[0]]
+		};
+
+		if(this.game){
+			form.comment = ['', [<any>Validators.required]];
+		}
+
+		this.challengeForm = this.formBuilder.group(form);
 	}
 
 	action(challengeDetails, isValid:boolean, $event: Event){

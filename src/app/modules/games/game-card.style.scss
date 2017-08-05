@@ -1,0 +1,51 @@
+game-card {
+
+  @mixin divider {
+    position: absolute;
+    background: $border-colour-grey-lighter;
+    content: "";
+    top: 0;
+    width: 1px;
+    height:100%;
+  }
+
+  .button-group {
+    border-top: 1px solid $border-colour-grey-lighter;
+
+    button{
+      position: relative;
+      overflow:visible;
+      padding-right: 16px;
+      height: 40px;
+    }
+
+    button:after {
+      @include divider;
+      right: 0;
+    }
+
+    button:last-child::after {
+      display:none;
+    }
+
+    &.single {
+      text-align:center;
+
+      button:before {
+        @include divider;
+        left:0;
+      }
+
+      button:after {
+        @include divider;
+        right:0;
+      }
+
+      button:last-child::after {
+        display:block;
+      }
+    }
+  }
+
+
+}

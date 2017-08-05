@@ -36,6 +36,11 @@ export class ChatSvc extends BaseService {
 		this.ws.on(`newChat:${this.userSvc.current._id}`, chat => this.newIncomingChat(chat));
 	}
 
+	modelOnChange(){
+		this.chatUpdated();
+		this.checkUnreadLengths();
+	}
+
 	newIncomingChat(chat){
 		let chats = [...this.chatsSubject.getValue()];
 		chats.push(this.createChatModel(chat));
@@ -50,7 +55,7 @@ export class ChatSvc extends BaseService {
 	getChats(){
 		return this._get('chats')
       .map(chats => chats.map(chat => this.createChatModel(chat)))
-			.do(chats => chats.forEach(chatModel => chatModel.onChange.subscribe(() => this.chatUpdated())))
+			.do(chats => chats.forEach(chatModel => chatModel.onChange.subscribe(() => this.modelOnChange())))
 			.do(chats => this.getUnreadChatLengths(chats))
       .do(chatModelCollection => this.chatsSubject.next(chatModelCollection));
 	}

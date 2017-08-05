@@ -32,8 +32,12 @@ export class ChatCom {
 	}
 
 	ionViewDidEnter(){
-		this.chatModel.setUpToDate();
+		this.chatModel.viewing();
 		this.chatSvc.checkUnreadLengths();
+	}
+
+	ionViewDidLeave() {
+		this.chatModel.stoppedViewing();
 	}
 
 }

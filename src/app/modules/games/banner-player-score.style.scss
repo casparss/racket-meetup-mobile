@@ -1,12 +1,19 @@
 .venue-image-container {
+  overflow: hidden;
   position:relative;
-  img {
-    -webkit-filter: brightness(50%);
-    filter: brightness(50%);
+  .show-score {
+    -webkit-filter: brightness(90%) blur(1.5px);
+    filter: brightness(90%) blur(3px);
+    transform: scale(1.08)
   }
 }
 
+.banner-img {
+  //margin: -3px -15px -6px -3px;
+}
+
 .players-scores-container {
+
   display: flex;
   flex-flow: row wrap;
   align-content: center;
@@ -18,7 +25,11 @@
   height:100%;
 
   loading-img {
-    width: 30px;
+    width: 40px;
+    img {
+      border-radius:50%;
+    }
+
   }
 
   ion-list {
