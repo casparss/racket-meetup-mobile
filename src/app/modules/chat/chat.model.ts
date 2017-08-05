@@ -33,7 +33,7 @@ export class ChatModel extends DataModel {
 
   viewing(){
     this.isViewing$.next(true);
-    this.setUpToDate(this.value);
+    this.setUpToDate();
   }
 
   stoppedViewing(){
@@ -76,7 +76,7 @@ export class ChatModel extends DataModel {
     }
 	}
 
-  setUpToDate(chat){
+  setUpToDate(chat = this.getRawValue()){
     if(!this.isViewing$.getValue()){
       pull(chat.upToDate, this.currentUser_id)
     } else if(!this.isUpToDate()){
@@ -84,7 +84,6 @@ export class ChatModel extends DataModel {
       this.emitUpToDate();
     }
     this.next(chat);
-
 	}
 
   emitUpToDate(){
