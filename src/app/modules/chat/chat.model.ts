@@ -33,7 +33,7 @@ export class ChatModel extends DataModel {
 
   viewing(){
     this.isViewing$.next(true);
-    this.setUpToDate();
+    this.setUpToDate(this.value);
   }
 
   stoppedViewing(){
@@ -71,28 +71,20 @@ export class ChatModel extends DataModel {
       chat.conversation = chat.conversation ? chat.conversation : [];
       chat.conversation.push(message);
       chat.updatedAt = message.updatedAt;
-
-      //@TODO: slightly repeated myself here, this if/else logic should be
-      //merged into the setUpToDate() logic below
-      if(!this.isViewing$.getValue()){
-        pull(chat.upToDate, this.currentUser_id)
-      } else {
-        if(chat.upToDate.indexOf(this.currentUser_id) === -1)
-          chat.upToDate.push(this.currentUser_id);
-        this.emitUpToDate();
-      }
-
-      this.next(chat);
+      this.setUpToDate(chat);
       this.onChange.emit();
     }
 	}
 
-  setUpToDate(){
-    if(!this.isUpToDate()){
-        this.value.upToDate.push(this.currentUser_id);
-        this.next(this.value);
+  setUpToDate(chat){
+    if(!this.isViewing$.getValue()){
+      pull(chat.upToDate, this.currentUser_id)
+    } else if(!this.isUpToDate()){
+      chat.upToDate.push(this.currentUser_id);
+      this.emitUpToDate();
     }
-    this.emitUpToDate();
+    this.next(chat);
+
 	}
 
   emitUpToDate(){
