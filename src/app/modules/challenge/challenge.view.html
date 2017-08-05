@@ -18,58 +18,56 @@
 				[challengee]='game ? game.opponents.side2[0].user : (challengee?.$ | async)'>
 			</opponents>
 
-  		<ion-row class="top">
-  			<ion-col width-100>
-					<ion-list radio-group formControlName="gameType">
-					  <ion-list-header>
-					    Type of play
-					  </ion-list-header>
+			<ion-list radio-group formControlName="gameType">
+			  <ion-item-divider light>Game type</ion-item-divider>
 
-						<ion-item>
-					    <ion-label>Match</ion-label>
-					    <ion-radio [value]="GAME_TYPES[0]"></ion-radio>
-					  </ion-item>
+				<ion-item>
+			    <ion-label>Match</ion-label>
+			    <ion-radio [value]="GAME_TYPES[0]"></ion-radio>
+			  </ion-item>
 
-						<ion-item>
-					    <ion-label>A hit</ion-label>
-					    <ion-radio checked="true" [value]="GAME_TYPES[1]"></ion-radio>
-					  </ion-item>
+				<ion-item>
+			    <ion-label>A hit</ion-label>
+			    <ion-radio checked="true" [value]="GAME_TYPES[1]"></ion-radio>
+			  </ion-item>
 
-						<ion-item>
-					    <ion-label>Tournament game</ion-label>
-					    <ion-radio [value]="GAME_TYPES[2]"></ion-radio>
-					  </ion-item>
-					</ion-list>
+				<ion-item>
+			    <ion-label>Tournament game</ion-label>
+			    <ion-radio [value]="GAME_TYPES[2]"></ion-radio>
+			  </ion-item>
 
-					<ion-list-header class="component-header">
-						Details
-					</ion-list-header>
+				<ion-item-divider light>Details</ion-item-divider>
 
-  				<ion-list>
+				<challenge-time-date-input
+					formControlName="date"
+					[challenger]="challenger"
+					[challengee]="challengee"
+				></challenge-time-date-input>
 
-  					<challenge-time-date-input
-							formControlName="date"
-  						[challenger]="challenger"
-							[challengee]="challengee"
-  					></challenge-time-date-input>
+				<ion-item>
+					<ion-label primary>Location:</ion-label>
+					<ion-icon name="pin" item-left></ion-icon>
+					<ion-input type="text" formControlName="venue"></ion-input>
+				</ion-item>
 
-  					<ion-item>
-							<ion-label primary>Location:</ion-label>
-							<ion-icon name="pin" item-left></ion-icon>
-  						<ion-input type="text" formControlName="venue"></ion-input>
-  					</ion-item>
+				<ion-item-divider light>Reason for change</ion-item-divider>
 
-  				</ion-list>
+				<ion-item>
+					<ion-icon name="chatboxes" item-left></ion-icon>
+					<ion-textarea formControlName="comment" placeholder="Enter a reason for changing details"></ion-textarea>
+				</ion-item>
 
-					<ion-item>
-						<button [disabled]="!challengeForm.valid" ion-button icon-left large block type="submit">
-							<ion-icon name="tennisball" ></ion-icon>
-							{{game ? 'Amend game details' : 'Challenge'}}
-						</button>
-					</ion-item>
+				<ion-item>
+					<button [disabled]="!challengeForm.valid" ion-button icon-left large block type="submit">
+						<ion-icon name="tennisball" ></ion-icon>
+						{{game ? 'Amend game details' : 'Challenge'}}
+					</button>
+				</ion-item>
+			</ion-list>
 
-  			</ion-col>
-  		</ion-row>
+
+
+
 
   </form>
 

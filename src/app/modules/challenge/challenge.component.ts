@@ -39,7 +39,8 @@ export class ChallengeCom {
 		this.challengeForm = this.formBuilder.group({
 			date: [game.date || '', [<any>Validators.required]],
 	    venue: [game.venue || '', [<any>Validators.required]],
-			gameType: [game.gameType || GAME_TYPES[0]]
+			gameType: [game.gameType || GAME_TYPES[0]],
+			comment: ['', [<any>Validators.required]]
 		});
 	}
 

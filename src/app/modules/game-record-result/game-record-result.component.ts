@@ -21,7 +21,6 @@ import { maxBy } from 'lodash';
 
   <ion-content>
     <ion-list>
-      <ion-list-header class="component-header">Enter score </ion-list-header>
       <ion-item no-padding>
         <ion-grid>
           <ion-row>
