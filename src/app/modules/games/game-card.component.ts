@@ -12,17 +12,17 @@ const findUser = (side, currentUserId) =>
 const STATUS_TEXT = {
 	pending: '',
 	accepted: '',
-	rejected: '(rejected)',
-	forfeit: '(forfeit)',
-	played: '(played)'
+	rejected: 'rejected',
+	forfeit: 'forfeit',
+	played: 'played'
 };
 
 const STATUS_COLOUR = {
 	pending: '',
 	accepted: '',
-	rejected: '(rejected)',
-	forfeit: '(forfeit)',
-	played: '(played)'
+	rejected: 'rejected',
+	forfeit: 'forfeit',
+	played: 'played'
 };
 
 let BALL_STATE_COLOR_HASH = {

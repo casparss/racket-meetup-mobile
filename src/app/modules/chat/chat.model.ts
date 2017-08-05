@@ -94,10 +94,6 @@ export class ChatModel extends DataModel {
     return this.value.upToDate.indexOf(this.currentUser_id) !== -1;
   }
 
-  numUnread(){
-    return this.isUpToDate() ? 0 : 1;
-  }
-
 	destroy(){
     super.destroy();
 		this.ws.socket.off("message");
@@ -124,7 +120,7 @@ export class ChatModel extends DataModel {
 
   get previewMessage(){
     let { conversation, preview } = this.value;
-    return (last(conversation ? conversation : preview) || {}).message
+    return ((conversation ? last(conversation) : preview) || {}).message;
   }
 
 
