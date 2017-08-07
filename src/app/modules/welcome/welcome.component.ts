@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TabsController } from '../tabs/tabs-controller.component';
+import { UserSvc } from '../user-service/user.service';
+import { RootNavSvc } from './root-nav.service';
 
 @Component({
 	template: `
@@ -31,9 +35,22 @@ import { Observable } from 'rxjs';
 export class WelcomeCom{
 	private isToggled: boolean = true;
 	private isKeyboardShowing:boolean;
-	constructor(private keyboard: Keyboard, private _ngZone: NgZone ){
+	constructor(
+		private keyboard: Keyboard,
+		private _ngZone: NgZone,
+		private userSvc: UserSvc,
+		private nav: NavController,
+		private rootNavSvc: RootNavSvc
+	){
 		this.toggleSignupVisibility();
+		this.rootNavSvc.set(this.nav);
 	}
+
+	ngOnInit(){
+    this.userSvc.persistentLogin()
+      .then(user => user ? this.nav.push(TabsController) : null)
+      .catch(err => console.error(err));
+  }
 
 	toggleSignupVisibility(){
 		let { onKeyboardShow, onKeyboardHide } = this.keyboard;

@@ -4,7 +4,9 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'no-data-message',
   template: `
-    <div class="message">{{message}}</div>
+    <div class="message">
+      <ng-content></ng-content>
+    </div>
   `
 })
 export class NoDataMessageCom {

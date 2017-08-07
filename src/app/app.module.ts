@@ -21,17 +21,12 @@ import {TabsModule} from './modules/tabs/tabs.module';
 //Tabs controller
 import {TabsController} from './modules/tabs/tabs-controller.component';
 
-//I
 import { WelcomeModule } from './modules/welcome/welcome.module';
-import { RankingsListCom } from './modules/rankings-list/rankings-list.component';
-import { MessageListCom } from './modules/messages/message-list.component';
-
-//Welcome
-import { WelcomeCom } from './modules/welcome/welcome.component';
 
 //Angular2 services
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
 
 //Services
 import { ColObjDifferFactory } from './utils/differs/collection-object-diff.ts';
@@ -51,6 +46,7 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
 @NgModule({
   declarations: [RacketMeetupApp],
   imports: [
+    IonicStorageModule.forRoot(),
     ModelSvcModule,
     FormsModule,
     HttpModule,
@@ -60,13 +56,6 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
     IonicModule.forRoot(RacketMeetupApp)
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    RacketMeetupApp,
-    TabsController,
-    WelcomeCom,
-    RankingsListCom,
-    MessageListCom
-  ],
   providers: [
     StatusBar,
     SplashScreen,

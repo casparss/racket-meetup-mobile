@@ -13,6 +13,8 @@ import { UserModel } from './user.model';
 import { UserUtils } from './user.utils';
 import { ModelSvc, USER } from '../model-service/model.service';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
+import { Storage } from '@ionic/storage';
+import { toPromise } from '../../utils/util-helpers';
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -32,10 +34,11 @@ export class UserSvc extends BaseService {
 		private transfer: Transfer,
 		private file: File,
 		private modelSvc: ModelSvc,
-		private ws: WsSvc
+		private ws: WsSvc,
+		private storage: Storage
 	){
 		super(http, configSvc);
-		this.defineObservables()
+		this.defineObservables();
 	}
 
 	defineObservables(){
@@ -56,20 +59,40 @@ export class UserSvc extends BaseService {
 			.do(this.userSuccess)
 	}
 
+	persistentLogin(){
+		return this.storage.get('token')
+			.then(token => {
+				if(token){
+					this.http.token = token;
+					return this._get(null, undefined, 'user').toPromise();
+				} else {
+					return false;
+				}
+			})
+			.then(this.userSuccess);
+	}
+
 	signup(user:UserSignupInt){
 		return this._sync(user)
 			.do(this.userSuccess);
 	}
 
 	public userSuccess = user => {
-		this.ws.init(user.token);
-		this.current = this.modelSvc.create(user, this);
-		this.updateProfileImage();
-		this.http.token = user.token;
+		if(user){
+			this.ws.init(user.token);
+			this.current = this.modelSvc.create(user, this);
+			this.updateProfileImage();
+			this.http.token = user.token;
+			this.storage.set('token', user.token);
+			return user;
+		} else {
+			return false;
+		}
 	}
 
 	logout(){
-
+		this.http.token = null;
+		this.storage.set('token', null);
 	}
 
 	//@TODO: moveto utils class

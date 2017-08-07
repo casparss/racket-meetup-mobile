@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import { SpinnerDialog } from '@ionic-native/spinner-dialog';
-import {NavController} from 'ionic-angular';
-import {TabsController} from '../tabs/tabs-controller.component';
-import {UserSvc} from '../user-service/user.service';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { Component } from '@angular/core';
+import { SpinnerDialog  } from '@ionic-native/spinner-dialog';
+import { NavController } from 'ionic-angular';
+import { TabsController } from '../tabs/tabs-controller.component';
+import { UserSvc } from '../user-service/user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 
 @Component({

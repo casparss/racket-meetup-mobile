@@ -107,4 +107,8 @@ export class Collection {
       objectArray.map(object => create(this.injector, object, this, this.opts)):
       objectArray;
   }
+
+  get length(){
+    return this.collectionSubject.getValue().length;
+  }
 }

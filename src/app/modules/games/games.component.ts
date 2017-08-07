@@ -18,7 +18,7 @@ import { ModelSvc, GAME } from '../model-service/model.service';
 
   <ion-content>
 
-    <ion-segment (ionChange)="getByStatus()" [(ngModel)]="selectedSegment">
+    <ion-segment *ngIf="!isEmptyState()" (ionChange)="getByStatus()" [(ngModel)]="selectedSegment">
       <ion-segment-button [disabled]="lengths.pending === 0" value="pending">
         Pending ({{lengths.pending}})
       </ion-segment-button>
@@ -30,7 +30,7 @@ import { ModelSvc, GAME } from '../model-service/model.service';
       </ion-segment-button>
     </ion-segment>
 
-    <div *ngIf="isEmptyState()">No games yet</div>
+    <no-data-message *ngIf="isEmptyState()">No games to show yet, try challenging someone.</no-data-message>
 
     <ion-list *ngIf="!isEmptyState()">
       <game-card

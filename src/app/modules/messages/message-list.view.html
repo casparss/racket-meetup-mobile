@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons start>
-      <button (click)="openAddressBook()" ion-button icon-only>
+      <button (click)="openAddressBook()" [disabled]="isEmptyState" ion-button icon-only>
         <ion-icon name="create"></ion-icon>
       </button>
     </ion-buttons>
@@ -10,6 +10,7 @@
 </ion-header>
 
 <ion-content>
+  <no-data-message *ngIf="isEmptyState">No messages yet.</no-data-message>
 	<ion-list>
     <button
       ion-item

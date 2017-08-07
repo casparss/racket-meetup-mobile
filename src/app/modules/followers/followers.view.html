@@ -1,7 +1,7 @@
 <ion-header>
 	<ion-toolbar>
 
-		<ion-segment [(ngModel)]="selectedSegment">
+		<ion-segment *ngIf="!isEmptyState" [(ngModel)]="selectedSegment">
 	    <ion-segment-button value="following">
 				Following ({{(followingCollection.$ | async)?.length}})
 			</ion-segment-button>
@@ -21,7 +21,7 @@
 
 <ion-content>
 
-	<ion-list [ngSwitch]="isAddressBook">
+	<ion-list *ngIf="!isEmptyState" [ngSwitch]="isAddressBook">
 
     <div [hidden]="selectedSegment !== 'followers'">
 
@@ -84,5 +84,7 @@
     </div>
 
 	</ion-list>
+
+	<no-data-message *ngIf="isEmptyState">No followers yet.</no-data-message>
 
 </ion-content>

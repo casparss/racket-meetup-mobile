@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
 import { UserDetailsInt } from '../user-service/user.interface';
 import { ActionSheetActionsInt } from './my-details.interface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ChangePasswordCom } from './change-password.component';
+import { RootNavSvc } from '../welcome/root-nav.service';
 
 @Component({
 	templateUrl:'./my-details.view.html',
@@ -18,7 +19,9 @@ export class MydetailsCom {
 	constructor(
 		private userSvc: UserSvc,
 		private formBuilder: FormBuilder,
-		private modalController: ModalController
+		private modalController: ModalController,
+		private nav: NavController,
+		private rootNavSvc: RootNavSvc
 	){
 		this.details = this.userSvc.current.user.details;
 		this.defineForm();
@@ -44,6 +47,11 @@ export class MydetailsCom {
 
 	updateDetails(details, isValid){
 		if(isValid) this.userSvc.updateDetails(details, "details").subscribe();
+	}
+
+	logout(){
+		this.userSvc.logout();
+		this.rootNavSvc.nav.popToRoot();
 	}
 
 }

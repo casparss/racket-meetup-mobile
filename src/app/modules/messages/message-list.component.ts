@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { messagesModel } from './messages.fixture';
-import { NavController, App, ModalController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { MessageItemInt } from './messages.interface';
 import { ChatSvc } from '../chat/chat.service';
 import { UserSvc } from '../user-service';
@@ -9,6 +9,7 @@ import { WsSvc } from '../web-sockets-service';
 import { FollowersCom } from '../followers/followers.component';
 import { ModelSvc, Collection, CHAT } from '../model-service/model.service';
 import { ChatModel } from '../chat/chat.model';
+import { RootNavSvc } from '../welcome/root-nav.service';
 
 @Component({
 	templateUrl: './message-list.view.html',
@@ -17,23 +18,31 @@ import { ChatModel } from '../chat/chat.model';
 export class MessageListCom {
 
 	private chatCollection: Collection;
+	private isEmptyState: boolean;
 
 	constructor(
 		private nav: NavController,
 		private chatSvc: ChatSvc,
-		public appCtrl: App,
 		private ws: WsSvc,
 		private modalController : ModalController,
 		private modelSvc: ModelSvc,
-		userSvc: UserSvc
+		userSvc: UserSvc,
+		private rootNavSvc: RootNavSvc
 	){
 		let currentUser_id = userSvc.current.user._id;
 		this.chatCollection = this.modelSvc.createCollection(CHAT, { currentUser_id });
-		this.chatSvc.$.subscribe(chats => this.chatCollection.update(chats));
+		this.chatSvc.$.subscribe(chats => {
+			this.chatCollection.update(chats);
+			this.checkEmptyState();
+		});
+	}
+
+	checkEmptyState(){
+		this.isEmptyState = this.chatCollection.length === 0 ? true : false;
 	}
 
 	openMessage(chatModel:ChatModel): void {
-		this.nav.push(ChatCom, { chatModel });
+		this.rootNavSvc.nav.push(ChatCom, { chatModel });
 	}
 
 	trackById(index: number, chat: any) {

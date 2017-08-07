@@ -12,7 +12,7 @@ import {TabsController} from './tabs-controller.component';
   declarations: [
     TabsController
   ],
-
+  entryComponents: [TabsController],
   imports: [
     IonicModule,
     ProfileModule,

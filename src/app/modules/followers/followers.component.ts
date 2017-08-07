@@ -18,6 +18,7 @@ export class FollowersCom {
 	private followersCollection: any;
 	private followingCollection: any;
 	private isAddressBook: boolean;
+	private isEmptyState: boolean;
 
 	constructor(
 		private nav: NavController,
@@ -33,8 +34,17 @@ export class FollowersCom {
 			.subscribe(({followingThem, followingMe}) => {
 				this.followersCollection.update(followingMe);
 				this.followingCollection.update(followingThem);
+				this.checkEmptyState();
 			});
   }
+
+	checkEmptyState(){
+		this.isEmptyState = this.checkLengths() ? false : true;
+	}
+
+	checkLengths(){
+		return this.followersCollection.length || this.followingCollection.length;
+	}
 
 	openChat(user){
 		this.viewCtrl.dismiss(user);

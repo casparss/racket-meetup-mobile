@@ -71,4 +71,5 @@
     </plugin>
     <plugin name="cordova-plugin-file-transfer" spec="~1.6.3" />
     <engine name="ios" spec="~4.3.1" />
+    <plugin name="cordova-sqlite-storage" spec="~2.0.4" />
 </widget>
