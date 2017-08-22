@@ -1,5 +1,5 @@
 import { Injectable, Injector, EventEmitter } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DataModel } from '../../utils/data-model';
 import { UserInt } from './user.interface';
 import { remove } from 'lodash';
@@ -12,14 +12,21 @@ export class UserModel extends DataModel {
   private userModel: UserInt;
   private utils;
   private userModelSvc;
+  private onLengthsRetrievalSub: Subscription;
 
   constructor(injector, userModel, ownerInstance, opts?){
     super(injector, userModel, ownerInstance);
     this.utils = injector.get(UserUtils);
     this.userModelSvc = injector.get(UserModelSvc);
-    this.userModelSvc.onLengthsRetrieval
+    this.onLengthsRetrievalSub = this.userModelSvc.onLengthsRetrieval
       .subscribe(lengthsData => this.lengthsRetrieval(lengthsData));
     this.subscribe();
+  }
+
+  destroy(){
+    console.log("destroy", this);
+    super.destroy();
+    this.onLengthsRetrievalSub.unsubscribe();
   }
 
   updateDetails(details){

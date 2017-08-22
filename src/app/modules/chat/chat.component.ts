@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NavParams } from 'ionic-angular';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { WsSvc } from '../web-sockets-service';
@@ -11,6 +12,7 @@ import { ChatSvc } from './chat.service';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatCom {
+	private chatSub: Subscription;
 	private chatModel: ChatModel;
 	private conversation: any = [];
 
@@ -20,7 +22,7 @@ export class ChatCom {
 	){
 		this.chatModel = this.params.get("chatModel");
 		this.chatModel.getMessageHistory();
-		this.chatModel.conversation$.subscribe(conversation => this.conversation = conversation);
+		this.chatSub = this.chatModel.conversation$.subscribe(conversation => this.conversation = conversation);
 	}
 
 	sendMessage(message){
@@ -38,6 +40,10 @@ export class ChatCom {
 
 	ionViewDidLeave() {
 		this.chatModel.stoppedViewing();
+	}
+
+	ionViewDidUnload(){
+		this.chatSub.unsubscribe();
 	}
 
 }

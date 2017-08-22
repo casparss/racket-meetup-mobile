@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { GameModel } from './game.model';
 import * as moment from 'moment';
 import calendarDateConfig from '../../utils/calendar-date-config.json';
@@ -83,11 +84,12 @@ const ACTIVITY_TYPE_ICONS = [
 })
 export class GameActivityFeedCom {
   private activities: any;
+  private gameModelSub: Subscription;
   @Input() gameModel: GameModel;
   constructor(){}
 
   ngOnInit(){
-    this.gameModel.$
+    this.gameModelSub = this.gameModel.$
       .map(game => game.activity)
       .map(activities => activities.map(activity => {
         let activityCopy = Object.assign({}, activity);
@@ -112,6 +114,10 @@ export class GameActivityFeedCom {
       }))
       .map(activities => activities.reverse())
       .subscribe(activities => this.activities = activities);
+  }
+
+  ionViewDidUnload(){
+    this.gameModelSub.unsubscribe();
   }
 
   getUserAvatar$(_id:string){

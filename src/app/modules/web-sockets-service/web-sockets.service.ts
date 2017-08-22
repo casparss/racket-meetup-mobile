@@ -1,12 +1,12 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, Events } from 'ionic-angular';
 import { BehaviorSubject } from 'rxjs';
 import * as io from 'socket.io-client';
 import { ConfigSvc } from '../config/config.service';
 import { ToastSvc } from '../toast/toast.service';
 
 @Injectable()
-export class WsSvc{
+export class WsSvc {
 
 	public socket;
 	private _authenticated = null;
@@ -18,8 +18,15 @@ export class WsSvc{
 	constructor(
 		private configSvc: ConfigSvc,
 		private toastSvc: ToastSvc,
-		private platform: Platform
-	){}
+		private platform: Platform,
+		private events: Events
+	){
+		this.events.subscribe("logout", () => {
+			this.clearReconnectInterval();
+			this.socket.destroy();
+			this._authenticated = null;
+		})
+	}
 
 	init(token){
 		this.token = token;
@@ -45,7 +52,6 @@ export class WsSvc{
 	}
 
 	connect(){
-		console.log("connect()");
 		if(this.socket){
 			this.socket.destroy();
 	    delete this.socket;
@@ -62,7 +68,10 @@ export class WsSvc{
 		this.socket.on("disconnect", () => this.connected$.next(false));
 		this.platform.pause.subscribe(() => this.clearReconnectInterval());
 		this.platform.resume.subscribe(() => this.startReconnectInterval());
-		this.connected$.subscribe(console.log);
+	}
+
+	off(eventName: string){
+		this.socket.off(eventName);
 	}
 
 	on(eventName: string, cb){

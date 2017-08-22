@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { GameInt } from './games.interfaces';
@@ -120,6 +121,7 @@ export class GameCardCom {
 	private actionSheetOpts: ActionSheetOptions;
 	private actionSheetActions: Array<any>;
 	private isGameAccepted: any;
+	private gameModelSub: Subscription;
 
 	constructor(
 		private gamesSvc: GamesSvc,
@@ -130,10 +132,14 @@ export class GameCardCom {
 
 	ngOnInit(){
 		this.configureActionSheet();
-		this.gameModel.$.subscribe(game => {
+		this.gameModelSub = this.gameModel.$.subscribe(game => {
 			this.game = game;
 			this.isGameAccepted = this.isAccepted();
 		});
+	}
+
+	ionViewDidUnload(){
+	  this.gameModelSub.unsubscribe();
 	}
 
 	isAccepted(){

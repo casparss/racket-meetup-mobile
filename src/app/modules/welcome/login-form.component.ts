@@ -58,7 +58,10 @@ export class LoginFormCom {
 			this.spinnerDialog.show("Logging in...", "Logging in...", true);
 			this.svc.login(user)
 				.subscribe(
-					() => this.nav.push(TabsController),
+					() => {
+						this.nav.push(TabsController);
+						this.loginForm.reset();
+					},
 					err => this.spinnerDialog.hide(),
 					() => this.spinnerDialog.hide()
 				);

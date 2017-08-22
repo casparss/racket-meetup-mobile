@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs'
 import { LoadingController } from 'ionic-angular';
 import { PlayerRanking } from './rankings.interface';
 import { RankingsSvc } from './rankings.service';
@@ -13,6 +14,7 @@ export class RankingsListCom {
 
 	private selectedSegment: string = 'top';
 	private rankingsList: any;
+	private rankingsListSub: Subscription;
 	private currentUserRanking: any;
 
 	constructor(
@@ -23,7 +25,13 @@ export class RankingsListCom {
 	){
 		this.rankingsList = this.modelSvc.createCollection(RANKING);
 		this.getRankings();
-		this.rankingsList.$.subscribe(rankings => this.setCurrentUserRanking(rankings));
+		this.rankingsListSub = this.rankingsList.$
+			.subscribe(rankings => this.setCurrentUserRanking(rankings));
+	}
+
+	ionViewWillUnload(){
+		this.rankingsListSub.unsubscribe();
+		this.rankingsList.destroy();
 	}
 
 	getRankings(){

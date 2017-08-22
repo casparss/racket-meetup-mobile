@@ -37,7 +37,6 @@ import { GamesSvc } from './modules/games/games.service';
 import { DecHttp } from './utils/http/';
 import { ToastSvc } from './modules/toast/toast.service';
 import { WsSvc } from './modules/web-sockets-service/web-sockets.service';
-import { MessagesSvc } from './modules/messages/messages.service';
 import { ConfigSvc } from './modules/config/config.service';
 
 //imports
@@ -71,7 +70,6 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
     ConfigSvc,
   	WsSvc,
   	ColObjDifferFactory,
-    MessagesSvc,
     Keyboard,
     SpinnerDialog,
     ActionSheet,

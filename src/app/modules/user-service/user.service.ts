@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Events } from 'ionic-angular';
 import { remove, cloneDeep, isEmpty } from 'lodash';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { BaseService } from '../../utils/base/base.service';
@@ -35,7 +36,8 @@ export class UserSvc extends BaseService {
 		private file: File,
 		private modelSvc: ModelSvc,
 		private ws: WsSvc,
-		private storage: Storage
+		private storage: Storage,
+		private events: Events
 	){
 		super(http, configSvc);
 		this.defineObservables();
@@ -79,6 +81,7 @@ export class UserSvc extends BaseService {
 
 	public userSuccess = user => {
 		if(user){
+			this.events.publish("login");
 			this.ws.init(user.token);
 			this.current = this.modelSvc.create(user, this);
 			this.updateProfileImage();
@@ -91,8 +94,11 @@ export class UserSvc extends BaseService {
 	}
 
 	logout(){
+		this.events.publish("logout");
+		this._delete(undefined, undefined, this.url).subscribe();
 		this.http.token = null;
 		this.storage.set('token', null);
+		this.current = undefined;
 	}
 
 	//@TODO: moveto utils class
@@ -109,8 +115,8 @@ export class UserSvc extends BaseService {
 
   toggleFollow(userId:string){
 		return this._update({ userId }, {}, this.followersUrl)
-		.do(({ isFriend }) => this.current.toggleFollow(userId, isFriend))
-		.map(({ isFriend }) => isFriend);
+			.do(({ isFriend }) => this.current.toggleFollow(userId, isFriend))
+			.map(({ isFriend }) => isFriend);
 	}
 
 	updateDetails(details, requestType: string){

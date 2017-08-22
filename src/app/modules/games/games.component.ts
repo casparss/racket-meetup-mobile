@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavParams, LoadingController } from 'ionic-angular';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { GameModel } from './game.model';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from './games.service';
@@ -51,6 +51,7 @@ export class GamesCom {
   private gamesListCollection: any;
   private selectedSegment = "pending";
   private lengths: any = {};
+  private statusLengthsSub: Subscription;
 
   constructor(
     private gamesSvc: GamesSvc,
@@ -65,7 +66,7 @@ export class GamesCom {
   }
 
   ngOnInit(){
-    this.user.statusLengths$.subscribe(lengths => {
+    this.statusLengthsSub = this.user.statusLengths$.subscribe(lengths => {
       this.lengths = lengths;
       this.tabSelection();
     });
@@ -111,6 +112,7 @@ export class GamesCom {
 
   ngOnDestroy(){
     this.gamesListCollection.destroy();
+    this.statusLengthsSub.unsubscribe();
   }
 
 }

@@ -1,5 +1,6 @@
+import { Events } from 'ionic-angular';
 import { Injectable, Injector, EventEmitter } from '@angular/core';
-import { mapValues, remove } from 'lodash';
+import { mapValues, remove, forEach } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
 import { UserUtils } from '../user-service/user.utils';
@@ -47,7 +48,9 @@ const create = (injector, rawData: any, ownerInstance: any, opts) => {
 @Injectable()
 export class ModelSvc {
   private deps: any;
-  constructor(private injector: Injector){}
+  constructor(private injector: Injector, private events: Events){
+    this.events.subscribe("logout", () => this.destroyModels());
+  }
 
   create(rawData: any, ownerInstance: any, opts = {}){
     return create(this.injector, rawData, ownerInstance, opts)
@@ -61,6 +64,13 @@ export class ModelSvc {
 
   cleanUpRedundentModels(type){
     remove(modelRegistry[type], model => model.isOwnerlessDestroy());
+  }
+
+  destroyModels(){
+    forEach(modelRegistry, (value, key) => {
+      value.forEach(value => value.destroy());
+      modelRegistry[key] = [];
+    });
   }
 }
 

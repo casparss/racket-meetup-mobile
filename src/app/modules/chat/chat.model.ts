@@ -1,5 +1,5 @@
 import { EventEmitter } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, Subscription } from 'rxjs';
 import { DataModel } from '../../utils/data-model';
 import { ModelSvc } from '../model-service/model.service';
 import { UserUtils } from '../user-service/user.utils';
@@ -8,6 +8,7 @@ import { reject, map, last, pull } from 'lodash';
 import calendarDateConfig from '../../utils/calendar-date-config.json';
 
 export class ChatModel extends DataModel {
+  private onAuthentictedSub: Subscription;
   private modelSvc: ModelSvc;
   private userUtils: UserUtils;
   private currentUser_id: string;
@@ -23,7 +24,7 @@ export class ChatModel extends DataModel {
     this.userUtils = injector.get(UserUtils);
     this.subscribe();
 
-    this.ws.onAuthenticted.subscribe(isAuth => {
+    this.onAuthentictedSub = this.ws.onAuthenticted.subscribe(isAuth => {
       if(isAuth){
         this.ws.socket.emit("joining:chat", this._id);
         this.setWsEvents();
@@ -96,6 +97,7 @@ export class ChatModel extends DataModel {
 
 	destroy(){
     super.destroy();
+    this.onAuthentictedSub.unsubscribe();
 		this.ws.socket.off("message");
 		this.ws.socket.emit("leaving:chat", this._id);
 	}

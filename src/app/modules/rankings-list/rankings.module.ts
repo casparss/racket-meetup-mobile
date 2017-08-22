@@ -6,6 +6,7 @@ import { LoadingImgModule } from '../../utils/loading-img';
 
 @NgModule({
   declarations: [RankingsListCom],
+  entryComponents: [RankingsListCom],
   imports: [IonicModule, LoadingImgModule],
   exports:[RankingsListCom],
   providers: [RankingsSvc]

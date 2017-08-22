@@ -1,4 +1,5 @@
 import { Component, ViewChildren, QueryList } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ViewController } from 'ionic-angular';
 import { GameModel } from '../games/game.model';
 import { GameInt } from '../games/games.interfaces';
@@ -54,6 +55,7 @@ export class GameRecordResultCom {
   @ViewChildren(ScoreItemCom) scoreItemComs: QueryList<ScoreItemCom>
   private validScore: boolean = false;
   private gameModel: GameModel;
+  private gameModelSub: Subscription;
   private game: GameInt;
   private matchSetRange = 3;
   private winner: UserModel;
@@ -67,7 +69,11 @@ export class GameRecordResultCom {
     private gamesSvc: GamesSvc
   ){
     this.gameModel = <GameModel>this.viewCtrl.data.gameModel;
-    this.gameModel.$.subscribe(game => this.game = game);
+    this.gameModelSub = this.gameModel.$.subscribe(game => this.game = game);
+  }
+
+  ionViewDidUnload(){
+    this.gameModelSub.unsubscribe();
   }
 
   pushNewScore(){

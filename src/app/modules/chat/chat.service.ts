@@ -1,4 +1,5 @@
 import { ModelSvc, CHAT } from '../model-service/model.service';
+import { Events } from 'ionic-angular';
 import { orderBy, debounce } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -15,6 +16,7 @@ export class ChatSvc extends BaseService {
 	url = 'inbox';
 	private chatsSubject: BehaviorSubject<any> = new BehaviorSubject([]);
   public unreadChatsLength$: BehaviorSubject<any> = new BehaviorSubject(0);
+	private newChatWsEv: any;
 
 	constructor(
 		http:DecHttp,
@@ -22,18 +24,25 @@ export class ChatSvc extends BaseService {
 		configSvc: ConfigSvc,
 		private userUtils: UserUtils,
     private modelSvc: ModelSvc,
-		private ws: WsSvc
+		private ws: WsSvc,
+		private events: Events
 	){
 		super(http, configSvc);
-    this.getChats().subscribe();
 
 		this.ws.onAuthenticted.subscribe(isAuth => {
-      if(isAuth) this.setWsEvents();
+      if(isAuth) {
+				this.getChats().subscribe();
+				this.setWsEvents();
+			};
     });
+
+		this.events.subscribe("logout", () => {
+			this.newChatWsEv.off();
+		});
 	}
 
 	setWsEvents(){
-		this.ws.on(`newChat:${this.userSvc.current._id}`, chat => this.newIncomingChat(chat));
+		this.newChatWsEv = this.ws.on(`newChat:${this.userSvc.current._id}`, chat => this.newIncomingChat(chat));
 	}
 
 	modelOnChange(){
@@ -82,11 +91,8 @@ export class ChatSvc extends BaseService {
 
   get $(){
     return this.chatsSubject.asObservable()
-			.do(() => console.log("running"))
       .do(chats => this.getUnreadChatLengths(chats))
-			.map(chats => {
-				return orderBy(chats, ['updatedAt'], ['desc']);
-			});
+			.map(chats => orderBy(chats, ['updatedAt'], ['desc']));
   }
 
 }

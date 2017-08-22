@@ -1,4 +1,5 @@
 import { Component } from '@angular/core'
+import { Subscription } from 'rxjs';
 import { ProfileMainCom } from '../profile-main/profile-main.component';
 import { RankingsListCom } from '../rankings-list/rankings-list.component';
 import { MessageListCom } from '../messages/message-list.component';
@@ -30,6 +31,7 @@ export class TabsController {
 	private rankingsTabRoot: any
 	private chatsTabRoot: any;
 	private pendingLength: number;
+	private statusLengthsSub: Subscription;
 
 	constructor(private userSvc: UserSvc, private chatSvc: ChatSvc) {
 		this.profileTabRoot = ProfileMainCom;
@@ -38,10 +40,13 @@ export class TabsController {
 	}
 
 	ngOnInit(){
-		this.userSvc.current.statusLengths$.subscribe(statuses => {
-			let { pending, accepted } = statuses;
+		this.statusLengthsSub = this.userSvc.current.statusLengths$.subscribe(statuses => {
+			let { pending } = statuses;
 			this.pendingLength = pending;
-			//this.accepted = accepted;
 		});
+	}
+
+	ngOnDestroy(){
+		this.statusLengthsSub.unsubscribe();
 	}
 }

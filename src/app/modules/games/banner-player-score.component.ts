@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { GameModel } from './game.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'banner-player-score',
@@ -19,8 +20,13 @@ import { GameModel } from './game.model';
 export class BannerPlayerScoreCom {
   @Input() gameModel: GameModel;
   private game: any;
+  private gameModelSub: Subscription;
   ngOnInit(){
-    this.gameModel.$.subscribe(game => this.game = game);
+    this.gameModelSub = this.gameModel.$.subscribe(game => this.game = game);
+  }
+
+  ionViewDidUnload(){
+    this.gameModelSub.unsubscribe();
   }
 
   status({ status }, list){

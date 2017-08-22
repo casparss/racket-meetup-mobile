@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { GamesSvc } from './games.service'
 import { UserSvc } from '../user-service';
@@ -36,6 +37,7 @@ export class GamesSummaryItemCom {
   private game: any;
   private side1img: string;
   private side2img: string;
+  private gameModelSub: Subscription;
 
   constructor(
     private userSvc: UserSvc,
@@ -44,10 +46,14 @@ export class GamesSummaryItemCom {
   ){}
 
   ngOnInit(){
-    this.gameModel.$.subscribe(game => {
+    this.gameModelSub = this.gameModel.$.subscribe(game => {
       this.game = game;
       this.generateProfileImages();
     });
+  }
+
+  ionViewDidUnload(){
+    this.gameModelSub.unsubscribe();
   }
 
   viewGameDetails(){

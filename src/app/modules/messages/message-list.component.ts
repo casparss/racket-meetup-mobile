@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { messagesModel } from './messages.fixture';
 import { NavController, ModalController } from 'ionic-angular';
 import { MessageItemInt } from './messages.interface';
@@ -19,6 +20,7 @@ export class MessageListCom {
 
 	private chatCollection: Collection;
 	private isEmptyState: boolean;
+	private chatSub: Subscription;
 
 	constructor(
 		private nav: NavController,
@@ -29,12 +31,17 @@ export class MessageListCom {
 		userSvc: UserSvc,
 		private rootNavSvc: RootNavSvc
 	){
-		let currentUser_id = userSvc.current.user._id;
+		let currentUser_id = userSvc .current.user._id;
 		this.chatCollection = this.modelSvc.createCollection(CHAT, { currentUser_id });
-		this.chatSvc.$.subscribe(chats => {
+		this.chatSub = this.chatSvc.$.subscribe(chats => {
 			this.chatCollection.update(chats);
 			this.checkEmptyState();
 		});
+	}
+
+	ionViewWillUnload(){
+		this.chatSub.unsubscribe();
+		this.chatCollection.destroy();
 	}
 
 	checkEmptyState(){
@@ -65,5 +72,6 @@ export class MessageListCom {
 
 		addressBookModal.present();
 	}
+
 
 }

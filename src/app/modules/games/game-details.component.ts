@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NavParams, ModalController } from 'ionic-angular';
 import { GameModel } from './game.model';
 import { ChallengeCom } from '../challenge/challenge.component';
@@ -97,13 +98,18 @@ export class GameDetailsCom {
   private tab = "details";
   private game: any;
   private gameModel: GameModel;
+  private gameModelSub: Subscription;
 
   constructor(
     private navParams: NavParams,
     private modalController : ModalController
   ){
     this.gameModel = this.navParams.get("gameModel");
-    this.gameModel.$.subscribe(game => this.game = game);
+    this.gameModelSub = this.gameModel.$.subscribe(game => this.game = game);
+  }
+
+  ionViewDidUnload(){
+    this.gameModelSub.unsubscribe();
   }
 
   amendGameDetails(){

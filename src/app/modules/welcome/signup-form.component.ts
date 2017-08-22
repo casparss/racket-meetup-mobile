@@ -75,7 +75,10 @@ export class SignupFormCom{
 			this.spinnerDialog.show("Signing up...", "Signing up...", true);
 			this.svc.signup(user)
 				.subscribe(
-					() => this.nav.push(TabsController),
+					() => {
+						this.nav.push(TabsController);
+						this.signupForm.reset();
+					},
 					err => this.spinnerDialog.hide(),
 					() => this.spinnerDialog.hide()
 				);

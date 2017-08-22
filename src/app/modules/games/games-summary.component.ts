@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CustomSubject } from '../../utils/custom-subject';
 import { UserInt } from '../user-service/user.interface';
 import { GamesSvc } from './games.service';
@@ -34,6 +34,7 @@ export class GamesSummaryCom {
 	@Input() user: any;
 	gamesSubject: CustomSubject = new CustomSubject();
 	gamesCollection: any;
+	private onPushToCurrentSub: Subscription;
 
 	constructor(
 		private gamesSvc: GamesSvc,
@@ -41,7 +42,7 @@ export class GamesSummaryCom {
 		private modelSvc: ModelSvc
 	){
 		this.gamesCollection = this.modelSvc.createCollection(GAME);
-		this.gamesSvc.onPushToCurrent.subscribe(game => this.gamesCollection.unshift(game));
+		this.onPushToCurrentSub = this.gamesSvc.onPushToCurrent.subscribe(game => this.gamesCollection.unshift(game));
 	}
 
 	ngOnInit(){
@@ -61,6 +62,7 @@ export class GamesSummaryCom {
 
 	ngOnDestroy(){
 		this.gamesCollection.destroy();
+		this.onPushToCurrentSub.unsubscribe();
 	}
 
 }

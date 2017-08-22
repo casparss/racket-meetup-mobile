@@ -75,6 +75,7 @@ export class DataModel {
   }
 
   destroy(){
+    this.subject.unsubscribe();
     this.updateEv.off();
   }
 

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NavController, ModalController } from 'ionic-angular';
 import { UserModel } from '../user-service/user.model';
 import { toPromise } from '../../utils/util-helpers';
@@ -7,7 +8,7 @@ import { GamesSvc } from '../games/games.service';
 import { ChallengeCom } from '../challenge/challenge.component';
 import { ProfileMainSvc } from './profile-main.service';
 import { UserSvc, UserInt } from '../user-service/user.service';
-import { MessagesSvc } from '../messages/messages.service';
+import { ChatSvc } from '../chat/chat.service';
 import { MydetailsCom } from '../my-details/my-details.component';
 import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
@@ -59,12 +60,13 @@ export class ProfileActionsCom {
 	private isFriend: boolean = false;
 	private pending: number;
 	private accepted: number;
+	private statusLengthsSub: Subscription;
 
 	constructor(
 		private nav: NavController,
 		private modalController : ModalController,
 		private userSvc: UserSvc,
-    private messagesSvc: MessagesSvc,
+    private chatSvc: ChatSvc,
 		private gamesSvc: GamesSvc,
 		private modelSvc: ModelSvc
 	){
@@ -72,10 +74,14 @@ export class ProfileActionsCom {
 	}
 
 	ngOnInit(){
-		this.userModel.statusLengths$.subscribe(({pending, accepted}) => {
+		this.statusLengthsSub = this.userModel.statusLengths$.subscribe(({pending, accepted}) => {
 			this.pending = pending;
 			this.accepted = accepted;
 		});
+	}
+
+	ionViewDidUnload(){
+		this.statusLengthsSub.unsubscribe();
 	}
 
   setIsFriend(){
@@ -91,7 +97,7 @@ export class ProfileActionsCom {
 	}
 
 	messagePlayer(){
-		this.messagesSvc.getChat([this.userModel._id])
+		this.chatSvc.getChat([this.userModel._id])
 			.subscribe(chat => this.nav.push(ChatCom, {
 				chatModel: this.modelSvc.create(chat, null, {
 					currentUser_id: this.userSvc.current._id
