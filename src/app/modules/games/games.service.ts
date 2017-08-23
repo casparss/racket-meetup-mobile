@@ -11,6 +11,7 @@ import { ConfigSvc } from '../config/config.service';
 import { ModelSvc } from '../model-service/model.service';
 import { UserModelSvc } from '../user-service/user.model.service';
 import { UserSvc } from '../user-service/user.service';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @Injectable()
 export class GamesSvc extends BaseService {
@@ -24,7 +25,8 @@ export class GamesSvc extends BaseService {
 		private userSvc: UserSvc,
 		private modelSvc: ModelSvc,
 		http: DecHttp,
-		configSvc: ConfigSvc
+		configSvc: ConfigSvc,
+		private geolocation: Geolocation
 	){
 		super(http, configSvc);
 	}
@@ -74,6 +76,18 @@ export class GamesSvc extends BaseService {
 
 	pushToCurrent(game){
 		this.onPushToCurrent.emit(game);
+	}
+
+	getLocalClubs(){
+		return <Promise<any>>this.geolocation.getCurrentPosition()
+			.then(({ coords }) => this.getClubs(coords))
+			.catch(err => console.log('Error getting location', err));
+	}
+
+	getClubs({ longitude, latitude }){
+		let location = `${latitude},${longitude}`;
+		let search = HttpUtils.urlParams({ location });
+		return this._get(null, { search }, "/clubs").toPromise();
 	}
 
 }

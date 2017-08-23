@@ -11,7 +11,7 @@ import GAME_TYPES from './game-types';
 
 interface formInt {
 	date: Array<any>,
-	venue: Array<any>,
+	club: Array<any>,
 	gameType: Array<any>,
 	comment?: Array<any>
 }
@@ -28,6 +28,7 @@ export class ChallengeCom {
   private challengeForm:FormGroup;
 	private gameModel: any;
 	private game: any;
+	private clubs: Array<any>;
 
 	constructor(
     private viewCtrl: ViewController,
@@ -40,12 +41,13 @@ export class ChallengeCom {
 		this.gameModel = viewCtrl.data.gameModel;
 		this.game = this.gameModel ? this.gameModel.getValue() : undefined;
 		this.setForm(this.game);
+		this.gamesSvc.getLocalClubs().then(clubs => this.clubs = clubs);
 	}
 
 	setForm(game:any = {}){
 		let form: formInt = {
 			date: [game.date || '', [<any>Validators.required]],
-	    venue: [game.venue || '', [<any>Validators.required]],
+	    club: [game.club || '', [<any>Validators.required]],
 			gameType: [game.gameType || GAME_TYPES[0]]
 		};
 

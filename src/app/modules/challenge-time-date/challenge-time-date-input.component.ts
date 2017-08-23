@@ -1,8 +1,6 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ModalController } from 'ionic-angular';
-import { Observable } from 'rxjs';
-import { UserInt } from '../user-service/user.interface';
 import { UserModel } from '../user-service/user.model';
 import { ChallengeTimeDateCom } from './challenge-time-date.component';
 

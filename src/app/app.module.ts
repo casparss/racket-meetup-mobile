@@ -5,6 +5,7 @@ import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
 import { ActionSheet } from '@ionic-native/action-sheet';
 import { Keyboard } from '@ionic-native/keyboard';
+import { Geolocation } from '@ionic-native/geolocation';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-angular';
@@ -71,6 +72,7 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
   	WsSvc,
   	ColObjDifferFactory,
     Keyboard,
+    Geolocation,
     SpinnerDialog,
     ActionSheet,
     Camera,

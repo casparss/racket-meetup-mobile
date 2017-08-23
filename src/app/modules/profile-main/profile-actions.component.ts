@@ -2,16 +2,12 @@ import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NavController, ModalController } from 'ionic-angular';
 import { UserModel } from '../user-service/user.model';
-import { toPromise } from '../../utils/util-helpers';
 
 import { GamesSvc } from '../games/games.service';
 import { ChallengeCom } from '../challenge/challenge.component';
-import { ProfileMainSvc } from './profile-main.service';
-import { UserSvc, UserInt } from '../user-service/user.service';
+import { UserSvc } from '../user-service/user.service';
 import { ChatSvc } from '../chat/chat.service';
-import { MydetailsCom } from '../my-details/my-details.component';
 import { FollowersCom } from '../followers/followers.component';
-import { SearchPlayersCom } from '../followers/search-players.component';
 import { ChatCom } from '../chat/chat.component';
 import { GamesCom } from '../games/games.component';
 import { ModelSvc } from '../model-service/model.service';

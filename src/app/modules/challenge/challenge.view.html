@@ -47,7 +47,13 @@
 				<ion-item>
 					<ion-label primary>Location:</ion-label>
 					<ion-icon name="pin" item-left></ion-icon>
-					<ion-input type="text" formControlName="venue"></ion-input>
+					<ion-select formControlName="club">
+						<ion-option
+							*ngFor="let club of clubs; let i=index"
+							[value]="club.place_id">
+							{{club.name}}
+						</ion-option>
+					</ion-select>
 				</ion-item>
 
 				<ion-item-divider *ngIf="game" light>Reason for change</ion-item-divider>
