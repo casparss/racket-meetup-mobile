@@ -34,10 +34,13 @@ import { ModelSvc, GAME } from '../model-service/model.service';
 
     <ion-list *ngIf="!isEmptyState()">
       <game-card
-        *ngFor="let gameModel of gamesListCollection.$ | async"
+        *ngFor="let gameModel of (gamesListCollection.$ | async); trackById"
         [gameModel]="gameModel"
       ></game-card>
     </ion-list>
+    <ion-infinite-scroll (ionInfinite)="lazyLoad($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 
   </ion-content>
   `
@@ -52,6 +55,8 @@ export class GamesCom {
   private selectedSegment = "pending";
   private lengths: any = {};
   private statusLengthsSub: Subscription;
+  private lazyLoadLimit: number = 2;
+  private lastSeenId: string;
 
   constructor(
     private gamesSvc: GamesSvc,
@@ -96,6 +101,8 @@ export class GamesCom {
   }
 
   getByStatus(){
+    this.lastSeenId = null;
+
     let loading = this.loadingCtrl.create({
       content: 'Loading games...',
       showBackdrop: false
@@ -103,11 +110,37 @@ export class GamesCom {
 
     loading.present();
 
-    this.gamesSvc.getByStatus(this.user.user._id, this.selectedSegment)
-      .subscribe(({games}) => {
-        this.gamesListCollection.update(games);
-        loading.dismiss();
-      });
+    this.gamesSvc.getByStatus({
+      _id: this.user.user._id,
+      status: this.selectedSegment,
+      limit: this.lazyLoadLimit
+    })
+    .subscribe(({games}) => {
+      this.gamesListCollection.update(games);
+      loading.dismiss();
+    });
+  }
+
+
+  lazyLoad(nScroll){
+    let lastSeenId = this.gamesListCollection.last()._id;
+    if (this.lastSeenId === lastSeenId) return nScroll.complete();
+    this.lastSeenId = lastSeenId;
+
+    this.gamesSvc.getByStatus({
+      _id: this.user.user._id,
+      status: this.selectedSegment,
+      limit: this.lazyLoadLimit,
+      lastSeenId
+    })
+    .subscribe(({games}) => {
+      this.gamesListCollection.push(games);
+      nScroll.complete();
+    });
+  }
+
+  trackById(index, { _id }){
+    return _id;
   }
 
   ngOnDestroy(){

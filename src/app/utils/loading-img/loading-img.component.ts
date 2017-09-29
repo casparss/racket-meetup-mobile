@@ -5,7 +5,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ion-spinner *ngIf="isLoading" icon="spiral" class="spinner-stable"></ion-spinner>
-    <img [hidden]="isLoading" (load)="onLoad()" [src]="src" />
+    <img [class.loaded]="!isLoading" (load)="onLoad()" [src]="src" />
   `,
   styles: [`
     :host {
@@ -15,8 +15,16 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     }
     img {
       -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      filter: opacity(0);
+      transition: all 0.5s;
       width:100%!important;
       height:100%!important;
+    }
+    .loaded {
+      -webkit-transform: translateZ(0) scale(1);
+      transform: translateZ(0);
+      filter: opacity(1);
     }
   `]
 })

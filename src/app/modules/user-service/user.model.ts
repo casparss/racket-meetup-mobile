@@ -24,7 +24,6 @@ export class UserModel extends DataModel {
   }
 
   destroy(){
-    console.log("destroy", this);
     super.destroy();
     this.onLengthsRetrievalSub.unsubscribe();
   }

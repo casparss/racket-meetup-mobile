@@ -21,7 +21,7 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
 
     <ion-content no-bounce>
 
-      <banner-player-score [gameModel]="gameModel"></banner-player-score>
+      <games-banner [gameModel]="gameModel"></games-banner>
 
       <ion-list *ngIf="status(game, ['accepted'])">
         <ion-list-header class="component-header">
@@ -57,7 +57,7 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
             <ion-item-group>
               <ion-item>
                 <ion-icon name="pin" item-left large ></ion-icon>
-                <h2>{{game.venue}}</h2>
+                <h2>{{game.club.name}}</h2>
               </ion-item>
               <ion-item>
                 <ion-icon item-left large name="clock"></ion-icon>

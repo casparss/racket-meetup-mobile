@@ -1,6 +1,6 @@
 import { Events } from 'ionic-angular';
 import { Injectable, Injector, EventEmitter } from '@angular/core';
-import { mapValues, remove, forEach } from 'lodash';
+import { mapValues, remove, forEach, last } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
 import { UserUtils } from '../user-service/user.utils';
@@ -91,13 +91,24 @@ export class Collection {
   }
 
   unshift(model){
-    let games = this.collectionSubject.getValue();
-    games.unshift(model);
-    this.collectionSubject.next(games);
+    let models = this.collectionSubject.getValue();
+    models.unshift(model);
+    this.collectionSubject.next(models);
+  }
+
+  last(){
+    let models = this.collectionSubject.getValue();
+    return last(models);
   }
 
   update(objectArray){
     this.collectionSubject.next(this.transformToModel(objectArray));
+  }
+
+  push(objectArray: Array<any>){
+    let models = this.collectionSubject.getValue();
+    let newModels = this.transformToModel(objectArray);
+    this.collectionSubject.next([...models, ...newModels]);
   }
 
   findById(_idArg){
@@ -105,8 +116,8 @@ export class Collection {
   }
 
   destroy(){
-    let games = this.collectionSubject.getValue();
-    games.forEach(gameModel => gameModel.disown(this));
+    let models = this.collectionSubject.getValue();
+    models.forEach(model => model.disown(this));
     this.onDestroy.emit(this.type);
     this.onDestroy.unsubscribe();
   }

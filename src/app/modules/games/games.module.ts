@@ -3,14 +3,13 @@ import { IonicModule } from 'ionic-angular';
 import { LoadingImgModule } from '../../utils/loading-img';
 import { GameRecordResultModule } from '../game-record-result';
 import { NoDataMessageModule } from '../no-data-message/no-data-message.module';
+import { GamesBannerModule } from '../games-banner';
 
 import { GamesSummaryCom } from './games-summary.component';
 import { GamesSummaryItemCom } from './games-summary-item.component';
 import { GamesCom } from './games.component';
 import { GameCardCom } from './game-card.component';
 import { GameDetailsCom } from './game-details.component';
-import { BannerPlayerScoreCom } from './banner-player-score.component';
-import { ScoreLineCom } from './banner-player-score.component';
 import { GameActivityFeedCom } from './game-activity-feed.component';
 
 @NgModule({
@@ -20,15 +19,14 @@ import { GameActivityFeedCom } from './game-activity-feed.component';
     GamesSummaryCom,
     GamesSummaryItemCom,
     GameDetailsCom,
-    BannerPlayerScoreCom,
-    ScoreLineCom,
     GameActivityFeedCom
   ],
   imports: [
     IonicModule,
     LoadingImgModule,
     GameRecordResultModule,
-    NoDataMessageModule
+    NoDataMessageModule,
+    GamesBannerModule
   ],
   exports:[
     GamesCom,

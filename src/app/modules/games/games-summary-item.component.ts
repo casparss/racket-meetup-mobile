@@ -11,24 +11,13 @@ import { GameDetailsCom } from './game-details.component';
 @Component({
   selector: 'games-summary-item',
   template: `
+    <ion-item-divider color="light">{{game.date | date: 'shortDate' }}</ion-item-divider>
     <button (click)="viewGameDetails()" type="button" ion-item>
-
-      <ion-row align-items-center >
-        <ion-col col-6>
-          <ion-list class="custom-list">
-            <ion-item><ion-icon item-start color="primary" name="tennisball"></ion-icon> <span>{{game.gameType}}</span></ion-item>
-            <ion-item><ion-icon item-start name="pin"></ion-icon> <span>{{game.venue}}</span></ion-item>
-          </ion-list>
-        </ion-col>
-
-        <ion-col col-6 >
-          <ion-list class="custom-list">
-            <ion-item><ion-icon item-start name="calendar"></ion-icon> <span>{{game.date | date: 'shortDate' }}</span></ion-item>
-            <ion-item><ion-icon item-start name="clock"></ion-icon> <span>{{game.date | date :'shortTime'}}</span></ion-item>
-          </ion-list>
-        </ion-col>
-
-      </ion-row>
+      <ion-list class="custom-list">
+        <ion-item><ion-icon item-start color="primary" name="tennisball"></ion-icon> <span>{{game.gameType}}</span></ion-item>
+        <ion-item><ion-icon item-start name="pin"></ion-icon> <span>{{game.club.name}}</span></ion-item>
+        <ion-item><ion-icon item-start name="clock"></ion-icon> <span>{{game.date | date :'shortTime'}}</span></ion-item>
+      </ion-list>
     </button>
   `
 })

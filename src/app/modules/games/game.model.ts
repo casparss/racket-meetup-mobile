@@ -39,4 +39,8 @@ export class GameModel extends DataModel {
   getParticipantById(_id:string){
     return this.participants.find(userModel => userModel._id === _id);
   }
+
+  isState(list){
+    return !!list.find(state => state === this.value.status);
+  }
 }

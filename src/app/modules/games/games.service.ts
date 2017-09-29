@@ -31,14 +31,15 @@ export class GamesSvc extends BaseService {
 		super(http, configSvc);
 	}
 
-	getByStatus(_id: string, status: string, type?){
-		let search = HttpUtils.urlParams({ status, type });
+	getByStatus(args){
+		const { _id, status, type, lastSeenId, limit } = args;
+		let search = HttpUtils.urlParams({ status, type, lastSeenId, limit });
 		return this._get(null, { search }, null, `/${_id}`)
 			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}));
 	}
 
 	getSummary(_id: string){
-		return this.getByStatus(_id, 'accepted', 'summary');
+		return this.getByStatus({_id, status: 'accepted', type: 'summary'});
 	}
 
 	getLengthsOnly(_id: string){

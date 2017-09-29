@@ -20,7 +20,7 @@
     "simulator:dev": "NODE_ENV=dev ionic cordova emulate",
     "simulator:jacq": "NODE_ENV=jacq ionic cordova emulate",
     "build:dev": "NODE_ENV=dev npm run ios-dev",
-    "build:prod": "NODE_ENV=dev npm run ios-dev",
+    "build:prod": "NODE_ENV=dev npm run ios-prod",
     "build:jacq": "NODE_ENV=jacq npm run ios-prod",
     "build:mum": "NODE_ENV=mum npm run ios",
     "build:local": "NODE_ENV=local npm run ios"
