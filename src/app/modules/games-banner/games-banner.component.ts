@@ -58,9 +58,10 @@ export class GamesBannerCom {
   selector: 'score-line',
   template: `
     <loading-img class="avatar" [src]="gameModel['side' + side].avatar$ | async"></loading-img>
-    <div class="name">
+    <ion-icon color="white" name="trophy"></ion-icon>
+    <!--div class="name">
     {{(gameModel['side' + side].$ | async)?.details[status === 'played' ? 'firstName' : 'fullName']}}
-    </div>
+    </div-->
     <div class="score-button" *ngFor="let setScore of (gameModel.$ | async)?.result['side' + side]">{{setScore}}
     </div>
   `

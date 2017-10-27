@@ -11,12 +11,16 @@ game-card {
 
   .button-group {
     border-top: 1px solid $border-colour-grey-lighter;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 
     button{
       position: relative;
       overflow:visible;
       padding-right: 16px;
       height: 40px;
+      width: 49.5%;
     }
 
     button:after {

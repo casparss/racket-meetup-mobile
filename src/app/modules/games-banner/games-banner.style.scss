@@ -11,22 +11,25 @@ games-banner {
   .venue-image-container {
     overflow: hidden;
     position:relative;
+    height: 162px;
   }
 
   .banner-img {
     width: 100%;
     height: 250px;
+      filter: brightness(90%) blur(2.5px);
+      transform: scale(1.08);
   }
 
   [data-status=pending]{
     .banner-img {
-      filter: brightness(0.7);
+      //filter: brightness(70%) blur(3px);
     }
   }
 
   [data-status=played]{
     .banner-img {
-      filter: brightness(90%) blur(3px);
+      //filter: brightness(90%) blur(3px);
       transform: scale(1.08);
     }
   }
@@ -62,6 +65,7 @@ games-banner {
   score-line {
     display: flex;
     align-items: center;
+    justify-content: center;
     color: #fff;
     width: 100%;
 
@@ -85,7 +89,7 @@ games-banner {
 
   .score-button {
     display: inline-block;
-    background: $darkcyan;
+    background: rgba(0,0,0,0.4);
     border-radius: 50%;
     padding: 6px 0 5px;
     width: 30px;
@@ -115,6 +119,8 @@ games-banner {
       margin: 0 auto 10px;
       img {
         border-radius: 50%;
+        border: 1px solid rgba(255,255,255, 0.1);
+        padding: 5px;
       }
     }
 

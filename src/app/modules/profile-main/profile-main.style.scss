@@ -7,8 +7,8 @@ profile-main {
 		background: $white;
 	}
 
-	header{
-		padding: 45px 25px;
+	header {
+		padding: 15px 25px 5px;
 		color:$text-colour;
 		background: $primary-gradient;
 
@@ -24,6 +24,12 @@ profile-main {
 				border-radius:7rem;
 			}
 		}
+
+		//Makes the avatar and name go side by side
+		/*.avatar-container {
+			display: flex;
+			align-items: center;
+		}*/
 
 		.playerName{
 			text-align:center;

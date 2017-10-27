@@ -93,11 +93,6 @@ let TEXT_STATE_COLOR_HASH = {
 	        Accept
 	      </button>
 
-				<button ion-button icon-left clear small color="textGrey">
-	        <ion-icon name="settings" color="primary"></ion-icon>
-	        Suggest changes
-	      </button>
-
 	      <button ion-button icon-left clear small color="textGrey" (click)="rejectChallenge(game)">
 	        <ion-icon name="close-circle" color="danger"></ion-icon>
 	        Reject

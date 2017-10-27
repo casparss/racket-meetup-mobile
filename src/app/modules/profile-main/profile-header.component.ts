@@ -5,13 +5,15 @@ import { UserSvc } from '../user-service/user.service';
 	selector:'profile-header',
 	template:`
 		<header>
-			<loading-img
+			<div class="avatar-container">
+				<loading-img
 				[src]="isCurrentUser ? (userSvc.profileImage | async) : user.generateProfileImage()"
 				alt=""></loading-img>
 
-			<h1 class="playerName">
+				<h1 class="playerName">
 				{{(user.$ | async)?.details.fullName}}
-			</h1>
+				</h1>
+			</div>
 
 			<ion-grid class="playerInfo">
 				<ion-row>
