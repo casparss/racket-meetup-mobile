@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ScoreInt } from './game-record-result.interfaces';
+import { maxBy } from 'lodash';
 
 @Component({
   selector: 'score-item',
@@ -11,25 +12,25 @@ import { ScoreInt } from './game-record-result.interfaces';
             <div>Set {{index + 1}}</div>
           </ion-col>
           <ion-col col-4>
-            <button *ngSwitchCase="true" icon-only ion-button small clear (click)="deincrement('side1')" [disabled]="score['side1'] === 0">
+            <button *ngSwitchCase="true" icon-only ion-button clear (click)="deincrement('side1')" [disabled]="score['side1'] === 0">
               <ion-icon name="remove-circle"></ion-icon>
             </button>
             <div class="score">{{score.side1}}</div>
-            <button *ngSwitchCase="true" icon-only ion-button small clear (click)="increment('side1')">
+            <button *ngSwitchCase="true" icon-only ion-button clear (click)="increment('side1')">
               <ion-icon name="add-circle"></ion-icon>
             </button>
           </ion-col>
           <ion-col col-4>
-            <button *ngSwitchCase="true" icon-only ion-button small clear (click)="deincrement('side2')" [disabled]="score['side2'] === 0">
+            <button *ngSwitchCase="true" icon-only ion-button clear (click)="deincrement('side2')" [disabled]="score['side2'] === 0">
               <ion-icon name="remove-circle"></ion-icon>
             </button>
             <div class="score">{{score.side2}}</div>
-            <button *ngSwitchCase="true" icon-only ion-button small clear (click)="increment('side2')">
+            <button *ngSwitchCase="true" icon-only ion-button clear (click)="increment('side2')">
               <ion-icon name="add-circle"></ion-icon>
             </button>
           </ion-col>
           <ion-col col-2>
-            <button *ngSwitchCase="true" icon-only ion-button small (click)="checked()" [disabled]="!isValidScore()">
+            <button *ngSwitchCase="true" icon-only ion-button (click)="checked()" [disabled]="!isValidScore()">
               <ion-icon name="checkmark"></ion-icon>
             </button>
             <button *ngSwitchCase="false" icon-only ion-button small outline (click)="toggleState()">
