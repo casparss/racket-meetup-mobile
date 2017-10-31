@@ -5,8 +5,8 @@ import { GameModel } from '../games/game.model';
 import { GameInt } from '../games/games.interfaces';
 import { ScoreItemCom } from './score-item.component';
 import { GamesSvc } from '../games/games.service';
+import { GameRecordResultUtils } from './game-record-result.utils';
 import { UserModel } from '../user-service/user.model';
-import { maxBy } from 'lodash';
 
 @Component({
   selector: 'game-record-result',
@@ -21,7 +21,19 @@ import { maxBy } from 'lodash';
   </ion-header>
 
   <ion-content>
+
     <ion-list>
+      <ion-item-divider light>Match type</ion-item-divider>
+
+      <ion-item>
+        <ion-select [(ngModel)]="matchSetRange">
+          <ion-option [value]="1" selected>1 set match</ion-option>
+          <ion-option [value]="3">3 set match</ion-option>
+          <ion-option [value]="5">5 set match</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item-divider light>Record score</ion-item-divider>
       <ion-item no-padding>
         <ion-grid>
           <ion-row>
@@ -38,11 +50,12 @@ import { maxBy } from 'lodash';
       </ion-item>
       <score-item
         #scoreItem
-        *ngFor="let score of scores; let i = index"
+        *ngFor="let score of scores; let i=index"
         [score]="score"
         [index]="i"
-        (scoreChecked)="scoreItemChecked($event)"></score-item>
-
+        (scoreChecked)="scoreItemChecked($event)"
+        clear
+      ></score-item>
       <ion-item>
         <button [disabled]="!validScore" ion-button block large (click)="recordResult()">Record result</button>
       </ion-item>
@@ -51,13 +64,12 @@ import { maxBy } from 'lodash';
   `
 })
 export class GameRecordResultCom {
-
   @ViewChildren(ScoreItemCom) scoreItemComs: QueryList<ScoreItemCom>
   private validScore: boolean = false;
   private gameModel: GameModel;
   private gameModelSub: Subscription;
   private game: GameInt;
-  private matchSetRange = 3;
+  private matchSetRange = 1;
   private winner: UserModel;
   private scores: Array<any> = [{
     side1: 0,
@@ -66,7 +78,8 @@ export class GameRecordResultCom {
 
   constructor(
     private viewCtrl: ViewController,
-    private gamesSvc: GamesSvc
+    private gamesSvc: GamesSvc,
+    private utils: GameRecordResultUtils
   ){
     this.gameModel = <GameModel>this.viewCtrl.data.gameModel;
     this.gameModelSub = this.gameModel.$.subscribe(game => this.game = game);
@@ -84,64 +97,25 @@ export class GameRecordResultCom {
   }
 
   scoreItemChecked(index){
-    if(!this.isEverySetAcountedFor()) this.pushNewScore();
+    if(!this.isWinner()) this.pushNewScore();
     setTimeout(() => this.setValidScore());
   }
 
   setValidScore(){
-    return this.validScore = this.isValidScoring() && this.isEverySetAcountedFor();
+    return this.validScore =
+      this.utils.isValidScoring(this.scoreItemComs) && this.isWinner();
   }
 
-  isValidScoring(){
-    if(this.scoreItemComs){
-      return this.scoreItemComs
-        .map(scoreItemCom => scoreItemCom.isValidScore())
-        .indexOf(false) === -1;
-    } else {
-      return false;
-    }
-  }
-
-  isEverySetAcountedFor(){
-    return this.scores.length === this.matchSetRange;
+  isWinner(){
+    return this.utils.isWinner(this.scores, this.matchSetRange)
   }
 
   recordResult(){
-    this.gamesSvc.recordResult(this.generateScoresObject(), this.gameModel._id)
+    const scores = this.utils.generateScoresObject(this.scores, this.gameModel)
+    this.gamesSvc.recordResult(scores, this.gameModel._id)
       .subscribe(game => {
         this.gameModel.update(game);
         this.viewCtrl.dismiss();
       });
   }
-
-  generateScoresObject(){
-    return {
-      scores: this.transformScoresObject(),
-      winner: this.getWinnerId()
-    }
-  }
-
-  transformScoresObject(){
-    return {
-      side1: this.scores.map(({side1}) => side1),
-      side2: this.scores.map(({side2}) => side2)
-    }
-  }
-
-  getWinnerId(){
-    let { side1, side2 } = this.transformScoresObject();
-    let accumulate = side => side.reduce((acumulator, current) => acumulator + current);
-
-    let players = [{
-      userModel: this.gameModel.side1,
-      totalScore: accumulate(side1)
-    },
-    {
-      userModel: this.gameModel.side2,
-      totalScore: accumulate(side1)
-    }];
-
-    return maxBy(players, ({totalScore}) => totalScore).userModel._id;
-  }
-
 }
