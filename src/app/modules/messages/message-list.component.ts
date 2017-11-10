@@ -61,7 +61,8 @@ export class MessageListCom {
 			isAddressBook: true
 		});
 
-		addressBookModal.onDidDismiss(({_id} = {}) => {
+		addressBookModal.onDidDismiss((params: any) => {
+			const {_id} = params;
 			if(_id) {
 				this.chatSvc.getChat([_id])
 					.subscribe(chat => this.nav.push(ChatCom, {
