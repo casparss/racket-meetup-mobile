@@ -71,6 +71,7 @@
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
+    <engine name="ios" spec="~4.3.1" />
     <plugin name="cordova-plugin-actionsheet" spec="~2.3.3" />
     <plugin name="cordova-plugin-camera" spec="~2.4.1">
         <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
@@ -81,7 +82,6 @@
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="To choose photos" />
     </plugin>
     <plugin name="cordova-plugin-file-transfer" spec="~1.6.3" />
-    <engine name="ios" spec="~4.3.1" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.4" />
     <plugin name="cordova-plugin-geolocation" spec="~2.4.3">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value=" " />
