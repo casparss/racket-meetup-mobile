@@ -86,4 +86,5 @@
     <plugin name="cordova-plugin-geolocation" spec="~2.4.3">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value=" " />
     </plugin>
+    <plugin name="phonegap-plugin-push" spec="~1.10.5" />
 </widget>

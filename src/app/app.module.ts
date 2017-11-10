@@ -7,6 +7,7 @@ import { ActionSheet } from '@ionic-native/action-sheet';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Geolocation } from '@ionic-native/geolocation';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog';
+import { Push } from '@ionic-native/push';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
@@ -32,6 +33,7 @@ import { IonicStorageModule } from '@ionic/storage';
 //Services
 import { ColObjDifferFactory } from './utils/differs/collection-object-diff.ts';
 import { UserSvc } from './modules/user-service/user.service';
+import { PushSvc } from './modules/push-service/push.service';
 import { UserUtils } from './modules/user-service/user.utils';
 import { UserModelSvc } from './modules/user-service/user.model.service';
 import { GamesSvc } from './modules/games/games.service';
@@ -65,6 +67,7 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
   	WsSvc,
   	DecHttp,
   	UserSvc,
+    PushSvc,
     UserUtils,
     UserModelSvc,
     GamesSvc,
@@ -78,7 +81,8 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
     Camera,
     Transfer,
     File,
-    Crop
+    Crop,
+    Push
   ]
 })
 export class AppModule {}
