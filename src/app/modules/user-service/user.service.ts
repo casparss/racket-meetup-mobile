@@ -90,6 +90,7 @@ export class UserSvc extends BaseService {
 			this.updateProfileImage();
 			this.http.token = user.token;
 			this.storage.set('token', user.token);
+			this.pushSvc.setUser(user);
 			return user;
 		} else {
 			return false;
