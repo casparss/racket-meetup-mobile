@@ -11,5 +11,8 @@
       "proxyUrl": "http://localhost:3000/assets/"
     }
   ],
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

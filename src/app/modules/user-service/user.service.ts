@@ -16,6 +16,7 @@ import { ModelSvc, USER } from '../model-service/model.service';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
 import { Storage } from '@ionic/storage';
 import { toPromise } from '../../utils/util-helpers';
+import { PushSvc } from '../push-service/push.service';
 
 @Injectable()
 export class UserSvc extends BaseService {
@@ -37,10 +38,12 @@ export class UserSvc extends BaseService {
 		private modelSvc: ModelSvc,
 		private ws: WsSvc,
 		private storage: Storage,
-		private events: Events
+		private events: Events,
+		private pushSvc: PushSvc
 	){
 		super(http, configSvc);
 		this.defineObservables();
+
 	}
 
 	defineObservables(){
@@ -87,6 +90,7 @@ export class UserSvc extends BaseService {
 			this.updateProfileImage();
 			this.http.token = user.token;
 			this.storage.set('token', user.token);
+			this.pushSvc.setUser(user);
 			return user;
 		} else {
 			return false;
