@@ -27,7 +27,7 @@ export class GameRecordResultUtils {
     },
     {
       userModel: gameModel.side2,
-      totalScore: accumulate(side2) //was side1 - is this wrong?
+      totalScore: accumulate(side2)
     }];
 
     return maxBy(players, ({totalScore}) => totalScore).userModel._id;

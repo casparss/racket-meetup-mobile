@@ -34,6 +34,10 @@ ion-list-header.component-header ion-label.label-ios{
 	margin-top:30px;
 }
 
+.hidden {
+	visibility: hidden;
+}
+
 //mixins
 
 @mixin no-borders{
