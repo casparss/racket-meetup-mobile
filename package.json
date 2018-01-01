@@ -15,11 +15,13 @@
     "test-ci": "ng test --watch=false --code-coverage",
     "ios-prod": "ionic cordova run ios --prod",
     "ios-dev": "ionic cordova run ios",
+    "ios-dev-live": "ionic cordova run ios --livereload",
     "local:local": "NODE_ENV=local npm run ionic:serve",
     "local:dev": "NODE_ENV=dev npm run ionic:serve",
     "simulator:dev": "NODE_ENV=dev ionic cordova emulate",
     "simulator:jacq": "NODE_ENV=jacq ionic cordova emulate",
     "build:dev": "NODE_ENV=dev npm run ios-dev",
+    "build:dev:live": "NODE_ENV=dev npm run ios-dev-live",
     "build:prod": "NODE_ENV=dev npm run ios-prod",
     "build:jacq": "NODE_ENV=jacq npm run ios-prod",
     "build:mum": "NODE_ENV=mum npm run ios",
@@ -72,7 +74,7 @@
     "@ionic-native/status-bar": "3.4.2",
     "@ionic-native/transfer": "3.10.2",
     "@ionic/storage": "2.0.1",
-    "cordova-ios": "^4.5.3",
+    "cordova-ios": "^4.5.4",
     "cordova-plugin-actionsheet": "~2.3.3",
     "cordova-plugin-camera": "~2.4.1",
     "cordova-plugin-file-transfer": "~1.6.3",
@@ -89,17 +91,16 @@
     "rxjs": "5.4.0",
     "socket.io-client": "2.0.3",
     "sw-toolbox": "3.4.0",
-    "zone.js": "0.8.12"
+    "zone.js": "0.8.12",
+    "cordova-plugin-statusbar": "~2.2.3"
   },
   "devDependencies": {
     "@angular/cli": "1.0.0",
     "@ionic/app-scripts": "1.3.0",
-    "@ionic/cli-plugin-cordova": "1.6.2",
-    "@ionic/cli-plugin-ionic-angular": "1.4.1",
     "@types/jasmine": "2.5.41",
     "@types/node": "7.0.4",
     "codecov": "1.0.1",
-    "ionic": "3.18.0",
+    "ionic": "3.19.0",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "3.2.0",
     "karma": "1.4.1",
@@ -156,7 +157,8 @@
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": " "
       },
-      "phonegap-plugin-push": {}
+      "phonegap-plugin-push": {},
+      "cordova-plugin-statusbar": {}
     }
   }
 }

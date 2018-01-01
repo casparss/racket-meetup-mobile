@@ -10,10 +10,6 @@ const options: PushOptions = {
     alert: true,
     badge: true,
     sound: true
-  },
-  windows: {},
-  browser: {
-    pushServiceURL: 'gateway.sandbox.push.apple.com'
   }
 };
 
@@ -35,7 +31,6 @@ export class PushSvc extends BaseService {
   init() {
     this.$ = this.push.init(options);
     this.checkPermissions();
-    this.setEvents();
   }
 
   setUser(user) {
@@ -44,17 +39,25 @@ export class PushSvc extends BaseService {
   }
 
   register() {
+    console.log('register', 'user', this.user)
+    console.log('register', 'registrationId', this.registrationId)
     if(this.user && this.registrationId) {
       let data = { registrationId: this.registrationId };
       this._sync(data, {}, 'push')
-        .subscribe()
+        .subscribe((data) => {
+          console.log('subscribe', data)
+        })
     }
   }
 
   setEvents() {
     this.$
       .on('notification')
-      .subscribe((notification: any) => console.log('Received a notification', notification));
+      .subscribe((notification: any) => {
+        const message = 'Received a notification';
+        alert(message)
+        console.log(message, notification)
+      });
 
     this.$
       .on('registration')
@@ -73,6 +76,7 @@ export class PushSvc extends BaseService {
     return this.push.hasPermission()
       .then((res: any) => {
         if (res.isEnabled) {
+          this.setEvents();
           console.log('We have permission to send push notifications');
         } else {
           console.log('We do not have permission to send push notifications');
