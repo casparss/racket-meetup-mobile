@@ -12,14 +12,12 @@ import { ChatSvc } from '../chat/chat.service';
 	<ion-tabs tabbarPlacement="bottom" tabbarLayout="icon-top">
 		<ion-tab
 			[root]="profileTabRoot"
-			tabTitle="Profile"
 			tabIcon="person"
 			[tabBadge]="pendingLength"
 			tabBadgeStyle="danger"></ion-tab>
-		<ion-tab [root]="rankingsTabRoot" tabTitle="Rankings" tabIcon="trophy"></ion-tab>
+		<ion-tab [root]="rankingsTabRoot" tabIcon="trophy"></ion-tab>
 		<ion-tab
 			[root]="chatsTabRoot"
-			tabTitle="Chats"
 			tabIcon="chatbubbles"
 			[tabBadge]="chatSvc.unreadChatsLength$ | async"
 			tabBadgeStyle="danger"></ion-tab>

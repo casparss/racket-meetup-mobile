@@ -46,7 +46,7 @@
 						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
 					</ion-avatar>
 	  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-					<button ion-button item-end (click)="openChat(user)">Chat</button>
+					<button ion-button item-right (click)="openChat(user)">Chat</button>
 	  		</ion-item>
 			</div>
 
@@ -77,7 +77,7 @@
 						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
 					</ion-avatar>
 					{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-					<button ion-button item-end (click)="openChat(user)">Chat</button>
+					<button ion-button item-right (click)="openChat(user)">Chat</button>
 				</ion-item>
 			</div>
 

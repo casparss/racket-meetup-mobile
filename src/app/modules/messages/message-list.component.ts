@@ -12,6 +12,10 @@ import { ModelSvc, Collection, CHAT } from '../model-service/model.service';
 import { ChatModel } from '../chat/chat.model';
 import { RootNavSvc } from '../welcome/root-nav.service';
 
+interface ParamsInt {
+	_id?: string
+}
+
 @Component({
 	templateUrl: './message-list.view.html',
 	selector:'message-list'
@@ -61,10 +65,9 @@ export class MessageListCom {
 			isAddressBook: true
 		});
 
-		addressBookModal.onDidDismiss((params: any) => {
-			const {_id} = params;
-			if(_id) {
-				this.chatSvc.getChat([_id])
+		addressBookModal.onDidDismiss((params:ParamsInt = {}) => {
+			if(params._id) {
+				this.chatSvc.getChat([params._id])
 					.subscribe(chat => this.nav.push(ChatCom, {
 						chatModel: this.modelSvc.create(chat, null)
 					}));
@@ -73,6 +76,5 @@ export class MessageListCom {
 
 		addressBookModal.present();
 	}
-
 
 }
