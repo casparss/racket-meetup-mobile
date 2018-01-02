@@ -32,6 +32,13 @@
 
 		<ion-item-divider light></ion-item-divider>
 
+		<button (click)="openPage('games')" ion-item>
+			<ion-icon name="tennisball" item-left></ion-icon>
+			Games
+			<ion-badge *ngIf="pending > 0" item-end color="danger">{{pending}}</ion-badge>
+			<ion-badge *ngIf="accepted > 0" item-end>{{accepted}}</ion-badge>
+		</button>
+
 		<button (click)="openPage('followers')" ion-item>
 			<ion-icon name="people" item-left></ion-icon>
 			Followers
