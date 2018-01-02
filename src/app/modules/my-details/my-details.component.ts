@@ -28,14 +28,14 @@ export class MydetailsCom {
 	}
 
 	defineForm(){
-		let u = this.details;
+		let { email, firstName, lastName, password, location } = this.details;
 		this.mydetailsForm = this.formBuilder.group({
-			email: [u.email, [<any>Validators.required]],
-			firstName: [u.firstName, [<any>Validators.required]],
-			lastName: [u.lastName, [<any>Validators.required]],
-			password: [{ value: u.password, disabled: true}, [<any>Validators.required]],
-			location: [u.location, [<any>Validators.required]],
-			dob: [u.dob, [<any>Validators.required]]
+			email: [email, [<any>Validators.required]],
+			firstName: [firstName, [<any>Validators.required]],
+			lastName: [lastName, [<any>Validators.required]],
+			password: [{ value: password, disabled: true}, [<any>Validators.required]],
+			location: [location, [<any>Validators.required]],
+			//dob: [u.dob, [<any>Validators.required]]
 		});
 	}
 
@@ -46,12 +46,19 @@ export class MydetailsCom {
 	}
 
 	updateDetails(details, isValid){
-		if(isValid) this.userSvc.updateDetails(details, "details").subscribe();
+		if(isValid) this.userSvc.updateDetails(details, "details")
+			.subscribe(() => this.resetForm());
 	}
 
 	logout(){
 		this.userSvc.logout();
 		this.rootNavSvc.nav.popToRoot();
+	}
+
+	resetForm(){
+		this.mydetailsForm.markAsPristine();
+		this.mydetailsForm.markAsUntouched();
+		this.mydetailsForm.updateValueAndValidity();
 	}
 
 }
