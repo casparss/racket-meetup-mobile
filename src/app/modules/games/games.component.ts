@@ -15,15 +15,34 @@ import { ModelSvc, GAME } from '../model-service/model.service';
       <ion-title>Games</ion-title>
     </ion-navbar>
     <ion-segment *ngIf="!isEmptyState()" (ionChange)="getByStatus()" [(ngModel)]="selectedSegment">
+
       <ion-segment-button [disabled]="lengths.pending === 0" value="pending">
-        Pending ({{lengths.pending}})
+        Pending
+        <span
+          *ngIf="lengths.pending === 0 || selectedSegment === 'pending'; else pending"
+        >({{lengths.pending}})</span>
+        <ng-template #pending>
+          <ion-badge
+            item-end
+            color="danger"
+          >{{lengths.pending}}</ion-badge>
+        </ng-template>
       </ion-segment-button>
+
       <ion-segment-button [disabled]="lengths.accepted === 0" value="accepted">
-        Upcoming ({{lengths.accepted}})
+        Upcoming
+        <span
+          *ngIf="lengths.accepted === 0 || selectedSegment === 'accepted'; else accepted"
+        >({{lengths.accepted}})</span>
+        <ng-template #accepted>
+          <ion-badge item-end>{{lengths.accepted}}</ion-badge>
+        </ng-template>
       </ion-segment-button>
+
       <ion-segment-button [disabled]="(lengths.played + lengths.rejected + lengths.forfeit) === 0" value="played,rejected,forfeit">
         Previous ({{(lengths.played + lengths.rejected + lengths.forfeit)}})
       </ion-segment-button>
+
     </ion-segment>
   </ion-header>
 
