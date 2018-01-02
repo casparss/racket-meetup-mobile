@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from '../games/games.service';
 import { RootNavSvc } from '../welcome/root-nav.service';
@@ -11,6 +11,7 @@ import { MydetailsCom } from '../my-details/my-details.component';
 import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
 import { GamesCom } from '../games/games.component';
+
 
 const pages: any = {
 	profileMain: ProfileMainCom,
@@ -35,7 +36,8 @@ export class ProfileMenuCom {
 		private nav: NavController,
 		private userSvc: UserSvc,
 		private gamesSvc: GamesSvc,
-		private rootNavSvc: RootNavSvc
+		private rootNavSvc: RootNavSvc,
+		private alertCtrl: AlertController
 	){
 		this.user = this.userSvc.current.user;
 		this.gamesSvc.getLengthsForCurrentUser();
@@ -52,6 +54,24 @@ export class ProfileMenuCom {
 
 	openPage(pageName: string): void{
 		this.nav.push(pages[pageName]);
+	}
+
+	presentLogoutConfirm() {
+	  let alert = this.alertCtrl.create({
+	    title: 'Confirm Logout',
+	    message: 'Are you sure you want to logout?',
+	    buttons: [
+	      {
+	        text: 'Yes log me out',
+	        handler: () => this.logout()
+	      },
+	      {
+	        text: 'No cancel',
+					role: 'cancel'
+	      }
+	    ]
+	  });
+	  alert.present();
 	}
 
 	logout(){
