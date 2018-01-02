@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from '../games/games.service';
+import { RootNavSvc } from '../welcome/root-nav.service';
 
 //Components
 import { ProfileMainCom } from '../profile-main/profile-main.component';
@@ -16,8 +17,6 @@ const pages: any = {
 	followers: FollowersCom,
 	search: SearchPlayersCom,
 	games: GamesCom,
-
-	courts: ProfileMainCom,
 	settings: MydetailsCom
 };
 
@@ -30,11 +29,13 @@ export class ProfileMenuCom {
 	private user;
 	private pending: number;
 	private accepted: number;
+	private loggingOut: boolean = false;
 
 	constructor(
 		private nav: NavController,
 		private userSvc: UserSvc,
-		private gamesSvc: GamesSvc
+		private gamesSvc: GamesSvc,
+		private rootNavSvc: RootNavSvc
 	){
 		this.user = this.userSvc.current.user;
 		this.gamesSvc.getLengthsForCurrentUser();
@@ -53,8 +54,14 @@ export class ProfileMenuCom {
 		this.nav.push(pages[pageName]);
 	}
 
+	logout(){
+		this.rootNavSvc.nav.popToRoot();
+		this.loggingOut = true;
+	}
+
 	ionViewDidUnload(){
 		this.statusLengthsSub.unsubscribe();
+		if(this.loggingOut) this.userSvc.logout();
 	}
 
 }

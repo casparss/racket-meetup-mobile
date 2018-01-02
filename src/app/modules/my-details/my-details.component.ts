@@ -5,7 +5,6 @@ import { UserDetailsInt } from '../user-service/user.interface';
 import { ActionSheetActionsInt } from './my-details.interface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ChangePasswordCom } from './change-password.component';
-import { RootNavSvc } from '../welcome/root-nav.service';
 
 @Component({
 	templateUrl:'./my-details.view.html',
@@ -20,8 +19,7 @@ export class MydetailsCom {
 		private userSvc: UserSvc,
 		private formBuilder: FormBuilder,
 		private modalController: ModalController,
-		private nav: NavController,
-		private rootNavSvc: RootNavSvc
+		private nav: NavController
 	){
 		this.details = this.userSvc.current.user.details;
 		this.defineForm();
@@ -48,11 +46,6 @@ export class MydetailsCom {
 	updateDetails(details, isValid){
 		if(isValid) this.userSvc.updateDetails(details, "details")
 			.subscribe(() => this.resetForm());
-	}
-
-	logout(){
-		this.userSvc.logout();
-		this.rootNavSvc.nav.popToRoot();
 	}
 
 	resetForm(){

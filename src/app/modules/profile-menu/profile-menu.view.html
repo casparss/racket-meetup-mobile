@@ -18,7 +18,6 @@
 
 <ion-content>
 	<ion-list>
-
 		<ion-item-divider light></ion-item-divider>
 
 		<button ion-item (click)="openPage('profileMain')">
@@ -44,23 +43,13 @@
 			Followers
 		</button>
 
-		<!-- <button (click)="openPage('courts')" ion-item>
-		<ion-icon name="text" item-left></ion-icon>
-		My courts
-		</button> -->
+		<ion-item-divider light></ion-item-divider>
 
-		<button (click)="openPage('myDetails')" ion-item>
-			<ion-icon name="trophy" item-left></ion-icon>
-			My details
+		<button ion-item detail-none (click)="logout()">
+			<span class="logout">Logout</span>
 		</button>
 
 		<ion-item-divider light></ion-item-divider>
-
-		<!-- <button (click)="openPage('settings')" ion-item>
-			<ion-icon name="settings" item-left></ion-icon>
-			Settings
-			</button>
-		-->
 
 	</ion-list>
 
