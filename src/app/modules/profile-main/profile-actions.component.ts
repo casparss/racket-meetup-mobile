@@ -37,15 +37,10 @@ import { ModelSvc } from '../model-service/model.service';
 				<ion-badge *ngIf="accepted > 0" item-end>{{accepted}}</ion-badge>
 			</button>
 
-			<button ion-item [ngSwitch]="isFriend" (click)="toggleFollow()">
+			<button ion-item detail-none [ngSwitch]="isFriend" (click)="toggleFollow()">
 				<ion-icon *ngSwitchCase="false" name="add" item-left></ion-icon>
 				<ion-icon *ngSwitchCase="true" name="remove" item-left></ion-icon>
-				{{isFriend ? "Remove" : "Add"}} player as friend
-			</button>
-
-			<button (click)="openFollowers()" ion-item>
-				<ion-icon name="people" item-left></ion-icon>
-				Followers
+				{{isFriend ? "Unfollow" : "Follow"}} player
 			</button>
 		</ion-list>
 	`
