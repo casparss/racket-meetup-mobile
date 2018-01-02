@@ -47,9 +47,6 @@ import { ModelSvc, GAME } from '../model-service/model.service';
   </ion-header>
 
   <ion-content>
-
-
-
     <no-data-message *ngIf="isEmptyState()">No games to show yet, try challenging someone.</no-data-message>
 
     <ion-list *ngIf="!isEmptyState()">
@@ -58,7 +55,10 @@ import { ModelSvc, GAME } from '../model-service/model.service';
         [gameModel]="gameModel"
       ></game-card>
     </ion-list>
-    <ion-infinite-scroll (ionInfinite)="lazyLoad($event)">
+    <ion-infinite-scroll
+      (ionInfinite)="lazyLoad($event)"
+      threshold="75%"
+    >
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
