@@ -15,17 +15,17 @@ import { ModelSvc } from '../model-service/model.service';
 @Component({
 	selector:'profile-actions',
 	template:`
-		<ion-list [ngSwitch]="userModel._id === userSvc.current.user._id">
+		<ion-list *ngIf="userModel._id !== userSvc.current.user._id">
 			<ion-list-header class="component-header">
 				Actions
 			</ion-list-header>
 
-			<button *ngSwitchCase="false" type="button" ion-item (click)="challengePlayer()">
+			<button type="button" ion-item (click)="challengePlayer()">
 				<ion-icon name="medal" item-left></ion-icon>
 				Challenge player
 			</button>
 
-			<button *ngSwitchCase="false" ion-item (click)="messagePlayer()">
+			<button ion-item (click)="messagePlayer()">
 				<ion-icon name="mail" item-left></ion-icon>
 				Message player
 			</button>
@@ -37,13 +37,13 @@ import { ModelSvc } from '../model-service/model.service';
 				<ion-badge *ngIf="accepted > 0" item-end>{{accepted}}</ion-badge>
 			</button>
 
-			<button *ngSwitchCase="false" ion-item (click)="toggleFollow()" [ngSwitch]="isFriend">
+			<button ion-item [ngSwitch]="isFriend" (click)="toggleFollow()">
 				<ion-icon *ngSwitchCase="false" name="add" item-left></ion-icon>
 				<ion-icon *ngSwitchCase="true" name="remove" item-left></ion-icon>
 				{{isFriend ? "Remove" : "Add"}} player as friend
 			</button>
 
-			<button *ngSwitchCase="true" (click)="openFollowers()" ion-item>
+			<button (click)="openFollowers()" ion-item>
 				<ion-icon name="people" item-left></ion-icon>
 				Followers
 			</button>
