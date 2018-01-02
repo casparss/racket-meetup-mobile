@@ -1,26 +1,27 @@
-import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
-import {UserSvc} from '../user-service/user.service';
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
+import { UserSvc } from '../user-service/user.service';
 
 //Components
-import {ProfileMainCom} from '../profile-main/profile-main.component';
-import {MydetailsCom} from '../my-details/my-details.component';
-import {FollowersCom} from '../followers/followers.component';
+import { ProfileMainCom } from '../profile-main/profile-main.component';
+import { MydetailsCom } from '../my-details/my-details.component';
+import { FollowersCom } from '../followers/followers.component';
+import { SearchPlayersCom } from '../followers/search-players.component';
 
 const pages: any = {
 	profileMain: ProfileMainCom,
-	myDetails: MydetailsCom,
 	followers: FollowersCom,
+	search: SearchPlayersCom,
 
 	courts: ProfileMainCom,
-	settings: ProfileMainCom
+	settings: MydetailsCom
 };
 
 @Component({
 	templateUrl: './profile-menu.view.html',
 	selector: 'profile-menu'
 })
-export class ProfileMenuCom{
+export class ProfileMenuCom {
 
 	private user;
 

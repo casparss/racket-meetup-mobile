@@ -16,4 +16,4 @@ import { ProfileMenuCom } from './profile-menu.component';
     ProfileMenuCom
   ]
 })
-export class ProfileModule {}
+export class ProfileMenuModule {}

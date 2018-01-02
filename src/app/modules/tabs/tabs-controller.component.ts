@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { Subscription } from 'rxjs';
-import { ProfileMainCom } from '../profile-main/profile-main.component';
+import { ProfileMenuCom } from '../profile-menu/profile-menu.component';
 import { RankingsListCom } from '../rankings-list/rankings-list.component';
 import { MessageListCom } from '../messages/message-list.component';
 import { UserSvc } from '../user-service';
@@ -32,7 +32,7 @@ export class TabsController {
 	private statusLengthsSub: Subscription;
 
 	constructor(private userSvc: UserSvc, private chatSvc: ChatSvc) {
-		this.profileTabRoot = ProfileMainCom;
+		this.profileTabRoot = ProfileMenuCom;
 		this.rankingsTabRoot = RankingsListCom;
 		this.chatsTabRoot = MessageListCom;
 	}

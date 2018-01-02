@@ -1,5 +1,27 @@
-<ion-header>
-	<ion-toolbar>
+<!--
+@TODO:
+A lot of ugliness here. The addressbook and the followers view
+configurations should be separated into different templates/components and then
+switched upon them at high level rather than this messy inline way.
+-->
+
+<ion-header [ngSwitch]="isAddressBook">
+	<ion-navbar *ngSwitchCase="false">
+		<ion-title>Followers</ion-title>
+	</ion-navbar>
+
+	<div *ngSwitchCase="false">
+		<ion-segment *ngIf="!isEmptyState" [(ngModel)]="selectedSegment">
+			<ion-segment-button value="following">
+				Following ({{(followingCollection.$ | async)?.length}})
+			</ion-segment-button>
+			<ion-segment-button value="followers">
+				Followers ({{(followersCollection.$ | async)?.length}})
+			</ion-segment-button>
+		</ion-segment>
+	</div>
+
+	<ion-toolbar *ngSwitchCase="true">
 
 		<ion-segment *ngIf="!isEmptyState" [(ngModel)]="selectedSegment">
 	    <ion-segment-button value="following">
@@ -17,6 +39,7 @@
     </ion-buttons>
 
 	</ion-toolbar>
+
 </ion-header>
 
 <ion-content>

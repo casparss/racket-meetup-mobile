@@ -1,7 +1,11 @@
-.profileMenuCom, profile-menu{
-	
+profile-menu {
+
 	ion-item-divider[light]{
-		background:#fcfcfc;
+		background: #fcfcfc;
 	}
-	
+
+	ion-thumbnail img {
+		border-radius: 50%;
+	}
+
 }
