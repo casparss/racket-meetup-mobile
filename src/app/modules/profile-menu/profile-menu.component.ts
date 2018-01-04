@@ -79,7 +79,7 @@ export class ProfileMenuCom {
 		this.loggingOut = true;
 	}
 
-	ionViewDidUnload(){
+	ionViewWillUnload() {
 		this.statusLengthsSub.unsubscribe();
 		if(this.loggingOut) this.userSvc.logout();
 	}

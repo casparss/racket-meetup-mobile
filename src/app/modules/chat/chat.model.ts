@@ -183,11 +183,12 @@ export class ChatModel extends DataModel {
 
 
 class DateLabel {
+  _id: string;
 	type: string = "date";
 	date: any;
 
 	constructor(date){
-		this.date = date;
+		this.date = this._id = date;
 	}
 
 	calendarDate(){
@@ -196,7 +197,8 @@ class DateLabel {
 }
 
 class Message {
-	_id: string;
+  _id: string;
+	userId: string;
 	name: string;
 	message: string;
 	createdAt: any;
@@ -210,11 +212,11 @@ class Message {
 	){
 		Object.assign(this, chat);
 		this.createdAt = moment(this.createdAt);
-    this.avatar = this.userUtils.generateProfileImage(this);
+    this.avatar = this.userUtils.generateProfileImage({ _id: this.userId });
 	}
 
 	isMe(){
-		return this._id === this.currentUser_id;
+		return this.userId === this.currentUser_id;
 	}
 
 }

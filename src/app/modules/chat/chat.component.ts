@@ -22,7 +22,8 @@ export class ChatCom {
 	){
 		this.chatModel = this.params.get("chatModel");
 		this.chatModel.getMessageHistory();
-		this.chatSub = this.chatModel.conversation$.subscribe(conversation => this.conversation = conversation);
+		this.chatSub = this.chatModel.conversation$
+			.subscribe(conversation => this.conversation = conversation);
 	}
 
 	sendMessage(message){

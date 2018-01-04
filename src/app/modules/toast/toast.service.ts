@@ -9,7 +9,9 @@ export class ToastSvc {
 		this.toastController.create({
 			position: position,
 			message,
-			duration
+			duration,
+			showCloseButton: true,
+			closeButtonText: 'Ok'
 		}).present();
 	}
 }

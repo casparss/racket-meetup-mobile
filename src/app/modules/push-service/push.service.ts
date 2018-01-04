@@ -3,6 +3,7 @@ import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { BaseService } from '../../utils/base/base.service';
 import { DecHttp, HttpUtils } from '../../utils/http';
 import { ConfigSvc } from '../config/config.service';
+import { ToastSvc } from '../toast/toast.service';
 
 const options: PushOptions = {
   android: {},
@@ -23,7 +24,8 @@ export class PushSvc extends BaseService {
   constructor(
     private push: Push,
     configSvc: ConfigSvc,
-    http: DecHttp
+    http: DecHttp,
+    private toastSvc: ToastSvc
   ) {
     super(http, configSvc)
   }
@@ -54,9 +56,13 @@ export class PushSvc extends BaseService {
     this.$
       .on('notification')
       .subscribe((notification: any) => {
-        const message = 'Received a notification';
-        alert(message)
-        console.log(message, notification)
+        //@TODO: parse path prop and navigate to it
+        //@TODO: parse data if need be
+        this.toastSvc.showMessage(
+          notification.message,
+          notification.additionalduration,
+          notification.position
+        );
       });
 
     this.$
