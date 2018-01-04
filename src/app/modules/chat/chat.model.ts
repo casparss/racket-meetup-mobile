@@ -68,14 +68,20 @@ export class ChatModel extends DataModel {
 
 	newMessageRecieved(message){
     if(message.chatId === this._id){
+      this.messageReceipt(message);
       let chat = this.getRawValue();
       chat.conversation = chat.conversation ? chat.conversation : [];
       chat.conversation.push(message);
       chat.updatedAt = message.updatedAt;
       this.setUpToDate(chat);
       this.onChange.emit();
+
     }
 	}
+
+  messageReceipt({ _id }){
+    this.ws.socket.emit('messagereceipt', _id);
+  }
 
   setUpToDate(chat = this.getRawValue()){
     if(!this.isViewing$.getValue()){
