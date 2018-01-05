@@ -33,21 +33,6 @@ chat {
 			background: $toolbar-grey;
 		}
 
-		text-dialogue{
-			width: 100%;
-			display:block;
-		}
-
-		textarea {
-			border-radius: 5px;
-			width: 78.9%;
-	    padding: .325em;
-	    border: none;
-	    flex: 1;
-	    color:$text-colour-light-grey;
-	    border:1px solid $border-colour-grey;
-		}
-
 		.msg {
 		    position: relative;
 		    margin-bottom: 2em;
@@ -127,15 +112,6 @@ chat {
 		.msg--them blockquote {
 		    order: -1;
 		    margin-right: 1em;
-		}
-
-		.msg-send {
-			width: 20%;
-			float:right;
-			padding: 0 5px 0 5px;
-			button{
-				margin:0;
-			}
 		}
 
 	}

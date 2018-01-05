@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { WsSvc } from '../web-sockets-service';
 
 const ENTER_KEY = 13;
@@ -16,7 +16,7 @@ const ENTER_KEY = 13;
     <div class="msg-send">
       <button
         ion-button
-        [disabled]="!(ws.connected$ | async)"
+        [disabled]="!(ws.connected$ | async) || messageInput === ''"
         (mousedown)="stopDefaultBehaviour($event)"
         (mouseup)="stopDefaultBehaviour($event)"
         (touchup)="stopDefaultBehaviour($event)"
@@ -24,19 +24,22 @@ const ENTER_KEY = 13;
         (touchstart)="stopDefaultBehaviour($event)"
         (touchdown)="stopDefaultBehaviour($event)"
         (touchend)="send($event)"
-      >Send</button>
+      ><ion-icon name="send"></ion-icon></button>
     </div>
   `
 })
 export class TextDialogueCom {
   @Output() sendMessage: EventEmitter<string> = new EventEmitter();
-  private messageInput: string;
+  private messageInput: string = '';
 
-  constructor(private ws: WsSvc){}
+  constructor(
+    private ws: WsSvc,
+    private elementRef: ElementRef
+  ){}
 
   send($event){
     this.sendMessage.emit(this.messageInput);
-    this.messageInput  = "";
+    this.messageInput = '';
     this.stopDefaultBehaviour($event);
   }
 
@@ -49,6 +52,12 @@ export class TextDialogueCom {
   stopDefaultBehaviour($event){
     $event.preventDefault();
     $event.stopPropagation();
+  }
+
+  blur(){
+    this.elementRef.nativeElement
+      .querySelector('textarea')
+      .blur();
   }
 
 }
