@@ -6,7 +6,6 @@ import { ConfigSvc } from '../config/config.service';
 import { ToastSvc } from '../toast/toast.service';
 
 const options: PushOptions = {
-  android: {},
   ios: {
     alert: true,
     badge: true,

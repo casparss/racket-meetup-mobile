@@ -34,8 +34,20 @@ ion-list-header.component-header ion-label.label-ios{
 	margin-top:30px;
 }
 
+ion-list-header.panel-header {
+	color: $white;
+	border-bottom: none;
+}
+
 .hidden {
 	visibility: hidden;
+}
+
+.avatar {
+	border-radius: 50%;
+	width: 50px;
+	margin:auto;
+	display: block;
 }
 
 //mixins

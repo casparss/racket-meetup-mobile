@@ -1,0 +1,49 @@
+club {
+  header {
+    //background: $darkcyan;
+    background: $primary-gradient;
+  }
+
+  .image-container {
+    position: relative;
+  }
+
+  .club-name {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 5px 16px;
+    font-weight: 100;
+    color: #ffffff;
+    line-height: 160%;
+    background: rgba(0,0,0,0.3);
+  }
+
+  .club-image {
+    margin-bottom: -3px;
+  }
+
+  .pane-header {
+    opacity: 0.7;
+  }
+
+  .players-summary {
+
+  }
+
+  .player-list {
+    padding: 16px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  buckets {
+    padding: 1px 16px;
+  }
+
+  ion-list {
+    margin-bottom: 0!important;
+  }
+}

@@ -1,0 +1,22 @@
+buckets {
+  display: block;
+  color: $white;
+
+  dl {
+    text-align: center;
+    font-weight: 100;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  dt, dd {
+    text-align:center;
+    margin:0;
+    font-weight: 100;
+  }
+
+  dd {
+    font-size: 2.5rem;
+      font-weight: bold;
+  }
+}

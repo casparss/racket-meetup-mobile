@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { ProfileMenuCom } from '../profile-menu/profile-menu.component';
 import { RankingsListCom } from '../rankings-list/rankings-list.component';
 import { MessageListCom } from '../messages/message-list.component';
+import { ClubsCom } from '../clubs/clubs.component';
 import { UserSvc } from '../user-service';
 import { ChatSvc } from '../chat/chat.service';
 
@@ -15,7 +16,7 @@ import { ChatSvc } from '../chat/chat.service';
 			tabIcon="person"
 			[tabBadge]="pendingLength"
 			tabBadgeStyle="danger"></ion-tab>
-		<ion-tab [root]="rankingsTabRoot" tabIcon="trophy"></ion-tab>
+		<ion-tab [root]="clubsTabRoot" tabIcon="flag"></ion-tab>
 		<ion-tab
 			[root]="chatsTabRoot"
 			tabIcon="chatbubbles"
@@ -28,6 +29,7 @@ export class TabsController {
 	private profileTabRoot: any;
 	private rankingsTabRoot: any
 	private chatsTabRoot: any;
+	private clubsTabRoot: any;
 	private pendingLength: number;
 	private statusLengthsSub: Subscription;
 
@@ -35,6 +37,7 @@ export class TabsController {
 		this.profileTabRoot = ProfileMenuCom;
 		this.rankingsTabRoot = RankingsListCom;
 		this.chatsTabRoot = MessageListCom;
+		this.clubsTabRoot = ClubsCom;
 	}
 
 	ngOnInit(){

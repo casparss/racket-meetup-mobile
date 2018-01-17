@@ -20,6 +20,8 @@ import { RacketMeetupApp } from './app.component';
 //Tabs imports
 import {TabsModule} from './modules/tabs/tabs.module';
 
+import { UIBlocksModule } from ',/modules/ui-blocks';
+
 //Tabs controller
 import {TabsController} from './modules/tabs/tabs-controller.component';
 

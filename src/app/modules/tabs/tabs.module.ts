@@ -6,6 +6,7 @@ import { ProfileModule } from '../profile-main';
 import { ProfileMenuModule } from '../profile-menu';
 import { RankingsModule } from '../rankings-list';
 import { MessagesModule } from '../messages';
+import { ClubsModule } from '../clubs';
 
 import { TabsController } from './tabs-controller.component';
 
@@ -19,7 +20,8 @@ import { TabsController } from './tabs-controller.component';
     ProfileModule,
     RankingsModule,
     MessagesModule,
-    ProfileMenuModule
+    ProfileMenuModule,
+    ClubsModule
   ],
   exports: [TabsController]
 })
