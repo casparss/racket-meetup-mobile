@@ -15,24 +15,20 @@ import { UserSvc } from '../user-service/user.service';
 				</h1>
 			</div>
 
-			<ion-grid class="playerInfo">
-				<ion-row>
-					<ion-col width-33>
-						<dd>{{(user.$ | async)?.stats.ranking}}</dd>
-						<dt>Ranking</dt>
-					</ion-col>
-					<ion-col width-33>
-						<dd>{{(user.$ | async)?.stats.matchesPlayed}}</dd>
-						<dt>Matches</dt>
-					</ion-col>
-					<ion-col width-33>
-						<dd>{{(user.$ | async)?.details.location}}</dd>
-						<dt>
-							Location
-						</dt>
-					</ion-col>
-				</ion-row>
-			</ion-grid>
+			<buckets>
+				<div>
+					<dd>{{(user.$ | async)?.stats.ranking}}</dd>
+					<dt>Ranking</dt>
+				</div>
+				<div>
+					<dd>{{(user.$ | async)?.stats.matchesPlayed}}</dd>
+					<dt>Matches</dt>
+				</div>
+				<div>
+					<dd>{{(user.$ | async)?.details.location}}</dd>
+					<dt>Location</dt>
+				</div>
+			</buckets>
 		</header>
 	`
 })

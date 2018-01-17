@@ -8,6 +8,7 @@ import { MydetailsModule } from '../my-details/my-details.module';
 import { LoadingImgModule } from '../../utils/loading-img';
 import { ChallengeModule } from '../challenge';
 import { FollowersModule } from '../followers'
+import { UIBlocksModule } from '../ui-blocks';
 
 import { ChatModule } from '../chat/chat.module';
 import { ProfileActionsCom } from './profile-actions.component'
@@ -30,7 +31,8 @@ import { MydetailsCom } from '../my-details/my-details.component';
     LoadingImgModule,
     ChallengeModule,
     FollowersModule,
-    ChatModule
+    ChatModule,
+    UIBlocksModule
   ],
   entryComponents: [
     MydetailsCom,

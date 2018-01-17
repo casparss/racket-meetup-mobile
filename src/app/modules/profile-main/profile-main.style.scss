@@ -25,32 +25,16 @@ profile-main {
 			}
 		}
 
-		//Makes the avatar and name go side by side
-		/*.avatar-container {
-			display: flex;
-			align-items: center;
-		}*/
-
 		.playerName{
 			text-align:center;
 			font-weight: 100;
 		}
 
-		.playerInfo{
-
-			dt, dd{
-				text-align:center;
-				margin:0;
-				font-weight: 100;
+		buckets {
+			div {
+				width: 120px;
 			}
-
-			dd{
-				font-size: 2.5rem;
-	    		font-weight: bold;
-			}
-
 		}
-
 
 	}
 
