@@ -20,23 +20,7 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
     </ion-header>
 
     <ion-content no-bounce>
-
       <games-banner [gameModel]="gameModel"></games-banner>
-
-      <ion-list *ngIf="status(game, ['accepted'])">
-        <ion-list-header class="component-header">
-          Actions
-        </ion-list-header>
-
-        <button (click)="amendGameDetails()" type="button" ion-item>
-          <ion-icon name="settings" item-left></ion-icon>
-          Amend details
-        </button>
-        <button (click)="recordResult()" type="button" ion-item>
-          <ion-icon name="clipboard" item-left></ion-icon>
-          Record score
-        </button>
-      </ion-list>
 
       <div>
         <ion-segment [(ngModel)]="tab">
@@ -52,8 +36,6 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
       <div [ngSwitch]="tab">
         <div *ngSwitchCase="'details'">
           <ion-list>
-            <ion-item-divider light>Details</ion-item-divider>
-
             <ion-item-group>
               <ion-item>
                 <ion-icon name="pin" item-left large ></ion-icon>
@@ -89,6 +71,21 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
         ></game-activity-feed>
 
       </div>
+
+      <ion-list *ngIf="status(game, ['accepted'])">
+        <ion-list-header class="component-header">
+          Actions
+        </ion-list-header>
+
+        <button (click)="amendGameDetails()" type="button" ion-item>
+          <ion-icon name="settings" item-left></ion-icon>
+          Amend details
+        </button>
+        <button (click)="recordResult()" type="button" ion-item>
+          <ion-icon name="clipboard" item-left></ion-icon>
+          Record score
+        </button>
+      </ion-list>
 
     </ion-content>
   `

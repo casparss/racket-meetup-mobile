@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { GameModel } from '../games/game.model';
-import { GamesBannerUtils } from './games-banner.utils';
+import { ClubsUtils } from '../clubs/clubs.utils';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -40,11 +40,12 @@ export class GamesBannerCom {
   private gameModelSub: Subscription;
   private bannerImg: string;
   private status = status;
-  constructor(private utils: GamesBannerUtils){}
+  constructor(private utils: ClubsUtils){}
 
   ngOnInit(){
     this.gameModelSub = this.gameModel.$.subscribe(game => {
       this.game = game;
+      //@TODO: might be cooler to generate this on the game model instead
       this.bannerImg = this.utils.generateBannerImgUrl(game.club.photo);
     });
   }

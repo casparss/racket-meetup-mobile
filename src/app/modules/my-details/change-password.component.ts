@@ -14,6 +14,9 @@ import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.v
 			<ion-title>
 				Change password
 			</ion-title>
+			<ion-buttons end>
+				<button icon-only ion-button (click)="viewCtrl.dismiss()"><ion-icon name="close"></ion-icon></button>
+			</ion-buttons>
 		</ion-navbar>
 	</ion-header>
 
@@ -65,7 +68,6 @@ import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.v
 
 	      <ion-item>
 	        <button type="submit" [disabled]="!changePasswordForm.valid" ion-button block large>Change password</button>
-					<button type="button" (click)="viewCtrl.dismiss()" ion-button block large>Cancel</button>
 	      </ion-item>
 	  </form>
 	</ion-content>

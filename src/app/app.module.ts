@@ -13,6 +13,7 @@ import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-a
 import { BrowserModule } from '@angular/platform-browser';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 //App import
 import { RacketMeetupApp } from './app.component';
@@ -84,7 +85,8 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
     Transfer,
     File,
     Crop,
-    Push
+    Push,
+    GoogleMaps
   ]
 })
 export class AppModule {}

@@ -43,7 +43,6 @@ import { AvailabilityCom } from '../availability/availability.component';
 
             <ion-item>
               <ion-label primary>Week:</ion-label>
-              <ion-icon name="calendar" item-left></ion-icon>
               <ion-select interface="popover" formControlName="week" (ionChange)="setDaysInput()">
                 <ion-option
                   *ngFor="let week of weeks; let i=index"
@@ -56,7 +55,6 @@ import { AvailabilityCom } from '../availability/availability.component';
 
             <ion-item>
               <ion-label primary>Day:</ion-label>
-              <ion-icon name="calendar" item-left></ion-icon>
               <ion-select interface="popover" formControlName="day" (click)="availabilityCom.clearAnimationState()">
                 <ion-option
                   *ngFor="let day of days"
@@ -67,7 +65,6 @@ import { AvailabilityCom } from '../availability/availability.component';
 
             <ion-item>
               <ion-label primary>Period:</ion-label>
-              <ion-icon name="time" item-left (ionChange)="clearTime()"></ion-icon>
               <ion-select interface="popover" formControlName="period" (ionChange)="reflectPeriodInTime()">
                 <ion-option *ngFor="let period of periods; let i=index" [value]='period.name' [selected]='periods[0].name'>
                   {{period.name}}
@@ -77,7 +74,6 @@ import { AvailabilityCom } from '../availability/availability.component';
 
             <ion-item>
               <ion-label primary>Time:</ion-label>
-              <ion-icon name="time" item-left></ion-icon>
               <ion-datetime formControlName="time"
                 displayFormat="HH:mm"
                 pickerFormat="HH:mm"

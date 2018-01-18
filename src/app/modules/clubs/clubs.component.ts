@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ClubCom } from './club.component';
+import { ClubsUtils } from './clubs.utils';
+import { ClubsSvc } from './clubs.service';
 
 @Component({
+  selector: 'clubs',
   template: `
     <ion-header>
       <ion-navbar>
@@ -11,22 +14,14 @@ import { ClubCom } from './club.component';
     </ion-header>
 
     <ion-content>
+      <clubs-map></clubs-map>
       <ion-list>
         <ion-item-divider color="light">My clubs (2)</ion-item-divider>
-        <ion-item>
+        <ion-item *ngFor="let club of clubs; let i=index">
           <ion-thumbnail item-left>
-            <img src="assets/images/tennis-court.jpg">
+            <loading-img [src]="club.photo" alt=""></loading-img>
           </ion-thumbnail>
-          <h2>Lostock Tennis Club</h2>
-          <p>Bolton</p>
-          <button ion-button clear item-right (click)="openClub()">View</button>
-        </ion-item>
-        <ion-item>
-          <ion-thumbnail item-left>
-            <img src="assets/images/tennis-court.jpg">
-          </ion-thumbnail>
-          <h2>West Herts Tennis Club</h2>
-          <p>Bolton</p>
+          <h2>{{club.name}}</h2>
           <button ion-button clear item-right (click)="openClub()">View</button>
         </ion-item>
       </ion-list>
@@ -34,8 +29,21 @@ import { ClubCom } from './club.component';
   `
 })
 export class ClubsCom {
-  constructor(private nav: NavController,){
+  private clubs: Array<any>;
 
+  constructor(
+    private nav: NavController,
+    private clubsSvc: ClubsSvc,
+    private utils: ClubsUtils
+  ){
+    this.clubsSvc.getLocalClubs()
+      .then(clubs => clubs.map(club => {
+        return {
+          ...club,
+          photo: this.utils.generateBannerImgUrl(club.photo)
+        }
+      }))
+      .then(clubs => this.clubs = clubs);
   }
 
   openClub(){

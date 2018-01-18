@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { ConfigSvc } from '../config/config.service';
 
 @Injectable()
-export class GamesBannerUtils {
+export class ClubsUtils {
+  constructor(private configSvc: ConfigSvc){}
 
   generateBannerImgUrl(photo){
     return photo ?
@@ -10,7 +12,7 @@ export class GamesBannerUtils {
   }
 
   generateGooglePhotoUrl({ photo_reference }){
-    let googleMapsKey = "AIzaSyATf9bQ7VsRDL0acViMekIry5GxH3GDyRI";
+    let googleMapsKey = this.configSvc.get('googleMapsKey');
     let domain = 'https://maps.googleapis.com/maps/api/place/photo?';
     let maxheight = 600;
     let maxwidth = 800;

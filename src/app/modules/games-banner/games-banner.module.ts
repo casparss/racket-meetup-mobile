@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { LoadingImgModule } from '../../utils/loading-img';
 
-import { GamesBannerUtils } from './games-banner.utils';
 import { GamesBannerCom, ScoreLineCom } from './games-banner.component';
 
 @NgModule({
@@ -17,8 +16,6 @@ import { GamesBannerCom, ScoreLineCom } from './games-banner.component';
   exports: [
     GamesBannerCom
   ],
-  providers: [
-    GamesBannerUtils
-  ]
+  providers: []
 })
 export class GamesBannerModule {}

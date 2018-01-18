@@ -6,6 +6,7 @@ import { UserInt } from '../user-service/user.interface';
 import { UserSvc } from '../user-service/user.service';
 import { UserModel } from '../user-service/user.model';
 import { GamesSvc } from '../games/games.service';
+import { ClubsSvc } from '../clubs/clubs.service';
 import { ChallengeTimeDate } from './challenge-time-date.component';
 import GAME_TYPES from './game-types';
 
@@ -34,14 +35,15 @@ export class ChallengeCom {
     private viewCtrl: ViewController,
     private formBuilder: FormBuilder,
     private userSvc: UserSvc,
-		private gamesSvc: GamesSvc
+		private gamesSvc: GamesSvc,
+		private clubsSvc: ClubsSvc
   ){
 		this.challenger = userSvc.current;
 		this.challengee = viewCtrl.data.user;
 		this.gameModel = viewCtrl.data.gameModel;
 		this.game = this.gameModel ? this.gameModel.getValue() : undefined;
 		this.setForm(this.game);
-		this.gamesSvc.getLocalClubs().then(clubs => this.clubs = clubs);
+		this.clubsSvc.getLocalClubs().then(clubs => this.clubs = clubs);
 	}
 
 	setForm(game:any = {}){
