@@ -14,9 +14,9 @@ import { ClubsSvc } from './clubs.service';
     </ion-header>
 
     <ion-content>
-      <clubs-map></clubs-map>
+      <clubs-map [clubs]="clubs"></clubs-map>
       <ion-list>
-        <ion-item-divider color="light">My clubs (2)</ion-item-divider>
+        <ion-item-divider color="light">Local clubs ({{clubs.length}})</ion-item-divider>
         <ion-item *ngFor="let club of clubs; let i=index">
           <ion-thumbnail item-left>
             <loading-img [src]="club.photo" alt=""></loading-img>
@@ -29,7 +29,7 @@ import { ClubsSvc } from './clubs.service';
   `
 })
 export class ClubsCom {
-  private clubs: Array<any>;
+  private clubs: Array<any> = [];
 
   constructor(
     private nav: NavController,

@@ -24,7 +24,7 @@ const ACTIVITY_TYPE_ICONS = [
       <li *ngFor="let activity of activities">
         <div class="icon-container">
           <div class="icon-wrapper">
-            <ion-icon color="white" [name]="getActivityIconName(activity.activityType)"></ion-icon>
+            <ion-icon color="primary" [name]="getActivityIconName(activity.activityType)"></ion-icon>
           </div>
         </div>
 

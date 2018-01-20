@@ -20,10 +20,12 @@ game-activity-feed {
     position: absolute;
     top: 15px;
     bottom: 15px;
-    left: 34px;
+    left: 33px;
     width: 2px;
-    background: $theme-bg-colour;
+    //background: $theme-bg-colour;
     z-index: -1;
+    opacity: 0.2;
+    border-left: 1px dashed $darkcyan;
   }
 
   ion-icon {
@@ -38,8 +40,8 @@ game-activity-feed {
   .icon-wrapper {
     box-sizing: content-box;
     border-radius: 50%;
-    border: 2px $white solid;
-    background: $theme-bg-colour;
+    border: 1px $theme-bg-colour dashed;
+    background: $icon-colour;
     width: $icon-dimensions;
     height: $icon-dimensions;
   }

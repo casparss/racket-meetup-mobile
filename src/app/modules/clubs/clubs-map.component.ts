@@ -1,55 +1,114 @@
-import { Component } from "@angular/core";
-import {
-  GoogleMaps,
-  GoogleMap,
-  GoogleMapsEvent,
-  GoogleMapOptions,
-  CameraPosition,
-  MarkerOptions,
-  Marker
-} from '@ionic-native/google-maps';
+import { Component, Input, ViewChild, ElementRef } from "@angular/core";
+import { LoadingController } from 'ionic-angular';
+import { Geolocation } from '@ionic-native/geolocation';
+import * as mapStyle from './google-map-style.json';
 
-const mapOptions: GoogleMapOptions = {
-  camera: {
-    target: {
-      lat: 43.0741904,
-      lng: -89.3809802
-    },
-    zoom: 18,
-    tilt: 30
-  }
+declare var google;
+
+const markers = {
+  SHIELD: 'assets/icon/shield.svg',
+  SHIELD_SELECTED: 'assets/icon/shield-selected.svg',
+  YOUR_LOCATION: 'assets/icon/gps-fixed-indicator.svg'
 };
 
 @Component({
   selector: 'clubs-map',
-  template: `<div style="height:300px;" id="map-canvas"></div>`
+  template: `
+    <div #map style="height:250px;"></div>
+  `
 })
 export class ClubsMapCom {
-  map: GoogleMap;
+  private map: any = {};
+  private mapLoaded: boolean;
+  private markersLoaded: boolean = false;
+  private loading: any;
+  private selectedMarker: any;
+  @Input() clubs: Array<any> = [];
+  @ViewChild('map') mapEl:ElementRef;
 
-  constructor(private googleMaps: GoogleMaps){}
-
-  ngOnInit(){
-    this.loadMap();
+  constructor(
+    private geolocation: Geolocation,
+    private loadingCtrl: LoadingController
+  ){
+    this.loading = this.loadingCtrl.create();
   }
 
-  loadMap(){
-    this.map = this.googleMaps.create('map-canvas', mapOptions);
-    this.map.one(GoogleMapsEvent.MAP_READY).then(() => this.mapReady());
+  ngOnInit(){
+    this.loading.present();
+    <Promise<any>>this.geolocation.getCurrentPosition()
+			.then(({ coords }) => this.loadMap(coords));
+  }
+
+  loadMap(position) {
+    const { longitude, latitude } = position
+    const latLng = new google.maps.LatLng(latitude, longitude);
+
+    const mapOptions = {
+      center: latLng,
+      zoom: 11,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      styles: mapStyle,
+      disableDefaultUI: true,
+      mapTypeControl: false,
+    };
+
+    this.map = new google.maps.Map(this.mapEl.nativeElement, mapOptions);
+    this.addMyMarker(position);
+    google.maps.event.addListenerOnce(this.map, 'tilesloaded', () => this.mapReady());
   }
 
   mapReady(){
-    this.map.addMarker({
-      title: 'Ionic',
-      icon: '#16a086',
-      animation: 'DROP',
+    this.mapLoaded = true;
+    this.loadMarkers();
+  }
+
+  loadMarkers(){
+    if(!this.markersLoaded && this.mapLoaded && this.clubs && this.clubs.length > 0){
+      this.loading.dismiss();
+      this.clubs.forEach((club, i) => this.addClubMarker(club, i));
+      this.markersLoaded = true;
+    }
+  }
+
+  addMyMarker({ longitude, latitude }){
+    return new google.maps.Marker({
       position: {
-        lat: 43.0741904,
-        lng: -89.3809802
-      }
-    })
-    .then(marker => {
-      marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => { console.log('Clicked!') });
+        lat: latitude,
+        lng: longitude
+      },
+      icon: {
+        url: 'assets/icon/gps-fixed-indicator.svg'
+      },
+      map: this.map,
+      animation: google.maps.Animation.DROP,
     });
+  }
+
+  addClubMarker(club, i){
+    const marker = new google.maps.Marker({
+      icon: {
+        url: markers.SHIELD,
+        scale: 2
+      },
+      title: club.title,
+      position: club.location,
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+    });
+
+    marker.addListener('click', () => {
+      this.map.panTo(club.location);
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      marker.setIcon(markers.SHIELD_SELECTED);
+      setTimeout(() => marker.setAnimation(null), 1400);
+      if(this.selectedMarker){
+        this.selectedMarker.setIcon(markers.SHIELD);
+      }
+      this.selectedMarker = marker;
+    });
+  }
+
+  ngOnChanges(){
+    this.loadMarkers();
   }
 }
