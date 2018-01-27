@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef } from "@angular/core";
+import { Component, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
 import { LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as mapStyle from './google-map-style.json';
@@ -23,6 +23,7 @@ export class ClubsMapCom {
   private markersLoaded: boolean = false;
   private loading: any;
   private selectedMarker: any;
+  @Output() onClubSelected: EventEmitter<any> = new EventEmitter();
   @Input() clubs: Array<any> = [];
   @ViewChild('map') mapEl:ElementRef;
 
@@ -77,7 +78,7 @@ export class ClubsMapCom {
         lng: longitude
       },
       icon: {
-        url: 'assets/icon/gps-fixed-indicator.svg'
+        url: markers.YOUR_LOCATION
       },
       map: this.map,
       animation: google.maps.Animation.DROP,
@@ -97,6 +98,7 @@ export class ClubsMapCom {
     });
 
     marker.addListener('click', () => {
+      this.onClubSelected.emit({club, i});
       this.map.panTo(club.location);
       marker.setAnimation(google.maps.Animation.BOUNCE);
       marker.setIcon(markers.SHIELD_SELECTED);

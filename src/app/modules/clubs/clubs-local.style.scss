@@ -1,0 +1,18 @@
+local-clubs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  ion-thumbnail > loading-img {
+    width: 95px;
+    height: 60px;
+  }
+  ion-list {
+    flex:1;
+    margin-bottom: 0!important;
+    overflow: auto;
+  }
+
+  ion-item.selected {
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+  }
+}

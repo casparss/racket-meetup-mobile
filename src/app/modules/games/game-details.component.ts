@@ -10,12 +10,15 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
   template: `
     <ion-header>
       <ion-navbar>
-        <ion-title><ion-icon name="tennisball" large item-left></ion-icon> {{game.gameType}}</ion-title>
-        <!--ion-buttons end>
-		      <button ion-button icon-only>
-		        <ion-icon name="menu"></ion-icon>
-		      </button>
-		    </ion-buttons-->
+        <ion-title>{{game.gameType}}</ion-title>
+        <ion-buttons end *ngIf="status(game, ['accepted'])">
+          <button (click)="amendGameDetails()" type="button" ion-button icon-only>
+            <ion-icon name="settings" item-left></ion-icon>
+          </button>
+          <button (click)="recordResult()" type="button" ion-button icon-only>
+            <ion-icon name="clipboard" item-left></ion-icon>
+          </button>
+		    </ion-buttons>
       </ion-navbar>
     </ion-header>
 
@@ -37,6 +40,10 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
         <div *ngSwitchCase="'details'">
           <ion-list>
             <ion-item-group>
+              <ion-item>
+                <ion-icon name="tennisball" large item-left></ion-icon>
+                <h2>{{game.gameType}}</h2>
+              </ion-item>
               <ion-item>
                 <ion-icon name="pin" item-left large ></ion-icon>
                 <h2>{{game.club.name}}</h2>
@@ -71,22 +78,6 @@ import { GameRecordResultCom } from '../game-record-result/game-record-result.co
         ></game-activity-feed>
 
       </div>
-
-      <ion-list *ngIf="status(game, ['accepted'])">
-        <ion-list-header class="component-header">
-          Actions
-        </ion-list-header>
-
-        <button (click)="amendGameDetails()" type="button" ion-item>
-          <ion-icon name="settings" item-left></ion-icon>
-          Amend details
-        </button>
-        <button (click)="recordResult()" type="button" ion-item>
-          <ion-icon name="clipboard" item-left></ion-icon>
-          Record score
-        </button>
-      </ion-list>
-
     </ion-content>
   `
 })

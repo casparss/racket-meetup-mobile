@@ -9,12 +9,11 @@ import { UserSvc } from '../user-service/user.service';
         <ion-title>Club</ion-title>
       </ion-navbar>
     </ion-header>
-
     <ion-content>
       <header>
         <div class="image-container">
           <img class="club-image" src="assets/images/tennis-court.jpg">
-          <h1 class="club-name">
+          <h1 #clubName ion-fixed class="club-name">
             <ion-icon name="flag" item-left></ion-icon> &nbsp;Lostock Tennis Club
           </h1>
         </div>
@@ -32,7 +31,6 @@ import { UserSvc } from '../user-service/user.service';
             <dt>Socials</dt>
           </div>
         </buckets>
-
       </header>
 
       <div class="players-summary">
@@ -56,26 +54,26 @@ import { UserSvc } from '../user-service/user.service';
         Actions
       </ion-list-header>
       <ion-list>
-  			<button type="button" ion-item>
-  				<ion-icon name="medal" item-left></ion-icon>
-  				Club rankings
-  			</button>
+        <button type="button" ion-item>
+          <ion-icon name="medal" item-left></ion-icon>
+          Club rankings
+        </button>
 
         <button ion-item>
-  				<ion-icon name="tennisball" item-left></ion-icon>
-  				Matches
-  			</button>
-
-  			<button ion-item>
-  				<ion-icon name="navigate" item-left></ion-icon>
-  				Location
-  			</button>
+          <ion-icon name="tennisball" item-left></ion-icon>
+          Matches
+        </button>
 
         <button ion-item>
-  				<ion-icon name="add" item-left></ion-icon>
-  				Add to my clubs
-  			</button>
-  		</ion-list>
+          <ion-icon name="navigate" item-left></ion-icon>
+          Location
+        </button>
+
+        <button ion-item>
+          <ion-icon name="add" item-left></ion-icon>
+          Add to my clubs
+        </button>
+      </ion-list>
 
       <games-summary [user]="user"></games-summary>
 
@@ -84,6 +82,7 @@ import { UserSvc } from '../user-service/user.service';
 })
 export class ClubCom {
   private user: any;
+
   constructor(private userSvc: UserSvc) {
     this.user = this.userSvc.current;
   }
