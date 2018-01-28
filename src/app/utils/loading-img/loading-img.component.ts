@@ -8,7 +8,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
       <ion-spinner icon="spiral" class="spinner-stable"></ion-spinner>
     </div>
     <div class="img-container">
-      <img [class.none]="isLoading" [class.loaded]="!isLoading" (load)="onLoad()" [src]="src" />
+      <img [class.loaded]="!isLoading" (load)="onLoad()" [src]="src" />
     </div>
   `,
   styles: [`
@@ -31,16 +31,17 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
       z-index: 2;
     }
     img {
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
+      -webkit-transform: translateZ(0) scale(0.6);
+      transform: translateZ(0) scale(0.6);
       filter: opacity(0);
-      transition: all 0.5s;
+      transition: filter 1s, transform 0.4s;
+      transition-timing-function: ease-in-out;
       width:100%!important;
       height:100%!important;
     }
     .loaded {
       -webkit-transform: translateZ(0) scale(1);
-      transform: translateZ(0);
+      transform: translateZ(0) scale(1);
       filter: opacity(1);
     }
   `]

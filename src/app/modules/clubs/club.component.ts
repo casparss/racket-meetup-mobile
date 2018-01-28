@@ -61,9 +61,9 @@ import { ClubsUtils } from './clubs.utils';
         </ion-list-header>
 
         <ion-list>
-          <button type="button" ion-item>
-            <ion-icon name="medal" item-left></ion-icon>
-            Club rankings
+          <button ion-item>
+            <ion-icon name="trophy" item-left></ion-icon>
+            Rankings
           </button>
 
           <button ion-item>

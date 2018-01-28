@@ -6,6 +6,10 @@ club {
 
   .image-container {
     position: relative;
+    loading-img {
+      height: 210px;
+      overflow: hidden;
+    }
   }
 
   .club-name {
