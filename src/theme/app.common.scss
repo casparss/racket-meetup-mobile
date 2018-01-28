@@ -40,7 +40,11 @@ ion-list-header.panel-header {
 }
 
 .hidden {
-	visibility: hidden;
+	visibility: hidden!important;
+}
+
+.none {
+	display:none!important;
 }
 
 .avatar {

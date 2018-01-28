@@ -26,4 +26,9 @@ export class ClubsSvc extends BaseService {
 		let search = HttpUtils.urlParams({ location });
 		return this._get(null, { search }, "/clubs").toPromise();
 	}
+
+  getCLubByPlaceId(placeId) {
+		let search = HttpUtils.urlParams({ placeId });
+		return this._get(null, { search }, "/club").toPromise();
+  }
 }

@@ -4,14 +4,31 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   selector: 'loading-img',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ion-spinner *ngIf="isLoading" icon="spiral" class="spinner-stable"></ion-spinner>
-    <img [class.loaded]="!isLoading" (load)="onLoad()" [src]="src" />
+    <div class="spinner-container" *ngIf="isLoading">
+      <ion-spinner icon="spiral" class="spinner-stable"></ion-spinner>
+    </div>
+    <div class="img-container">
+      <img [class.none]="isLoading" [class.loaded]="!isLoading" (load)="onLoad()" [src]="src" />
+    </div>
   `,
   styles: [`
     :host {
+      display: block;
+      position: relative;
+    }
+    div {
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    .img-container {
+      z-index: 1;
+    }
+    .spinner-container {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 2;
     }
     img {
       -webkit-transform: translateZ(0);

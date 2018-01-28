@@ -18,7 +18,7 @@ import { ClubsSvc } from './clubs.service';
           <loading-img [src]="club.photo" alt=""></loading-img>
         </ion-thumbnail>
         <h2>{{club.name}}</h2>
-        <button ion-button clear item-right (click)="openClub()">View</button>
+        <button ion-button clear item-right (click)="openClub(club)">View</button>
       </ion-item>
     </ion-list>
   `
@@ -43,8 +43,8 @@ export class LocalClubsCom {
       .then(clubs => this.clubs = clubs);
   }
 
-  openClub(){
-    this.nav.push(ClubCom, { id: 1 });
+  openClub(club){
+    this.nav.push(ClubCom, { club });
   }
 
   selectClub({ i }){
