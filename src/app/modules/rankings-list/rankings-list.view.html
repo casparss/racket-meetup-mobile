@@ -12,9 +12,11 @@
 					<dd>{{currentUserRanking?.position}}</dd>
 					<dt>Position</dt>
 				</ion-col>
+
 				<ion-col width-33>
 					<img [src]="userSvc.current.avatar$ | async" alt="">
 				</ion-col>
+
 				<ion-col width-33>
 					<dd>{{(currentUserRanking?.user.$ | async)?.stats.wins}}</dd>
 					<dt>Wins</dt>
@@ -30,11 +32,14 @@
 					<ion-row>
 						<ion-col class="position" col-1>{{rankingModel.position}}
 						</ion-col>
+
 						<ion-col class="img" col-2>
 							<loading-img [src]="rankingModel.user.avatar$ | async"></loading-img>
 						</ion-col>
+
 						<ion-col class="name" col-7>{{rankingModel.user.getValue().details.fullName}}
 						</ion-col>
+
 						<ion-col class="ranking" col-2>{{rankingModel.user.getValue().stats.wins}}<br />
               <span>Wins</span>
 						</ion-col>
@@ -44,15 +49,15 @@
 
 			<ion-item-options>
 			  <button primary>
-				<ion-icon name="text"></ion-icon>
+				  <ion-icon name="text"></ion-icon>
 					Text
 			  </button>
+
 			  <button secondary>
-				<ion-icon name="call"></ion-icon>
+				  <ion-icon name="call"></ion-icon>
 					Call
 			  </button>
 			</ion-item-options>
 	  </ion-item-sliding>
 	</ion-list>
-
 </ion-content>

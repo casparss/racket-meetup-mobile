@@ -15,6 +15,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     :host {
       display: block;
       position: relative;
+      overflow: hidden;
     }
     div {
       display: flex;

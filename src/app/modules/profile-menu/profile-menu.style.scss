@@ -1,11 +1,16 @@
 profile-menu {
-
 	ion-item-divider[light]{
 		background: #fcfcfc;
 	}
 
-	ion-thumbnail img {
-		border-radius: 50%;
+	ion-thumbnail {
+		img {
+			border-radius: 50%;
+		}
+		loading-img {
+			width: 100px;
+			height: 100px;
+		}
 	}
 
 	.logout {
@@ -14,5 +19,4 @@ profile-menu {
 		color: red;
 		display: block;
 	}
-
 }

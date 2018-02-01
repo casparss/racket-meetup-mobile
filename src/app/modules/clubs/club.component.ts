@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavParams, NavController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
 import { ClubsSvc } from './clubs.service';
 import { ClubsUtils } from './clubs.utils';
+
+import { RankingsListCom } from '../rankings-list/rankings-list.component';
+import { GamesCom } from '../games/games.component';
+import { FollowersCom } from '../followers/followers.component';
 
 @Component({
   selector: 'club',
@@ -44,7 +48,7 @@ import { ClubsUtils } from './clubs.utils';
           </ion-list-header>
 
           <ion-list>
-            <button ion-item>
+            <button ion-item (click)="openFollowers()">
               <div class="player-list">
                 <div><img class="avatar" src="assets/images/profile.jpg"></div>
                 <div><img class="avatar" src="assets/images/profile.jpg"></div>
@@ -61,12 +65,12 @@ import { ClubsUtils } from './clubs.utils';
         </ion-list-header>
 
         <ion-list>
-          <button ion-item>
+          <button ion-item (click)="openPage($event)">
             <ion-icon name="trophy" item-left></ion-icon>
             Rankings
           </button>
 
-          <button ion-item>
+          <button ion-item (click)="openGames()">
             <ion-icon name="tennisball" item-left></ion-icon>
             Matches
           </button>
@@ -94,6 +98,7 @@ export class ClubCom {
   private clubImage: string;
 
   constructor(
+    private nav: NavController,
     private userSvc: UserSvc,
     navParams: NavParams,
     private clubsSvc: ClubsSvc,
@@ -106,5 +111,17 @@ export class ClubCom {
         this.clubImage = this.utils.generateBannerImgUrl(club.photo);
         this.loading = false;
       });
+  }
+
+  openPage(){
+    this.nav.push(RankingsListCom, {});
+  }
+
+  openGames(){
+    this.nav.push(GamesCom, {});
+  }
+
+  openFollowers(){
+    this.nav.push(FollowersCom, {});
   }
 }

@@ -24,9 +24,12 @@ export class RankingsListCom {
 		private loadingCtrl: LoadingController
 	){
 		this.rankingsList = this.modelSvc.createCollection(RANKING);
-		this.getRankings();
 		this.rankingsListSub = this.rankingsList.$
 			.subscribe(rankings => this.setCurrentUserRanking(rankings));
+	}
+
+	ngOnInit(){
+		this.getRankings();
 	}
 
 	ionViewWillUnload(){
@@ -50,5 +53,4 @@ export class RankingsListCom {
 	setCurrentUserRanking(rankings){
 		this.currentUserRanking = rankings.find(ranking => ranking.user._id === this.userSvc.current._id);
 	}
-
 }

@@ -22,7 +22,7 @@
 
 		<button ion-item (click)="openPage('profileMain')">
 			<ion-thumbnail item-left>
-				<img [src]="userSvc.profileImage | async">
+				<loading-img [src]="userSvc.profileImage | async"></loading-img>
 			</ion-thumbnail>
 			<h2>{{(userSvc.current.$ | async)?.details.fullName}}</h2>
 			<p>Profile</p>
