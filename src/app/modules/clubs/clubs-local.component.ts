@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, NgZone } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 import { ClubCom } from './club.component';
 import { ClubsUtils } from './clubs.utils';
 import { ClubsSvc } from './clubs.service';
@@ -7,7 +7,11 @@ import { ClubsSvc } from './clubs.service';
 @Component({
   selector: 'local-clubs',
   template: `
-    <clubs-map [clubs]="clubs" (onClubSelected)="selectClub($event)"></clubs-map>
+    <clubs-map
+      [clubs]="clubs"
+      (onClubSelected)="selectClub($event)"
+      (loading)="isLoading($event)"
+      ></clubs-map>
     <ion-item-divider
       [class.hidden]="!this.clubs.length"
       sticky
@@ -24,11 +28,13 @@ import { ClubsSvc } from './clubs.service';
   `
 })
 export class LocalClubsCom {
+  private loadingSpinner: any;
   private clubs: Array<any> = [];
   @ViewChild('list') list:ElementRef;
 
   constructor(
     private nav: NavController,
+    private loadingCtrl: LoadingController,
     private clubsSvc: ClubsSvc,
     private utils: ClubsUtils,
     private ngZone: NgZone
@@ -41,6 +47,20 @@ export class LocalClubsCom {
         }
       }))
       .then(clubs => this.clubs = clubs);
+
+    this.loadingSpinner = this.loadingCtrl.create({
+      showBackdrop: false
+    });
+  }
+
+  ngOnInit(){
+    this.loadingSpinner.present();
+  }
+
+  isLoading(isLoading){
+    if(!isLoading){
+      this.loadingSpinner.dismiss();
+    }
   }
 
   openClub(club){

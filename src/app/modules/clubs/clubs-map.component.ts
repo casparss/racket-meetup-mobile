@@ -1,5 +1,4 @@
 import { Component, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
-import { LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as mapStyle from './google-map-style.json';
 
@@ -21,21 +20,18 @@ export class ClubsMapCom {
   private map: any = {};
   private mapLoaded: boolean;
   private markersLoaded: boolean = false;
-  private loading: any;
   private selectedMarker: any;
   @Output() onClubSelected: EventEmitter<any> = new EventEmitter();
+  @Output() loading: EventEmitter<any> = new EventEmitter();
   @Input() clubs: Array<any> = [];
   @ViewChild('map') mapEl:ElementRef;
 
   constructor(
-    private geolocation: Geolocation,
-    private loadingCtrl: LoadingController
-  ){
-    this.loading = this.loadingCtrl.create({ showBackdrop: false });
-  }
+    private geolocation: Geolocation
+  ){}
 
   ngOnInit(){
-    this.loading.present();
+    this.loading.emit(true);
     <Promise<any>>this.geolocation.getCurrentPosition()
 			.then(({ coords }) => this.loadMap(coords));
   }
@@ -65,9 +61,9 @@ export class ClubsMapCom {
 
   loadMarkers(){
     if(!this.markersLoaded && this.mapLoaded && this.clubs && this.clubs.length > 0){
-      this.loading.dismiss();
       this.clubs.forEach((club, i) => this.addClubMarker(club, i));
       this.markersLoaded = true;
+      this.loading.emit(false);
     }
   }
 
@@ -81,7 +77,7 @@ export class ClubsMapCom {
         url: markers.YOUR_LOCATION
       },
       map: this.map,
-      animation: google.maps.Animation.DROP,
+      //animation: google.maps.Animation.DROP,
     });
   }
 
@@ -94,12 +90,12 @@ export class ClubsMapCom {
       title: club.title,
       position: club.location,
       map: this.map,
-      animation: google.maps.Animation.DROP,
+      //animation: google.maps.Animation.DROP,
     });
 
     marker.addListener('click', () => {
       this.onClubSelected.emit({club, i});
-      this.map.panTo(club.location);
+      //this.map.panTo(club.location);
       marker.setAnimation(google.maps.Animation.BOUNCE);
       marker.setIcon(markers.SHIELD_SELECTED);
       setTimeout(() => marker.setAnimation(null), 1400);
