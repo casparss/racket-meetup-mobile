@@ -130,7 +130,7 @@ export class ClubCom {
 
   toggleMyClub(){
     this.clubsSvc
-      .toggleMyClub(this.clubModel._id)
+      .toggleMyClub(this.clubModel)
       .then(({isMyClub}) => this.isMyClub = isMyClub);
   }
 

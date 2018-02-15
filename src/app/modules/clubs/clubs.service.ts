@@ -4,6 +4,7 @@ import { DecHttp, HttpUtils } from '../../utils/http/';
 import { ConfigSvc } from '../config/config.service';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ModelSvc } from '../model-service/model.service';
+import { UserSvc } from '../user-service/user.service';
 
 @Injectable()
 export class ClubsSvc extends BaseService {
@@ -11,6 +12,7 @@ export class ClubsSvc extends BaseService {
   constructor(
     private geolocation: Geolocation,
     private modelSvc: ModelSvc,
+    private userSvc: UserSvc,
     http: DecHttp,
 		configSvc: ConfigSvc
   ){
@@ -49,7 +51,11 @@ export class ClubsSvc extends BaseService {
       .then(data => this.modelSvc.create(data, ownerInstance));
   }
 
-  toggleMyClub(_id){
-    return this._update(null, {}, 'clubs/my-club/', _id).toPromise();
+  toggleMyClub(clubModel){
+    return this._update(null, {}, 'clubs/my-club/', clubModel._id).toPromise()
+      .then((data) => {
+        this.userSvc.toggleMyClub(clubModel, data.isMyClub);
+        return data;
+      });
   }
 }

@@ -172,4 +172,8 @@ export class UserSvc extends BaseService {
 		const user = this.current.getValue();
 		return !!user.clubs.find(club => club._id === _id);
 	}
+
+	toggleMyClub(clubModel, isMyClub){
+		this.current.toggleMyClub(clubModel, isMyClub);
+	}
 }

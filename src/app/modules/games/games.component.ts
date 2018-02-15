@@ -154,7 +154,7 @@ export class GamesCom {
       lastSeenId
     })
     .subscribe(({games}) => {
-      this.gamesListCollection.push(games);
+      this.gamesListCollection.appendArray(games);
       nScroll.complete();
     });
   }

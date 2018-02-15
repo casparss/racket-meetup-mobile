@@ -35,15 +35,15 @@ const create = (injector, rawData: any, ownerInstance: any, opts) => {
   let ModelType = MODEL_TYPES[modelType];
   if(!ModelType) throw new Error("No model type provided for model creation!");
 
-  let collection = modelRegistry[modelType];
-  let preExistingModel = collection.find(model => model._id === rawData._id);
+  let registry = modelRegistry[modelType];
+  let preExistingModel = registry.find(model => model._id === rawData._id);
 
   if(preExistingModel){
     preExistingModel.update(rawData, ownerInstance);
     return preExistingModel;
   } else {
     let newModel =  new ModelType(injector, rawData, ownerInstance, opts);
-    collection.push(newModel);
+    registry.push(newModel);
     return newModel;
   }
 }
@@ -106,16 +106,29 @@ export class Collection {
 
   update(objectArray){
     this.collectionSubject.next(this.transformToModel(objectArray));
+    return this;
   }
 
-  push(objectArray: Array<any>){
+  appendArray(objectArray: Array<any>){
     let models = this.collectionSubject.getValue();
     let newModels = this.transformToModel(objectArray);
     this.collectionSubject.next([...models, ...newModels]);
   }
 
+  push(value: any){
+    let models = this.collectionSubject.getValue();
+    let newModels = this.transformToModel([value]);
+    this.collectionSubject.next([...models, ...newModels]);
+  }
+
   findById(_idArg){
     return this.collectionSubject.getValue().find(({ _id }) => _id === _idArg);
+  }
+
+  remove(idForRemoval){
+    let models = this.collectionSubject.getValue();
+    remove(models, ({_id}) => _id === idForRemoval);
+    this.collectionSubject.next([...models]);
   }
 
   destroy(){

@@ -1,5 +1,6 @@
 import { Injectable, Injector, EventEmitter } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { ModelSvc, CLUB } from '../model-service/model.service';
 import { DataModel } from '../../utils/data-model';
 import { UserInt } from './user.interface';
 import { remove } from 'lodash';
@@ -8,19 +9,29 @@ import { UserModelSvc } from '../user-service/user.model.service';
 
 export class UserModel extends DataModel {
   public statusLengths$: BehaviorSubject<any> = new BehaviorSubject({});
-
+  private modelSvc: ModelSvc;
   private userModel: UserInt;
   private utils;
   private userModelSvc;
   private onLengthsRetrievalSub: Subscription;
+  public clubs: any;
 
   constructor(injector, userModel, ownerInstance, opts?){
     super(injector, userModel, ownerInstance);
     this.utils = injector.get(UserUtils);
+    this.modelSvc = injector.get(ModelSvc);
     this.userModelSvc = injector.get(UserModelSvc);
     this.onLengthsRetrievalSub = this.userModelSvc.onLengthsRetrieval
       .subscribe(lengthsData => this.lengthsRetrieval(lengthsData));
+    this.createClubsCollection(userModel);
     this.subscribe();
+  }
+
+  createClubsCollection(userModel){
+    this.clubs = this.modelSvc
+      .createCollection(CLUB)
+      .update(userModel.clubs);
+    this.$.subscribe(({clubs}) => this.clubs.update(clubs));
   }
 
   destroy(){
@@ -42,6 +53,13 @@ export class UserModel extends DataModel {
       remove(followingThem, followerId => userId === followerId);
 
     this.update(user);
+  }
+
+  toggleMyClub(clubModel, isMyClub){
+    if(isMyClub)
+      this.clubs.push(clubModel);
+    else
+      this.clubs.remove(clubModel._id);
   }
 
   get $(){
