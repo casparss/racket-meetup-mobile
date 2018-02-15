@@ -20,9 +20,9 @@ import { FollowersCom } from '../followers/followers.component';
       <loading-block [loading]="loading">
         <header>
           <div class="image-container">
-            <loading-img class="club-image" [src]="clubImage"></loading-img>
+            <loading-img class="club-image" [src]="clubModel.image"></loading-img>
             <h1 #clubName ion-fixed class="club-name">
-              <ion-icon name="flag" item-left></ion-icon> &nbsp;{{club.name}}
+              <ion-icon name="flag" item-left></ion-icon> &nbsp;{{clubModel._?.name}}
             </h1>
           </div>
 
@@ -94,7 +94,7 @@ import { FollowersCom } from '../followers/followers.component';
 })
 export class ClubCom {
   private user: any;
-  private club: any = {};
+  private clubModel: any = {};
   private loading: boolean = true;
   private clubImage: string;
   private isMyClub: boolean;
@@ -107,12 +107,12 @@ export class ClubCom {
     private utils: ClubsUtils
   ) {
     this.user = this.userSvc.current;
-    this.clubsSvc.getClubByPlaceId(navParams.get('club').place_id)
-      .then(club => {
-        this.club = club;
-        this.clubImage = this.utils.generateBannerImgUrl(club.photo);
+    this.clubsSvc
+      .getClubModelByPlaceId(navParams.get('club').place_id, this)
+      .then(clubModel => {
+        this.clubModel = clubModel;
         this.loading = false;
-        this.isMyClub = this.userSvc.isMyClub(club._id);
+        this.isMyClub = this.userSvc.isMyClub(this.clubModel._id);
       });
   }
 
@@ -130,7 +130,11 @@ export class ClubCom {
 
   toggleMyClub(){
     this.clubsSvc
-      .toggleMyClub(this.club._id)
+      .toggleMyClub(this.clubModel._id)
       .then(({isMyClub}) => this.isMyClub = isMyClub);
   }
+
+  ionViewDidLeave() {
+		this.clubModel.disown(this);
+	}
 }

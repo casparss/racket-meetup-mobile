@@ -54,6 +54,10 @@ export class DataModel {
     return this.subject.asObservable();
   }
 
+  get _(){
+    return this.value;
+  }
+
   get $(){
     return this.get$();
   }

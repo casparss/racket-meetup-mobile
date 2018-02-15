@@ -10,6 +10,7 @@ import { UserModel } from '../user-service/user.model';
 import { GameModel } from '../games/game.model';
 import { RankingModel } from '../rankings-list/ranking.model';
 import { ChatModel } from '../chat/chat.model';
+import { ClubModel } from '../clubs/club.model';
 
 export const USER = 'User';
 export const GAME = 'Game';
@@ -22,7 +23,7 @@ export const MODEL_TYPES = {
   [GAME]: GameModel,
   [RANKING]: RankingModel,
   [CHAT]: ChatModel,
-  [CLUB]: null
+  [CLUB]: ClubModel
 };
 
 const modelRegistry = mapValues(MODEL_TYPES, () => []);

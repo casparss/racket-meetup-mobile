@@ -3,21 +3,38 @@ import { BaseService } from "../../utils/base/base.service";
 import { DecHttp, HttpUtils } from '../../utils/http/';
 import { ConfigSvc } from '../config/config.service';
 import { Geolocation } from '@ionic-native/geolocation';
+import { ModelSvc } from '../model-service/model.service';
 
 @Injectable()
 export class ClubsSvc extends BaseService {
+  private coords: any;
   constructor(
     private geolocation: Geolocation,
+    private modelSvc: ModelSvc,
     http: DecHttp,
 		configSvc: ConfigSvc
   ){
     super(http, configSvc);
+    this.cacheGeolocation();
+  }
+
+  cacheGeolocation(){
+    <Promise<any>>this.geolocation.getCurrentPosition()
+			.then(({ coords }) => this.coords = coords);
   }
 
   getLocalClubs(){
-		return <Promise<any>>this.geolocation.getCurrentPosition()
-			.then(({ coords }) => this.getClubs(coords))
-			.catch(err => console.log('Error getting location', err));
+    if(this.coords){
+      return this.getClubs(this.coords);
+    }
+    else {
+      return <Promise<any>>this.geolocation.getCurrentPosition()
+        .then(({ coords }) => {
+          this.coords = coords;
+          return this.getClubs(coords);
+        })
+        .catch(err => console.log('Error getting location', err));
+    }
 	}
 
 	getClubs({ longitude, latitude }){
@@ -26,9 +43,10 @@ export class ClubsSvc extends BaseService {
 		return this._get(null, { search }, "/clubs").toPromise();
 	}
 
-  getClubByPlaceId(placeId){
+  getClubModelByPlaceId(placeId, ownerInstance){
 		let search = HttpUtils.urlParams({ placeId });
-		return this._get(null, { search }, "/club").toPromise();
+		return this._get(null, { search }, "/club").toPromise()
+      .then(data => this.modelSvc.create(data, ownerInstance));
   }
 
   toggleMyClub(_id){
