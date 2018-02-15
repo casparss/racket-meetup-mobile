@@ -107,13 +107,30 @@ export class ClubCom {
     private utils: ClubsUtils
   ) {
     this.user = this.userSvc.current;
-    this.clubsSvc
-      .getClubModelByPlaceId(navParams.get('club').place_id, this)
-      .then(clubModel => {
-        this.clubModel = clubModel;
-        this.loading = false;
-        this.isMyClub = this.userSvc.isMyClub(this.clubModel._id);
-      });
+    const club = navParams.get('club');
+    const clubModel = navParams.get('clubModel');
+
+    if(club){
+      this.clubsSvc
+        .getClubModelByPlaceId(navParams.get('club').place_id, this)
+        .then(clubModel => {
+          this.clubModel = clubModel;
+          this.loading = false;
+          this.isMyClub = this.userSvc.isMyClub(this.clubModel._id);
+        });
+    }
+    else if(clubModel){
+      this.clubLoaded(clubModel);
+    }
+    else {
+      throw new Error('No club object or model provided to club component');
+    }
+  }
+
+  clubLoaded(clubModel){
+    this.clubModel = clubModel;
+    this.loading = false;
+    this.isMyClub = this.userSvc.isMyClub(this.clubModel._id);
   }
 
   openPage(){
