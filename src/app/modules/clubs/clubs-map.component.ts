@@ -31,7 +31,7 @@ export class ClubsMapCom {
     private geolocation: Geolocation,
     private loadingCtrl: LoadingController
   ){
-    this.loading = this.loadingCtrl.create();
+    this.loading = this.loadingCtrl.create({ showBackdrop: false });
   }
 
   ngOnInit(){

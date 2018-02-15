@@ -6,7 +6,6 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 @Injectable()
 export class ClubsSvc extends BaseService {
-
   constructor(
     private geolocation: Geolocation,
     http: DecHttp,
@@ -27,8 +26,12 @@ export class ClubsSvc extends BaseService {
 		return this._get(null, { search }, "/clubs").toPromise();
 	}
 
-  getCLubByPlaceId(placeId) {
+  getClubByPlaceId(placeId){
 		let search = HttpUtils.urlParams({ placeId });
 		return this._get(null, { search }, "/club").toPromise();
+  }
+
+  toggleMyClub(_id){
+    return this._update(null, {}, 'clubs/my-club/', _id).toPromise();
   }
 }

@@ -168,4 +168,8 @@ export class UserSvc extends BaseService {
 		return this._getById(null, userId);
 	}
 
+	isMyClub(_id){
+		const user = this.current.getValue();
+		return !!user.clubs.find(club => club._id === _id);
+	}
 }

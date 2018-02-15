@@ -80,9 +80,10 @@ import { FollowersCom } from '../followers/followers.component';
             Location
           </button>
 
-          <button ion-item>
-            <ion-icon name="add" item-left></ion-icon>
-            Add to my clubs
+          <button ion-item (click)="toggleMyClub()" [ngSwitch]="isMyClub">
+            <ion-icon *ngSwitchCase="false" name="add" item-left></ion-icon>
+    				<ion-icon *ngSwitchCase="true" name="remove" item-left></ion-icon>
+    				{{isMyClub ? "Remove from" : "Add to"}} my clubs
           </button>
         </ion-list>
 
@@ -96,6 +97,7 @@ export class ClubCom {
   private club: any = {};
   private loading: boolean = true;
   private clubImage: string;
+  private isMyClub: boolean;
 
   constructor(
     private nav: NavController,
@@ -105,11 +107,12 @@ export class ClubCom {
     private utils: ClubsUtils
   ) {
     this.user = this.userSvc.current;
-    this.clubsSvc.getCLubByPlaceId(navParams.get('club').place_id)
+    this.clubsSvc.getClubByPlaceId(navParams.get('club').place_id)
       .then(club => {
         this.club = club;
         this.clubImage = this.utils.generateBannerImgUrl(club.photo);
         this.loading = false;
+        this.isMyClub = this.userSvc.isMyClub(club._id);
       });
   }
 
@@ -123,5 +126,11 @@ export class ClubCom {
 
   openFollowers(){
     this.nav.push(FollowersCom, {});
+  }
+
+  toggleMyClub(){
+    this.clubsSvc
+      .toggleMyClub(this.club._id)
+      .then(({isMyClub}) => this.isMyClub = isMyClub);
   }
 }

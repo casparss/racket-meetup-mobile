@@ -15,12 +15,14 @@ export const USER = 'User';
 export const GAME = 'Game';
 export const RANKING = 'Ranking';
 export const CHAT = 'Chat';
+export const CLUB = 'Club';
 
 export const MODEL_TYPES = {
   [USER]: UserModel,
   [GAME]: GameModel,
   [RANKING]: RankingModel,
-  [CHAT]: ChatModel
+  [CHAT]: ChatModel,
+  [CLUB]: null
 };
 
 const modelRegistry = mapValues(MODEL_TYPES, () => []);
