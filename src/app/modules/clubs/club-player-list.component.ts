@@ -24,7 +24,7 @@ import { ModelSvc, USER } from '../model-service/model.service';
   `
 })
 export class ClubPlayerListCom {
-	private playerCollection: any = new BehaviorSubject([]);
+	private playerCollection: any;
 
 	constructor(
 		private clubsSvc: ClubsSvc,
