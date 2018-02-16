@@ -9,6 +9,7 @@ import { UserSvc } from '../user-service/user.service';
 @Injectable()
 export class ClubsSvc extends BaseService {
   private coords: any;
+  private cachingPromise: Promise<any>;
   constructor(
     private geolocation: Geolocation,
     private modelSvc: ModelSvc,
@@ -17,26 +18,34 @@ export class ClubsSvc extends BaseService {
 		configSvc: ConfigSvc
   ){
     super(http, configSvc);
-    this.cacheGeolocation();
+    this.cachingPromise = this.cacheGeolocation();
   }
 
   cacheGeolocation(){
-    <Promise<any>>this.geolocation.getCurrentPosition()
+    return <Promise<any>>this.geolocation.getCurrentPosition()
 			.then(({ coords }) => this.coords = coords);
   }
 
+  getGeoLocation(){
+    return new Promise((resolve, reject) => {
+      if(!this.coords){
+        this.cachingPromise.then(coords => {
+          resolve(coords);
+        });
+      }
+      else {
+        resolve(this.coords);
+      }
+    });
+  }
+
   getLocalClubs(){
-    if(this.coords){
-      return this.getClubs(this.coords);
-    }
-    else {
-      return <Promise<any>>this.geolocation.getCurrentPosition()
-        .then(({ coords }) => {
-          this.coords = coords;
-          return this.getClubs(coords);
-        })
-        .catch(err => console.log('Error getting location', err));
-    }
+    return <Promise<any>>this.getGeoLocation()
+      .then((coords: any) => {
+        this.coords = coords;
+        return this.getClubs(coords);
+      })
+      .catch(err => console.log('Error getting location', err));
 	}
 
 	getClubs({ longitude, latitude }){

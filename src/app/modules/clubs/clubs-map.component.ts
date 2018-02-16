@@ -1,4 +1,5 @@
 import { Component, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
+import { ClubsSvc } from './clubs.service';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as mapStyle from './google-map-style.json';
 
@@ -27,13 +28,15 @@ export class ClubsMapCom {
   @ViewChild('map') mapEl:ElementRef;
 
   constructor(
-    private geolocation: Geolocation
+    private geolocation: Geolocation,
+    private clubsSvc: ClubsSvc
   ){}
 
   ngOnInit(){
     this.loading.emit(true);
-    <Promise<any>>this.geolocation.getCurrentPosition()
-			.then(({ coords }) => this.loadMap(coords));
+    this.clubsSvc
+      .getGeoLocation()
+      .then((coords) => this.loadMap(coords));
   }
 
   loadMap(position) {
