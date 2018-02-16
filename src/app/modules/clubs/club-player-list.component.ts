@@ -5,7 +5,6 @@ import { ClubsSvc } from './clubs.service';
 import { UserInt } from '../user-service/user.interface';
 import { ModelSvc, USER } from '../model-service/model.service';
 
-
 @Component({
   selector: 'club-player-list',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,113 +1,28 @@
-<!--
-@TODO:
-A lot of ugliness here. The addressbook and the followers view
-configurations should be separated into different templates/components and then
-switched upon them at high level rather than this messy inline way.
--->
-
-<ion-header [ngSwitch]="isAddressBook">
-	<ion-navbar *ngSwitchCase="false">
+<ion-header>
+	<ion-navbar>
 		<ion-title>Followers</ion-title>
 	</ion-navbar>
 
-	<div *ngSwitchCase="false">
-		<ion-segment *ngIf="!isEmptyState" [(ngModel)]="selectedSegment">
-			<ion-segment-button value="following">
-				Following ({{(followingCollection.$ | async)?.length}})
-			</ion-segment-button>
-			<ion-segment-button value="followers">
-				Followers ({{(followersCollection.$ | async)?.length}})
-			</ion-segment-button>
-		</ion-segment>
-	</div>
-
-	<ion-toolbar *ngSwitchCase="true">
-
-		<ion-segment *ngIf="!isEmptyState" [(ngModel)]="selectedSegment">
-	    <ion-segment-button value="following">
-				Following ({{(followingCollection.$ | async)?.length}})
-			</ion-segment-button>
-			<ion-segment-button value="followers">
-				Followers ({{(followersCollection.$ | async)?.length}})
-			</ion-segment-button>
-		</ion-segment>
-
-		<ion-buttons end>
-      <button small icon-only ion-button (click)="viewCtrl.dismiss()">
-				<ion-icon name="close"></ion-icon>
-			</button>
-    </ion-buttons>
-
-	</ion-toolbar>
-
+	<ion-segment *ngIf="!isEmptyState" [(ngModel)]="selectedSegment">
+		<ion-segment-button value="following">
+			Following ({{(followingCollection.$ | async)?.length}})
+		</ion-segment-button>
+		<ion-segment-button value="followers">
+			Followers ({{(followersCollection.$ | async)?.length}})
+		</ion-segment-button>
+	</ion-segment>
 </ion-header>
 
 <ion-content>
-
 	<ion-list *ngIf="!isEmptyState" [ngSwitch]="isAddressBook">
-
     <div [hidden]="selectedSegment !== 'followers'">
-
-			<div *ngSwitchCase="false">
-				<button
-					ion-item
-	  			*ngFor="let user of followersCollection.$ | async"
-	  			(click)="openProfile(user)"
-	  		>
-					<ion-avatar item-left>
-						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
-					</ion-avatar>
-	  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-	  		</button>
-			</div>
-
-			<div *ngSwitchCase="true">
-				<ion-item
-	  			*ngFor="let user of followersCollection.$ | async"
-	  		>
-					<ion-avatar item-left>
-						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
-					</ion-avatar>
-	  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-					<button ion-button item-right (click)="openChat(user)">Chat</button>
-	  		</ion-item>
-			</div>
-
+			<player-list *ngSwitchCase="false" [playerList$]="followersCollection.$"></player-list>
     </div>
 
     <div [hidden]="selectedSegment !== 'following'">
-
-			<div *ngSwitchCase="false">
-				<button
-					ion-item
-	  			*ngFor="let user of followingCollection.$ | async"
-	  			(click)="openProfile(user)"
-	  		>
-					<ion-avatar item-left>
-						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
-					</ion-avatar>
-	  			{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-	  		</button>
-			</div>
-
-			<div *ngSwitchCase="true">
-
-				<ion-item
-					*ngFor="let user of followingCollection.$ | async"
-
-					>
-					<ion-avatar item-left>
-						<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
-					</ion-avatar>
-					{{ (user.$ | async)?.details.firstName + " " + (user.$ | async)?.details.lastName }}
-					<button ion-button item-right (click)="openChat(user)">Chat</button>
-				</ion-item>
-			</div>
-
+			<player-list *ngSwitchCase="false" [playerList$]="followingCollection.$"></player-list>
     </div>
-
 	</ion-list>
 
 	<no-data-message *ngIf="isEmptyState">No followers yet.</no-data-message>
-
 </ion-content>

@@ -24,30 +24,20 @@ import { ModelSvc, USER } from '../model-service/model.service';
   		></ion-searchbar>
   	</ion-toolbar>
 
-  	<ion-list>
-  		<button ion-item
-  			*ngFor="let user of playersCollection.$ | async"
-  			(click)="openProfile(user)"
-  		>
-				<ion-avatar item-left>
-					<loading-img [src]="(user.$ | async)?.details.image"></loading-img>
-				</ion-avatar>
-  			{{ (user.$ | async)?.details.fullName }}
-  		</button>
-  	</ion-list>
+  	<player-list [playerList$]="playerCollection.$"></player-list>
   </ion-content>
   `
 })
 export class SearchPlayersCom {
 
-	private playersCollection: any;
+	private playerCollection: any;
 
 	constructor(
 		private nav: NavController,
 		private userSvc: UserSvc,
 		private modelSvc: ModelSvc
 	){
-		this.playersCollection = this.modelSvc.createCollection(USER);
+		this.playerCollection = this.modelSvc.createCollection(USER);
 	}
 
 	openProfile(user){
@@ -56,11 +46,11 @@ export class SearchPlayersCom {
 
   searchPlayers({target: { value }}){
     this.userSvc.search(value)
-			.subscribe(users => this.playersCollection.update(users));
+			.subscribe(users => this.playerCollection.update(users));
   }
 
 	ngOnDestroy(){
-		this.playersCollection.destroy();
+		this.playerCollection.destroy();
 	}
 
 }
