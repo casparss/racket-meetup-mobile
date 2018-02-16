@@ -36,7 +36,6 @@ import { ModelSvc, USER } from '../model-service/model.service';
   		</button>
   	</ion-list>
   </ion-content>
-
   `
 })
 export class SearchPlayersCom {

@@ -6,7 +6,7 @@ import { ClubsUtils } from './clubs.utils';
 
 import { RankingsListCom } from '../rankings-list/rankings-list.component';
 import { GamesCom } from '../games/games.component';
-import { FollowersCom } from '../followers/followers.component';
+import { ClubPlayerListCom } from './club-player-list.component';
 
 @Component({
   selector: 'club',
@@ -48,7 +48,7 @@ import { FollowersCom } from '../followers/followers.component';
           </ion-list-header>
 
           <ion-list>
-            <button ion-item (click)="openFollowers()">
+            <button ion-item (click)="openClubPlayerList()">
               <div class="player-list">
                 <div><img class="avatar" src="assets/images/profile.jpg"></div>
                 <div><img class="avatar" src="assets/images/profile.jpg"></div>
@@ -141,8 +141,8 @@ export class ClubCom {
     this.nav.push(GamesCom, {});
   }
 
-  openFollowers(){
-    this.nav.push(FollowersCom, {});
+  openClubPlayerList(){
+    this.nav.push(ClubPlayerListCom, this.clubModel);
   }
 
   toggleMyClub(){

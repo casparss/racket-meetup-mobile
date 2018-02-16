@@ -57,6 +57,7 @@ export class ClubsSvc extends BaseService {
   getClubModelByPlaceId(placeId, ownerInstance){
 		let search = HttpUtils.urlParams({ placeId });
 		return this._get(null, { search }, "/club").toPromise()
+      //@TODO: should this.modelSvc.create() really be in the service?
       .then(data => this.modelSvc.create(data, ownerInstance));
   }
 
@@ -66,5 +67,9 @@ export class ClubsSvc extends BaseService {
         this.userSvc.toggleMyClub(clubModel, data.isMyClub);
         return data;
       });
+  }
+
+  getPlayersByClubId(_id){
+    return this._get(null, {}, `/club/${_id}/users`).toPromise();
   }
 }

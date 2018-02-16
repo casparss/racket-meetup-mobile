@@ -5,6 +5,7 @@ import { ClubCom } from './club.component';
 import { ClubsMapCom } from './clubs-map.component';
 import { MyClubsCom } from './clubs-my.component';
 import { LocalClubsCom } from './clubs-local.component';
+import { ClubPlayerListCom } from './club-player-list.component';
 import { ClubsUtils } from './clubs.utils';
 import { ClubsSvc } from './clubs.service';
 
@@ -13,7 +14,7 @@ import { UIBlocksModule } from '../ui-blocks';
 import { NoDataMessageModule } from '../no-data-message/no-data-message.module';
 import { GamesModule } from '../games';
 import { RankingsModule } from '../rankings-list';
-import { FollowersModule } from '../followers';
+import { PlayerListModule } from '../player-list';
 
 @NgModule({
   imports: [
@@ -22,11 +23,18 @@ import { FollowersModule } from '../followers';
     UIBlocksModule,
     GamesModule,
     RankingsModule,
-    FollowersModule,
-    NoDataMessageModule
+    PlayerListModule,
+    NoDataMessageModule,
   ],
-  declarations: [ClubsCom, ClubCom, ClubsMapCom, LocalClubsCom, MyClubsCom],
-  entryComponents: [ClubsCom, ClubCom],
+  declarations: [
+    ClubsCom,
+    ClubCom,
+    ClubsMapCom,
+    LocalClubsCom,
+    MyClubsCom,
+    ClubPlayerListCom
+  ],
+  entryComponents: [ClubsCom, ClubCom, ClubPlayerListCom],
   providers: [ClubsSvc, ClubsUtils]
 })
 export class ClubsModule {}
