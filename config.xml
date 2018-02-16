@@ -75,6 +75,7 @@
     <allow-navigation href="http://192.168.1.171:8100" />
     <allow-navigation href="http://10.242.102.4:8100" />
     <allow-navigation href="http://10.242.2.9:8100" />
+    <allow-navigation href="http://10.242.2.4:8100" />
     <engine name="ios" spec="^4.5.4" />
     <plugin name="cordova-plugin-actionsheet" spec="~2.3.3" />
     <plugin name="cordova-plugin-camera" spec="~2.4.1">
@@ -92,8 +93,7 @@
     </plugin>
     <plugin name="phonegap-plugin-push" spec="^2.1.0" />
     <plugin name="cordova-plugin-statusbar" spec="~2.2.3" />
-    <allow-navigation href="http://10.242.2.4:8100" />
-    <plugin name="cordova-plugin-googlemaps" spec="https://github.com/mapsplugin/cordova-plugin-googlemaps#multiple_maps">
+    <plugin name="cordova-plugin-googlemaps" spec="git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyDA9iWdEbk48taZHuop_X2aweqXyAQBfY8" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyDA9iWdEbk48taZHuop_X2aweqXyAQBfY8" />
         <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Show your location on the map" />
