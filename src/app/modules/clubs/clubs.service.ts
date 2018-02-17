@@ -70,6 +70,14 @@ export class ClubsSvc extends BaseService {
   }
 
   getPlayersByClubId(_id){
-    return this._get(null, {}, `/club/${_id}/users`).toPromise();
+    return this._get(null, {}, `club/${_id}/users`).toPromise();
+  }
+
+  getPlayersSliceByClubId(_id){
+    const search = HttpUtils.urlParams({
+      sliceFrom: 0,
+      sliceTo: 8
+    });
+    return this._get(null, { search }, `club/${_id}/users/slice`).toPromise();
   }
 }

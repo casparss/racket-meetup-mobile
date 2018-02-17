@@ -6,6 +6,7 @@ import { ClubsMapCom } from './clubs-map.component';
 import { MyClubsCom } from './clubs-my.component';
 import { LocalClubsCom } from './clubs-local.component';
 import { ClubPlayerListCom } from './club-player-list.component';
+import { PlayerSummaryCom } from './player-summary.component';
 import { ClubsUtils } from './clubs.utils';
 import { ClubsSvc } from './clubs.service';
 
@@ -32,7 +33,8 @@ import { PlayerListModule } from '../player-list';
     ClubsMapCom,
     LocalClubsCom,
     MyClubsCom,
-    ClubPlayerListCom
+    ClubPlayerListCom,
+    PlayerSummaryCom
   ],
   entryComponents: [ClubsCom, ClubCom, ClubPlayerListCom],
   providers: [ClubsSvc, ClubsUtils]

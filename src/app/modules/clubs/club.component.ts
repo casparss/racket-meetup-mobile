@@ -46,18 +46,10 @@ import { ClubPlayerListCom } from './club-player-list.component';
           <ion-list-header class="component-header">
             Players
           </ion-list-header>
-
-          <ion-list>
-            <button ion-item (click)="openClubPlayerList()">
-              <div class="player-list">
-                <div><img class="avatar" src="assets/images/profile.jpg"></div>
-                <div><img class="avatar" src="assets/images/profile.jpg"></div>
-                <div><img class="avatar" src="assets/images/profile.jpg"></div>
-                <div><img class="avatar" src="assets/images/profile.jpg"></div>
-                <div><img class="avatar" src="assets/images/profile.jpg"></div>
-              </div>
-            </button>
-          </ion-list>
+          <player-summary
+            [_id]="clubModel._id"
+            (click)="openClubPlayerList()"
+          ></player-summary>
         </div>
 
         <ion-list-header class="component-header">
@@ -113,11 +105,7 @@ export class ClubCom {
     if(club){
       this.clubsSvc
         .getClubModelByPlaceId(navParams.get('club').place_id, this)
-        .then(clubModel => {
-          this.clubModel = clubModel;
-          this.loading = false;
-          this.isMyClub = this.userSvc.isMyClub(this.clubModel._id);
-        });
+        .then(clubModel => this.clubLoaded(clubModel));
     }
     else if(clubModel){
       this.clubLoaded(clubModel);

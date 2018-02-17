@@ -9,6 +9,11 @@ import { ClubsSvc } from './clubs.service';
   template: `
     <ion-header>
       <ion-toolbar>
+        <ion-buttons start>
+          <button ion-button icon-only>
+            <ion-icon name="refresh"></ion-icon>
+          </button>
+        </ion-buttons>
         <ion-segment [(ngModel)]="selectedSegment">
           <ion-segment-button value="myclubs">
             My clubs
