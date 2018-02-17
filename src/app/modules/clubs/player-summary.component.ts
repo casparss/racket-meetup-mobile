@@ -7,7 +7,11 @@ import { UserUtils } from '../user-service/user.utils';
   selector: 'player-summary',
 	template: `
   <ion-list>
-    <button ion-item [ngSwitch]="currentState">
+    <button
+      ion-item
+      [attr.detail-none]="currentState !== STATE[2] ? true : undefined"
+      [ngSwitch]="currentState"
+    >
       <div class="player-list">
         <div *ngFor="let playerImage of playerList">
           <loading-img class="avatar" [src]="playerImage"></loading-img>
