@@ -13,13 +13,14 @@ import { UserUtils } from '../user-service/user.utils';
       [ngSwitch]="currentState"
     >
       <div class="player-list">
-        <div *ngFor="let playerImage of playerList">
+        <div class="player-item" *ngFor="let playerImage of playerList">
           <loading-img class="avatar" [src]="playerImage"></loading-img>
         </div>
         <ion-spinner
           *ngSwitchCase="STATE[0]"
           icon="spiral"
-          class="spinner-stable"></ion-spinner>
+          class="spinner-stable"
+        ></ion-spinner>
         <no-data-message *ngSwitchCase="STATE[1]">No players yet.</no-data-message>
       </div>
     </button>

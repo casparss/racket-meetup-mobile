@@ -8,4 +8,12 @@ player-summary {
     display: flex;
     flex-direction: row;
   }
+
+  loading-img img {
+    border-radius: 50%;
+    width: 50px;
+  }
+  .player-item {
+    margin: 0 5px;
+  }
 }

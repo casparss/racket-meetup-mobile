@@ -122,7 +122,7 @@ export class ClubCom {
   }
 
   openPage(){
-    this.nav.push(RankingsListCom, {});
+    this.nav.push(RankingsListCom, { clubId: this.clubModel._id});
   }
 
   openGames(){

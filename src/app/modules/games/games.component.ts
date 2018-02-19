@@ -141,7 +141,6 @@ export class GamesCom {
     });
   }
 
-
   lazyLoad(nScroll){
     let lastSeenId = this.gamesListCollection.last()._id;
     if (this.lastSeenId === lastSeenId) return nScroll.complete();
@@ -167,5 +166,4 @@ export class GamesCom {
     this.gamesListCollection.destroy();
     this.statusLengthsSub.unsubscribe();
   }
-
 }

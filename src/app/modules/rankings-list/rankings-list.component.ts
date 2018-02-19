@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs'
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, NavParams } from 'ionic-angular';
 import { PlayerRanking } from './rankings.interface';
 import { RankingsSvc } from './rankings.service';
 import { UserSvc } from '../user-service';
@@ -16,13 +16,16 @@ export class RankingsListCom {
 	private rankingsList: any;
 	private rankingsListSub: Subscription;
 	private currentUserRanking: any;
+	private clubId: string;
 
 	constructor(
 		private rankingSvc: RankingsSvc,
 		private userSvc: UserSvc,
 		private modelSvc: ModelSvc,
-		private loadingCtrl: LoadingController
+		private loadingCtrl: LoadingController,
+		private navParams: NavParams
 	){
+		this.clubId = this.navParams.get('clubId');
 		this.rankingsList = this.modelSvc.createCollection(RANKING);
 		this.rankingsListSub = this.rankingsList.$
 			.subscribe(rankings => this.setCurrentUserRanking(rankings));
@@ -45,7 +48,7 @@ export class RankingsListCom {
 
     loading.present();
 
-		this.rankingSvc.getRankings()
+		this.rankingSvc.getRankingsByClubId(this.clubId)
 			.do(() => loading.dismiss())
 			.subscribe(rankings => this.rankingsList.update(rankings));
 	}
