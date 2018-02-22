@@ -25,8 +25,8 @@ export class RankingsListCom {
 		private loadingCtrl: LoadingController,
 		private navParams: NavParams
 	){
-		this.clubId = this.navParams.get('clubId');
 		this.rankingsList = this.modelSvc.createCollection(RANKING);
+		this.clubId = this.navParams.get('clubId');
 		this.rankingsListSub = this.rankingsList.$
 			.subscribe(rankings => this.setCurrentUserRanking(rankings));
 	}

@@ -23,5 +23,4 @@ export class RankingsSvc extends BaseService{
 	get mylevel$(){
 		return this.rankingsList$;
 	}
-
 }
