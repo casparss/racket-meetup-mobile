@@ -4,7 +4,7 @@ import { UserSvc } from '../user-service/user.service';
 import { ClubsSvc } from './clubs.service';
 import { ClubsUtils } from './clubs.utils';
 
-import { RankingsListCom } from '../rankings-list/rankings-list.component';
+import { RankingsCom } from '../rankings/rankings.component';
 import { GamesCom } from '../games/games.component';
 import { ClubPlayerListCom } from './club-player-list.component';
 
@@ -122,7 +122,7 @@ export class ClubCom {
   }
 
   openPage(){
-    this.nav.push(RankingsListCom, { clubId: this.clubModel._id});
+    this.nav.push(RankingsCom, { clubId: this.clubModel._id});
   }
 
   openGames(){

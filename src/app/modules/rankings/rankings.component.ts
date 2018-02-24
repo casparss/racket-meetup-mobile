@@ -7,10 +7,10 @@ import { UserSvc } from '../user-service';
 import { ModelSvc, RANKING } from '../model-service/model.service';
 
 @Component({
-	templateUrl: './rankings-list.view.html',
-	selector:'rankings-list'
+	templateUrl: './rankings.view.html',
+	selector:'rankings'
 })
-export class RankingsListCom {
+export class RankingsCom {
 
 	private selectedSegment: string = 'top';
 	private rankingsList: any;

@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
-import { RankingsListCom } from './rankings-list.component';
+import { RankingsCom } from './rankings.component';
+import { RankingsHeaderCom } from './rankings-header.component';
 import { RankingsSvc } from './rankings.service';
 import { LoadingImgModule } from '../../utils/loading-img';
 import { NoDataMessageModule } from '../no-data-message';
 
 @NgModule({
-  declarations: [RankingsListCom],
-  entryComponents: [RankingsListCom],
+  declarations: [RankingsCom, RankingsHeaderCom],
+  entryComponents: [RankingsCom],
   imports: [IonicModule, LoadingImgModule, NoDataMessageModule],
-  exports:[RankingsListCom],
+  exports:[RankingsCom],
   providers: [RankingsSvc]
 })
 export class RankingsModule {}

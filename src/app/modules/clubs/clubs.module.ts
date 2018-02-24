@@ -14,7 +14,7 @@ import { LoadingImgModule } from '../../utils/loading-img';
 import { UIBlocksModule } from '../ui-blocks';
 import { NoDataMessageModule } from '../no-data-message/no-data-message.module';
 import { GamesModule } from '../games';
-import { RankingsModule } from '../rankings-list';
+import { RankingsModule } from '../rankings';
 import { PlayerListModule } from '../player-list';
 
 @NgModule({

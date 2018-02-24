@@ -4,7 +4,7 @@ import { IonicModule } from 'ionic-angular';
 //Imports
 import { ProfileModule } from '../profile-main';
 import { ProfileMenuModule } from '../profile-menu';
-import { RankingsModule } from '../rankings-list';
+import { RankingsModule } from '../rankings';
 import { MessagesModule } from '../messages';
 import { ClubsModule } from '../clubs';
 

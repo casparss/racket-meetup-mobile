@@ -8,7 +8,7 @@ import { UserModelSvc } from '../user-service/user.model.service';
 import { DataModel } from '../../utils/data-model'
 import { UserModel } from '../user-service/user.model';
 import { GameModel } from '../games/game.model';
-import { RankingModel } from '../rankings-list/ranking.model';
+import { RankingModel } from '../rankings/ranking.model';
 import { ChatModel } from '../chat/chat.model';
 import { ClubModel } from '../clubs/club.model';
 

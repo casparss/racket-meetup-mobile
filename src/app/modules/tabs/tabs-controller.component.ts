@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { Subscription } from 'rxjs';
 import { ProfileMenuCom } from '../profile-menu/profile-menu.component';
-import { RankingsListCom } from '../rankings-list/rankings-list.component';
+import { RankingsCom } from '../rankings/rankings.component';
 import { MessageListCom } from '../messages/message-list.component';
 import { ClubsCom } from '../clubs/clubs.component';
 import { UserSvc } from '../user-service';
@@ -35,7 +35,7 @@ export class TabsController {
 
 	constructor(private userSvc: UserSvc, private chatSvc: ChatSvc) {
 		this.profileTabRoot = ProfileMenuCom;
-		this.rankingsTabRoot = RankingsListCom;
+		this.rankingsTabRoot = RankingsCom;
 		this.chatsTabRoot = MessageListCom;
 		this.clubsTabRoot = ClubsCom;
 	}

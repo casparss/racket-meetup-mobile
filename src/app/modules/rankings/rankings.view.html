@@ -9,25 +9,10 @@
     No rankings yet.
   </no-data-message>
   <div *ngIf="(rankingsList.$ | async).length > 0">
-    <header>
-  		<ion-grid>
-  			<ion-row>
-  				<ion-col width-33>
-  					<dd>{{currentUserRanking?.position}}</dd>
-  					<dt>Position</dt>
-  				</ion-col>
-
-  				<ion-col width-33>
-  					<img [src]="userSvc.current.avatar$ | async" alt="">
-  				</ion-col>
-
-  				<ion-col width-33>
-  					<dd>{{(currentUserRanking?.user.$ | async)?.stats.wins}}</dd>
-  					<dt>Wins</dt>
-  				</ion-col>
-  			</ion-row>
-  		</ion-grid>
-  	</header>
+    <rankings-header
+      rankings="rankingsList.$ | async"
+      current-user="userSvc.current"
+    ></rankings-header>
     <ion-list class="ranking-board">
   	  <ion-item *ngFor="let rankingModel of (rankingsList.$ | async); let i=index;">
   			<ion-item [class.active]="rankingModel.user._id === userSvc.current._id">
