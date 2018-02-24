@@ -29,11 +29,11 @@
   		</ion-grid>
   	</header>
     <ion-list class="ranking-board">
-  	  <ion-item *ngFor="let rankingModel of (rankingsList.$ | async); let index = i;">
+  	  <ion-item *ngFor="let rankingModel of (rankingsList.$ | async); let i=index;">
   			<ion-item [class.active]="rankingModel.user._id === userSvc.current._id">
   				<ion-grid>
   					<ion-row>
-  						<ion-col class="position" col-1>{{rankingModel.position}}
+  						<ion-col class="position" col-1>{{i + 1 }}
   						</ion-col>
 
   						<ion-col class="img" col-2>
