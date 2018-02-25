@@ -26,6 +26,9 @@ export const MODEL_TYPES = {
   [CLUB]: ClubModel
 };
 
+export const isModelType = (modelInstance, modelName) => 
+  modelInstance instanceof MODEL_TYPES[modelName];
+
 const modelRegistry = mapValues(MODEL_TYPES, () => []);
 
 const create = (injector, rawData: any, ownerInstance: any, opts) => {

@@ -12,10 +12,17 @@ import { ModelSvc } from '../model-service/model.service';
 import { UserModelSvc } from '../user-service/user.model.service';
 import { UserSvc } from '../user-service/user.service';
 
+interface getByStatusInt {
+	_id: string,
+	status: string,
+	type?: string,
+	lastSeenId?: string,
+	limit?: number,
+	by?: string
+}
 
 @Injectable()
 export class GamesSvc extends BaseService {
-
 	url = "games";
 	public onPushToCurrent: EventEmitter<any> = new EventEmitter();
 
@@ -30,9 +37,8 @@ export class GamesSvc extends BaseService {
 		super(http, configSvc);
 	}
 
-	getByStatus(args){
-		const { _id, status, type, lastSeenId, limit } = args;
-		let search = HttpUtils.urlParams({ status, type, lastSeenId, limit });
+	getByStatus({ _id, status, type = 'filter', lastSeenId, limit, by }: getByStatusInt){
+		const search = HttpUtils.urlParams({ status, type, lastSeenId, limit, by });
 		return this._get(null, { search }, null, `/${_id}`)
 			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}));
 	}
