@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
-import { GamesSvc } from './games.service'
-import { UserSvc } from '../user-service';
-import { GameModel } from './game.model';
-import { ChallengeCom } from '../challenge/challenge.component';
-import { UserUtils } from '../user-service/user.utils';
-import { GameDetailsCom } from './game-details.component';
+import { GamesSvc } from '../games.service'
+import { UserSvc } from '../../user-service';
+import { GameModel } from '../game.model';
+import { ChallengeCom } from '../../challenge/challenge.component';
+import { UserUtils } from '../../user-service/user.utils';
+import { GameDetailsCom } from '../game-details/game-details.component';
 
 @Component({
   selector: 'games-summary-item',

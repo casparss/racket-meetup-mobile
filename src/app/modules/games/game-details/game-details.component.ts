@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NavParams, ModalController } from 'ionic-angular';
-import { GameModel } from './game.model';
-import { ChallengeCom } from '../challenge/challenge.component';
-import { GameRecordResultCom } from '../game-record-result/game-record-result.component';
+import { GameModel } from '../game.model';
+import { ChallengeCom } from '../../challenge/challenge.component';
+import { GameRecordResultCom } from '../../game-record-result/game-record-result.component';
 
 @Component({
   selector: "game-details",

@@ -106,7 +106,7 @@ export class ProfileActionsCom {
 	}
 
 	openGames(): void {
-		this.nav.push(GamesCom, { user: this.userModel })
+		this.nav.push(GamesCom, { model: this.userModel })
 	}
 
   ngOnChanges(){

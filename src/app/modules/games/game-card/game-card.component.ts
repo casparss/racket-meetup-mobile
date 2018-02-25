@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
-import { GameInt } from './games.interfaces';
-import { GamesSvc } from './games.service';
-import { UserSvc } from '../user-service';
-import { GameDetailsCom } from './game-details.component';
+import { GameInt } from '../games.interfaces';
+import { GamesSvc } from '../games.service';
+import { UserSvc } from '../../user-service';
+import { GameDetailsCom } from '../game-details/game-details.component';
 
 const findUser = (side, currentUserId) =>
 	side.find(({ user }) => user._id === currentUserId);

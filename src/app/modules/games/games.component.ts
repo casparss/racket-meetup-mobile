@@ -15,7 +15,6 @@ import { ModelSvc, GAME } from '../model-service/model.service';
       <ion-title>Games</ion-title>
     </ion-navbar>
     <ion-segment *ngIf="!isEmptyState()" (ionChange)="getByStatus()" [(ngModel)]="selectedSegment">
-
       <ion-segment-button [disabled]="lengths.pending === 0" value="pending">
         Pending
         <span
@@ -42,7 +41,6 @@ import { ModelSvc, GAME } from '../model-service/model.service';
       <ion-segment-button [disabled]="(lengths.played + lengths.rejected + lengths.forfeit) === 0" value="played,rejected,forfeit">
         Previous ({{(lengths.played + lengths.rejected + lengths.forfeit)}})
       </ion-segment-button>
-
     </ion-segment>
   </ion-header>
 
@@ -61,13 +59,11 @@ import { ModelSvc, GAME } from '../model-service/model.service';
     >
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
-
   </ion-content>
   `
 })
 export class GamesCom {
-
-  private user: any;
+  private model: any;
   private requestedTab: any;
   private gamesListSubject: Subject<Array<GameModel>> = new Subject();
   private gamesList$: Observable<any> = this.gamesListSubject.asObservable();
@@ -85,16 +81,16 @@ export class GamesCom {
     private userSvc: UserSvc,
     private modelSvc: ModelSvc
   ){
-    this.user = this.navParams.get("user") || this.userSvc.current;
+    this.model = this.navParams.get("model");
     this.requestedTab = this.navParams.get("requestedTab");
     this.gamesListCollection = this.modelSvc.createCollection(GAME);
   }
 
   ngOnInit(){
-    this.statusLengthsSub = this.user.statusLengths$.subscribe(lengths => {
+    /*this.statusLengthsSub = this.user.statusLengths$.subscribe(lengths => {
       this.lengths = lengths;
       this.tabSelection();
-    });
+    });*/
   }
 
   private tabSelection = once(() => {
@@ -131,7 +127,7 @@ export class GamesCom {
     loading.present();
 
     this.gamesSvc.getByStatus({
-      _id: this.user.user._id,
+      model: this.model,
       status: this.selectedSegment,
       limit: this.lazyLoadLimit
     })
@@ -147,7 +143,7 @@ export class GamesCom {
     this.lastSeenId = lastSeenId;
 
     this.gamesSvc.getByStatus({
-      _id: this.user.user._id,
+      model: this.model,
       status: this.selectedSegment,
       limit: this.lazyLoadLimit,
       lastSeenId

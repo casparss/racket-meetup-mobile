@@ -1,13 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Observable, Subscription } from 'rxjs';
-import { CustomSubject } from '../../utils/custom-subject';
-import { UserInt } from '../user-service/user.interface';
-import { GamesSvc } from './games.service';
-import { GameInt } from './games.interfaces';
-import { toPromise } from '../../utils/util-helpers';
-import { GamesCom } from '../games/games.component';
-import { ModelSvc, GAME } from '../model-service/model.service';
+import { CustomSubject } from '../../../utils/custom-subject';
+import { UserInt } from '../../user-service/user.interface';
+import { GamesSvc } from '../games.service';
+import { GameInt } from '../games.interfaces';
+import { toPromise } from '../../../utils/util-helpers';
+import { GamesCom } from '../../games/games.component';
+import { ModelSvc, GAME } from '../../model-service/model.service';
 
 @Component({
 	selector: 'games-summary',

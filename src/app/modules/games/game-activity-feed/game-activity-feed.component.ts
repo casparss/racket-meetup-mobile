@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GameModel } from './game.model';
+import { GameModel } from '../game.model';
 import * as moment from 'moment';
-import calendarDateConfig from '../../utils/calendar-date-config.json';
-import GAME_TYPES from './game-types.json';
+import calendarDateConfig from '../../../utils/calendar-date-config.json';
+import GAME_TYPES from '../game-types.json';
 
 const ACTIVITY_TYPE_ICONS = [
   "create",
