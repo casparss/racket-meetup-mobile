@@ -16,16 +16,17 @@ import { ModelSvc, RANKING } from '../model-service/model.service';
 	</ion-header>
 
 	<ion-content>
-	  <no-data-message *ngIf="(rankingsList.$ | async).length === 0">
+	  <no-data-message *ngIf="(rankingsList.$ | async).length < 3">
 	    No rankings yet.
 	  </no-data-message>
-	  <div *ngIf="(rankingsList.$ | async).length > 0">
+	  <div *ngIf="(rankingsList.$ | async).length >= 3">
 	    <rankings-header
 	      [rankings]="rankingsList.$ | async"
 	      [currentUser]="userSvc.current"
 	    ></rankings-header>
 	    <rankings-list
-	      [rankings]="rankingsList.$ | async"
+				[clubModel]="clubModel"
+	      [rankings]="(rankingsList.$ | async).slice(3)"
 	      [currentUser]="userSvc.current"
 	    ></rankings-list>
 	  </div>
@@ -35,7 +36,7 @@ import { ModelSvc, RANKING } from '../model-service/model.service';
 export class RankingsCom {
 	private selectedSegment: string = 'top';
 	private rankingsList: any;
-	private clubId: string;
+	private clubModel: any;
 
 	constructor(
 		private rankingSvc: RankingsSvc,
@@ -45,7 +46,7 @@ export class RankingsCom {
 		private navParams: NavParams
 	){
 		this.rankingsList = this.modelSvc.createCollection(RANKING);
-		this.clubId = this.navParams.get('clubId');
+		this.clubModel = this.navParams.get('clubModel');
 	}
 
 	ngOnInit(){
@@ -64,7 +65,7 @@ export class RankingsCom {
 
     loading.present();
 
-		this.rankingSvc.getRankingsByClubId(this.clubId)
+		this.rankingSvc.getRankingsByClubId(this.clubModel._id)
 			.do(() => loading.dismiss())
 			.subscribe(rankings => this.rankingsList.update(rankings));
 	}

@@ -3,8 +3,11 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector:'rankings-list',
   template: `
-  <ion-list class="ranking-board">
-    <div *ngFor="let rankingModel of rankings.slice(3); let i=index;">
+  <no-data-message *ngIf="rankings.length === 0">
+    Only three ranked players at the moment, as more players play games at {{clubModel._.name}} the rankings will be listed here.
+  </no-data-message>
+  <ion-list class="ranking-board" *ngIf="rankings.length > 0">
+    <div *ngFor="let rankingModel of rankings; let i=index;">
       <ranking-avatar
         [image]="rankingModel.user.avatar$ | async"
         [position]="i + 4"
@@ -19,6 +22,7 @@ import { Component, Input } from '@angular/core';
   `
 })
 export class RankingsListCom {
+  @Input() clubModel: any;
   @Input() rankings: any;
   @Input() currentUser: any;
 }
