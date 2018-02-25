@@ -1,0 +1,26 @@
+ranking-avatar {
+  display: block;
+  position: relative;
+  .position {
+    position: absolute;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    background: $white;
+    color: $text-color;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    display: inline-block;
+    padding: 3px 8px;
+    min-width: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+  }
+  loading-img {
+    border-radius: 50%;
+  }
+}

@@ -1,0 +1,23 @@
+rankings-header {
+  header {
+		color:$white;
+		background:$primary-gradient;
+		img{
+			height:8rem;
+			width:8rem;
+			border-radius:4rem;
+		}
+		@include detailsBuckets;
+	}
+  ranking-avatar {
+    margin: auto;
+  }
+  ion-col {
+    &:nth-child(1),
+    &:nth-child(3) {
+      ranking-avatar {
+        transform: scale(0.7);
+      }
+    }
+  }
+}

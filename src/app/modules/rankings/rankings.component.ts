@@ -7,15 +7,34 @@ import { UserSvc } from '../user-service';
 import { ModelSvc, RANKING } from '../model-service/model.service';
 
 @Component({
-	templateUrl: './rankings.view.html',
-	selector:'rankings'
+	selector:'rankings',
+	template: `
+	<ion-header>
+	  <ion-navbar>
+	    <ion-title>Rankings</ion-title>
+	  </ion-navbar>
+	</ion-header>
+
+	<ion-content>
+	  <no-data-message *ngIf="(rankingsList.$ | async).length === 0">
+	    No rankings yet.
+	  </no-data-message>
+	  <div *ngIf="(rankingsList.$ | async).length > 0">
+	    <rankings-header
+	      [rankings]="rankingsList.$ | async"
+	      [currentUser]="userSvc.current"
+	    ></rankings-header>
+	    <rankings-list
+	      [rankings]="rankingsList.$ | async"
+	      [currentUser]="userSvc.current"
+	    ></rankings-list>
+	  </div>
+	</ion-content>
+	`
 })
 export class RankingsCom {
-
 	private selectedSegment: string = 'top';
 	private rankingsList: any;
-	private rankingsListSub: Subscription;
-	private currentUserRanking: any;
 	private clubId: string;
 
 	constructor(
@@ -27,8 +46,6 @@ export class RankingsCom {
 	){
 		this.rankingsList = this.modelSvc.createCollection(RANKING);
 		this.clubId = this.navParams.get('clubId');
-		this.rankingsListSub = this.rankingsList.$
-			.subscribe(rankings => this.setCurrentUserRanking(rankings));
 	}
 
 	ngOnInit(){
@@ -36,7 +53,6 @@ export class RankingsCom {
 	}
 
 	ionViewWillUnload(){
-		this.rankingsListSub.unsubscribe();
 		this.rankingsList.destroy();
 	}
 
@@ -51,9 +67,5 @@ export class RankingsCom {
 		this.rankingSvc.getRankingsByClubId(this.clubId)
 			.do(() => loading.dismiss())
 			.subscribe(rankings => this.rankingsList.update(rankings));
-	}
-
-	setCurrentUserRanking(rankings){
-		this.currentUserRanking = rankings.find(ranking => ranking.user._id === this.userSvc.current._id);
 	}
 }
