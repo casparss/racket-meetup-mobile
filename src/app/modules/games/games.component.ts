@@ -16,6 +16,7 @@ import { ModelSvc, isModelType, USER, CLUB, GAME } from '../model-service/model.
     <games-segment
       [requestedTab]="requestedTab"
       [lengths]="lengths"
+      (statusSelected)="statusSelected($event)"
     ></games-segment>
   </ion-header>
   <ion-content>
@@ -34,7 +35,7 @@ export class GamesCom {
   private statusLengthsSub: Subscription;
   private lazyLoadLimit: number = 2;
   private lastSeenId: string;
-  private selectedSegment: string;
+  private selectedSegment: string = 'pending';
 
   constructor(
     private gamesSvc: GamesSvc,
@@ -46,6 +47,7 @@ export class GamesCom {
     this.model = this.navParams.get("model");
     this.requestedTab = this.navParams.get("requestedTab");
     this.gamesListCollection = this.modelSvc.createCollection(GAME);
+    this.getByStatus();
   }
 
   ngOnInit(){
@@ -55,17 +57,17 @@ export class GamesCom {
     });*/
   }
 
+  statusSelected({ value }){
+    this.selectedSegment = value;
+    this.getByStatus();
+  }
+
   getByStatus(){
     const loading = this.loading();
     loading.present();
     this.lastSeenId = null;
 
-    this.gamesSvc.getByStatus({
-      _id: this.model._id,
-      by: this.queryBy,
-      status: this.selectedSegment,
-      limit: this.lazyLoadLimit
-    })
+    this.gamesSvc.getByStatus(this.getByStatusArgs)
     .subscribe(({games}) => {
       this.gamesListCollection.update(games);
       loading.dismiss();
@@ -77,17 +79,20 @@ export class GamesCom {
     if(this.lastSeenId === lastSeenId) return nScroll.complete();
     this.lastSeenId = lastSeenId;
 
-    this.gamesSvc.getByStatus({
-      _id: this.model._id,
-      by: this.queryBy,
-      status: this.selectedSegment,
-      limit: this.lazyLoadLimit,
-      lastSeenId
-    })
+    this.gamesSvc.getByStatus(Object.assign(this.getByStatusArgs, { lastSeenId }))
     .subscribe(({games}) => {
       this.gamesListCollection.appendArray(games);
       nScroll.complete();
     });
+  }
+
+  get getByStatusArgs(){
+    return {
+      _id: this.model._id,
+      by: this.queryBy,
+      status: this.selectedSegment,
+      limit: this.lazyLoadLimit
+    }
   }
 
   get queryBy(){
@@ -103,6 +108,6 @@ export class GamesCom {
 
   ngOnDestroy(){
     this.gamesListCollection.destroy();
-    this.statusLengthsSub.unsubscribe();
+    //this.statusLengthsSub.unsubscribe();
   }
 }

@@ -53,7 +53,7 @@ export class ProfileMenuCom {
 	}
 
 	openPage(pageName: string): void{
-		this.nav.push(pages[pageName]);
+		this.nav.push(pages[pageName], { model: this.userSvc.current });
 	}
 
 	presentLogoutConfirm() {

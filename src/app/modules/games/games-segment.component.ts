@@ -4,7 +4,7 @@ import { findKey, once } from 'lodash';
 @Component({
   selector: 'games-segment',
   template: `
-  <ion-segment *ngIf="!isEmptyState()" (ionChange)="onSelected.emit($event)" [(ngModel)]="selectedSegment">
+  <ion-segment *ngIf="!isEmptyState()" (ionChange)="statusSelected.emit($event)" [(ngModel)]="selectedSegment">
     <ion-segment-button [disabled]="lengths.pending === 0" value="pending">
       Pending
       <span
@@ -35,7 +35,7 @@ import { findKey, once } from 'lodash';
   `
 })
 export class GamesSegmentCom {
-  @Output() onSelected = new EventEmitter()
+  @Output() statusSelected = new EventEmitter()
   @Input() selectedSegment = "pending";
   @Input() lengths: any = {};
   @Input() requestedTab: string;

@@ -126,7 +126,7 @@ export class ClubCom {
   }
 
   openGames(){
-    this.nav.push(GamesCom, {});
+    this.nav.push(GamesCom, { model: this.clubModel });
   }
 
   openClubPlayerList(){
