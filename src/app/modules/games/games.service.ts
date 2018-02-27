@@ -43,8 +43,8 @@ export class GamesSvc extends BaseService {
 			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}));
 	}
 
-	getSummary(_id: string){
-		return this.getByStatus({_id, status: 'accepted', type: 'summary'});
+	getSummary(opts){
+		return this.getByStatus({status: 'accepted', type: 'summary', ...opts});
 	}
 
 	getLengthsOnly(_id: string){

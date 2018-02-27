@@ -30,8 +30,8 @@ export class UserModel extends DataModel {
   createClubsCollection(userModel){
     this.clubs = this.modelSvc
       .createCollection(CLUB)
-      .update(userModel.clubs);
-    this.$.subscribe(({clubs}) => this.clubs.update(clubs));
+      //.update(userModel.clubs);
+    //this.$.subscribe(({clubs}) => this.clubs.update(clubs));
   }
 
   destroy(){

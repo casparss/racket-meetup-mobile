@@ -36,27 +36,9 @@ import { findKey, once } from 'lodash';
 })
 export class GamesSegmentCom {
   @Output() statusSelected = new EventEmitter()
-  @Input() selectedSegment = "pending";
   @Input() lengths: any = {};
   @Input() requestedTab: string;
-
-  private tabSelection = once(() => {
-    let { pending, accepted, played, rejected, forfeit } = this.lengths;
-    let areLengthsEmpty = () => !findKey(this.lengths, length => length > 0);
-
-    if(areLengthsEmpty()){
-      this.selectedSegment = "";
-    } else if(this.requestedTab){
-      this.selectedSegment = this.requestedTab;
-    } else if(pending > 0){
-      this.selectedSegment = 'pending';
-    } else if(accepted > 0){
-      this.selectedSegment = 'accepted';
-    } else {
-      this.selectedSegment = 'played,rejected,forfeit';
-    }
-  });
-
+  private selectedSegment = "pending";
   isEmptyState(){
     return this.selectedSegment === "";
   }

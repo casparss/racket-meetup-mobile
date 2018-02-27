@@ -27,7 +27,7 @@ const STATUS_COLOUR = {
 };
 
 let BALL_STATE_COLOR_HASH = {
-	pending: "yellow",
+	pending: "primary",
 	accepted: "primary",
 	rejected: "grey",
 	forfeit: "grey",

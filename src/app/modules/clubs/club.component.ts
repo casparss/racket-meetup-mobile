@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { NavParams, NavController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
 import { ClubsSvc } from './clubs.service';
-import { ClubsUtils } from './clubs.utils';
+import { GamesSvc } from '../games/games.service';
 
-import { RankingsCom } from '../rankings/rankings.component';
-import { GamesCom } from '../games/games.component';
 import { ClubPlayerListCom } from './club-player-list.component';
 
 @Component({
@@ -18,29 +16,7 @@ import { ClubPlayerListCom } from './club-player-list.component';
     </ion-header>
     <ion-content>
       <loading-block [loading]="loading">
-        <header>
-          <div class="image-container">
-            <loading-img class="club-image" [src]="clubModel.image"></loading-img>
-            <h1 #clubName ion-fixed class="club-name">
-              <ion-icon name="flag" item-left></ion-icon> &nbsp;{{clubModel._?.name}}
-            </h1>
-          </div>
-
-          <buckets>
-            <div>
-              <dd>200</dd>
-              <dt>Players</dt>
-            </div>
-            <div>
-              <dd>50</dd>
-              <dt>Matches</dt>
-            </div>
-            <div>
-              <dd>3</dd>
-              <dt>Socials</dt>
-            </div>
-          </buckets>
-        </header>
+        <club-header [clubModel]="clubModel"></club-header>
 
         <div class="players-summary">
           <ion-list-header class="component-header">
@@ -52,34 +28,9 @@ import { ClubPlayerListCom } from './club-player-list.component';
           ></player-summary>
         </div>
 
-        <ion-list-header class="component-header">
-          Actions
-        </ion-list-header>
+        <club-actions [clubModel]="clubModel"></club-actions>
 
-        <ion-list>
-          <button ion-item (click)="openPage($event)">
-            <ion-icon name="trophy" item-left></ion-icon>
-            Rankings
-          </button>
-
-          <button ion-item (click)="openGames()">
-            <ion-icon name="tennisball" item-left></ion-icon>
-            Matches
-          </button>
-
-          <button ion-item>
-            <ion-icon name="navigate" item-left></ion-icon>
-            Location
-          </button>
-
-          <button ion-item (click)="toggleMyClub()" [ngSwitch]="isMyClub">
-            <ion-icon *ngSwitchCase="false" name="add" item-left></ion-icon>
-    				<ion-icon *ngSwitchCase="true" name="remove" item-left></ion-icon>
-    				{{isMyClub ? "Remove from" : "Add to"}} my clubs
-          </button>
-        </ion-list>
-
-        <games-summary [user]="user"></games-summary>
+        <games-summary [model]="clubModel"></games-summary>
       </loading-block>
     </ion-content>
   `
@@ -88,7 +39,6 @@ export class ClubCom {
   private user: any;
   private clubModel: any = {};
   private loading: boolean = true;
-  private clubImage: string;
   private isMyClub: boolean;
 
   constructor(
@@ -96,7 +46,7 @@ export class ClubCom {
     private userSvc: UserSvc,
     navParams: NavParams,
     private clubsSvc: ClubsSvc,
-    private utils: ClubsUtils
+    private gamesSvc: GamesSvc
   ) {
     this.user = this.userSvc.current;
     const club = navParams.get('club');
@@ -121,22 +71,8 @@ export class ClubCom {
     this.isMyClub = this.userSvc.isMyClub(this.clubModel._id);
   }
 
-  openPage(){
-    this.nav.push(RankingsCom, { clubModel: this.clubModel });
-  }
-
-  openGames(){
-    this.nav.push(GamesCom, { model: this.clubModel });
-  }
-
   openClubPlayerList(){
     this.nav.push(ClubPlayerListCom, this.clubModel);
-  }
-
-  toggleMyClub(){
-    this.clubsSvc
-      .toggleMyClub(this.clubModel)
-      .then(({isMyClub}) => this.isMyClub = isMyClub);
   }
 
   ionViewDidLeave() {

@@ -7,7 +7,7 @@ import { GamesSvc } from '../games.service';
 import { GameInt } from '../games.interfaces';
 import { toPromise } from '../../../utils/util-helpers';
 import { GamesCom } from '../../games/games.component';
-import { ModelSvc, GAME } from '../../model-service/model.service';
+import { ModelSvc, isModelType, USER, GAME, CLUB } from '../../model-service/model.service';
 
 @Component({
 	selector: 'games-summary',
@@ -30,8 +30,7 @@ import { ModelSvc, GAME } from '../../model-service/model.service';
 	`
 })
 export class GamesSummaryCom {
-
-	@Input() user: any;
+	@Input() model: any;
 	gamesSubject: CustomSubject = new CustomSubject();
 	gamesCollection: any;
 	private onPushToCurrentSub: Subscription;
@@ -45,19 +44,24 @@ export class GamesSummaryCom {
 		this.onPushToCurrentSub = this.gamesSvc.onPushToCurrent.subscribe(game => this.gamesCollection.unshift(game));
 	}
 
-	ngOnInit(){
-		this.getGames();
+	ngOnChanges(){
+		if(isModelType(this.model, [CLUB, USER])) this.getGames();
 	}
 
 	getGames(){
-		toPromise(this.user.$)
-			.then(({ _id }) => toPromise(this.gamesSvc.getSummary(_id)))
+		this.gamesSvc.getSummary({
+			_id: this.model._id,
+			by: this.queryBy
+		})
+			.toPromise()
 			.then(({games}) => this.gamesCollection.update(games));
 	}
 
 	openGames(): void {
-		let requestedTab = 'accepted';
-		this.nav.push(GamesCom, { _id: this.user._id, requestedTab })
+		this.nav.push(GamesCom, {
+			model: this.model,
+			requestedTab: 'accepted'
+		});
 	}
 
 	ngOnDestroy(){
@@ -65,4 +69,7 @@ export class GamesSummaryCom {
 		this.onPushToCurrentSub.unsubscribe();
 	}
 
+	get queryBy(){
+    return isModelType(this.model, USER) ? 'user' : 'club';
+  }
 }

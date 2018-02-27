@@ -1,6 +1,6 @@
 import { Events } from 'ionic-angular';
 import { Injectable, Injector, EventEmitter } from '@angular/core';
-import { mapValues, remove, forEach, last } from 'lodash';
+import { mapValues, remove, forEach, last, isArray } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
 import { UserUtils } from '../user-service/user.utils';
@@ -26,8 +26,19 @@ export const MODEL_TYPES = {
   [CLUB]: ClubModel
 };
 
-export const isModelType = (modelInstance, modelName) => 
-  modelInstance instanceof MODEL_TYPES[modelName];
+const isType = (inst, name) => inst instanceof MODEL_TYPES[name];
+
+export const isModelType = (modelInstance, modelName) => {
+  if(typeof modelName === 'string') {
+    return isType(modelInstance, modelName)
+  }
+  else if(isArray(modelName)) {
+    return !!modelName.find(name => isType(modelInstance, name));
+  }
+  else {
+    throw Error('Model name arg does not match compatible type!');
+  }
+}
 
 const modelRegistry = mapValues(MODEL_TYPES, () => []);
 

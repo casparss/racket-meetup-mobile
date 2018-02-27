@@ -32,7 +32,7 @@ import { UserModel } from '../user-service/user.model';
 						[user]="user"
 					></availability>
 
-					<games-summary [user]="user"></games-summary>
+					<games-summary [model]="user"></games-summary>
 				</main>
 			</div>
 		</ion-content>
