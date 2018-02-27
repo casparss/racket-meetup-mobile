@@ -45,6 +45,7 @@ export class GamesCom {
     private modelSvc: ModelSvc
   ){
     this.model = this.navParams.get("model");
+    this.lengths = this.navParams.get("lengths");
     this.requestedTab = this.navParams.get("requestedTab");
     this.gamesListCollection = this.modelSvc.createCollection(GAME);
     this.getByStatus();
@@ -75,8 +76,10 @@ export class GamesCom {
   }
 
   lazyLoad(nScroll){
-    let lastSeenId = this.gamesListCollection.last()._id;
-    if(this.lastSeenId === lastSeenId) return nScroll.complete();
+    let lastSeenId = (this.gamesListCollection.last() || {})._id;
+    if(lastSeenId === undefined || this.lastSeenId === lastSeenId){
+      return nScroll.complete();
+    }
     this.lastSeenId = lastSeenId;
 
     this.gamesSvc.getByStatus(Object.assign(this.getByStatusArgs, { lastSeenId }))

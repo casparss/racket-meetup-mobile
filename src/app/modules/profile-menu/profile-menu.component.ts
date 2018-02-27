@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NavController, AlertController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
-import { GamesSvc } from '../games/games.service';
+import { GamesSvc, lengthsInt } from '../games/games.service';
 import { RootNavSvc } from '../welcome/root-nav.service';
 
 //Components
@@ -28,8 +28,7 @@ const pages: any = {
 export class ProfileMenuCom {
 	private statusLengthsSub: Subscription;
 	private user;
-	private pending: number;
-	private accepted: number;
+	private lengths: lengthsInt;
 	private loggingOut: boolean = false;
 
 	constructor(
@@ -46,14 +45,14 @@ export class ProfileMenuCom {
 	ngOnInit(){
 		const user = this.userSvc.current;
 		this.statusLengthsSub = user.statusLengths$
-			.subscribe(({pending, accepted}) => {
-				this.pending = pending;
-				this.accepted = accepted;
-			});
+			.subscribe((lengths) => this.lengths = lengths);
 	}
 
 	openPage(pageName: string): void{
-		this.nav.push(pages[pageName], { model: this.userSvc.current });
+		this.nav.push(pages[pageName], {
+			model: this.userSvc.current,
+			lengths: this.lengths
+		});
 	}
 
 	presentLogoutConfirm() {

@@ -21,6 +21,14 @@ interface getByStatusInt {
 	by?: string
 }
 
+export interface lengthsInt {
+	accepted: number,
+	forfeit: number,
+	pending: number,
+	played: number,
+	rejected: number
+}
+
 @Injectable()
 export class GamesSvc extends BaseService {
 	url = "games";
@@ -47,14 +55,17 @@ export class GamesSvc extends BaseService {
 		return this.getByStatus({status: 'accepted', type: 'summary', ...opts});
 	}
 
-	getLengthsOnly(_id: string){
-		let search = HttpUtils.urlParams({ type: 'lengths' });
+	getLengthsOnly(opts){
+		const { _id } = opts;
+		let search = HttpUtils.urlParams({ type: 'lengths', ...opts });
 		return this._get(null, { search }, null, `/${_id}`)
 			.do(({ lengths }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
 	}
 
 	getLengthsForCurrentUser(){
-		return this.getLengthsOnly(this.userSvc.current.user._id).subscribe();
+		return this.getLengthsOnly({
+			_id: this.userSvc.current.user._id
+		}).subscribe();
 	}
 
 	challenge(challengeDetails: Object, _id){

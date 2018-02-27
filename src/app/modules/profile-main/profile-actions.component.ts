@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { NavController, ModalController } from 'ionic-angular';
 import { UserModel } from '../user-service/user.model';
 
-import { GamesSvc } from '../games/games.service';
+import { GamesSvc, lengthsInt } from '../games/games.service';
 import { ChallengeCom } from '../challenge/challenge.component';
 import { UserSvc } from '../user-service/user.service';
 import { ChatSvc } from '../chat/chat.service';
@@ -33,8 +33,8 @@ import { ModelSvc } from '../model-service/model.service';
 			<button (click)='openGames()' ion-item>
 				<ion-icon name="tennisball" item-left></ion-icon>
 				Games
-				<ion-badge *ngIf="pending > 0" item-end color="danger">{{pending}}</ion-badge>
-				<ion-badge *ngIf="accepted > 0" item-end>{{accepted}}</ion-badge>
+				<ion-badge *ngIf="(lengths?.pending) > 0" item-end color="danger">{{lengths?.pending}}</ion-badge>
+				<ion-badge *ngIf="(lengths?.accepted) > 0" item-end>{{lengths?.accepted}}</ion-badge>
 			</button>
 
 			<button ion-item detail-none [ngSwitch]="isFriend" (click)="toggleFollow()">
@@ -49,8 +49,7 @@ export class ProfileActionsCom {
 
 	@Input() userModel: UserModel;
 	private isFriend: boolean = false;
-	private pending: number;
-	private accepted: number;
+	private lengths: lengthsInt;
 	private statusLengthsSub: Subscription;
 
 	constructor(
@@ -65,10 +64,8 @@ export class ProfileActionsCom {
 	}
 
 	ngOnInit(){
-		this.statusLengthsSub = this.userModel.statusLengths$.subscribe(({pending, accepted}) => {
-			this.pending = pending;
-			this.accepted = accepted;
-		});
+		this.statusLengthsSub = this.userModel.statusLengths$
+			.subscribe((lengths) => this.lengths = lengths);
 	}
 
 	ionViewDidUnload(){
@@ -106,11 +103,13 @@ export class ProfileActionsCom {
 	}
 
 	openGames(): void {
-		this.nav.push(GamesCom, { model: this.userModel })
+		this.nav.push(GamesCom, {
+			model: this.userModel,
+			lengths: this.lengths
+		 })
 	}
 
   ngOnChanges(){
     this.setIsFriend();
   }
-
 }

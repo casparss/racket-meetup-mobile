@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ClubsSvc } from './clubs.service';
+import { GamesSvc, lengthsInt } from '../games/games.service';
 
 import { RankingsCom } from '../rankings/rankings.component';
 import { GamesCom } from '../games/games.component';
@@ -22,6 +23,8 @@ import { ClubPlayerListCom } from './club-player-list.component';
     <button ion-item (click)="openGames()">
       <ion-icon name="tennisball" item-left></ion-icon>
       Matches
+      <ion-badge *ngIf="(lengths?.accepted) > 0" item-end>{{lengths?.accepted}}</ion-badge>
+      <ion-badge *ngIf="(lengths?.played) > 0" item-end color="grey">{{lengths?.played}}</ion-badge>
     </button>
 
     <button ion-item>
@@ -40,18 +43,35 @@ import { ClubPlayerListCom } from './club-player-list.component';
 export class ClubActionsCom {
   @Input() clubModel: any = {};
   private isMyClub: boolean;
+  private played: number;
+  private lengths: lengthsInt;
 
   constructor(
     private nav: NavController,
-    private clubsSvc: ClubsSvc
+    private clubsSvc: ClubsSvc,
+    private gamesSvc: GamesSvc
   ){}
+
+  ngOnChanges(){
+    if(this.clubModel._id) this.getLengths();
+  }
+
+  getLengths(){
+    this.gamesSvc.getLengthsOnly({
+      _id: this.clubModel._id,
+      by: 'club'
+    }).subscribe(({ lengths }) => this.lengths = lengths);
+  }
 
   openPage(){
     this.nav.push(RankingsCom, { clubModel: this.clubModel });
   }
 
   openGames(){
-    this.nav.push(GamesCom, { model: this.clubModel });
+    this.nav.push(GamesCom, {
+      model: this.clubModel,
+      lengths: this.lengths
+    });
   }
 
   openClubPlayerList(){
