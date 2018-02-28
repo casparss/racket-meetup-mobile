@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { once } from 'lodash';
 import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { ClubsSvc } from './clubs.service';
@@ -58,18 +59,22 @@ export class ClubActionsCom {
 
   ngOnChanges(){
     if(this.clubModel._id) {
-      this.statusLengthsSub = this.statusLengthsSvc
-  			.$({ _id: this.clubModel._id, by: 'club' })
-  			.subscribe(lengths => this.lengths = lengths);
+      this.setStatusLengthsSub();
       this.getLengths();
     }
   }
+
+  setStatusLengthsSub = once(() => {
+    this.statusLengthsSub = this.statusLengthsSvc
+      .$({ _id: this.clubModel._id, by: 'club' })
+      .subscribe(lengths => this.lengths = lengths);
+  });
 
   getLengths(){
     this.gamesSvc.getLengthsOnly({
       _id: this.clubModel._id,
       by: 'club'
-    }).subscribe(({ lengths }) => this.lengths = lengths);
+    }).subscribe();
   }
 
   openPage(){
