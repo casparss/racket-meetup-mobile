@@ -11,7 +11,7 @@ const SEGMENTS = [
 @Component({
   selector: 'games-segment',
   template: `
-  <ion-segment *ngIf="!isEmptyState()" (ionChange)="statusSelected.emit($event)" [(ngModel)]="selectedSegment">
+  <ion-segment *ngIf="!isEmptyState()" (ionChange)="emitSelectedStatus($event)" [(ngModel)]="selectedSegment">
     <ion-segment-button [disabled]="lengths?.pending === 0" value="pending">
       Pending
       <span
@@ -50,11 +50,13 @@ export class GamesSegmentCom {
     return this.selectedSegment === "";
   }
   ngOnInit(){
-    this.selectedSegment = (this.selectStatus() || "");
+    this.selectedSegment = (this.setInitalStatusSegment() || "");
+    this.emitSelectedStatus();
+  }
+  emitSelectedStatus(){
     this.statusSelected.emit(this.selectedSegment);
   }
-
-  selectStatus(){
+  setInitalStatusSegment(){
     return SEGMENTS
       .find(status =>
         !!status.split(',').find(status => this.lengths[status] > 0)
