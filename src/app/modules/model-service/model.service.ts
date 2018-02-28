@@ -4,7 +4,7 @@ import { mapValues, remove, forEach, last, isArray } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
 import { UserUtils } from '../user-service/user.utils';
-import { UserModelSvc } from '../user-service/user.model.service';
+import { StatusLengthsSvc } from '../games/status-lengths.service';
 import { DataModel } from '../../utils/data-model'
 import { UserModel } from '../user-service/user.model';
 import { GameModel } from '../games/game.model';

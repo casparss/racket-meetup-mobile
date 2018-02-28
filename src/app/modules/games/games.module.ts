@@ -15,6 +15,8 @@ import { GameCardCom } from './game-card/game-card.component';
 import { GameDetailsCom } from './game-details/game-details.component';
 import { GameActivityFeedCom } from './game-activity-feed/game-activity-feed.component';
 
+import { StatusLengthsSvc } from './status-lengths.service';
+
 
 @NgModule({
   declarations: [
@@ -42,6 +44,9 @@ import { GameActivityFeedCom } from './game-activity-feed/game-activity-feed.com
     GamesCom,
     GamesSummaryCom,
     GameDetailsCom
+  ],
+  providers: [
+    StatusLengthsSvc
   ]
 })
 export class GamesModule {}

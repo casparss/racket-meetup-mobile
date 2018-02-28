@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { ClubsSvc } from './clubs.service';
 import { GamesSvc, lengthsInt } from '../games/games.service';
@@ -6,6 +7,7 @@ import { GamesSvc, lengthsInt } from '../games/games.service';
 import { RankingsCom } from '../rankings/rankings.component';
 import { GamesCom } from '../games/games.component';
 import { ClubPlayerListCom } from './club-player-list.component';
+import { StatusLengthsSvc } from '../games/status-lengths.service';
 
 @Component({
   selector: 'club-actions',
@@ -45,15 +47,22 @@ export class ClubActionsCom {
   private isMyClub: boolean;
   private played: number;
   private lengths: lengthsInt;
+  private statusLengthsSub: Subscription;
 
   constructor(
     private nav: NavController,
     private clubsSvc: ClubsSvc,
-    private gamesSvc: GamesSvc
+    private gamesSvc: GamesSvc,
+    private statusLengthsSvc: StatusLengthsSvc
   ){}
 
   ngOnChanges(){
-    if(this.clubModel._id) this.getLengths();
+    if(this.clubModel._id) {
+      this.statusLengthsSub = this.statusLengthsSvc
+  			.$({ _id: this.clubModel._id, by: 'club' })
+  			.subscribe(lengths => this.lengths = lengths);
+      this.getLengths();
+    }
   }
 
   getLengths(){
@@ -83,8 +92,10 @@ export class ClubActionsCom {
       .toggleMyClub(this.clubModel)
       .then(({isMyClub}) => this.isMyClub = isMyClub);
   }
-
   ionViewDidLeave() {
 		this.clubModel.disown(this);
+	}
+  ionViewDidUnload(){
+		this.statusLengthsSub.unsubscribe();
 	}
 }

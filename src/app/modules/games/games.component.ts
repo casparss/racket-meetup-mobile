@@ -5,6 +5,7 @@ import { GameModel } from './game.model';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from './games.service';
 import { ModelSvc, isModelType, USER, CLUB, GAME } from '../model-service/model.service';
+import { StatusLengthsSvc } from './status-lengths.service';
 
 @Component({
   selector: 'games',
@@ -35,30 +36,29 @@ export class GamesCom {
   private statusLengthsSub: Subscription;
   private lazyLoadLimit: number = 2;
   private lastSeenId: string;
-  private selectedSegment: string = 'pending';
+  private selectedSegment: string;
 
   constructor(
     private gamesSvc: GamesSvc,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private userSvc: UserSvc,
-    private modelSvc: ModelSvc
+    private modelSvc: ModelSvc,
+    private statusLengthsSvc: StatusLengthsSvc
   ){
     this.model = this.navParams.get("model");
     this.lengths = this.navParams.get("lengths");
     this.requestedTab = this.navParams.get("requestedTab");
     this.gamesListCollection = this.modelSvc.createCollection(GAME);
-    this.getByStatus();
   }
 
   ngOnInit(){
-    /*this.statusLengthsSub = this.user.statusLengths$.subscribe(lengths => {
-      this.lengths = lengths;
-      this.tabSelection();
-    });*/
+    this.statusLengthsSub = this.statusLengthsSvc
+			.$({ _id: this.model._id, by: this.queryBy })
+			.subscribe(lengths => this.lengths = lengths);
   }
 
-  statusSelected({ value }){
+  statusSelected(value){
     this.selectedSegment = value;
     this.getByStatus();
   }
@@ -111,6 +111,6 @@ export class GamesCom {
 
   ngOnDestroy(){
     this.gamesListCollection.destroy();
-    //this.statusLengthsSub.unsubscribe();
+    this.statusLengthsSub.unsubscribe();
   }
 }

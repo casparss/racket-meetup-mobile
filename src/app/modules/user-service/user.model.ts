@@ -5,14 +5,13 @@ import { DataModel } from '../../utils/data-model';
 import { UserInt } from './user.interface';
 import { remove } from 'lodash';
 import { UserUtils } from '../user-service/user.utils';
-import { UserModelSvc } from '../user-service/user.model.service';
+import { StatusLengthsSvc } from '../games/status-lengths.service';
 
 export class UserModel extends DataModel {
   public statusLengths$: BehaviorSubject<any> = new BehaviorSubject({});
   private modelSvc: ModelSvc;
   private userModel: UserInt;
   private utils;
-  private userModelSvc;
   private onLengthsRetrievalSub: Subscription;
   public clubs: any;
 
@@ -20,9 +19,6 @@ export class UserModel extends DataModel {
     super(injector, userModel, ownerInstance);
     this.utils = injector.get(UserUtils);
     this.modelSvc = injector.get(ModelSvc);
-    this.userModelSvc = injector.get(UserModelSvc);
-    this.onLengthsRetrievalSub = this.userModelSvc.onLengthsRetrieval
-      .subscribe(lengthsData => this.lengthsRetrieval(lengthsData));
     this.createClubsCollection(userModel);
     this.subscribe();
   }
@@ -76,9 +72,5 @@ export class UserModel extends DataModel {
 
   generateProfileImage(){
     return this.utils.generateProfileImage(this.getValue());
-  }
-
-  lengthsRetrieval({ _id, lengths }){
-    if(this._id === _id) this.statusLengths$.next(lengths);
   }
 }

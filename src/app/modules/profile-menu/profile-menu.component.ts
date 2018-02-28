@@ -4,6 +4,7 @@ import { NavController, AlertController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc, lengthsInt } from '../games/games.service';
 import { RootNavSvc } from '../welcome/root-nav.service';
+import { StatusLengthsSvc } from '../games/status-lengths.service';
 
 //Components
 import { ProfileMainCom } from '../profile-main/profile-main.component';
@@ -36,7 +37,8 @@ export class ProfileMenuCom {
 		private userSvc: UserSvc,
 		private gamesSvc: GamesSvc,
 		private rootNavSvc: RootNavSvc,
-		private alertCtrl: AlertController
+		private alertCtrl: AlertController,
+		private statusLengthsSvc: StatusLengthsSvc
 	){
 		this.user = this.userSvc.current.user;
 		this.gamesSvc.getLengthsForCurrentUser();
@@ -44,7 +46,12 @@ export class ProfileMenuCom {
 
 	ngOnInit(){
 		const user = this.userSvc.current;
-		this.statusLengthsSub = user.statusLengths$
+		this.statusLengthsSub = this.statusLengthsSvc
+			.$({ _id: this.userSvc.current._id, by: 'user' })
+			.subscribe(lengths => this.lengths = lengths);
+
+
+		user.statusLengths$
 			.subscribe((lengths) => this.lengths = lengths);
 	}
 

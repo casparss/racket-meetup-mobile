@@ -38,7 +38,6 @@ import { ColObjDifferFactory } from './utils/differs/collection-object-diff.ts';
 import { UserSvc } from './modules/user-service/user.service';
 import { PushSvc } from './modules/push-service/push.service';
 import { UserUtils } from './modules/user-service/user.utils';
-import { UserModelSvc } from './modules/user-service/user.model.service';
 import { GamesSvc } from './modules/games/games.service';
 import { DecHttp } from './utils/http/';
 import { ToastSvc } from './modules/toast/toast.service';
@@ -72,7 +71,6 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
   	UserSvc,
     PushSvc,
     UserUtils,
-    UserModelSvc,
     GamesSvc,
     ConfigSvc,
   	WsSvc,

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { findKey, once } from 'lodash';
+import { Subscription } from 'rxjs';
 
 const SEGMENTS = [
   'pending',
@@ -44,11 +45,19 @@ export class GamesSegmentCom {
   @Output() statusSelected = new EventEmitter()
   @Input() lengths: any = {};
   @Input() requestedTab: string;
-  private selectedSegment = "pending";
+  private selectedSegment: string;
   isEmptyState(){
     return this.selectedSegment === "";
   }
-  ngOnChanges(){
-    this.selectedSegment = (SEGMENTS.find(status => this.lengths[status] > 0) || "");
+  ngOnInit(){
+    this.selectedSegment = (this.selectStatus() || "");
+    this.statusSelected.emit(this.selectedSegment);
+  }
+
+  selectStatus(){
+    return SEGMENTS
+      .find(status =>
+        !!status.split(',').find(status => this.lengths[status] > 0)
+      );
   }
 }

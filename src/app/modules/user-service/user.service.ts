@@ -9,7 +9,7 @@ import { UserLoginInt, UserSignupInt } from './user.interface';
 import { ConfigSvc } from '../config/config.service';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';
-import { UserModelSvc } from './user.model.service';
+import { StatusLengthsSvc } from '../games/status-lengths.service';
 import { UserModel } from './user.model';
 import { UserUtils } from './user.utils';
 import { ModelSvc, USER } from '../model-service/model.service';

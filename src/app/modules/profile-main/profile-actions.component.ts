@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NavController, ModalController } from 'ionic-angular';
 import { UserModel } from '../user-service/user.model';
-
 import { GamesSvc, lengthsInt } from '../games/games.service';
 import { ChallengeCom } from '../challenge/challenge.component';
 import { UserSvc } from '../user-service/user.service';
@@ -11,6 +10,7 @@ import { FollowersCom } from '../followers/followers.component';
 import { ChatCom } from '../chat/chat.component';
 import { GamesCom } from '../games/games.component';
 import { ModelSvc } from '../model-service/model.service';
+import { StatusLengthsSvc } from '../games/status-lengths.service';
 
 @Component({
 	selector:'profile-actions',
@@ -58,14 +58,16 @@ export class ProfileActionsCom {
 		private userSvc: UserSvc,
     private chatSvc: ChatSvc,
 		private gamesSvc: GamesSvc,
-		private modelSvc: ModelSvc
+		private modelSvc: ModelSvc,
+		private statusLengthsSvc: StatusLengthsSvc
 	){
 		this.setIsFriend();
 	}
 
 	ngOnInit(){
-		this.statusLengthsSub = this.userModel.statusLengths$
-			.subscribe((lengths) => this.lengths = lengths);
+		this.statusLengthsSub = this.statusLengthsSvc
+			.$({ _id: this.userSvc.current._id, by: 'user' })
+			.subscribe(lengths => this.lengths = lengths);
 	}
 
 	ionViewDidUnload(){

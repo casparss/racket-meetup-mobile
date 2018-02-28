@@ -9,7 +9,7 @@ import { Observable, Subject } from 'rxjs';
 import { GameInt } from './games.interfaces';
 import { ConfigSvc } from '../config/config.service';
 import { ModelSvc } from '../model-service/model.service';
-import { UserModelSvc } from '../user-service/user.model.service';
+import { StatusLengthsSvc } from './status-lengths.service';
 import { UserSvc } from '../user-service/user.service';
 
 interface getByStatusInt {
@@ -36,7 +36,7 @@ export class GamesSvc extends BaseService {
 
 	constructor(
 		protected nav: NavController,
-		private userModelSvc: UserModelSvc,
+		private statusLengthsSvc: StatusLengthsSvc,
 		private userSvc: UserSvc,
 		private modelSvc: ModelSvc,
 		http: DecHttp,
@@ -48,7 +48,7 @@ export class GamesSvc extends BaseService {
 	getByStatus({ _id, status, type = 'filter', lastSeenId, limit, by }: getByStatusInt){
 		const search = HttpUtils.urlParams({ status, type, lastSeenId, limit, by });
 		return this._get(null, { search }, null, `/${_id}`)
-			.do(({ lengths = {} }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}));
+			.do(({ lengths = {} }) => this.statusLengthsSvc.emit({ _id, lengths, by }));
 	}
 
 	getSummary(opts){
@@ -56,10 +56,10 @@ export class GamesSvc extends BaseService {
 	}
 
 	getLengthsOnly(opts){
-		const { _id } = opts;
+		const { _id, by } = opts;
 		let search = HttpUtils.urlParams({ type: 'lengths', ...opts });
 		return this._get(null, { search }, null, `/${_id}`)
-			.do(({ lengths }) => this.userModelSvc.onLengthsRetrieval.emit({ _id, lengths}))
+			.do(({ lengths }) => this.statusLengthsSvc.emit({ _id, lengths, by }))
 	}
 
 	getLengthsForCurrentUser(){
