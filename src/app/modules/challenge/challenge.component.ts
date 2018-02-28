@@ -71,14 +71,14 @@ export class ChallengeCom {
 	}
 
 	challenge(challengeDetails){
-		this.challengee.$.subscribe(({ _id }) => {
-      this.gamesSvc.challenge(challengeDetails, _id)
-        .subscribe(game => this.viewCtrl.dismiss());
-		});
+		this.gamesSvc
+			.challenge(challengeDetails, this.challengee._id)
+			.subscribe(game => this.viewCtrl.dismiss());
   }
 
 	amend(challengeDetails){
-		this.gamesSvc.updateDetails(challengeDetails, this.game._id)
+		this.gamesSvc
+			.updateDetails(challengeDetails, this.game._id)
 			.subscribe(game => {
 				this.gameModel.update(game);
 				this.viewCtrl.dismiss();
