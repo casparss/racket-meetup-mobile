@@ -5,14 +5,11 @@ import { DataModel } from '../../utils/data-model';
 import { UserInt } from './user.interface';
 import { remove } from 'lodash';
 import { UserUtils } from '../user-service/user.utils';
-import { StatusLengthsSvc } from '../games/status-lengths.service';
 
 export class UserModel extends DataModel {
-  public statusLengths$: BehaviorSubject<any> = new BehaviorSubject({});
   private modelSvc: ModelSvc;
   private userModel: UserInt;
   private utils;
-  private onLengthsRetrievalSub: Subscription;
   public clubs: any;
 
   constructor(injector, userModel, ownerInstance, opts?){
@@ -28,11 +25,6 @@ export class UserModel extends DataModel {
       .createCollection(CLUB)
       //.update(userModel.clubs);
     //this.$.subscribe(({clubs}) => this.clubs.update(clubs));
-  }
-
-  destroy(){
-    super.destroy();
-    this.onLengthsRetrievalSub.unsubscribe();
   }
 
   updateDetails(details){

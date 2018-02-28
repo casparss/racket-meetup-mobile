@@ -6,6 +6,7 @@ import { MessageListCom } from '../messages/message-list.component';
 import { ClubsCom } from '../clubs/clubs.component';
 import { UserSvc } from '../user-service';
 import { ChatSvc } from '../chat/chat.service';
+import { StatusLengthsSvc } from '../games/status-lengths.service';
 
 @Component({
 	template:
@@ -33,7 +34,11 @@ export class TabsController {
 	private pendingLength: number;
 	private statusLengthsSub: Subscription;
 
-	constructor(private userSvc: UserSvc, private chatSvc: ChatSvc) {
+	constructor(
+		private userSvc: UserSvc,
+		private chatSvc: ChatSvc,
+		private statusLengthsSvc: StatusLengthsSvc
+	) {
 		this.profileTabRoot = ProfileMenuCom;
 		this.rankingsTabRoot = RankingsCom;
 		this.chatsTabRoot = MessageListCom;
@@ -41,10 +46,9 @@ export class TabsController {
 	}
 
 	ngOnInit(){
-		this.statusLengthsSub = this.userSvc.current.statusLengths$.subscribe(statuses => {
-			let { pending } = statuses;
-			this.pendingLength = pending;
-		});
+		this.statusLengthsSub = this.statusLengthsSvc
+			.$({ _id: this.userSvc.current._id, by: 'user' })
+			.subscribe(({pending}) => this.pendingLength = pending);
 	}
 
 	ngOnDestroy(){

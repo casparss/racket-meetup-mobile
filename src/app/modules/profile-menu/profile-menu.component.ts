@@ -49,13 +49,9 @@ export class ProfileMenuCom {
 		this.statusLengthsSub = this.statusLengthsSvc
 			.$({ _id: this.userSvc.current._id, by: 'user' })
 			.subscribe(lengths => this.lengths = lengths);
-
-
-		user.statusLengths$
-			.subscribe((lengths) => this.lengths = lengths);
 	}
 
-	openPage(pageName: string): void{
+openPage(pageName: string): void{
 		this.nav.push(pages[pageName], {
 			model: this.userSvc.current,
 			lengths: this.lengths
@@ -86,8 +82,8 @@ export class ProfileMenuCom {
 	}
 
 	ionViewWillUnload() {
-		this.statusLengthsSub.unsubscribe();
 		if(this.loggingOut) this.userSvc.logout();
+		this.statusLengthsSub.unsubscribe();
 	}
 
 }
