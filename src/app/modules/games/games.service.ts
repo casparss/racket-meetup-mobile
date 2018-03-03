@@ -65,7 +65,7 @@ export class GamesSvc extends BaseService {
 	getLengthsForCurrentUser(){
 		return this.getLengthsOnly({
 			_id: this.userSvc.current.user._id,
-			by: 'user'
+			by: 'User'
 		}).subscribe();
 	}
 

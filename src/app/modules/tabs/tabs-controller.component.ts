@@ -7,6 +7,7 @@ import { ClubsCom } from '../clubs/clubs.component';
 import { UserSvc } from '../user-service';
 import { ChatSvc } from '../chat/chat.service';
 import { StatusLengthsSvc } from '../games/status-lengths.service';
+import { USER } from '../model-service/model.service';
 
 @Component({
 	template:
@@ -47,7 +48,7 @@ export class TabsController {
 
 	ngOnInit(){
 		this.statusLengthsSub = this.statusLengthsSvc
-			.$({ _id: this.userSvc.current._id, by: 'user' })
+			.$({ _id: this.userSvc.current._id, by: USER })
 			.subscribe(({pending}) => this.pendingLength = pending);
 	}
 

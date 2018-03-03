@@ -9,7 +9,7 @@ import { ChatSvc } from '../chat/chat.service';
 import { FollowersCom } from '../followers/followers.component';
 import { ChatCom } from '../chat/chat.component';
 import { GamesCom } from '../games/games.component';
-import { ModelSvc } from '../model-service/model.service';
+import { ModelSvc, USER } from '../model-service/model.service';
 import { StatusLengthsSvc } from '../games/status-lengths.service';
 
 @Component({
@@ -66,7 +66,7 @@ export class ProfileActionsCom {
 
 	ngOnInit(){
 		this.statusLengthsSub = this.statusLengthsSvc
-			.$({ _id: this.userSvc.current._id, by: 'user' })
+			.$({ _id: this.userSvc.current._id, by: USER })
 			.subscribe(lengths => this.lengths = lengths);
 	}
 

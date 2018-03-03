@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { ClubsSvc } from './clubs.service';
 import { GamesSvc, lengthsInt } from '../games/games.service';
+import { CLUB } from '../model-service/model.service';
 
 import { RankingsCom } from '../rankings/rankings.component';
 import { GamesCom } from '../games/games.component';
@@ -66,14 +67,14 @@ export class ClubActionsCom {
 
   setStatusLengthsSub = once(() => {
     this.statusLengthsSub = this.statusLengthsSvc
-      .$({ _id: this.clubModel._id, by: 'club' })
+      .$({ _id: this.clubModel._id, by: CLUB })
       .subscribe(lengths => this.lengths = lengths);
   });
 
   getLengths(){
     this.gamesSvc.getLengthsOnly({
       _id: this.clubModel._id,
-      by: 'club'
+      by: CLUB
     }).subscribe();
   }
 

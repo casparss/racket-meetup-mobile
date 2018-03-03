@@ -7,7 +7,7 @@ import { GamesSvc } from '../games.service';
 import { GameInt } from '../games.interfaces';
 import { toPromise } from '../../../utils/util-helpers';
 import { GamesCom } from '../../games/games.component';
-import { ModelSvc, isModelType, USER, GAME, CLUB } from '../../model-service/model.service';
+import { ModelSvc, isModelType, modelName, USER, GAME, CLUB } from '../../model-service/model.service';
 
 @Component({
 	selector: 'games-summary',
@@ -51,7 +51,7 @@ export class GamesSummaryCom {
 	getGames(){
 		this.gamesSvc.getSummary({
 			_id: this.model._id,
-			by: this.queryBy
+			by: modelName(this.model)
 		})
 			.toPromise()
 			.then(({games}) => this.gamesCollection.update(games));
@@ -68,8 +68,4 @@ export class GamesSummaryCom {
 		this.gamesCollection.destroy();
 		this.onPushToCurrentSub.unsubscribe();
 	}
-
-	get queryBy(){
-    return isModelType(this.model, USER) ? 'user' : 'club';
-  }
 }

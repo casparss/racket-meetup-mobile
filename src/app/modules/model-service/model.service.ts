@@ -1,6 +1,6 @@
 import { Events } from 'ionic-angular';
 import { Injectable, Injector, EventEmitter } from '@angular/core';
-import { mapValues, remove, forEach, last, isArray } from 'lodash';
+import { mapValues, remove, forEach, last, isArray, findKey } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
 import { UserUtils } from '../user-service/user.utils';
@@ -40,6 +40,9 @@ export const isModelType = (modelInstance, modelName) => {
   }
 }
 
+export const modelName = model =>
+  findKey(MODEL_TYPES, modelType => model instanceof modelType)
+
 const modelRegistry = mapValues(MODEL_TYPES, () => []);
 
 const create = (injector, rawData: any, ownerInstance: any, opts) => {
@@ -56,7 +59,7 @@ const create = (injector, rawData: any, ownerInstance: any, opts) => {
     preExistingModel.update(rawData, ownerInstance);
     return preExistingModel;
   } else {
-    let newModel =  new ModelType(injector, rawData, ownerInstance, opts);
+    let newModel = new ModelType(injector, rawData, ownerInstance, opts);
     registry.push(newModel);
     return newModel;
   }

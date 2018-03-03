@@ -12,8 +12,11 @@ const SEGMENTS = [
   selector: 'games-segment',
   template: `
   <ion-segment *ngIf="!isEmptyState()" (ionChange)="emitSelectedStatus($event)" [(ngModel)]="selectedSegment">
-    <ion-segment-button [disabled]="lengths?.pending === 0" value="pending">
-      Pending
+
+    <ion-segment-button
+      value="pending"
+      [disabled]="lengths?.pending === 0"
+    >Pending
       <span
         *ngIf="lengths?.pending === 0 || selectedSegment === 'pending'; else pending"
       >({{lengths?.pending}})</span>

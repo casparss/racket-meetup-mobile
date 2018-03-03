@@ -4,7 +4,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { GameModel } from './game.model';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from './games.service';
-import { ModelSvc, isModelType, USER, CLUB, GAME } from '../model-service/model.service';
+import { ModelSvc, modelName, USER, CLUB, GAME } from '../model-service/model.service';
 import { StatusLengthsSvc } from './status-lengths.service';
 
 @Component({
@@ -52,12 +52,13 @@ export class GamesCom {
     this.model = this.navParams.get("model");
     this.lengths = this.navParams.get("lengths");
     this.requestedTab = this.navParams.get("requestedTab");
+
     this.gamesListCollection = this.modelSvc.createCollection(GAME);
   }
 
   ngOnInit(){
     this.statusLengthsSub = this.statusLengthsSvc
-			.$({ _id: this.model._id, by: this.queryBy })
+			.$({ _id: this.model._id, by: modelName(this.model) })
 			.subscribe(lengths => this.lengths = lengths);
   }
 
@@ -100,14 +101,10 @@ export class GamesCom {
   get getByStatusArgs(){
     return {
       _id: this.model._id,
-      by: this.queryBy,
+      by: modelName(this.model),
       status: this.selectedSegment,
       limit: this.lazyLoadLimit
     }
-  }
-
-  get queryBy(){
-    return isModelType(this.model, USER) ? 'user' : 'club';
   }
 
   loading() {

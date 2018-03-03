@@ -5,6 +5,7 @@ import { UserSvc } from '../user-service/user.service';
 import { GamesSvc, lengthsInt } from '../games/games.service';
 import { RootNavSvc } from '../welcome/root-nav.service';
 import { StatusLengthsSvc } from '../games/status-lengths.service';
+import { USER } from '../model-service/model.service';
 
 //Components
 import { ProfileMainCom } from '../profile-main/profile-main.component';
@@ -12,7 +13,6 @@ import { MydetailsCom } from '../my-details/my-details.component';
 import { FollowersCom } from '../followers/followers.component';
 import { SearchPlayersCom } from '../followers/search-players.component';
 import { GamesCom } from '../games/games.component';
-
 
 const pages: any = {
 	profileMain: ProfileMainCom,
@@ -47,11 +47,11 @@ export class ProfileMenuCom {
 	ngOnInit(){
 		const user = this.userSvc.current;
 		this.statusLengthsSub = this.statusLengthsSvc
-			.$({ _id: this.userSvc.current._id, by: 'user' })
+			.$({ _id: this.userSvc.current._id, by: USER })
 			.subscribe(lengths => this.lengths = lengths);
 	}
 
-openPage(pageName: string): void{
+	openPage(pageName: string): void{
 		this.nav.push(pages[pageName], {
 			model: this.userSvc.current,
 			lengths: this.lengths
@@ -85,5 +85,4 @@ openPage(pageName: string): void{
 		if(this.loggingOut) this.userSvc.logout();
 		this.statusLengthsSub.unsubscribe();
 	}
-
 }
