@@ -15,8 +15,8 @@ export class StatusLengthsSvc {
   $({ _id, by }){
     return this.statusLengths
       .asObservable()
-      .skipWhile(lengthsData =>
-        (lengthsData.by !== by && lengthsData._id !== _id)
+      .takeWhile(lengthsData =>
+        (lengthsData.by === by && lengthsData._id === _id)
       )
       .map(({lengths}) => lengths);
   }

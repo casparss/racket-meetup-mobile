@@ -18,7 +18,7 @@ interface getByStatusInt {
 	type?: string,
 	lastSeenId?: string,
 	limit?: number,
-	by?: string
+	by: string
 }
 
 export interface lengthsInt {
@@ -64,7 +64,8 @@ export class GamesSvc extends BaseService {
 
 	getLengthsForCurrentUser(){
 		return this.getLengthsOnly({
-			_id: this.userSvc.current.user._id
+			_id: this.userSvc.current.user._id,
+			by: 'user'
 		}).subscribe();
 	}
 

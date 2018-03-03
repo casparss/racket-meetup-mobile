@@ -4,6 +4,7 @@ import { LoadingImgModule } from '../../utils/loading-img';
 import { GameRecordResultModule } from '../game-record-result';
 import { NoDataMessageModule } from '../no-data-message/no-data-message.module';
 import { GamesBannerModule } from '../games-banner';
+import { UIBlocksModule } from '../ui-blocks';
 
 import { GamesCom } from './games.component';
 import { GamesSegmentCom } from './games-segment.component';
@@ -16,7 +17,6 @@ import { GameDetailsCom } from './game-details/game-details.component';
 import { GameActivityFeedCom } from './game-activity-feed/game-activity-feed.component';
 
 import { StatusLengthsSvc } from './status-lengths.service';
-
 
 @NgModule({
   declarations: [
@@ -34,7 +34,8 @@ import { StatusLengthsSvc } from './status-lengths.service';
     LoadingImgModule,
     GameRecordResultModule,
     NoDataMessageModule,
-    GamesBannerModule
+    GamesBannerModule,
+    UIBlocksModule
   ],
   exports:[
     GamesCom,

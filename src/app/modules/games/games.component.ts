@@ -21,10 +21,12 @@ import { StatusLengthsSvc } from './status-lengths.service';
     ></games-segment>
   </ion-header>
   <ion-content>
-    <games-list
-      [gamesList]="gamesListCollection.$ | async"
-      (ionInfinite)="lazyLoad($event)"
-    ></games-list>
+    <loading-block [loading]="isInitialLoad">
+      <games-list
+        [gamesList]="gamesListCollection.$ | async"
+        (ionInfinite)="lazyLoad($event)"
+      ></games-list>
+    </loading-block>
   </ion-content>
   `
 })
@@ -37,6 +39,7 @@ export class GamesCom {
   private lazyLoadLimit: number = 2;
   private lastSeenId: string;
   private selectedSegment: string;
+  private isInitialLoad: boolean = true;
 
   constructor(
     private gamesSvc: GamesSvc,
@@ -60,7 +63,12 @@ export class GamesCom {
 
   statusSelected(value){
     this.selectedSegment = value;
-    this.getByStatus();
+    if(!this.isInitialLoad) this.getByStatus();
+  }
+
+  ionViewDidEnter(){
+    if(this.isInitialLoad) this.getByStatus();
+    this.isInitialLoad = false;
   }
 
   getByStatus(){
