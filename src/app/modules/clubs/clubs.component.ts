@@ -1,8 +1,8 @@
-import { Component, ElementRef, ViewChild, NgZone } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { ClubCom } from './club.component';
-import { ClubsUtils } from './clubs.utils';
-import { ClubsSvc } from './clubs.service';
+import { Component, ViewChild } from '@angular/core';
+import { MyClubsCom } from './clubs-my.component';
+import { LocalClubsCom } from './clubs-local.component';
+
+const SEGMENTS = ['myclubs', 'localclubs'];
 
 @Component({
   selector: 'clubs',
@@ -10,7 +10,7 @@ import { ClubsSvc } from './clubs.service';
     <ion-header>
       <ion-toolbar>
         <ion-buttons start>
-          <button ion-button icon-only>
+          <button (click)="refresh()" ion-button icon-only>
             <ion-icon name="refresh"></ion-icon>
           </button>
         </ion-buttons>
@@ -33,10 +33,25 @@ import { ClubsSvc } from './clubs.service';
 
     <ion-content scroll="false" [ngSwitch]="selectedSegment">
       <local-clubs *ngSwitchCase="'localclubs'"></local-clubs>
-      <my-clubs *ngSwitchCase="'myclubs'"></my-clubs>
+      <my-clubs  #myClubs *ngSwitchCase="'myclubs'"></my-clubs>
     </ion-content>
   `
 })
 export class ClubsCom {
-  private selectedSegment: string = 'myclubs';
+  @ViewChild(MyClubsCom)
+  myClubs: MyClubsCom;
+
+  @ViewChild(LocalClubsCom)
+  localClubs: LocalClubsCom;
+
+  private selectedSegment: string = SEGMENTS[0];
+
+  refresh(){
+    if(this.selectedSegment === SEGMENTS[0]){
+      this.myClubs.refresh();
+    }
+    else if(this.selectedSegment === SEGMENTS[1]){
+      this.localClubs.refresh();
+    }
+  }
 }

@@ -56,6 +56,10 @@ export class MyClubsCom {
     this.nav.push(ClubCom, { clubModel });
   }
 
+  refresh(){
+    this.getMyClubs();
+  }
+
   ngOnDestroy(){
     this.clubsCollection.destroy();
   }

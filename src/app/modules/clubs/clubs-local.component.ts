@@ -39,6 +39,10 @@ export class LocalClubsCom {
     private utils: ClubsUtils,
     private ngZone: NgZone
   ){
+    this.getLocalCLubs();
+  }
+
+  getLocalCLubs(){
     this.clubsSvc.getLocalClubs()
       .then(clubs => clubs.map(club => {
         return {
@@ -65,6 +69,10 @@ export class LocalClubsCom {
 
   openClub(club){
     this.nav.push(ClubCom, { club });
+  }
+
+  refresh(){
+    this.getLocalCLubs();
   }
 
   selectClub({ i }){
