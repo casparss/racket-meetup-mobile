@@ -24,6 +24,7 @@ import { StatusLengthsSvc } from './status-lengths.service';
     <loading-block [loading]="isInitialLoad">
       <games-list
         [gamesList]="gamesListCollection.$ | async"
+        [selectedSegment]="selectedSegment"
         (ionInfinite)="lazyLoad($event)"
       ></games-list>
     </loading-block>

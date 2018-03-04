@@ -8,10 +8,19 @@ import { GameInt } from './games.interfaces';
     No games to show yet, try challenging someone.
   </no-data-message>
   <ion-list *ngIf="gamesList.length > 0">
-    <game-card
-      *ngFor="let gameModel of gamesList; trackById"
-      [gameModel]="gameModel"
-    ></game-card>
+    <ng-container *ngFor="let gameModel of gamesList; trackById">
+      <ng-container [ngSwitch]="selectedSegment">
+        <game-card-full
+          *ngSwitchDefault
+          [gameModel]="gameModel"
+        ></game-card-full>
+
+        <game-card-previous
+          *ngSwitchCase="'played,rejected,forfeit'"
+          [gameModel]="gameModel"
+        ></game-card-previous>
+      </ng-container>
+    </ng-container>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="ionInfinite.emit($event)" threshold="75%">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
@@ -19,8 +28,15 @@ import { GameInt } from './games.interfaces';
   `
 })
 export class GamesListCom {
-  @Output() ionInfinite = new EventEmitter();
-  @Input() gamesList: Array<GameInt> = [];
+  @Output()
+  ionInfinite = new EventEmitter();
+
+  @Input()
+  gamesList: Array<GameInt> = [];
+
+  @Input()
+  selectedSegment: string;
+
   trackById(index, { _id }){
     return _id;
   }

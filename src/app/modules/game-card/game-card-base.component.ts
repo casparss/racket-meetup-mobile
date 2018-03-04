@@ -3,9 +3,9 @@ import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { GameInt } from '../games.interfaces';
-import { GamesSvc } from '../games.service';
-import { UserSvc } from '../../user-service';
-import { GameDetailsCom } from '../game-details/game-details.component';
+import { GamesSvc } from '../games/games.service';
+import { UserSvc } from '../user-service';
+import { GameDetailsCom } from '../games/game-details/game-details.component';
 
 const findUser = (side, currentUserId) =>
 	side.find(({ user }) => user._id === currentUserId);
@@ -43,75 +43,12 @@ let TEXT_STATE_COLOR_HASH = {
 };
 
 @Component({
-	selector: 'game-card',
-	template:`
-		<ion-card [attr.status]="game.status">
-		<ion-list>
-			<ion-item>
-				<ion-icon
-					name="tennisball" [color]="ballState(game)" item-left large></ion-icon>
-				<h2 item-left>
-					{{getTitle(game)}}
-					<span
-						class="status-text"
-						[attr.status]="game.status"
-						*ngIf="status(game, ['rejected', 'forfeit', 'played'])"
-					>
-						{{getStatus(game)}}
-					</span>
-				</h2>
-				<button
-					ion-button
-					icon-left
-					item-right
-					outline
-					(click)="viewGameDetails(game)"
-					*ngIf="status(game, ['accepted', 'played'])">
-	        <ion-icon name="more"></ion-icon>
-	        View game
-	      </button>
-
-			</ion-item>
-		</ion-list>
-		  <games-banner [gameModel]="gameModel"></games-banner>
-
-			<ion-item-group>
-				<ion-item>
-					<ion-icon name="pin" item-left large ></ion-icon>
-					<h2>{{game.club.name}}</h2>
-				</ion-item>
-				<ion-item>
-					<ion-icon item-left large name="clock"></ion-icon>
-			    <h2>{{game.date | date :'shortTime'}}</h2>
-					<p>{{game.date | date : 'EEEE, d/M/y'}}</p>
-			  </ion-item>
-		  </ion-item-group>
-
-			<div *ngIf="status(game, ['pending']) && !isAccepted()" class="button-group">
-	      <button ion-button icon-left clear small color="textGrey" (click)="acceptChallenge(game)">
-	        <ion-icon name="thumbs-up" color="primary"></ion-icon>
-	        Accept
-	      </button>
-
-	      <button ion-button icon-left clear small color="textGrey" (click)="rejectChallenge(game)">
-	        <ion-icon name="close-circle" color="danger"></ion-icon>
-	        Reject
-	      </button>
-		  </div>
-
-			<div *ngIf="status(game, ['pending']) && isAccepted()" class="button-group single">
-	      <button ion-button icon-left clear small (click)="rejectChallenge(game)">
-	        <ion-icon name="close-circle" color="danger"></ion-icon>
-	        Cancel match request
-	      </button>
-		  </div>
-
-		</ion-card>
-  `
+	template: ''
 })
-export class GameCardCom {
+export class GameCardBaseCom {
+	@Input()
+	gameModel: any;
 
-	@Input() gameModel: any;
 	private game: any;
 	private actionSheetOpts: ActionSheetOptions;
 	private actionSheetActions: Array<any>;
@@ -199,5 +136,4 @@ export class GameCardCom {
 	statusColorState({ status }){
 		return TEXT_STATE_COLOR_HASH[status];
 	}
-
 }
