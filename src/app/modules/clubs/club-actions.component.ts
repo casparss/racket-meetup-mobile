@@ -98,9 +98,11 @@ export class ClubActionsCom {
       .toggleMyClub(this.clubModel)
       .then(({isMyClub}) => this.isMyClub = isMyClub);
   }
+
   ionViewDidLeave() {
 		this.clubModel.disown(this);
 	}
+  
   ionViewDidUnload(){
 		this.statusLengthsSub.unsubscribe();
 	}

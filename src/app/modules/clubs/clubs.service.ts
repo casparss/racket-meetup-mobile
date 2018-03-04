@@ -1,19 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { BaseService } from "../../utils/base/base.service";
 import { DecHttp, HttpUtils } from '../../utils/http/';
 import { ConfigSvc } from '../config/config.service';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ModelSvc } from '../model-service/model.service';
 import { UserSvc } from '../user-service/user.service';
+import { Events } from 'ionic-angular';
 
 @Injectable()
 export class ClubsSvc extends BaseService {
   private coords: any;
   private cachingPromise: Promise<any>;
+  public myClubsRefresh: EventEmitter<any> = new EventEmitter();
+
   constructor(
     private geolocation: Geolocation,
     private modelSvc: ModelSvc,
     private userSvc: UserSvc,
+    private events: Events,
     http: DecHttp,
 		configSvc: ConfigSvc
   ){
@@ -65,6 +69,7 @@ export class ClubsSvc extends BaseService {
     return this._update(null, {}, 'clubs/my-club/', clubModel._id).toPromise()
       .then((data) => {
         this.userSvc.toggleMyClub(clubModel, data.isMyClub);
+        this.myClubsRefresh.emit();
         return data;
       });
   }
@@ -79,5 +84,9 @@ export class ClubsSvc extends BaseService {
       sliceTo: 8
     });
     return this._get(null, { search }, `club/${_id}/users/slice`).toPromise();
+  }
+
+  getMyClubs(_id){
+    return this._get(null, {}, `user/${_id}/clubs`).toPromise();
   }
 }
