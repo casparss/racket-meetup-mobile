@@ -40,14 +40,9 @@ export class PushSvc extends BaseService {
   }
 
   register() {
-    console.log('register', 'user', this.user)
-    console.log('register', 'registrationId', this.registrationId)
     if(this.user && this.registrationId) {
       let data = { registrationId: this.registrationId };
-      this._sync(data, {}, 'push')
-        .subscribe((data) => {
-          console.log('subscribe', data)
-        })
+      this._sync(data, {}, 'push').subscribe()
     }
   }
 
