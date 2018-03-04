@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
 import { GameModel } from '../games/game.model';
 import { ClubsUtils } from '../clubs/clubs.utils';
 import { Subscription } from 'rxjs';
@@ -59,7 +59,7 @@ export class GamesBannerCom {
   selector: 'score-line',
   template: `
     <loading-img class="avatar" [src]="gameModel['side' + side].avatar$ | async"></loading-img>
-    <ion-icon [class.hidden]="!isWinner" color="white" name="trophy"></ion-icon>
+    <ion-icon [class.hidden]="!isWinner" [color]="iconColour" name="trophy"></ion-icon>
     <!--div class="name">
     {{(gameModel['side' + side].$ | async)?.details[status === 'played' ? 'firstName' : 'fullName']}}
     </div-->
@@ -73,9 +73,17 @@ export class ScoreLineCom {
   @Input() status: string;
   private isWinner: boolean;
   private statusMap = status;
-  ngOnChanges() {
+
+  constructor(private el: ElementRef){}
+  get isGameCard(): boolean {
+    return this.el.nativeElement.hasAttribute('game-card');
+  }
+  ngOnChanges(){
     this.gameModel.$.subscribe(({winner, opponents}) => {
       this.isWinner = winner === opponents[`side${this.side}`][0].user._id;
     });
+  }
+  get iconColour(){
+    return this.isGameCard ? 'light-grey' : 'white'
   }
 }

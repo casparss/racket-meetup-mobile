@@ -9,8 +9,6 @@ import { GameCardBaseCom } from './game-card-base.component';
 
 			<ion-item-group>
 				<card-el-score [gameModel]="gameModel"></card-el-score>
-				<card-el-club-name [gameModel]="gameModel"></card-el-club-name>
-				<card-el-date-time [gameModel]="gameModel"></card-el-date-time>
 		  </ion-item-group>
 
 			<card-el-buttons [gameModel]="gameModel"></card-el-buttons>

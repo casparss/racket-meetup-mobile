@@ -5,10 +5,10 @@ import { GameCardBaseCom } from './game-card-base.component';
 	selector: 'card-el-score',
 	template:`
   <ion-item>
-    <score-line [gameModel]="gameModel" side="1" [status]="game.status"></score-line>
+    <score-line game-card [gameModel]="gameModel" side="1" [status]="game.status"></score-line>
   </ion-item>
   <ion-item>
-    <score-line [gameModel]="gameModel" side="2" [status]="game.status"></score-line>
+    <score-line game-card [gameModel]="gameModel" side="2" [status]="game.status"></score-line>
   </ion-item>
   `
 })
