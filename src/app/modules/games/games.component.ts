@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavParams, LoadingController } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { GameModel } from './game.model';
 import { UserSvc } from '../user-service/user.service';
@@ -21,7 +21,7 @@ import { StatusLengthsSvc } from './status-lengths.service';
     ></games-segment>
   </ion-header>
   <ion-content>
-    <loading-block [loading]="isInitialLoad">
+    <loading-block [loading]="loading">
       <games-list
         [gamesList]="gamesListCollection.$ | async"
         [selectedSegment]="selectedSegment"
@@ -41,11 +41,11 @@ export class GamesCom {
   private lastSeenId: string;
   private selectedSegment: string;
   private isInitialLoad: boolean = true;
+  private loading: boolean = true;
 
   constructor(
     private gamesSvc: GamesSvc,
     private navParams: NavParams,
-    private loadingCtrl: LoadingController,
     private userSvc: UserSvc,
     private modelSvc: ModelSvc,
     private statusLengthsSvc: StatusLengthsSvc
@@ -74,14 +74,13 @@ export class GamesCom {
   }
 
   getByStatus(){
-    const loading = this.loading();
-    loading.present();
+    this.loading = true;
     this.lastSeenId = null;
 
     this.gamesSvc.getByStatus(this.getByStatusArgs)
     .subscribe(({games}) => {
       this.gamesListCollection.update(games);
-      loading.dismiss();
+      this.loading = false;
     });
   }
 
@@ -106,13 +105,6 @@ export class GamesCom {
       status: this.selectedSegment,
       limit: this.lazyLoadLimit
     }
-  }
-
-  loading() {
-    return this.loadingCtrl.create({
-      content: 'Loading games...',
-      showBackdrop: false
-    });
   }
 
   ngOnDestroy(){
