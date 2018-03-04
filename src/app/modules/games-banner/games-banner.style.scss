@@ -62,31 +62,6 @@ games-banner {
 
   }
 
-  score-line {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    width: 100%;
-
-    &.score-showing {
-      justify-content: center;
-    }
-
-    loading-img, .name, .score-button {
-      align-self: center;
-      margin: 13px;
-    }
-
-    .name {
-      height:30px;
-      padding: 6px 10px 5px;
-      border-radius: 6px;
-      text-overflow: ellipsis;
-      background: rgba(0,0,0,0.5);
-    }
-  }
-
   .score-button {
     display: inline-block;
     background: rgba(0,0,0,0.4);
@@ -130,4 +105,32 @@ games-banner {
     }
   }
 
+}
+
+score-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  width: 100%;
+
+  &.score-showing {
+    justify-content: center;
+  }
+
+  loading-img, .name, .score-button {
+    align-self: center;
+    margin: 13px;
+  }
+
+  .name {
+    height:30px;
+    padding: 6px 10px 5px;
+    border-radius: 6px;
+    text-overflow: ellipsis;
+    background: rgba(0,0,0,0.5);
+  }
+  .avatar {
+    margin: 0 10px;
+  }
 }

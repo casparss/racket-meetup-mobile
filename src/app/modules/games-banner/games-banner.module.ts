@@ -14,7 +14,8 @@ import { GamesBannerCom, ScoreLineCom } from './games-banner.component';
     LoadingImgModule
   ],
   exports: [
-    GamesBannerCom
+    GamesBannerCom,
+    ScoreLineCom
   ],
   providers: []
 })

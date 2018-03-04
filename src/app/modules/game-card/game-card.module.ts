@@ -12,6 +12,7 @@ import { CardElButtonsCom } from './card-el-buttons.component';
 import { CardElClubNameCom } from './card-el-club-name.component';
 import { CardElDateTimeCom } from './card-el-date-time.component';
 import { CardElTitleCom } from './card-el-title.component';
+import { CardElScoreCom } from './card-el-score.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { CardElTitleCom } from './card-el-title.component';
     CardElClubNameCom,
     CardElDateTimeCom,
     CardElTitleCom,
-    GameCardPreviousCom
+    GameCardPreviousCom,
+    CardElScoreCom
   ],
   imports: [
     IonicModule,
