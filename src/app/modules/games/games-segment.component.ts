@@ -14,6 +14,7 @@ const SEGMENTS = [
   <ion-segment *ngIf="!isEmptyState()" (ionChange)="emitSelectedStatus($event)" [(ngModel)]="selectedSegment">
 
     <ion-segment-button
+      *ngIf="!hidePending"
       value="pending"
       [disabled]="lengths?.pending === 0"
     >Pending
@@ -48,6 +49,7 @@ export class GamesSegmentCom {
   @Output() statusSelected = new EventEmitter()
   @Input() lengths: any = {};
   @Input() requestedTab: string;
+  @Input() hidePending: boolean = false;
   private selectedSegment: string;
   isEmptyState(){
     return this.selectedSegment === "";
@@ -61,8 +63,13 @@ export class GamesSegmentCom {
   }
   setInitalStatusSegment(){
     return SEGMENTS
-      .find(status =>
-        !!status.split(',').find(status => this.lengths[status] > 0)
-      );
+      .find(status => {
+        if(this.hidePending && status === 'pending') {
+          return false;
+        }
+        else {
+          return !!status.split(',').find(status => this.lengths[status] > 0)
+        }
+      });
   }
 }

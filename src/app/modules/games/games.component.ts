@@ -17,6 +17,7 @@ import { StatusLengthsSvc } from './status-lengths.service';
     <games-segment
       [requestedTab]="requestedTab"
       [lengths]="lengths"
+      [hidePending]="hidePending"
       (statusSelected)="statusSelected($event)"
     ></games-segment>
   </ion-header>
@@ -53,6 +54,9 @@ export class GamesCom {
     this.model = this.navParams.get("model");
     this.lengths = this.navParams.get("lengths");
     this.requestedTab = this.navParams.get("requestedTab");
+    this.requestedTab = this.navParams.get("requestedTab");
+
+
 
     this.gamesListCollection = this.modelSvc.createCollection(GAME);
   }
@@ -105,6 +109,17 @@ export class GamesCom {
       status: this.selectedSegment,
       limit: this.lazyLoadLimit
     }
+  }
+
+  get hidePending(){
+    const name = modelName(this.model)
+    return (
+      name === 'Club' ||
+      (
+        name === 'User' &&
+        !this.userSvc.isCurrentUser(this.model._id)
+      )
+    )
   }
 
   ngOnDestroy(){

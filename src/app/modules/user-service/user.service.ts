@@ -176,4 +176,8 @@ export class UserSvc extends BaseService {
 	toggleMyClub(clubModel, isMyClub){
 		this.current.toggleMyClub(clubModel, isMyClub);
 	}
+
+	isCurrentUser(_id){
+		return _id === this.current._id;
+	}
 }

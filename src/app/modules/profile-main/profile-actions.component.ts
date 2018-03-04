@@ -33,7 +33,7 @@ import { StatusLengthsSvc } from '../games/status-lengths.service';
 			<button (click)='openGames()' ion-item>
 				<ion-icon name="tennisball" item-left></ion-icon>
 				Games
-				<ion-badge *ngIf="(lengths?.pending) > 0" item-end color="danger">{{lengths?.pending}}</ion-badge>
+				<ion-badge *ngIf="showPendingBadge" item-end color="danger">{{lengths?.pending}}</ion-badge>
 				<ion-badge *ngIf="(lengths?.accepted) > 0" item-end>{{lengths?.accepted}}</ion-badge>
 			</button>
 
@@ -66,7 +66,7 @@ export class ProfileActionsCom {
 
 	ngOnInit(){
 		this.statusLengthsSub = this.statusLengthsSvc
-			.$({ _id: this.userSvc.current._id, by: USER })
+			.$({ _id: this.userModel._id, by: USER })
 			.subscribe(lengths => this.lengths = lengths);
 	}
 
@@ -114,4 +114,11 @@ export class ProfileActionsCom {
   ngOnChanges(){
     this.setIsFriend();
   }
+
+	get showPendingBadge(){
+		return (
+			this.userSvc.isCurrentUser(this.userModel._id) &&
+			this.lengths.pending > 0
+		)
+	}
 }
