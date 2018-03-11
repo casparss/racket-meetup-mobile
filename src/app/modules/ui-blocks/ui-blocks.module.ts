@@ -3,10 +3,12 @@ import { IonicModule } from 'ionic-angular';
 
 import { BucketsCom } from './buckets.component';
 import { LoadingBlockCom } from './loading-block.component';
+import { LoadingVisibilityBlockCom } from './loading-visibility-block.component';
 
 const components = [
   BucketsCom,
-  LoadingBlockCom
+  LoadingBlockCom,
+  LoadingVisibilityBlockCom
 ];
 
 @NgModule({

@@ -16,20 +16,22 @@ import { ModelSvc, RANKING } from '../model-service/model.service';
 	</ion-header>
 
 	<ion-content>
-	  <no-data-message *ngIf="(rankingsList.$ | async).length < 3">
-	    No rankings yet.
-	  </no-data-message>
-	  <div *ngIf="(rankingsList.$ | async).length >= 3">
-	    <rankings-header
-	      [rankings]="rankingsList.$ | async"
-	      [currentUser]="userSvc.current"
-	    ></rankings-header>
-	    <rankings-list
-				[clubModel]="clubModel"
-	      [rankings]="(rankingsList.$ | async).slice(3)"
-	      [currentUser]="userSvc.current"
-	    ></rankings-list>
-	  </div>
+		<loading-block [loading]="loading">
+			<no-data-message *ngIf="(rankingsList.$ | async).length < 3">
+				No rankings yet.
+			</no-data-message>
+			<div *ngIf="(rankingsList.$ | async).length >= 3">
+				<rankings-header
+					[rankings]="rankingsList.$ | async"
+					[currentUser]="userSvc.current"
+				></rankings-header>
+				<rankings-list
+					[clubModel]="clubModel"
+					[rankings]="(rankingsList.$ | async).slice(3)"
+					[currentUser]="userSvc.current"
+				></rankings-list>
+			</div>
+		</loading-block>
 	</ion-content>
 	`
 })
@@ -37,6 +39,7 @@ export class RankingsCom {
 	private selectedSegment: string = 'top';
 	private rankingsList: any;
 	private clubModel: any;
+	private loading: boolean = true;
 
 	constructor(
 		private rankingSvc: RankingsSvc,
@@ -58,15 +61,11 @@ export class RankingsCom {
 	}
 
 	getRankings(){
-		let loading = this.loadingCtrl.create({
-      content: 'Loading rankings...',
-      showBackdrop: false
-    });
-
-    loading.present();
-
+		this.loading = true;
 		this.rankingSvc.getRankingsByClubId(this.clubModel._id)
-			.do(() => loading.dismiss())
-			.subscribe(rankings => this.rankingsList.update(rankings));
+			.subscribe(rankings => {
+				this.rankingsList.update(rankings);
+				this.loading = false;
+			});
 	}
 }

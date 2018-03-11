@@ -27,7 +27,7 @@ import { ModelSvc, CLUB } from '../model-service/model.service';
 })
 export class MyClubsCom {
   private clubsCollection: any;
-  private loading: boolean;
+  private loading: boolean = true;
 
   constructor(
     private nav: NavController,
@@ -41,7 +41,7 @@ export class MyClubsCom {
   }
 
   ngOnInit(){
-    this.getMyClubs();
+    setTimeout(() => this.getMyClubs(), 300)
   }
 
   getMyClubs(){

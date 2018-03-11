@@ -7,28 +7,30 @@ import { ClubsSvc } from './clubs.service';
 @Component({
   selector: 'local-clubs',
   template: `
-    <clubs-map
-      [clubs]="clubs"
-      (onClubSelected)="selectClub($event)"
-      (loading)="isLoading($event)"
+    <loading-visibility-block [loading]="loading">
+      <clubs-map
+        [clubs]="clubs"
+        (onClubSelected)="selectClub($event)"
+        (loading)="isLoading($event)"
       ></clubs-map>
-    <ion-item-divider
-      [class.hidden]="!this.clubs.length"
-      sticky
-      color="light">Local clubs ({{clubs.length}})</ion-item-divider>
-    <ion-list #list>
-      <ion-item *ngFor="let club of clubs; let i=index" [class.selected]="club.selected">
-        <ion-thumbnail item-left>
-          <loading-img [src]="club.photo" alt=""></loading-img>
-        </ion-thumbnail>
-        <h2>{{club.name}}</h2>
-        <button ion-button clear item-right (click)="openClub(club)">View</button>
-      </ion-item>
-    </ion-list>
+      <ion-item-divider
+        [class.hidden]="!this.clubs.length"
+        sticky
+        color="light">Local clubs ({{clubs.length}})</ion-item-divider>
+      <ion-list #list>
+        <ion-item *ngFor="let club of clubs; let i=index" [class.selected]="club.selected">
+          <ion-thumbnail item-left>
+            <loading-img [src]="club.photo" alt=""></loading-img>
+          </ion-thumbnail>
+          <h2>{{club.name}}</h2>
+          <button ion-button clear item-right (click)="openClub(club)">View</button>
+        </ion-item>
+      </ion-list>
+    </loading-visibility-block>
   `
 })
 export class LocalClubsCom {
-  private loadingSpinner: any;
+  private loading: boolean = true;
   private clubs: Array<any> = [];
   @ViewChild('list') list:ElementRef;
 
@@ -39,7 +41,7 @@ export class LocalClubsCom {
     private utils: ClubsUtils,
     private ngZone: NgZone
   ){
-    this.getLocalCLubs();
+    setTimeout(() => this.getLocalCLubs(), 300)
   }
 
   getLocalCLubs(){
@@ -51,19 +53,15 @@ export class LocalClubsCom {
         }
       }))
       .then(clubs => this.clubs = clubs);
-
-    this.loadingSpinner = this.loadingCtrl.create({
-      showBackdrop: false
-    });
   }
 
   ngOnInit(){
-    this.loadingSpinner.present();
+    //this.loading = true;
   }
 
   isLoading(isLoading){
     if(!isLoading){
-      this.loadingSpinner.dismiss();
+      setTimeout(() => {this.loading = false})
     }
   }
 

@@ -7,11 +7,12 @@ import { RankingAvatarCom } from './ranking-avatar.component';
 import { RankingsSvc } from './rankings.service';
 import { LoadingImgModule } from '../../utils/loading-img';
 import { NoDataMessageModule } from '../no-data-message';
+import { UIBlocksModule } from '../ui-blocks';
 
 @NgModule({
   declarations: [RankingsCom, RankingsHeaderCom, RankingsListCom, RankingAvatarCom],
   entryComponents: [RankingsCom],
-  imports: [IonicModule, LoadingImgModule, NoDataMessageModule],
+  imports: [IonicModule, LoadingImgModule, NoDataMessageModule, UIBlocksModule],
   exports:[RankingsCom],
   providers: [RankingsSvc]
 })
