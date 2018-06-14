@@ -7,8 +7,7 @@ import { UserSvc } from '../user-service/user.service';
 import { UserModel } from '../user-service/user.model';
 import { GamesSvc } from '../games/games.service';
 import { ClubsSvc } from '../clubs/clubs.service';
-import { ChallengeTimeDate } from './challenge-time-date.component';
-import GAME_TYPES from './game-types';
+import { GAME_TYPES } from './game-types.enum';
 
 interface formInt {
 	date: Array<any>,

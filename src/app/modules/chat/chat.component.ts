@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NavParams } from 'ionic-angular';
 import { FormGroup, FormBuilder } from '@angular/forms';

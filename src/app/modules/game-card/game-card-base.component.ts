@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NavController } from 'ionic-angular';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
-import { GameInt } from '../games.interfaces';
+import { GameInt } from '../games/games.interfaces';
 import { GamesSvc } from '../games/games.service';
 import { UserSvc } from '../user-service';
 import { GameDetailsCom } from '../games/game-details/game-details.component';

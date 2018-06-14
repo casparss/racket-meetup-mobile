@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs'
 import { LoadingController, NavParams } from 'ionic-angular';
-import { PlayerRanking } from './rankings.interface';
 import { RankingsSvc } from './rankings.service';
 import { UserSvc } from '../user-service';
 import { ModelSvc, RANKING } from '../model-service/model.service';

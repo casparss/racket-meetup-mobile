@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
-import { UserDetailsInt } from '../user-service/user.interface';
-import { ActionSheetActionsInt } from './my-details.interface';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.validator';
 
@@ -74,9 +72,7 @@ import { EqualFieldsFactory } from '../../utils/custom-validators/equal-fields.v
   `
 })
 export class ChangePasswordCom {
-
 	private changePasswordForm: FormGroup;
-	private confirmField: AbstractControl;
 	private newestField: AbstractControl;
 
 	constructor(

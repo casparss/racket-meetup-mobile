@@ -1,21 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
-import { remove, cloneDeep, isEmpty } from 'lodash';
-import { Subject, BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { BaseService } from '../../utils/base/base.service';
 import { DecHttp, HttpUtils } from '../../utils/http';
 export { UserLoginInt, UserSignupInt, UserInt } from './user.interface';
 import { UserLoginInt, UserSignupInt } from './user.interface';
 import { ConfigSvc } from '../config/config.service';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
-import { File } from '@ionic-native/file';
-import { StatusLengthsSvc } from '../games/status-lengths.service';
 import { UserModel } from './user.model';
 import { UserUtils } from './user.utils';
-import { ModelSvc, USER } from '../model-service/model.service';
+import { ModelSvc } from '../model-service/model.service';
 import { WsSvc } from '../web-sockets-service/web-sockets.service';
 import { Storage } from '@ionic/storage';
-import { toPromise } from '../../utils/util-helpers';
 import { PushSvc } from '../push-service/push.service';
 
 @Injectable()
@@ -34,7 +30,6 @@ export class UserSvc extends BaseService {
 		http: DecHttp,
 		private configSvc: ConfigSvc,
 		private transfer: Transfer,
-		private file: File,
 		private modelSvc: ModelSvc,
 		private ws: WsSvc,
 		private storage: Storage,

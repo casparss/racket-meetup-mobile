@@ -1,7 +1,6 @@
 import { Component, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
 import { ClubsSvc } from './clubs.service';
-import { Geolocation } from '@ionic-native/geolocation';
-import * as mapStyle from './google-map-style.json';
+import { MAP_STYLE } from './google-map-style';
 
 declare var google;
 
@@ -27,10 +26,7 @@ export class ClubsMapCom {
   @Input() clubs: Array<any> = [];
   @ViewChild('map') mapEl:ElementRef;
 
-  constructor(
-    private geolocation: Geolocation,
-    private clubsSvc: ClubsSvc
-  ){}
+  constructor(private clubsSvc: ClubsSvc){}
 
   ngOnInit(){
     this.loading.emit(true);
@@ -47,7 +43,7 @@ export class ClubsMapCom {
       center: latLng,
       zoom: 11,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      styles: mapStyle,
+      styles: MAP_STYLE,
       disableDefaultUI: true,
       mapTypeControl: false,
     };

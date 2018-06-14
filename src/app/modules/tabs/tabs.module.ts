@@ -23,6 +23,7 @@ import { TabsController } from './tabs-controller.component';
     ProfileMenuModule,
     ClubsModule
   ],
-  exports: [TabsController]
+  exports: [TabsController],
+  providers: []
 })
 export class TabsModule {}

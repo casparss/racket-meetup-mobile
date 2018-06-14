@@ -83,7 +83,7 @@ export class ProfileActionsCom {
 			user: this.userModel
 		});
 
-		challengeModal.present(challengeModal);
+		challengeModal.present();
 	}
 
 	messagePlayer(){

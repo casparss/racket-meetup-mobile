@@ -1,14 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { UserInt } from '../user-service/user.interface';
 import { DecHttp,  HttpUtils } from '../../utils/http/';
-import { NavController } from 'ionic-angular';
 import { BaseService } from "../../utils/base/base.service";
-import { Utils } from '../../utils/util-helpers';
-import { Observable, Subject } from 'rxjs';
-import { GameInt } from './games.interfaces';
 import { ConfigSvc } from '../config/config.service';
-import { ModelSvc } from '../model-service/model.service';
 import { StatusLengthsSvc } from './status-lengths.service';
 import { UserSvc } from '../user-service/user.service';
 
@@ -35,10 +28,8 @@ export class GamesSvc extends BaseService {
 	public onPushToCurrent: EventEmitter<any> = new EventEmitter();
 
 	constructor(
-		protected nav: NavController,
 		private statusLengthsSvc: StatusLengthsSvc,
 		private userSvc: UserSvc,
-		private modelSvc: ModelSvc,
 		http: DecHttp,
 		configSvc: ConfigSvc
 	){

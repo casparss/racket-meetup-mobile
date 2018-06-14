@@ -57,7 +57,7 @@ export class WsSvc {
 	    delete this.socket;
 	    this.socket = null;
 		}
-		this.socket = io(this.configSvc.get('wsUrl'));
+		this.socket = io.connect(this.configSvc.get('wsUrl'));
 		this.setEvents();
 		this.authenticate();
 	}

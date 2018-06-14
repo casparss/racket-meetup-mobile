@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ModalController, NavController } from 'ionic-angular';
 import { UserSvc } from '../user-service/user.service';
 import { UserDetailsInt } from '../user-service/user.interface';
-import { ActionSheetActionsInt } from './my-details.interface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ChangePasswordCom } from './change-password.component';
 
