@@ -49,7 +49,6 @@ const ANIMATION_STR = '800ms cubic-bezier(0.68, -0.55, 0.265, 1.55)';
   ]
 })
 export class AvailabilityCom {
-
 	@Input() user: any;
 	@Input() user2: any;
 	@Input() selectedDay: any;
@@ -64,7 +63,9 @@ export class AvailabilityCom {
 	){}
 
 	ngOnInit(){
-		this.getAvailabilityType().then(model => this.model = model);
+		this
+			.getAvailabilityType()
+			.then(model => this.model = model);
 	}
 
 	getAvailabilityType(){
@@ -84,6 +85,12 @@ export class AvailabilityCom {
 	getAvailability(user$){
 		let get = ({ _id }) => toPromise(this.svc.get(_id));
 		return user$ instanceof Observable ? toPromise(user$).then(get) : get(user$);
+	}
+
+	updateModel(ev, i, prop) {
+		const model = Object.assign({}, this.model)
+		model[prop] = [...this.model[prop]]
+		this.svc.debouncedSync(model)
 	}
 
 	ngOnChanges(changes){

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { mapValues } from 'lodash';
+import { mapValues, map } from 'lodash';
 import { SELECTED_CLASS } from './class-constants';
 
 @Injectable()
@@ -20,11 +20,17 @@ export class AvailabilityUtils {
     };
   }
 
-  addClassPropTransform(avail){
-    return mapValues(avail, period =>
-      period.map(
-        ({v}) => ({ v, class: SELECTED_CLASS})
-      )
-    );
+  mapPeriods({ morning, afternoon, evening }) {
+    return { morning, afternoon, evening }
+  }
+
+  addClassPropTransform(periods) {
+    return mapValues(periods, period =>
+      period.map(value => ({ value, class: SELECTED_CLASS}))
+    )
+  }
+
+  mapForTransport(model) {
+    return mapValues(model, period => period.map(({ value }) => value))
   }
 }

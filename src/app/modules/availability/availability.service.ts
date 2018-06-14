@@ -26,10 +26,15 @@ export class AvailabilitySvc extends BaseService implements Service {
 
 	get(id: string){
 		return this._getById('availability', id)
+			.map(model => this.utils.mapPeriods(model))
 			.map(model => this.utils.addClassPropTransform(model));
 	}
 
-	debouncedSync = debounce(() => this._update(this.model).subscribe(), this.debouceTime, {
+	sync(model) {
+		return this._update(this.utils.mapForTransport(model))
+	}
+
+	debouncedSync = debounce(model => this.sync(model).subscribe(), this.debouceTime, {
 		trailing: true
 	});
 }

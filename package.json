@@ -24,7 +24,7 @@
     "local:dev": "NODE_ENV=dev npm run ionic:serve",
     "simulator:dev": "NODE_ENV=dev ionic cordova emulate",
     "simulator:jacq": "NODE_ENV=jacq ionic cordova emulate",
-    "build:dev:android": "NODE_ENV=dev npm run android-dev",
+    "build:dev:android": "NODE_ENV=dev npm run android-prod",
     "build:dev": "NODE_ENV=dev npm run ios-dev",
     "build:dev:live": "NODE_ENV=dev npm run ios-dev-live",
     "build:prod": "NODE_ENV=dev npm run ios-prod",

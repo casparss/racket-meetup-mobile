@@ -27,8 +27,8 @@
 					   Morning
 					</td>
 
-					<td *ngFor="let day of model?.morning" [@daySelected]="day.class">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" [disabled]="isMesh()"></ion-checkbox>
+					<td *ngFor="let day of model?.morning; let i=index" [@daySelected]="day.class">
+						<ion-checkbox (ionChange)="updateModel($event, i, 'morning')" [(ngModel)]="day.value" [disabled]="isMesh()"></ion-checkbox>
 					</td>
 				</tr>
 
@@ -37,8 +37,8 @@
 					   Afternoon
 					</td>
 
-					<td *ngFor="let day of model?.afternoon" [@daySelected]="day.class">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" [disabled]="isMesh()"></ion-checkbox>
+					<td *ngFor="let day of model?.afternoon; let i=index" [@daySelected]="day.class">
+						<ion-checkbox (ionChange)="updateModel($event, i, 'afternoon')" [(ngModel)]="day.value" [disabled]="isMesh()"></ion-checkbox>
 					</td>
 				</tr>
 
@@ -47,8 +47,8 @@
 					   Evening
 					</td>
 
-					<td *ngFor="let day of model?.evening" [@daySelected]="day.class">
-						<ion-checkbox (click)="svc.diff()" [(ngModel)]="day.v" [disabled]="isMesh()"></ion-checkbox>
+					<td *ngFor="let day of model?.evening; let i=index" [@daySelected]="day.class">
+						<ion-checkbox (ionChange)="updateModel($event, i, 'evening')" [(ngModel)]="day.value" [disabled]="isMesh()"></ion-checkbox>
 					</td>
 				</tr>
 
