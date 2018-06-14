@@ -1,7 +1,5 @@
-import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Output, EventEmitter, ElementRef } from '@angular/core';
 import { WsSvc } from '../web-sockets-service';
-
-const ENTER_KEY = 13;
 
 @Component({
   selector: 'text-dialogue',

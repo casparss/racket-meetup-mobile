@@ -1,8 +1,7 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { Observable } from 'rxjs';
 import { NavParams } from 'ionic-angular';
-import { UserSvc, UserInt } from '../user-service/user.service';
+import { UserSvc } from '../user-service/user.service';
 import { UserModel } from '../user-service/user.model';
 
 @Component({

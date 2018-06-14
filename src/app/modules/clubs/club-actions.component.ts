@@ -47,7 +47,6 @@ import { StatusLengthsSvc } from '../games/status-lengths.service';
 export class ClubActionsCom {
   @Input() clubModel: any = {};
   private isMyClub: boolean;
-  private played: number;
   private lengths: lengthsInt;
   private statusLengthsSub: Subscription;
 
@@ -102,7 +101,7 @@ export class ClubActionsCom {
   ionViewDidLeave() {
 		this.clubModel.disown(this);
 	}
-  
+
   ionViewDidUnload(){
 		this.statusLengthsSub.unsubscribe();
 	}

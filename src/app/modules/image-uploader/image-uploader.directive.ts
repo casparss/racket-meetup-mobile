@@ -45,7 +45,8 @@ export class ImageUploaderDrv {
 			destinationType: this.camera.DestinationType.DATA_URL,
 			encodingType: this.camera.EncodingType.JPEG,
 			mediaType: this.camera.MediaType.PICTURE,
-			allowEdit: true
+			allowEdit: true,
+			correctOrientation: true
 		};
 	}
 

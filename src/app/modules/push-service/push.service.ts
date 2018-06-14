@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { BaseService } from '../../utils/base/base.service';
-import { DecHttp, HttpUtils } from '../../utils/http';
+import { DecHttp } from '../../utils/http';
 import { ConfigSvc } from '../config/config.service';
 import { ToastSvc } from '../toast/toast.service';
 

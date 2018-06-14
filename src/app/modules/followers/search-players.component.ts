@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ProfileMainCom } from '../profile-main/profile-main.component';
-import { UserInt } from '../user-service/user.interface';
 import { debounce } from 'lodash';
 import { UserSvc } from '../user-service/user.service';
 import { ModelSvc, USER } from '../model-service/model.service';

@@ -4,8 +4,8 @@ import { DataModel } from '../../utils/data-model';
 import { ModelSvc } from '../model-service/model.service';
 import { UserUtils } from '../user-service/user.utils';
 import * as moment from 'moment';
-import { reject, map, last, pull } from 'lodash';
-import calendarDateConfig from '../../utils/calendar-date-config.json';
+import { reject, last, pull } from 'lodash';
+import { CALENDAR_DATE_CONFIG } from '../../utils/calendar-date-config';
 
 export class ChatModel extends DataModel {
   private onAuthentictedSub: Subscription;
@@ -15,6 +15,7 @@ export class ChatModel extends DataModel {
   public onChange: EventEmitter<any> = new EventEmitter();
   public upToDateStatus$: Subject<boolean> = new Subject();
   public isViewing$: BehaviorSubject<any> = new BehaviorSubject(false);
+  private messageRecieved: any;
 
   constructor(injector, chatModel, ownerInstance, opts?){
     super(injector, chatModel, ownerInstance);
@@ -23,6 +24,7 @@ export class ChatModel extends DataModel {
     this.modelSvc = injector.get(ModelSvc);
     this.userUtils = injector.get(UserUtils);
     this.subscribe();
+    this.messageRecieved = msgPackage => this.newMessageRecieved(msgPackage)
 
     this.onAuthentictedSub = this.ws.onAuthenticted.subscribe(isAuth => {
       if(isAuth){
@@ -30,6 +32,9 @@ export class ChatModel extends DataModel {
         this.setWsEvents();
       }
     });
+
+    this.ws.onConnect
+      .subscribe(() => this.setWsEvents());
   }
 
   viewing(){
@@ -48,7 +53,8 @@ export class ChatModel extends DataModel {
 
 
   setWsEvents(){
-		this.ws.socket.on("message", msgPackage => this.newMessageRecieved(msgPackage));
+    this.ws.socket.off("message", this.messageRecieved);
+		this.ws.socket.on("message", this.messageRecieved);
 	}
 
   sendMessage(message:string){
@@ -197,7 +203,7 @@ class DateLabel {
 	}
 
 	calendarDate(){
-		return this.date.calendar(null, calendarDateConfig);
+		return this.date.calendar(null, CALENDAR_DATE_CONFIG);
 	}
 }
 

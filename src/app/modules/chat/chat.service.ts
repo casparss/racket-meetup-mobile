@@ -1,7 +1,7 @@
-import { ModelSvc, CHAT } from '../model-service/model.service';
+import { ModelSvc } from '../model-service/model.service';
 import { Events } from 'ionic-angular';
 import { orderBy, debounce } from 'lodash';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../../utils/base/base.service';
 import { DecHttp, HttpUtils } from '../../utils/http';

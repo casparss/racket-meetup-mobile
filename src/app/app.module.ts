@@ -9,20 +9,19 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 import { Push } from '@ionic-native/push';
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler, NavController } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { GoogleMaps } from '@ionic-native/google-maps';
 
 //App import
 import { RacketMeetupApp } from './app.component';
 
 //Tabs imports
-import {TabsModule} from './modules/tabs/tabs.module';
+import { TabsModule } from './modules/tabs/tabs.module';
 
 //Tabs controller
-import {TabsController} from './modules/tabs/tabs-controller.component';
+//import { TabsController } from './modules/tabs/tabs-controller.component';
 
 import { WelcomeModule } from './modules/welcome/welcome.module';
 
@@ -32,7 +31,6 @@ import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 
 //Services
-import { ColObjDifferFactory } from './utils/differs/collection-object-diff.ts';
 import { UserSvc } from './modules/user-service/user.service';
 import { PushSvc } from './modules/push-service/push.service';
 import { UserUtils } from './modules/user-service/user.utils';
@@ -59,20 +57,19 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
   ],
   bootstrap: [IonicApp],
   providers: [
+    // @TODO: removed nav controller
     StatusBar,
     SplashScreen,
-    NavController,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-  	ToastSvc,
-  	WsSvc,
-  	DecHttp,
-  	UserSvc,
+    ToastSvc,
+    WsSvc,
+    DecHttp,
+    UserSvc,
     PushSvc,
     UserUtils,
     GamesSvc,
     ConfigSvc,
-  	WsSvc,
-  	ColObjDifferFactory,
+    WsSvc,
     Keyboard,
     Geolocation,
     SpinnerDialog,
@@ -81,8 +78,7 @@ import { ModelSvcModule } from './modules/model-service/model-service.module'
     Transfer,
     File,
     Crop,
-    Push,
-    GoogleMaps
+    Push
   ]
 })
 export class AppModule {}

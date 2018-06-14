@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { GameModel } from './game.model';
+import { Subscription } from 'rxjs';
 import { UserSvc } from '../user-service/user.service';
 import { GamesSvc } from './games.service';
-import { ModelSvc, modelName, USER, CLUB, GAME } from '../model-service/model.service';
+import { ModelSvc, modelName, GAME } from '../model-service/model.service';
 import { StatusLengthsSvc } from './status-lengths.service';
 
 @Component({

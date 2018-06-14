@@ -30,7 +30,6 @@ import { UserUtils } from '../user-service/user.utils';
 export class PlayerSummaryCom {
 	@Input() _id: any;
   private playerList: Array<UserInt> = [];
-  private noData: boolean;
   private STATE = [
     'loading',
     'no-data',

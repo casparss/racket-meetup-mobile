@@ -2,10 +2,6 @@ import { Events } from 'ionic-angular';
 import { Injectable, Injector, EventEmitter } from '@angular/core';
 import { mapValues, remove, forEach, last, isArray, findKey } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { WsSvc } from '../web-sockets-service/web-sockets.service';
-import { UserUtils } from '../user-service/user.utils';
-import { StatusLengthsSvc } from '../games/status-lengths.service';
-import { DataModel } from '../../utils/data-model'
 import { UserModel } from '../user-service/user.model';
 import { GameModel } from '../games/game.model';
 import { RankingModel } from '../rankings/ranking.model';

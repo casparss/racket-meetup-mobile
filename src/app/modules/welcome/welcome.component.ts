@@ -47,10 +47,14 @@ export class WelcomeCom{
 	}
 
 	ngOnInit(){
-    this.userSvc.persistentLogin()
+		this.persistentLogin();
+  }
+
+	persistentLogin() {
+		this.userSvc.persistentLogin()
       .then(user => user ? this.nav.push(TabsController) : null)
       .catch(err => console.error(err));
-  }
+	}
 
 	toggleSignupVisibility(){
 		let { onKeyboardShow, onKeyboardHide } = this.keyboard;

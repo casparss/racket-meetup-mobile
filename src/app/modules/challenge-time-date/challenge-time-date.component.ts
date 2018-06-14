@@ -1,10 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { UserModel } from '../user-service/user.model';
-import { ViewController, ModalController } from 'ionic-angular';
-import { FormGroup, FormBuilder, Validators, ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import { UserInt } from '../user-service/user.interface';
-import { UserSvc } from '../user-service/user.service';
-import { GamesSvc } from '../games/games.service';
+import { ViewController } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ChallengeTimeDateUtils } from './challenge-time-date.utils';
 import { AvailabilityCom } from '../availability/availability.component';
 
@@ -100,7 +97,6 @@ import { AvailabilityCom } from '../availability/availability.component';
   `
 })
 export class ChallengeTimeDateCom {
-
   private weeks:any;
   private days:any;
   private timeMin: any;
@@ -153,5 +149,4 @@ export class ChallengeTimeDateCom {
   clearTime(){
     this.selectDateAndTime.controls.time.patchValue(null);
   }
-
 }

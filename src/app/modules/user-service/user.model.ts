@@ -1,5 +1,3 @@
-import { Injectable, Injector, EventEmitter } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
 import { ModelSvc, CLUB } from '../model-service/model.service';
 import { DataModel } from '../../utils/data-model';
 import { UserInt } from './user.interface';
