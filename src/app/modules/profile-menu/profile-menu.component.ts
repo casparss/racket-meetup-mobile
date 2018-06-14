@@ -30,7 +30,6 @@ export class ProfileMenuCom {
 	private statusLengthsSub: Subscription;
 	private user;
 	private lengths: lengthsInt;
-	private loggingOut: boolean = false;
 
 	constructor(
 		private nav: NavController,
@@ -78,11 +77,11 @@ export class ProfileMenuCom {
 
 	logout(){
 		this.rootNavSvc.nav.popToRoot();
-		this.loggingOut = true;
+		this.userSvc.loggingout();
 	}
 
 	ionViewWillUnload() {
-		if(this.loggingOut) this.userSvc.logout();
+		if(this.userSvc.isLoggingout) this.userSvc.logout();
 		this.statusLengthsSub.unsubscribe();
 	}
 }

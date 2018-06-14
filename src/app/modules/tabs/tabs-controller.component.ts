@@ -55,7 +55,8 @@ export class TabsController {
 	ngOnDestroy(){
 		this.statusLengthsSub.unsubscribe();
 	}
-	/*ionViewCanLeave() {
-		return false;
-	}*/
+
+	ionViewCanLeave() {
+		return this.userSvc.isLoggingout;
+	}
 }

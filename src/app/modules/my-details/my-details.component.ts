@@ -10,7 +10,6 @@ import { ChangePasswordCom } from './change-password.component';
 	selector: "my-details"
 })
 export class MydetailsCom {
-
 	private details: UserDetailsInt;
 	private mydetailsForm: FormGroup;
 
@@ -52,5 +51,4 @@ export class MydetailsCom {
 		this.mydetailsForm.markAsUntouched();
 		this.mydetailsForm.updateValueAndValidity();
 	}
-
 }

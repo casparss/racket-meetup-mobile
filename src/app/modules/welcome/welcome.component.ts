@@ -76,4 +76,8 @@ export class WelcomeCom{
 	toggle(){
 		this.isToggled = !this.isToggled;
 	}
+
+	ionViewDidEnter() {
+		this.userSvc.loggedout();
+	}
 }

@@ -24,6 +24,7 @@ export class UserSvc extends BaseService {
   public searchedPlayers$:any;
   public followers$:any;
 	public current: UserModel;
+	public isLoggingout: boolean = false;
 
 	constructor(
 		private utils: UserUtils,
@@ -90,6 +91,14 @@ export class UserSvc extends BaseService {
 		} else {
 			return false;
 		}
+	}
+
+	loggingout() {
+		this.isLoggingout = true;
+	}
+
+	loggedout() {
+		this.isLoggingout = false;
 	}
 
 	logout(){
