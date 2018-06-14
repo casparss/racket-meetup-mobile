@@ -1,7 +1,12 @@
 local-clubs {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  loading-visibility-block {
+    height: 100%;
+    & > div {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
   ion-thumbnail > loading-img {
     width: 95px;
     height: 60px;
