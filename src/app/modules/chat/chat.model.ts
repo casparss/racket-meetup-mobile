@@ -28,13 +28,10 @@ export class ChatModel extends DataModel {
 
     this.onAuthentictedSub = this.ws.onAuthenticted.subscribe(isAuth => {
       if(isAuth){
-        this.ws.socket.emit("joining:chat", this._id);
+        this.ws.emit("joining:chat", this._id);
         this.setWsEvents();
       }
     });
-
-    this.ws.onConnect
-      .subscribe(() => this.setWsEvents());
   }
 
   viewing(){
@@ -59,11 +56,11 @@ export class ChatModel extends DataModel {
 
   sendMessage(message:string){
 		let msgPackage = { chatId: this._id, message };
-		this.ws.socket.emit("send:message", msgPackage);
+		this.ws.emit("send:message", msgPackage);
 	}
 
   getMessageHistory(){
-		this.ws.socket.emit("request:messagehistory", this._id, messages => this.updateMessageHistory(messages));
+		this.ws.emit("request:messagehistory", this._id, messages => this.updateMessageHistory(messages));
 	}
 
   updateMessageHistory(messageHistory = []){
@@ -85,7 +82,7 @@ export class ChatModel extends DataModel {
 	}
 
   sendMessageReceipt({ chatId, _id }){
-    this.ws.socket.emit('messagereceipt', `${chatId}:${_id}`);
+    this.ws.emit('messagereceipt', `${chatId}:${_id}`);
   }
 
   setUpToDate(chat = this.getRawValue()){
@@ -99,7 +96,7 @@ export class ChatModel extends DataModel {
 	}
 
   emitUpToDate(){
-    this.ws.socket.emit("uptodatewith:chat", this._id);
+    this.ws.emit("uptodatewith:chat", this._id);
   }
 
   isUpToDate(){
@@ -110,7 +107,7 @@ export class ChatModel extends DataModel {
     super.destroy();
     this.onAuthentictedSub.unsubscribe();
 		this.ws.socket.off("message");
-		this.ws.socket.emit("leaving:chat", this._id);
+		this.ws.emit("leaving:chat", this._id);
 	}
 
 

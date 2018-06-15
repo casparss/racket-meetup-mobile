@@ -5,11 +5,12 @@ import * as io from 'socket.io-client';
 import { ConfigSvc } from '../config/config.service';
 import { ToastSvc } from '../toast/toast.service';
 
+declare var Primus: any;
+
 @Injectable()
 export class WsSvc {
-
 	public socket;
-	private _authenticated = null;
+	private _authenticated = true;
 	public onAuthenticted = new BehaviorSubject(this._authenticated);
 	private token: string;
 	private connected$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -22,7 +23,6 @@ export class WsSvc {
 		private events: Events
 	){
 		this.events.subscribe("logout", () => {
-			this.clearReconnectInterval();
 			this.socket.destroy();
 			this._authenticated = null;
 		})
@@ -30,44 +30,13 @@ export class WsSvc {
 
 	init(token){
 		this.token = token;
-		this.startReconnectInterval();
-	}
-
-	startReconnectInterval(){
-		this.reconnectCheck = this.reconnectTimer();
-	}
-
-	clearReconnectInterval(){
-		clearInterval(this.reconnectCheck);
-	}
-
-	reconnectTimer(){
-		this.connect();
-		return setInterval(() => {
-			if(!this.socket.connected) {
-				this.connected$.next(false);
-				this.connect();
-			}
-		}, 4000);
-	}
-
-	connect(){
-		if(this.socket){
-			this.socket.destroy();
-	    delete this.socket;
-	    this.socket = null;
-		}
-		this.socket = io.connect(this.configSvc.get('wsUrl'));
+		this.socket = Primus.connect(this.configSvc.get('wsUrl'));
 		this.setEvents();
 		this.authenticate();
 	}
 
 	private setEvents(){
-		this.socket.on("connect", () => this.connected$.next(true));
-		this.socket.on("reconnect", () => this.connected$.next(true));
-		this.socket.on("disconnect", () => this.connected$.next(false));
-		this.platform.pause.subscribe(() => this.clearReconnectInterval());
-		this.platform.resume.subscribe(() => this.startReconnectInterval());
+		this.socket.on("open", () => this.connected$.next(true));
 	}
 
 	off(eventName: string){
@@ -75,30 +44,27 @@ export class WsSvc {
 	}
 
 	on(eventName: string, cb){
-		return this.socket.on(eventName, ({message, data}) => {
-			if(message) this.toastSvc.showMessage(message);
-			console.log(`Web Socket event: ${eventName}`, data);
-			cb(data);
+		return this.socket.on(eventName, (...args) => {
+			console.log('Socket recieving: ', args)
+			cb(...args)
 		});
 	}
 
-	emit(eventName: string, data:any){
-		this.socket.emit(eventName, data);
+	emit(eventName: string, payload: any, ackowledgement) {
+		this.socket.send(eventName, payload, ackowledgement);
 	}
 
-	private authenticate(callback?){
-		this.socket.on('connect', () => {
-			this.socket.emit('authentication', this.token);
+	private authenticate(){
+		this.socket.on('open', () => {
+			this.socket.send('authentication', this.token);
 			this.socket.on('authenticated', () => {
 				this._authenticated = true;
 				this.onAuthenticted.next(this._authenticated);
-				if(callback) callback();
-			} );
+			});
 		});
 	}
 
 	get authenticated(){
 		return this._authenticated;
 	}
-
 }

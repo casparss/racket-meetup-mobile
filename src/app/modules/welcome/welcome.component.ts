@@ -34,7 +34,9 @@ import { RootNavSvc } from './root-nav.service';
 })
 export class WelcomeCom{
 	private isToggled: boolean = true;
-	private isKeyboardShowing:boolean;
+	private isKeyboardShowing: boolean;
+	private isFirstTime: boolean = true;
+
 	constructor(
 		private keyboard: Keyboard,
 		private _ngZone: NgZone,
@@ -79,5 +81,11 @@ export class WelcomeCom{
 
 	ionViewDidEnter() {
 		this.userSvc.loggedout();
+	}
+
+	ionViewCanEnter() {
+		const check = this.userSvc.isLoggingout || this.isFirstTime
+		this.isFirstTime = false;
+		return check;
 	}
 }

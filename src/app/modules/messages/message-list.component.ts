@@ -21,7 +21,6 @@ interface ParamsInt {
 	selector:'message-list'
 })
 export class MessageListCom {
-
 	private chatCollection: Collection;
 	private isEmptyState: boolean;
 	private chatSub: Subscription;
@@ -76,5 +75,4 @@ export class MessageListCom {
 
 		addressBookModal.present();
 	}
-
 }
