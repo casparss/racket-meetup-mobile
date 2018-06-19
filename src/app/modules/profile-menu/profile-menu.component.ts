@@ -81,7 +81,6 @@ export class ProfileMenuCom {
 	}
 
 	ionViewWillUnload() {
-		if(this.userSvc.isLoggingout) this.userSvc.logout();
 		this.statusLengthsSub.unsubscribe();
 	}
 }

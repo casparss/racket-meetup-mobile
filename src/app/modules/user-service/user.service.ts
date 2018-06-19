@@ -98,6 +98,7 @@ export class UserSvc extends BaseService {
 	}
 
 	loggedout() {
+		if(this.isLoggingout) this.logout();
 		this.isLoggingout = false;
 	}
 
