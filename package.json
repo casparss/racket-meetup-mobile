@@ -8,7 +8,6 @@
         "lint": "ionic-app-scripts lint",
         "clean": "ionic-app-scripts clean",
         "build": "ionic-app-scripts build",
-        "ionic:build": "ionic-app-scripts build",
         "ionic:serve": "ionic-app-scripts serve",
         "e2e": "ionic-app-scripts build && protractor",
         "postinstall": "ionic cordova prepare && webdriver-manager update",
@@ -23,14 +22,11 @@
         "local:local": "NODE_ENV=local npm run ionic:serve",
         "local:dev": "NODE_ENV=dev npm run ionic:serve",
         "simulator:dev": "NODE_ENV=dev ionic cordova emulate",
-        "simulator:android:ios": "NODE_ENV=dev ionic cordova emulate ios",
+        "simulator:dev:ios": "NODE_ENV=dev ionic cordova emulate ios",
         "build:dev:android": "NODE_ENV=dev npm run android-prod",
         "build:dev": "NODE_ENV=dev npm run ios-dev",
         "build:dev:live": "NODE_ENV=dev npm run ios-dev-live",
-        "build:prod": "NODE_ENV=dev npm run ios-prod",
-        "build:jacq": "NODE_ENV=jacq npm run ios-prod",
-        "build:mum": "NODE_ENV=mum npm run ios",
-        "build:local": "NODE_ENV=local npm run ios"
+        "build:prod": "NODE_ENV=dev npm run ios-prod"
     },
     "config": {
         "ionic_webpack": "./webpack.config.js"
