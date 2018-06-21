@@ -10,7 +10,7 @@ import { Events } from 'ionic-angular';
 @Injectable()
 export class ClubsSvc extends BaseService {
   private coords: any;
-  private cachingPromise: Promise<any>;
+  private _cachedGeolocation: Promise<any>;
   public myClubsRefresh: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -22,33 +22,28 @@ export class ClubsSvc extends BaseService {
 		configSvc: ConfigSvc
   ){
     super(http, configSvc);
-    this.cachingPromise = this.cacheGeolocation();
+    this._cachedGeolocation = this.cacheGeolocation();
+  }
+
+  get cachedGeolocation() {
+    return this._cachedGeolocation.then(data => {
+      console.log('location: ', data)
+      return data;
+    })
   }
 
   cacheGeolocation(){
     return <Promise<any>>this.geolocation.getCurrentPosition()
-			.then(({ coords }) => this.coords = coords);
+			.then(({ coords }) => coords);
   }
 
   getGeoLocation(){
-    return new Promise((resolve, reject) => {
-      if(!this.coords){
-        this.cachingPromise.then(coords => {
-          resolve(coords);
-        });
-      }
-      else {
-        resolve(this.coords);
-      }
-    });
+    return this.cachedGeolocation;
   }
 
   getLocalClubs(){
     return <Promise<any>>this.getGeoLocation()
-      .then((coords: any) => {
-        this.coords = coords;
-        return this.getClubs(coords);
-      })
+      .then((coords: any) => this.getClubs(coords))
       .catch(err => console.log('Error getting location', err));
 	}
 
