@@ -1,0 +1,18 @@
+{
+  "ios": {
+      "debug": {
+          "codeSignIdentity": "iPhone Developer: Caspar Sambrook-Smith (J538F6CYM6)",
+          "developmentTeam":"475WN8P3C6",
+          "provisioningProfile": "7cab4c4b-1925-4232-9367-9cc2eaf3a3a8",
+          "packageType": "development",
+          "automaticProvisioning": false
+      },
+      "release": {
+        "codeSignIdentity": "iPhone Developer: Caspar Sambrook-Smith (J538F6CYM6)",
+        "developmentTeam":"475WN8P3C6",
+        "provisioningProfile": "7cab4c4b-1925-4232-9367-9cc2eaf3a3a8",
+        "packageType": "ad-hoc",
+        "automaticProvisioning": false
+      }
+  }
+}
