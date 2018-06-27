@@ -7,7 +7,7 @@
 <ion-content class="chat-com">
 	<div class="container">
 		<section class="messages" (touchend)="blur($event)">
-			<div *ngFor="let message of conversation; trackBy: trackById" [ngSwitch]="message.type">
+			<div *ngFor="let message of chatModel.conversation$ | async; trackBy: trackById" [ngSwitch]="message.type">
 				<div class="msg--date-wrapper" *ngSwitchCase="'date'">
 					<h3 class="msg--date">{{message.calendarDate()}}</h3>
 				</div>

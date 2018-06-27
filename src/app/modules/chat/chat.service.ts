@@ -42,7 +42,7 @@ export class ChatSvc extends BaseService {
 	}
 
 	setWsEvents(){
-		this.newChatWsEv = this.ws.on(`newChat:${this.userSvc.current._id}`, chat => this.newIncomingChat(chat));
+		this.newChatWsEv = this.ws.on(`newChat`, chat => this.newIncomingChat(chat));
 	}
 
 	modelOnChange(){
