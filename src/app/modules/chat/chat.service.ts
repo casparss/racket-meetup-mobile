@@ -12,7 +12,6 @@ import { WsSvc } from '../web-sockets-service';
 
 @Injectable()
 export class ChatSvc extends BaseService {
-
 	url = 'inbox';
 	private chatsSubject: BehaviorSubject<any> = new BehaviorSubject([]);
   public unreadChatsLength$: BehaviorSubject<any> = new BehaviorSubject(0);
@@ -94,5 +93,4 @@ export class ChatSvc extends BaseService {
       .do(chats => this.getUnreadChatLengths(chats))
 			.map(chats => orderBy(chats, ['updatedAt'], ['desc']));
   }
-
 }
