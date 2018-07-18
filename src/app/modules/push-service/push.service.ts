@@ -10,15 +10,23 @@ const options: PushOptions = {
     alert: true,
     badge: true,
     sound: true
+  },
+  android: {
+    senderID: '1014463543428'
   }
 };
+
+interface RegistrationInt {
+  registrationId: string,
+  registrationType: string
+}
 
 @Injectable()
 export class PushSvc extends BaseService {
   public reg: any;
   public $: PushObject;
   private user: any;
-  private registrationId: string;
+  private registration: RegistrationInt;
 
   constructor(
     private push: Push,
@@ -40,9 +48,8 @@ export class PushSvc extends BaseService {
   }
 
   register() {
-    if(this.user && this.registrationId) {
-      let data = { registrationId: this.registrationId };
-      this._sync(data, {}, 'push').subscribe()
+    if(this.user && this.registration) {
+      this._sync(this.registration, {}, 'push').subscribe()
     }
   }
 
@@ -62,7 +69,7 @@ export class PushSvc extends BaseService {
     this.$
       .on('registration')
       .subscribe((registration: any) => {
-        this.registrationId = registration.registrationId
+        this.registration = registration
         this.register();
         console.log('Device registered', registration)
       });

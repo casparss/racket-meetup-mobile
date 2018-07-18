@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1014463543428",
+    "firebase_url": "https://racket-meetup-1500986788066.firebaseio.com",
+    "project_id": "racket-meetup-1500986788066",
+    "storage_bucket": "racket-meetup-1500986788066.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014463543428:android:c916a984560ea3b4",
+        "android_client_info": {
+          "package_name": "com.racketmeetup.racketmeetup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1014463543428-l01a5karv7n76h2qrnfjdq0lr6o5fo2e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHKOIQE7171Vfy_Vk6uwrEMG6jbVU8cCY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

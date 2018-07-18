@@ -11,7 +11,7 @@ import { Component, Input } from '@angular/core';
       </h1>
     </div>
 
-    <buckets>
+    <!--buckets>
       <div>
         <dd>200</dd>
         <dt>Players</dt>
@@ -24,7 +24,7 @@ import { Component, Input } from '@angular/core';
         <dd>3</dd>
         <dt>Socials</dt>
       </div>
-    </buckets>
+    </buckets-->
   </header>
   `
 })
