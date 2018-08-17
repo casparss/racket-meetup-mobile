@@ -76,7 +76,7 @@ export class ClubsSvc extends BaseService {
   getPlayersSliceByClubId(_id){
     const search = HttpUtils.urlParams({
       sliceFrom: 0,
-      sliceTo: 8
+      sliceTo: 6
     });
     return this._get(null, { search }, `club/${_id}/users/slice`).toPromise();
   }

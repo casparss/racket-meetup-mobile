@@ -34,6 +34,12 @@
   },
   "envConfig": {
     "local": {
+      "baseUrl": "'http://dev.racketmeetup.com/api/'",
+      "wsUrl": "'ws://dev.racketmeetup.com/'",
+      "imageUrl": "'http://dev.racketmeetup.com/assets/'",
+      "googleMapsKey": "'AIzaSyAgbC9y0b3TOUcQSnsE2Mp7Yx_nANxL_Ss'"
+    },
+    "local:local": {
       "baseUrl": "'api/'",
       "wsUrl": "'ws://127.0.0.1:3000/'",
       "imageUrl": "'assets/'",

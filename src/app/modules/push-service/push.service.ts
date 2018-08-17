@@ -4,6 +4,7 @@ import { BaseService } from '../../utils/base/base.service';
 import { DecHttp } from '../../utils/http';
 import { ConfigSvc } from '../config/config.service';
 import { ToastSvc } from '../toast/toast.service';
+import { Events } from 'ionic-angular';
 
 const options: PushOptions = {
   ios: {
@@ -32,7 +33,8 @@ export class PushSvc extends BaseService {
     private push: Push,
     configSvc: ConfigSvc,
     http: DecHttp,
-    private toastSvc: ToastSvc
+    private toastSvc: ToastSvc,
+    private events: Events
   ) {
     super(http, configSvc)
   }
@@ -57,6 +59,8 @@ export class PushSvc extends BaseService {
     this.$
       .on('notification')
       .subscribe((notification: any) => {
+        this.events.publish(notification.additionalData.path);
+
         //@TODO: parse path prop and navigate to it
         //@TODO: parse data if need be
         this.toastSvc.showMessage(
