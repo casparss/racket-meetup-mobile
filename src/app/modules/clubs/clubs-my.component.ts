@@ -41,7 +41,7 @@ export class MyClubsCom {
   }
 
   ngOnInit(){
-    setTimeout(() => this.getMyClubs(), 300)
+    setTimeout(() => this.getMyClubs(), 300);
   }
 
   getMyClubs(){

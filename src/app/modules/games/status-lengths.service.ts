@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
-import 'rxjs/add/operator/skipWhile';
+import 'rxjs/add/operator/filter';
 
 interface emitInt {
   _id: string,
@@ -15,9 +15,7 @@ export class StatusLengthsSvc {
   $({ _id, by }){
     return this.statusLengths
       .asObservable()
-      .takeWhile(lengthsData =>
-        (lengthsData.by === by && lengthsData._id === _id)
-      )
+      .filter(lengthsData => lengthsData.by === by && lengthsData._id === _id)
       .map(({lengths}) => lengths);
   }
   emit(data:emitInt){

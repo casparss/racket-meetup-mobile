@@ -8,6 +8,8 @@ rankings-list {
 	}
 	.name {
 		font-size: 18px;
+		flex-grow: 1;
+    padding-left: 20px;
 	}
 	ranking-avatar {
 		width: 60px;

@@ -1,10 +1,10 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { Events } from 'ionic-angular';
 import { DecHttp,  HttpUtils } from '../../utils/http/';
 import { BaseService } from "../../utils/base/base.service";
 import { ConfigSvc } from '../config/config.service';
 import { StatusLengthsSvc } from './status-lengths.service';
 import { UserSvc } from '../user-service/user.service';
-
 interface getByStatusInt {
 	_id: string,
 	status: string,
@@ -30,10 +30,12 @@ export class GamesSvc extends BaseService {
 	constructor(
 		private statusLengthsSvc: StatusLengthsSvc,
 		private userSvc: UserSvc,
+		events: Events,
 		http: DecHttp,
 		configSvc: ConfigSvc
 	){
 		super(http, configSvc);
+		events.subscribe('game', () => this.getLengthsForCurrentUser())
 	}
 
 	getByStatus({ _id, status, type = 'filter', lastSeenId, limit, by }: getByStatusInt){
@@ -50,7 +52,8 @@ export class GamesSvc extends BaseService {
 		const { _id, by } = opts;
 		let search = HttpUtils.urlParams({ type: 'lengths', ...opts });
 		return this._get(null, { search }, null, `/${_id}`)
-			.do(({ lengths }) => this.statusLengthsSvc.emit({ _id, lengths, by }))
+			.do(({ lengths }) => this.statusLengthsSvc.emit({ _id, lengths, by })
+		)
 	}
 
 	getLengthsForCurrentUser(){
